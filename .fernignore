@@ -1,0 +1,8 @@
+# Files Fern's Python generator should leave alone on every regen.
+# Mirror the pattern from truefoundry/truefoundry-python-sdk: list custom
+# client subclasses, hand-written helpers, CI overrides, etc.
+#
+# Example (uncomment & adjust once the SDK has real custom code):
+# src/truefoundry_gateway_sdk/_wrapped_clients.py
+# src/truefoundry_gateway_sdk/client.py
+# .github/workflows/ci.yml
