@@ -85,15 +85,15 @@ A full reference for this library is available [here](https://github.com/truefou
 Instantiate and use the client with the following:
 
 ```python
-from truefoundry_gateway_sdk import TruefoundryGateway, NamedAgentRunInput
+from truefoundry_gateway_sdk import TruefoundryGateway, AgentResponsesInlineAgent
 
 client = TruefoundryGateway(
     token="<token>",
 )
 
-client.agent.responses.create(
-    request=NamedAgentRunInput(
-        agent_name="agent_name",
+client.agents.responses.create(
+    request=AgentResponsesInlineAgent(
+        model="model",
     ),
 )
 ```
@@ -126,9 +126,9 @@ client = AsyncTruefoundryGateway(
 
 
 async def main() -> None:
-    await client.agent.responses.create(
-        request=NamedAgentRunInput(
-            agent_name="agent_name",
+    await client.agents.responses.create(
+        request=AgentResponsesInlineAgent(
+            model="model",
         ),
     )
 
@@ -145,7 +145,7 @@ will be thrown.
 from truefoundry_gateway_sdk.core.api_error import ApiError
 
 try:
-    client.agent.responses.create(...)
+    client.agents.responses.create(...)
 except ApiError as e:
     print(e.status_code)
     print(e.body)
@@ -156,15 +156,15 @@ except ApiError as e:
 The SDK supports streaming responses, as well, the response will be a generator that you can loop over.
 
 ```python
-from truefoundry_gateway_sdk import TruefoundryGateway, NamedAgentRunInput
+from truefoundry_gateway_sdk import TruefoundryGateway, AgentResponsesInlineAgent
 
 client = TruefoundryGateway(
     token="<token>",
 )
 
-client.agent.responses.create(
-    request=NamedAgentRunInput(
-        agent_name="agent_name",
+client.agents.responses.create(
+    request=AgentResponsesInlineAgent(
+        model="model",
     ),
 )
 ```
@@ -180,7 +180,7 @@ The `.with_raw_response` property returns a "raw" client that can be used to acc
 from truefoundry_gateway_sdk import TruefoundryGateway
 
 client = TruefoundryGateway(...)
-response = client.agent.responses.with_raw_response.create(...)
+response = client.agents.responses.with_raw_response.create(...)
 print(response.headers)  # access the response headers
 print(response.status_code)  # access the response status code
 print(response.data)  # access the underlying object
@@ -211,7 +211,7 @@ Which status codes are retried depends on the `retryStatusCodes` generator confi
 Use the `max_retries` request option to configure this behavior.
 
 ```python
-client.agent.responses.create(..., request_options={
+client.agents.responses.create(..., request_options={
     "max_retries": 1
 })
 ```
@@ -226,7 +226,7 @@ from truefoundry_gateway_sdk import TruefoundryGateway
 client = TruefoundryGateway(..., timeout=20.0)
 
 # Override timeout for a specific method
-client.agent.responses.create(..., request_options={
+client.agents.responses.create(..., request_options={
     "timeout_in_seconds": 1
 })
 ```

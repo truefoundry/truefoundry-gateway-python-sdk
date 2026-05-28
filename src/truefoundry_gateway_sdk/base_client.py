@@ -12,7 +12,7 @@ from .core.logging import LogConfig, Logger
 from .environment import TruefoundryGatewayEnvironment
 
 if typing.TYPE_CHECKING:
-    from .agent.client import AgentClient, AsyncAgentClient
+    from .agents.client import AgentsClient, AsyncAgentsClient
 
 
 class BaseTruefoundryGateway:
@@ -32,6 +32,9 @@ class BaseTruefoundryGateway:
         Defaults to TruefoundryGatewayEnvironment.DEFAULT
 
 
+
+    scheme : typing.Optional[str]
+        Server URL variable for 'scheme'. Defaults to 'https'.
 
     gateway_base_url : typing.Optional[str]
         Server URL variable for 'gatewayBaseURL'. Defaults to 'gateway.truefoundry.ai'.
@@ -69,6 +72,7 @@ class BaseTruefoundryGateway:
         *,
         base_url: typing.Optional[str] = None,
         environment: TruefoundryGatewayEnvironment = TruefoundryGatewayEnvironment.DEFAULT,
+        scheme: typing.Optional[str] = None,
         gateway_base_url: typing.Optional[str] = None,
         tenant_name: typing.Optional[str] = None,
         token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = os.getenv("TFY_API_KEY"),
@@ -83,11 +87,12 @@ class BaseTruefoundryGateway:
         )
         if token is None:
             raise ApiError(body="The client must be instantiated be either passing in token or setting TFY_API_KEY")
-        if gateway_base_url is not None or tenant_name is not None:
+        if scheme is not None or gateway_base_url is not None or tenant_name is not None:
+            _scheme = scheme if scheme is not None else "https"
             _gateway_base_url = gateway_base_url if gateway_base_url is not None else "gateway.truefoundry.ai"
             _tenant_name = tenant_name if tenant_name is not None else "truefoundry"
-            base_url = "https://{gatewayBaseURL}/{tenantName}".format(
-                gatewayBaseURL=_gateway_base_url, tenantName=_tenant_name
+            base_url = "{scheme}://{gatewayBaseURL}/{tenantName}".format(
+                scheme=_scheme, gatewayBaseURL=_gateway_base_url, tenantName=_tenant_name
             )
         self._client_wrapper = SyncClientWrapper(
             base_url=_get_base_url(base_url=base_url, environment=environment),
@@ -101,15 +106,15 @@ class BaseTruefoundryGateway:
             timeout=_defaulted_timeout,
             logging=logging,
         )
-        self._agent: typing.Optional[AgentClient] = None
+        self._agents: typing.Optional[AgentsClient] = None
 
     @property
-    def agent(self):
-        if self._agent is None:
-            from .agent.client import AgentClient  # noqa: E402
+    def agents(self):
+        if self._agents is None:
+            from .agents.client import AgentsClient  # noqa: E402
 
-            self._agent = AgentClient(client_wrapper=self._client_wrapper)
-        return self._agent
+            self._agents = AgentsClient(client_wrapper=self._client_wrapper)
+        return self._agents
 
 
 def _make_default_async_client(
@@ -147,6 +152,9 @@ class AsyncBaseTruefoundryGateway:
         Defaults to TruefoundryGatewayEnvironment.DEFAULT
 
 
+
+    scheme : typing.Optional[str]
+        Server URL variable for 'scheme'. Defaults to 'https'.
 
     gateway_base_url : typing.Optional[str]
         Server URL variable for 'gatewayBaseURL'. Defaults to 'gateway.truefoundry.ai'.
@@ -187,6 +195,7 @@ class AsyncBaseTruefoundryGateway:
         *,
         base_url: typing.Optional[str] = None,
         environment: TruefoundryGatewayEnvironment = TruefoundryGatewayEnvironment.DEFAULT,
+        scheme: typing.Optional[str] = None,
         gateway_base_url: typing.Optional[str] = None,
         tenant_name: typing.Optional[str] = None,
         token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = os.getenv("TFY_API_KEY"),
@@ -202,11 +211,12 @@ class AsyncBaseTruefoundryGateway:
         )
         if token is None:
             raise ApiError(body="The client must be instantiated be either passing in token or setting TFY_API_KEY")
-        if gateway_base_url is not None or tenant_name is not None:
+        if scheme is not None or gateway_base_url is not None or tenant_name is not None:
+            _scheme = scheme if scheme is not None else "https"
             _gateway_base_url = gateway_base_url if gateway_base_url is not None else "gateway.truefoundry.ai"
             _tenant_name = tenant_name if tenant_name is not None else "truefoundry"
-            base_url = "https://{gatewayBaseURL}/{tenantName}".format(
-                gatewayBaseURL=_gateway_base_url, tenantName=_tenant_name
+            base_url = "{scheme}://{gatewayBaseURL}/{tenantName}".format(
+                scheme=_scheme, gatewayBaseURL=_gateway_base_url, tenantName=_tenant_name
             )
         self._client_wrapper = AsyncClientWrapper(
             base_url=_get_base_url(base_url=base_url, environment=environment),
@@ -219,15 +229,15 @@ class AsyncBaseTruefoundryGateway:
             timeout=_defaulted_timeout,
             logging=logging,
         )
-        self._agent: typing.Optional[AsyncAgentClient] = None
+        self._agents: typing.Optional[AsyncAgentsClient] = None
 
     @property
-    def agent(self):
-        if self._agent is None:
-            from .agent.client import AsyncAgentClient  # noqa: E402
+    def agents(self):
+        if self._agents is None:
+            from .agents.client import AsyncAgentsClient  # noqa: E402
 
-            self._agent = AsyncAgentClient(client_wrapper=self._client_wrapper)
-        return self._agent
+            self._agents = AsyncAgentsClient(client_wrapper=self._client_wrapper)
+        return self._agents
 
 
 def _get_base_url(*, base_url: typing.Optional[str] = None, environment: TruefoundryGatewayEnvironment) -> str:

@@ -3,25 +3,16 @@
 import typing
 
 import pydantic
-from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .agent_extended_delta_function_call import AgentExtendedDeltaFunctionCall
-from .agent_extended_delta_thinking_blocks_item import AgentExtendedDeltaThinkingBlocksItem
-from .agent_extended_delta_tool_call import AgentExtendedDeltaToolCall
+from ..core.pydantic_utilities import IS_PYDANTIC_V2
+from .agent_extended_delta import AgentExtendedDelta
 from .agent_finish_reason import AgentFinishReason
 
 
-class AgentLlmMessageDelta(UniversalBaseModel):
-    role: typing.Optional[typing.Literal["assistant"]] = None
+class AgentLlmMessageDelta(AgentExtendedDelta):
     type: typing.Literal["agent.message"] = "agent.message"
     execution_id: str
     created_at: typing.Optional[str] = None
     finish_reason: typing.Optional[AgentFinishReason] = None
-    content: typing.Optional[str] = None
-    refusal: typing.Optional[str] = None
-    function_call: typing.Optional[AgentExtendedDeltaFunctionCall] = None
-    tool_calls: typing.Optional[typing.List[AgentExtendedDeltaToolCall]] = None
-    thinking_blocks: typing.Optional[typing.List[AgentExtendedDeltaThinkingBlocksItem]] = None
-    reasoning_content: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

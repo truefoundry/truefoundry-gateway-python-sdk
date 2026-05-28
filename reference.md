@@ -1,6 +1,6 @@
 # Reference
-## Agent Responses
-<details><summary><code>client.agent.responses.<a href="src/truefoundry_gateway_sdk/agent/responses/client.py">create</a>(...) -> typing.Iterator[bytes]</code></summary>
+## Agents Responses
+<details><summary><code>client.agents.responses.<a href="src/truefoundry_gateway_sdk/agents/responses/client.py">create</a>(...) -> typing.Iterator[bytes]</code></summary>
 <dl>
 <dd>
 
@@ -27,7 +27,7 @@ Execute an agent in stateful mode (responses are stored server-side by default).
 <dd>
 
 ```python
-from truefoundry_gateway_sdk import TruefoundryGateway, NamedAgentRunInput
+from truefoundry_gateway_sdk import TruefoundryGateway, AgentResponsesInlineAgent
 from truefoundry_gateway_sdk.environment import TruefoundryGatewayEnvironment
 
 client = TruefoundryGateway(
@@ -35,9 +35,9 @@ client = TruefoundryGateway(
     environment=TruefoundryGatewayEnvironment.DEFAULT,
 )
 
-client.agent.responses.create(
-    request=NamedAgentRunInput(
-        agent_name="agent_name",
+client.agents.responses.create(
+    request=AgentResponsesInlineAgent(
+        model="model",
     ),
 )
 
@@ -55,7 +55,7 @@ client.agent.responses.create(
 <dl>
 <dd>
 
-**request:** `AgentRunInput` 
+**request:** `AgentResponsesBody` 
     
 </dd>
 </dl>
@@ -75,7 +75,7 @@ client.agent.responses.create(
 </dl>
 </details>
 
-<details><summary><code>client.agent.responses.<a href="src/truefoundry_gateway_sdk/agent/responses/client.py">cancel</a>(...) -> ResponsesCancelResponse</code></summary>
+<details><summary><code>client.agents.responses.<a href="src/truefoundry_gateway_sdk/agents/responses/client.py">cancel</a>(...) -> ResponsesCancelResponse</code></summary>
 <dl>
 <dd>
 
@@ -110,7 +110,7 @@ client = TruefoundryGateway(
     environment=TruefoundryGatewayEnvironment.DEFAULT,
 )
 
-client.agent.responses.cancel(
+client.agents.responses.cancel(
     response_id="response_id",
 )
 
@@ -129,251 +129,6 @@ client.agent.responses.cancel(
 <dd>
 
 **response_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.agent.responses.<a href="src/truefoundry_gateway_sdk/agent/responses/client.py">get</a>(...) -> ResponsesGetResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Returns the current state of an agent response.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from truefoundry_gateway_sdk import TruefoundryGateway
-from truefoundry_gateway_sdk.environment import TruefoundryGatewayEnvironment
-
-client = TruefoundryGateway(
-    token="<token>",
-    environment=TruefoundryGatewayEnvironment.DEFAULT,
-)
-
-client.agent.responses.get(
-    response_id="responseId",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**response_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.agent.responses.<a href="src/truefoundry_gateway_sdk/agent/responses/client.py">send_message</a>(...) -> ResponsesSendMessageResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Send approval decisions (allow/deny) to a running agent response awaiting user input.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from truefoundry_gateway_sdk import TruefoundryGateway, AgentApprovalDecisionMessage, AgentApprovalDecisionZero
-from truefoundry_gateway_sdk.environment import TruefoundryGatewayEnvironment
-
-client = TruefoundryGateway(
-    token="<token>",
-    environment=TruefoundryGatewayEnvironment.DEFAULT,
-)
-
-client.agent.responses.send_message(
-    response_id="response_id",
-    input=[
-        AgentApprovalDecisionMessage(
-            type="tool.approval",
-            execution_id="execution_id",
-            tool_call_id="tool_call_id",
-            approval=AgentApprovalDecisionZero(
-                status="allow",
-            ),
-        )
-    ],
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**response_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**input:** `typing.List[AgentApprovalDecisionMessage]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.agent.responses.<a href="src/truefoundry_gateway_sdk/agent/responses/client.py">subscribe</a>(...) -> typing.Iterator[bytes]</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Subscribe to a running agent response.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from truefoundry_gateway_sdk import TruefoundryGateway
-from truefoundry_gateway_sdk.environment import TruefoundryGatewayEnvironment
-
-client = TruefoundryGateway(
-    token="<token>",
-    environment=TruefoundryGatewayEnvironment.DEFAULT,
-)
-
-client.agent.responses.subscribe(
-    response_id="response_id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**response_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**sequence_id:** `typing.Optional[float]` 
     
 </dd>
 </dl>

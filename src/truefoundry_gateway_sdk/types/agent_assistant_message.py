@@ -3,26 +3,14 @@
 import typing
 
 import pydantic
-from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .agent_assistant_message_audio import AgentAssistantMessageAudio
-from .agent_assistant_message_content import AgentAssistantMessageContent
-from .agent_assistant_message_function_call import AgentAssistantMessageFunctionCall
-from .agent_assistant_message_thinking_blocks_item import AgentAssistantMessageThinkingBlocksItem
-from .agent_enriched_tool_call import AgentEnrichedToolCall
+from ..core.pydantic_utilities import IS_PYDANTIC_V2
+from .agent_enriched_assistant_message import AgentEnrichedAssistantMessage
 from .agent_finish_reason import AgentFinishReason
 
 
-class AgentAssistantMessage(UniversalBaseModel):
-    role: typing.Literal["assistant"] = "assistant"
-    audio: typing.Optional[AgentAssistantMessageAudio] = None
-    content: typing.Optional[AgentAssistantMessageContent] = None
-    function_call: typing.Optional[AgentAssistantMessageFunctionCall] = None
-    name: typing.Optional[str] = None
-    refusal: typing.Optional[str] = None
-    thinking_blocks: typing.Optional[typing.List[AgentAssistantMessageThinkingBlocksItem]] = None
+class AgentAssistantMessage(AgentEnrichedAssistantMessage):
     type: typing.Literal["agent.message"] = "agent.message"
     execution_id: str
-    tool_calls: typing.Optional[typing.List[AgentEnrichedToolCall]] = None
     finish_reason: typing.Optional[AgentFinishReason] = None
     created_at: typing.Optional[float] = None
 
