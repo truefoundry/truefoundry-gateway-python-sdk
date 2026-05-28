@@ -11,7 +11,6 @@ from .agent_mcp_auth_required import AgentMcpAuthRequired
 from .agent_mcp_initialize import AgentMcpInitialize
 from .agent_response_created import AgentResponseCreated
 from .agent_response_done import AgentResponseDone
-from .agent_response_error import AgentResponseError
 from .agent_sandbox_created import AgentSandboxCreated
 from .agent_tool_message import AgentToolMessage
 from .agent_tool_response_required import AgentToolResponseRequired
@@ -29,5 +28,4 @@ AgentResponseStreamingOutputEvent = typing.Union[
     AgentToolResponseRequired,
     AgentResponseCreated,
     AgentResponseDone,
-    AgentResponseError,
 ]

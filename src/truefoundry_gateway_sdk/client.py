@@ -15,6 +15,7 @@ class TruefoundryGateway(BaseTruefoundryGateway):
         *,
         base_url: typing.Optional[str] = None,
         environment: TruefoundryGatewayEnvironment = TruefoundryGatewayEnvironment.DEFAULT,
+        scheme: typing.Optional[str] = None,
         gateway_base_url: typing.Optional[str] = None,
         tenant_name: typing.Optional[str] = None,
         token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = os.getenv("TFY_API_KEY"),
@@ -27,6 +28,7 @@ class TruefoundryGateway(BaseTruefoundryGateway):
         super().__init__(
             base_url=base_url,
             environment=environment,
+            scheme=scheme,
             gateway_base_url=gateway_base_url,
             tenant_name=tenant_name,
             token=token,
@@ -44,6 +46,7 @@ class AsyncTruefoundryGateway(AsyncBaseTruefoundryGateway):
         *,
         base_url: typing.Optional[str] = None,
         environment: TruefoundryGatewayEnvironment = TruefoundryGatewayEnvironment.DEFAULT,
+        scheme: typing.Optional[str] = None,
         gateway_base_url: typing.Optional[str] = None,
         tenant_name: typing.Optional[str] = None,
         token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = os.getenv("TFY_API_KEY"),
@@ -57,6 +60,7 @@ class AsyncTruefoundryGateway(AsyncBaseTruefoundryGateway):
         super().__init__(
             base_url=base_url,
             environment=environment,
+            scheme=scheme,
             gateway_base_url=gateway_base_url,
             tenant_name=tenant_name,
             token=token,

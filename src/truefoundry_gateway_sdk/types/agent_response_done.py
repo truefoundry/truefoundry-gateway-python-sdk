@@ -2,8 +2,8 @@
 
 import typing
 
-from .agent_response_done_cancellation_reason import AgentResponseDoneCancellationReason
+from .agent_response_done_cancelled import AgentResponseDoneCancelled
+from .agent_response_done_completed import AgentResponseDoneCompleted
 from .agent_response_done_error import AgentResponseDoneError
-from .agent_response_done_zero import AgentResponseDoneZero
 
-AgentResponseDone = typing.Union[AgentResponseDoneZero, AgentResponseDoneCancellationReason, AgentResponseDoneError]
+AgentResponseDone = typing.Union[AgentResponseDoneCompleted, AgentResponseDoneCancelled, AgentResponseDoneError]
