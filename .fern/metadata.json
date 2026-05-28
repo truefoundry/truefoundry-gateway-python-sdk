@@ -1,0 +1,31 @@
+{
+  "cliVersion": "5.37.9",
+  "generatorName": "fernapi/fern-python-sdk",
+  "generatorVersion": "5.10.0",
+  "generatorConfig": {
+    "package_name": "truefoundry_gateway_sdk",
+    "use_request_defaults": "all",
+    "pydantic_config": {
+      "enum_type": "forward_compatible_python_enums",
+      "frozen": false
+    },
+    "client": {
+      "class_name": "BaseTruefoundryGateway",
+      "filename": "base_client.py",
+      "exported_class_name": "TruefoundryGateway",
+      "exported_filename": "client.py"
+    },
+    "pyproject_python_version": ">=3.9",
+    "extra_dev_dependencies": {
+      "ipython": ">=8.0.0,<10.0.0",
+      "Jinja2": ">=3.1.6,<4.0.0",
+      "numpydoc": ">=1.7.0,<2.0.0"
+    }
+  },
+  "originGitCommit": "6956c06864021b9cfe64b786be57154f27d34f1d",
+  "originGitCommitIsDirty": false,
+  "invokedBy": "ci",
+  "requestedVersion": "0.0.0",
+  "ciProvider": "github",
+  "sdkVersion": "0.0.0"
+}
