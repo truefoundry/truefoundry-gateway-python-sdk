@@ -1,8 +1,8 @@
-# Files Fern's Python generator should leave alone on every regen.
-# Mirror the pattern from truefoundry/truefoundry-python-sdk: list custom
-# client subclasses, hand-written helpers, CI overrides, etc.
-#
-# Example (uncomment & adjust once the SDK has real custom code):
-# src/truefoundry_gateway_sdk/_wrapped_clients.py
-# src/truefoundry_gateway_sdk/client.py
-# .github/workflows/ci.yml
+# Paths Fern's Python generator must leave alone on every regen. Hand-written
+# helpers and their tests live under stable paths so users can import them
+# across releases without Fern overwriting the implementation. Keep this list
+# narrow so Fern can keep regenerating sibling tests (conftest.py, utils/,
+# test_aiohttp_autodetect.py, custom/, etc.) on each release.
+src/truefoundry_gateway_sdk/helpers/
+tests/test_merge_assistant_message.py
+.github/workflows/ci.yml
