@@ -42,7 +42,7 @@ class BaseTruefoundryGateway:
     tenant_name : typing.Optional[str]
         Server URL variable for 'tenantName'. Defaults to 'truefoundry'.
 
-    token : typing.Optional[typing.Union[str, typing.Callable[[], str]]]
+    api_key : typing.Optional[typing.Union[str, typing.Callable[[], str]]]
     headers : typing.Optional[typing.Dict[str, str]]
         Additional headers to send with every request.
 
@@ -63,7 +63,7 @@ class BaseTruefoundryGateway:
     from truefoundry_gateway_sdk import TruefoundryGateway
 
     client = TruefoundryGateway(
-        token="YOUR_TOKEN",
+        api_key="YOUR_API_KEY",
     )
     """
 
@@ -75,7 +75,7 @@ class BaseTruefoundryGateway:
         scheme: typing.Optional[str] = None,
         gateway_base_url: typing.Optional[str] = None,
         tenant_name: typing.Optional[str] = None,
-        token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = os.getenv("TFY_API_KEY"),
+        api_key: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = os.getenv("TFY_API_KEY"),
         headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
@@ -85,8 +85,8 @@ class BaseTruefoundryGateway:
         _defaulted_timeout = (
             timeout if timeout is not None else 60 if httpx_client is None else httpx_client.timeout.read
         )
-        if token is None:
-            raise ApiError(body="The client must be instantiated be either passing in token or setting TFY_API_KEY")
+        if api_key is None:
+            raise ApiError(body="The client must be instantiated be either passing in api_key or setting TFY_API_KEY")
         if scheme is not None or gateway_base_url is not None or tenant_name is not None:
             _scheme = scheme if scheme is not None else "https"
             _gateway_base_url = gateway_base_url if gateway_base_url is not None else "gateway.truefoundry.ai"
@@ -96,7 +96,7 @@ class BaseTruefoundryGateway:
             )
         self._client_wrapper = SyncClientWrapper(
             base_url=_get_base_url(base_url=base_url, environment=environment),
-            token=token,
+            api_key=api_key,
             headers=headers,
             httpx_client=httpx_client
             if httpx_client is not None
@@ -162,7 +162,7 @@ class AsyncBaseTruefoundryGateway:
     tenant_name : typing.Optional[str]
         Server URL variable for 'tenantName'. Defaults to 'truefoundry'.
 
-    token : typing.Optional[typing.Union[str, typing.Callable[[], str]]]
+    api_key : typing.Optional[typing.Union[str, typing.Callable[[], str]]]
     headers : typing.Optional[typing.Dict[str, str]]
         Additional headers to send with every request.
 
@@ -186,7 +186,7 @@ class AsyncBaseTruefoundryGateway:
     from truefoundry_gateway_sdk import AsyncTruefoundryGateway
 
     client = AsyncTruefoundryGateway(
-        token="YOUR_TOKEN",
+        api_key="YOUR_API_KEY",
     )
     """
 
@@ -198,7 +198,7 @@ class AsyncBaseTruefoundryGateway:
         scheme: typing.Optional[str] = None,
         gateway_base_url: typing.Optional[str] = None,
         tenant_name: typing.Optional[str] = None,
-        token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = os.getenv("TFY_API_KEY"),
+        api_key: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = os.getenv("TFY_API_KEY"),
         headers: typing.Optional[typing.Dict[str, str]] = None,
         async_token: typing.Optional[typing.Callable[[], typing.Awaitable[str]]] = None,
         timeout: typing.Optional[float] = None,
@@ -209,8 +209,8 @@ class AsyncBaseTruefoundryGateway:
         _defaulted_timeout = (
             timeout if timeout is not None else 60 if httpx_client is None else httpx_client.timeout.read
         )
-        if token is None:
-            raise ApiError(body="The client must be instantiated be either passing in token or setting TFY_API_KEY")
+        if api_key is None:
+            raise ApiError(body="The client must be instantiated be either passing in api_key or setting TFY_API_KEY")
         if scheme is not None or gateway_base_url is not None or tenant_name is not None:
             _scheme = scheme if scheme is not None else "https"
             _gateway_base_url = gateway_base_url if gateway_base_url is not None else "gateway.truefoundry.ai"
@@ -220,7 +220,7 @@ class AsyncBaseTruefoundryGateway:
             )
         self._client_wrapper = AsyncClientWrapper(
             base_url=_get_base_url(base_url=base_url, environment=environment),
-            token=token,
+            api_key=api_key,
             headers=headers,
             async_token=async_token,
             httpx_client=httpx_client

@@ -54,7 +54,7 @@ class ResponsesClient:
         )
 
         client = TruefoundryGateway(
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
         response = client.agents.responses.create(
             request=AgentResponsesInlineAgent(
@@ -90,7 +90,7 @@ class ResponsesClient:
         from truefoundry_gateway_sdk import TruefoundryGateway
 
         client = TruefoundryGateway(
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
         client.agents.responses.cancel(
             response_id="response_id",
@@ -143,7 +143,7 @@ class AsyncResponsesClient:
         )
 
         client = AsyncTruefoundryGateway(
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
 
 
@@ -188,7 +188,7 @@ class AsyncResponsesClient:
         from truefoundry_gateway_sdk import AsyncTruefoundryGateway
 
         client = AsyncTruefoundryGateway(
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
 
 

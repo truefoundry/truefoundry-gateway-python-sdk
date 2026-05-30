@@ -88,7 +88,7 @@ Instantiate and use the client with the following:
 from truefoundry_gateway_sdk import TruefoundryGateway, AgentResponsesInlineAgent
 
 client = TruefoundryGateway(
-    token="<token>",
+    api_key="<token>",
 )
 
 client.agents.responses.create(
@@ -121,7 +121,7 @@ import asyncio
 from truefoundry_gateway_sdk import AsyncTruefoundryGateway
 
 client = AsyncTruefoundryGateway(
-    token="<token>",
+    api_key="<token>",
 )
 
 
@@ -159,7 +159,7 @@ The SDK supports streaming responses, as well, the response will be a generator 
 from truefoundry_gateway_sdk import TruefoundryGateway, AgentResponsesInlineAgent
 
 client = TruefoundryGateway(
-    token="<token>",
+    api_key="<token>",
 )
 
 client.agents.responses.create(

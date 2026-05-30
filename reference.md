@@ -31,7 +31,7 @@ from truefoundry_gateway_sdk import TruefoundryGateway, AgentResponsesInlineAgen
 from truefoundry_gateway_sdk.environment import TruefoundryGatewayEnvironment
 
 client = TruefoundryGateway(
-    token="<token>",
+    api_key="<token>",
     environment=TruefoundryGatewayEnvironment.DEFAULT,
 )
 
@@ -106,7 +106,7 @@ from truefoundry_gateway_sdk import TruefoundryGateway
 from truefoundry_gateway_sdk.environment import TruefoundryGatewayEnvironment
 
 client = TruefoundryGateway(
-    token="<token>",
+    api_key="<token>",
     environment=TruefoundryGatewayEnvironment.DEFAULT,
 )
 
