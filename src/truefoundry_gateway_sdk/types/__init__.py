@@ -66,8 +66,8 @@ if typing.TYPE_CHECKING:
     from .agent_responses_inline_agent import AgentResponsesInlineAgent
     from .agent_responses_inline_agent_messages_item import AgentResponsesInlineAgentMessagesItem
     from .agent_responses_inline_agent_sandbox import AgentResponsesInlineAgentSandbox
+    from .agent_responses_input import AgentResponsesInput
     from .agent_responses_saved_agent import AgentResponsesSavedAgent
-    from .agent_responses_stateful_input import AgentResponsesStatefulInput
     from .agent_sandbox_created import AgentSandboxCreated
     from .agent_skill_mount import AgentSkillMount
     from .agent_text_content_part import AgentTextContentPart
@@ -144,8 +144,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "AgentResponsesInlineAgent": ".agent_responses_inline_agent",
     "AgentResponsesInlineAgentMessagesItem": ".agent_responses_inline_agent_messages_item",
     "AgentResponsesInlineAgentSandbox": ".agent_responses_inline_agent_sandbox",
+    "AgentResponsesInput": ".agent_responses_input",
     "AgentResponsesSavedAgent": ".agent_responses_saved_agent",
-    "AgentResponsesStatefulInput": ".agent_responses_stateful_input",
     "AgentSandboxCreated": ".agent_sandbox_created",
     "AgentSkillMount": ".agent_skill_mount",
     "AgentTextContentPart": ".agent_text_content_part",
@@ -246,8 +246,8 @@ __all__ = [
     "AgentResponsesInlineAgent",
     "AgentResponsesInlineAgentMessagesItem",
     "AgentResponsesInlineAgentSandbox",
+    "AgentResponsesInput",
     "AgentResponsesSavedAgent",
-    "AgentResponsesStatefulInput",
     "AgentSandboxCreated",
     "AgentSkillMount",
     "AgentTextContentPart",
