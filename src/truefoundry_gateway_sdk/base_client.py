@@ -40,7 +40,7 @@ class BaseTruefoundryGateway:
         Server URL variable for 'gatewayBaseURL'. Defaults to 'gateway.truefoundry.ai'.
 
     tenant_name : typing.Optional[str]
-        Server URL variable for 'tenantName'. Defaults to ''.
+        Server URL variable for 'tenantName'. Defaults to 'truefoundry'.
 
     api_key : typing.Optional[typing.Union[str, typing.Callable[[], str]]]
     headers : typing.Optional[typing.Dict[str, str]]
@@ -90,7 +90,7 @@ class BaseTruefoundryGateway:
         if scheme is not None or gateway_base_url is not None or tenant_name is not None:
             _scheme = scheme if scheme is not None else "https"
             _gateway_base_url = gateway_base_url if gateway_base_url is not None else "gateway.truefoundry.ai"
-            _tenant_name = tenant_name if tenant_name is not None else ""
+            _tenant_name = tenant_name if tenant_name is not None else "truefoundry"
             base_url = "{scheme}://{gatewayBaseURL}/{tenantName}".format(
                 scheme=_scheme, gatewayBaseURL=_gateway_base_url, tenantName=_tenant_name
             )
@@ -160,7 +160,7 @@ class AsyncBaseTruefoundryGateway:
         Server URL variable for 'gatewayBaseURL'. Defaults to 'gateway.truefoundry.ai'.
 
     tenant_name : typing.Optional[str]
-        Server URL variable for 'tenantName'. Defaults to ''.
+        Server URL variable for 'tenantName'. Defaults to 'truefoundry'.
 
     api_key : typing.Optional[typing.Union[str, typing.Callable[[], str]]]
     headers : typing.Optional[typing.Dict[str, str]]
@@ -214,7 +214,7 @@ class AsyncBaseTruefoundryGateway:
         if scheme is not None or gateway_base_url is not None or tenant_name is not None:
             _scheme = scheme if scheme is not None else "https"
             _gateway_base_url = gateway_base_url if gateway_base_url is not None else "gateway.truefoundry.ai"
-            _tenant_name = tenant_name if tenant_name is not None else ""
+            _tenant_name = tenant_name if tenant_name is not None else "truefoundry"
             base_url = "{scheme}://{gatewayBaseURL}/{tenantName}".format(
                 scheme=_scheme, gatewayBaseURL=_gateway_base_url, tenantName=_tenant_name
             )
