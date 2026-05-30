@@ -6,19 +6,14 @@ import typing
 import httpx
 from .base_client import AsyncBaseTruefoundryGateway, BaseTruefoundryGateway
 from .core.logging import LogConfig, Logger
-from .environment import TruefoundryGatewayEnvironment
 
 
 class TruefoundryGateway(BaseTruefoundryGateway):
     def __init__(
         self,
         *,
-        base_url: typing.Optional[str] = None,
-        environment: TruefoundryGatewayEnvironment = TruefoundryGatewayEnvironment.DEFAULT,
-        scheme: typing.Optional[str] = None,
-        gateway_base_url: typing.Optional[str] = None,
-        tenant_name: typing.Optional[str] = None,
-        token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = os.getenv("TFY_API_KEY"),
+        base_url: str,
+        api_key: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = os.getenv("TFY_API_KEY"),
         headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
@@ -27,11 +22,7 @@ class TruefoundryGateway(BaseTruefoundryGateway):
     ):
         super().__init__(
             base_url=base_url,
-            environment=environment,
-            scheme=scheme,
-            gateway_base_url=gateway_base_url,
-            tenant_name=tenant_name,
-            token=token,
+            api_key=api_key,
             headers=headers,
             timeout=timeout,
             follow_redirects=follow_redirects,
@@ -44,12 +35,8 @@ class AsyncTruefoundryGateway(AsyncBaseTruefoundryGateway):
     def __init__(
         self,
         *,
-        base_url: typing.Optional[str] = None,
-        environment: TruefoundryGatewayEnvironment = TruefoundryGatewayEnvironment.DEFAULT,
-        scheme: typing.Optional[str] = None,
-        gateway_base_url: typing.Optional[str] = None,
-        tenant_name: typing.Optional[str] = None,
-        token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = os.getenv("TFY_API_KEY"),
+        base_url: str,
+        api_key: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = os.getenv("TFY_API_KEY"),
         headers: typing.Optional[typing.Dict[str, str]] = None,
         async_token: typing.Optional[typing.Callable[[], typing.Awaitable[str]]] = None,
         timeout: typing.Optional[float] = None,
@@ -59,11 +46,7 @@ class AsyncTruefoundryGateway(AsyncBaseTruefoundryGateway):
     ):
         super().__init__(
             base_url=base_url,
-            environment=environment,
-            scheme=scheme,
-            gateway_base_url=gateway_base_url,
-            tenant_name=tenant_name,
-            token=token,
+            api_key=api_key,
             headers=headers,
             async_token=async_token,
             timeout=timeout,
