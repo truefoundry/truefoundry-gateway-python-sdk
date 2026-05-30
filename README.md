@@ -89,6 +89,7 @@ from truefoundry_gateway_sdk import TruefoundryGateway, AgentResponsesInlineAgen
 
 client = TruefoundryGateway(
     api_key="<token>",
+    base_url="https://yourhost.com/path/to/api",
 )
 
 client.agents.responses.create(
@@ -122,6 +123,7 @@ from truefoundry_gateway_sdk import AsyncTruefoundryGateway
 
 client = AsyncTruefoundryGateway(
     api_key="<token>",
+    base_url="https://yourhost.com/path/to/api",
 )
 
 
@@ -160,6 +162,7 @@ from truefoundry_gateway_sdk import TruefoundryGateway, AgentResponsesInlineAgen
 
 client = TruefoundryGateway(
     api_key="<token>",
+    base_url="https://yourhost.com/path/to/api",
 )
 
 client.agents.responses.create(

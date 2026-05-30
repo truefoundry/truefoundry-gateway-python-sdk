@@ -97,7 +97,6 @@ if typing.TYPE_CHECKING:
     from . import agents
     from ._default_clients import DefaultAioHttpClient, DefaultAsyncHttpxClient
     from .client import AsyncTruefoundryGateway, TruefoundryGateway
-    from .environment import TruefoundryGatewayEnvironment
     from .version import __version__
 _dynamic_imports: typing.Dict[str, str] = {
     "AgentApprovalDecision": ".types",
@@ -187,7 +186,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "RequestErrorResponse": ".types",
     "RequestErrorResponseError": ".types",
     "TruefoundryGateway": ".client",
-    "TruefoundryGatewayEnvironment": ".environment",
     "UnauthorizedError": ".errors",
     "__version__": ".version",
     "agents": ".agents",
@@ -303,7 +301,6 @@ __all__ = [
     "RequestErrorResponse",
     "RequestErrorResponseError",
     "TruefoundryGateway",
-    "TruefoundryGatewayEnvironment",
     "UnauthorizedError",
     "__version__",
     "agents",

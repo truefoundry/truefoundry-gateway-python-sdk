@@ -28,11 +28,10 @@ Execute an agent in stateful mode (responses are stored server-side by default).
 
 ```python
 from truefoundry_gateway_sdk import TruefoundryGateway, AgentResponsesInlineAgent
-from truefoundry_gateway_sdk.environment import TruefoundryGatewayEnvironment
 
 client = TruefoundryGateway(
     api_key="<token>",
-    environment=TruefoundryGatewayEnvironment.DEFAULT,
+    base_url="https://yourhost.com/path/to/api",
 )
 
 client.agents.responses.create(
@@ -103,11 +102,10 @@ Cancel a running agent response. Requires the `response_id` returned from a prio
 
 ```python
 from truefoundry_gateway_sdk import TruefoundryGateway
-from truefoundry_gateway_sdk.environment import TruefoundryGatewayEnvironment
 
 client = TruefoundryGateway(
     api_key="<token>",
-    environment=TruefoundryGatewayEnvironment.DEFAULT,
+    base_url="https://yourhost.com/path/to/api",
 )
 
 client.agents.responses.cancel(

@@ -9,7 +9,6 @@ import httpx
 from .core.api_error import ApiError
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .core.logging import LogConfig, Logger
-from .environment import TruefoundryGatewayEnvironment
 
 if typing.TYPE_CHECKING:
     from .agents.client import AgentsClient, AsyncAgentsClient
@@ -21,26 +20,8 @@ class BaseTruefoundryGateway:
 
     Parameters
     ----------
-    base_url : typing.Optional[str]
+    base_url : str
         The base url to use for requests from the client.
-
-    environment : TruefoundryGatewayEnvironment
-        The environment to use for requests from the client. from .environment import TruefoundryGatewayEnvironment
-
-
-
-        Defaults to TruefoundryGatewayEnvironment.DEFAULT
-
-
-
-    scheme : typing.Optional[str]
-        Server URL variable for 'scheme'. Defaults to 'https'.
-
-    gateway_base_url : typing.Optional[str]
-        Server URL variable for 'gatewayBaseURL'. Defaults to 'gateway.truefoundry.ai'.
-
-    tenant_name : typing.Optional[str]
-        Server URL variable for 'tenantName'. Defaults to 'truefoundry'.
 
     api_key : typing.Optional[typing.Union[str, typing.Callable[[], str]]]
     headers : typing.Optional[typing.Dict[str, str]]
@@ -64,17 +45,14 @@ class BaseTruefoundryGateway:
 
     client = TruefoundryGateway(
         api_key="YOUR_API_KEY",
+        base_url="https://yourhost.com/path/to/api",
     )
     """
 
     def __init__(
         self,
         *,
-        base_url: typing.Optional[str] = None,
-        environment: TruefoundryGatewayEnvironment = TruefoundryGatewayEnvironment.DEFAULT,
-        scheme: typing.Optional[str] = None,
-        gateway_base_url: typing.Optional[str] = None,
-        tenant_name: typing.Optional[str] = None,
+        base_url: str,
         api_key: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = os.getenv("TFY_API_KEY"),
         headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
@@ -87,15 +65,8 @@ class BaseTruefoundryGateway:
         )
         if api_key is None:
             raise ApiError(body="The client must be instantiated be either passing in api_key or setting TFY_API_KEY")
-        if scheme is not None or gateway_base_url is not None or tenant_name is not None:
-            _scheme = scheme if scheme is not None else "https"
-            _gateway_base_url = gateway_base_url if gateway_base_url is not None else "gateway.truefoundry.ai"
-            _tenant_name = tenant_name if tenant_name is not None else "truefoundry"
-            base_url = "{scheme}://{gatewayBaseURL}/{tenantName}".format(
-                scheme=_scheme, gatewayBaseURL=_gateway_base_url, tenantName=_tenant_name
-            )
         self._client_wrapper = SyncClientWrapper(
-            base_url=_get_base_url(base_url=base_url, environment=environment),
+            base_url=base_url,
             api_key=api_key,
             headers=headers,
             httpx_client=httpx_client
@@ -141,26 +112,8 @@ class AsyncBaseTruefoundryGateway:
 
     Parameters
     ----------
-    base_url : typing.Optional[str]
+    base_url : str
         The base url to use for requests from the client.
-
-    environment : TruefoundryGatewayEnvironment
-        The environment to use for requests from the client. from .environment import TruefoundryGatewayEnvironment
-
-
-
-        Defaults to TruefoundryGatewayEnvironment.DEFAULT
-
-
-
-    scheme : typing.Optional[str]
-        Server URL variable for 'scheme'. Defaults to 'https'.
-
-    gateway_base_url : typing.Optional[str]
-        Server URL variable for 'gatewayBaseURL'. Defaults to 'gateway.truefoundry.ai'.
-
-    tenant_name : typing.Optional[str]
-        Server URL variable for 'tenantName'. Defaults to 'truefoundry'.
 
     api_key : typing.Optional[typing.Union[str, typing.Callable[[], str]]]
     headers : typing.Optional[typing.Dict[str, str]]
@@ -187,17 +140,14 @@ class AsyncBaseTruefoundryGateway:
 
     client = AsyncTruefoundryGateway(
         api_key="YOUR_API_KEY",
+        base_url="https://yourhost.com/path/to/api",
     )
     """
 
     def __init__(
         self,
         *,
-        base_url: typing.Optional[str] = None,
-        environment: TruefoundryGatewayEnvironment = TruefoundryGatewayEnvironment.DEFAULT,
-        scheme: typing.Optional[str] = None,
-        gateway_base_url: typing.Optional[str] = None,
-        tenant_name: typing.Optional[str] = None,
+        base_url: str,
         api_key: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = os.getenv("TFY_API_KEY"),
         headers: typing.Optional[typing.Dict[str, str]] = None,
         async_token: typing.Optional[typing.Callable[[], typing.Awaitable[str]]] = None,
@@ -211,15 +161,8 @@ class AsyncBaseTruefoundryGateway:
         )
         if api_key is None:
             raise ApiError(body="The client must be instantiated be either passing in api_key or setting TFY_API_KEY")
-        if scheme is not None or gateway_base_url is not None or tenant_name is not None:
-            _scheme = scheme if scheme is not None else "https"
-            _gateway_base_url = gateway_base_url if gateway_base_url is not None else "gateway.truefoundry.ai"
-            _tenant_name = tenant_name if tenant_name is not None else "truefoundry"
-            base_url = "{scheme}://{gatewayBaseURL}/{tenantName}".format(
-                scheme=_scheme, gatewayBaseURL=_gateway_base_url, tenantName=_tenant_name
-            )
         self._client_wrapper = AsyncClientWrapper(
-            base_url=_get_base_url(base_url=base_url, environment=environment),
+            base_url=base_url,
             api_key=api_key,
             headers=headers,
             async_token=async_token,
@@ -238,12 +181,3 @@ class AsyncBaseTruefoundryGateway:
 
             self._agents = AsyncAgentsClient(client_wrapper=self._client_wrapper)
         return self._agents
-
-
-def _get_base_url(*, base_url: typing.Optional[str] = None, environment: TruefoundryGatewayEnvironment) -> str:
-    if base_url is not None:
-        return base_url
-    elif environment is not None:
-        return environment.value
-    else:
-        raise Exception("Please pass in either base_url or environment to construct the client")
