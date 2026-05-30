@@ -4,4 +4,4 @@ import enum
 
 
 class TruefoundryGatewayEnvironment(enum.Enum):
-    DEFAULT = "https://gateway.truefoundry.ai/truefoundry"
+    DEFAULT = "http://localhost%3A8787/truefoundry"

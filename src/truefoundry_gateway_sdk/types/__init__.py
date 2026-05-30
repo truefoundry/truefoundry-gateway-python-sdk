@@ -7,9 +7,9 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .agent_approval_decision import AgentApprovalDecision
+    from .agent_approval_decision_allow import AgentApprovalDecisionAllow
+    from .agent_approval_decision_deny import AgentApprovalDecisionDeny
     from .agent_approval_decision_message import AgentApprovalDecisionMessage
-    from .agent_approval_decision_reason import AgentApprovalDecisionReason
-    from .agent_approval_decision_zero import AgentApprovalDecisionZero
     from .agent_approval_or_tool_response_message import AgentApprovalOrToolResponseMessage
     from .agent_approval_required import AgentApprovalRequired
     from .agent_assistant_message import AgentAssistantMessage
@@ -66,7 +66,7 @@ if typing.TYPE_CHECKING:
     from .agent_responses_inline_agent import AgentResponsesInlineAgent
     from .agent_responses_inline_agent_messages_item import AgentResponsesInlineAgentMessagesItem
     from .agent_responses_inline_agent_sandbox import AgentResponsesInlineAgentSandbox
-    from .agent_responses_named_agent import AgentResponsesNamedAgent
+    from .agent_responses_saved_agent import AgentResponsesSavedAgent
     from .agent_responses_stateful_input import AgentResponsesStatefulInput
     from .agent_sandbox_created import AgentSandboxCreated
     from .agent_skill_mount import AgentSkillMount
@@ -85,9 +85,9 @@ if typing.TYPE_CHECKING:
     from .request_error_response_error import RequestErrorResponseError
 _dynamic_imports: typing.Dict[str, str] = {
     "AgentApprovalDecision": ".agent_approval_decision",
+    "AgentApprovalDecisionAllow": ".agent_approval_decision_allow",
+    "AgentApprovalDecisionDeny": ".agent_approval_decision_deny",
     "AgentApprovalDecisionMessage": ".agent_approval_decision_message",
-    "AgentApprovalDecisionReason": ".agent_approval_decision_reason",
-    "AgentApprovalDecisionZero": ".agent_approval_decision_zero",
     "AgentApprovalOrToolResponseMessage": ".agent_approval_or_tool_response_message",
     "AgentApprovalRequired": ".agent_approval_required",
     "AgentAssistantMessage": ".agent_assistant_message",
@@ -144,7 +144,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "AgentResponsesInlineAgent": ".agent_responses_inline_agent",
     "AgentResponsesInlineAgentMessagesItem": ".agent_responses_inline_agent_messages_item",
     "AgentResponsesInlineAgentSandbox": ".agent_responses_inline_agent_sandbox",
-    "AgentResponsesNamedAgent": ".agent_responses_named_agent",
+    "AgentResponsesSavedAgent": ".agent_responses_saved_agent",
     "AgentResponsesStatefulInput": ".agent_responses_stateful_input",
     "AgentSandboxCreated": ".agent_sandbox_created",
     "AgentSkillMount": ".agent_skill_mount",
@@ -187,9 +187,9 @@ def __dir__():
 
 __all__ = [
     "AgentApprovalDecision",
+    "AgentApprovalDecisionAllow",
+    "AgentApprovalDecisionDeny",
     "AgentApprovalDecisionMessage",
-    "AgentApprovalDecisionReason",
-    "AgentApprovalDecisionZero",
     "AgentApprovalOrToolResponseMessage",
     "AgentApprovalRequired",
     "AgentAssistantMessage",
@@ -246,7 +246,7 @@ __all__ = [
     "AgentResponsesInlineAgent",
     "AgentResponsesInlineAgentMessagesItem",
     "AgentResponsesInlineAgentSandbox",
-    "AgentResponsesNamedAgent",
+    "AgentResponsesSavedAgent",
     "AgentResponsesStatefulInput",
     "AgentSandboxCreated",
     "AgentSkillMount",

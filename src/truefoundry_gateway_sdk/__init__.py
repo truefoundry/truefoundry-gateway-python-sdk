@@ -8,9 +8,9 @@ from importlib import import_module
 if typing.TYPE_CHECKING:
     from .types import (
         AgentApprovalDecision,
+        AgentApprovalDecisionAllow,
+        AgentApprovalDecisionDeny,
         AgentApprovalDecisionMessage,
-        AgentApprovalDecisionReason,
-        AgentApprovalDecisionZero,
         AgentApprovalOrToolResponseMessage,
         AgentApprovalRequired,
         AgentAssistantMessage,
@@ -67,7 +67,7 @@ if typing.TYPE_CHECKING:
         AgentResponsesInlineAgent,
         AgentResponsesInlineAgentMessagesItem,
         AgentResponsesInlineAgentSandbox,
-        AgentResponsesNamedAgent,
+        AgentResponsesSavedAgent,
         AgentResponsesStatefulInput,
         AgentSandboxCreated,
         AgentSkillMount,
@@ -101,9 +101,9 @@ if typing.TYPE_CHECKING:
     from .version import __version__
 _dynamic_imports: typing.Dict[str, str] = {
     "AgentApprovalDecision": ".types",
+    "AgentApprovalDecisionAllow": ".types",
+    "AgentApprovalDecisionDeny": ".types",
     "AgentApprovalDecisionMessage": ".types",
-    "AgentApprovalDecisionReason": ".types",
-    "AgentApprovalDecisionZero": ".types",
     "AgentApprovalOrToolResponseMessage": ".types",
     "AgentApprovalRequired": ".types",
     "AgentAssistantMessage": ".types",
@@ -160,7 +160,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "AgentResponsesInlineAgent": ".types",
     "AgentResponsesInlineAgentMessagesItem": ".types",
     "AgentResponsesInlineAgentSandbox": ".types",
-    "AgentResponsesNamedAgent": ".types",
+    "AgentResponsesSavedAgent": ".types",
     "AgentResponsesStatefulInput": ".types",
     "AgentSandboxCreated": ".types",
     "AgentSkillMount": ".types",
@@ -217,9 +217,9 @@ def __dir__():
 
 __all__ = [
     "AgentApprovalDecision",
+    "AgentApprovalDecisionAllow",
+    "AgentApprovalDecisionDeny",
     "AgentApprovalDecisionMessage",
-    "AgentApprovalDecisionReason",
-    "AgentApprovalDecisionZero",
     "AgentApprovalOrToolResponseMessage",
     "AgentApprovalRequired",
     "AgentAssistantMessage",
@@ -276,7 +276,7 @@ __all__ = [
     "AgentResponsesInlineAgent",
     "AgentResponsesInlineAgentMessagesItem",
     "AgentResponsesInlineAgentSandbox",
-    "AgentResponsesNamedAgent",
+    "AgentResponsesSavedAgent",
     "AgentResponsesStatefulInput",
     "AgentSandboxCreated",
     "AgentSkillMount",

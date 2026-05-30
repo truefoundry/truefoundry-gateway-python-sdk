@@ -34,10 +34,10 @@ class BaseTruefoundryGateway:
 
 
     scheme : typing.Optional[str]
-        Server URL variable for 'scheme'. Defaults to 'https'.
+        Server URL variable for 'scheme'. Defaults to 'http'.
 
     gateway_base_url : typing.Optional[str]
-        Server URL variable for 'gatewayBaseURL'. Defaults to 'gateway.truefoundry.ai'.
+        Server URL variable for 'gatewayBaseURL'. Defaults to 'localhost:8787'.
 
     tenant_name : typing.Optional[str]
         Server URL variable for 'tenantName'. Defaults to 'truefoundry'.
@@ -88,8 +88,8 @@ class BaseTruefoundryGateway:
         if token is None:
             raise ApiError(body="The client must be instantiated be either passing in token or setting TFY_API_KEY")
         if scheme is not None or gateway_base_url is not None or tenant_name is not None:
-            _scheme = scheme if scheme is not None else "https"
-            _gateway_base_url = gateway_base_url if gateway_base_url is not None else "gateway.truefoundry.ai"
+            _scheme = scheme if scheme is not None else "http"
+            _gateway_base_url = gateway_base_url if gateway_base_url is not None else "localhost:8787"
             _tenant_name = tenant_name if tenant_name is not None else "truefoundry"
             base_url = "{scheme}://{gatewayBaseURL}/{tenantName}".format(
                 scheme=_scheme, gatewayBaseURL=_gateway_base_url, tenantName=_tenant_name
@@ -154,10 +154,10 @@ class AsyncBaseTruefoundryGateway:
 
 
     scheme : typing.Optional[str]
-        Server URL variable for 'scheme'. Defaults to 'https'.
+        Server URL variable for 'scheme'. Defaults to 'http'.
 
     gateway_base_url : typing.Optional[str]
-        Server URL variable for 'gatewayBaseURL'. Defaults to 'gateway.truefoundry.ai'.
+        Server URL variable for 'gatewayBaseURL'. Defaults to 'localhost:8787'.
 
     tenant_name : typing.Optional[str]
         Server URL variable for 'tenantName'. Defaults to 'truefoundry'.
@@ -212,8 +212,8 @@ class AsyncBaseTruefoundryGateway:
         if token is None:
             raise ApiError(body="The client must be instantiated be either passing in token or setting TFY_API_KEY")
         if scheme is not None or gateway_base_url is not None or tenant_name is not None:
-            _scheme = scheme if scheme is not None else "https"
-            _gateway_base_url = gateway_base_url if gateway_base_url is not None else "gateway.truefoundry.ai"
+            _scheme = scheme if scheme is not None else "http"
+            _gateway_base_url = gateway_base_url if gateway_base_url is not None else "localhost:8787"
             _tenant_name = tenant_name if tenant_name is not None else "truefoundry"
             base_url = "{scheme}://{gatewayBaseURL}/{tenantName}".format(
                 scheme=_scheme, gatewayBaseURL=_gateway_base_url, tenantName=_tenant_name

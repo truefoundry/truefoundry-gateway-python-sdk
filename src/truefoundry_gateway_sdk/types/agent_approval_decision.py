@@ -2,7 +2,7 @@
 
 import typing
 
-from .agent_approval_decision_reason import AgentApprovalDecisionReason
-from .agent_approval_decision_zero import AgentApprovalDecisionZero
+from .agent_approval_decision_allow import AgentApprovalDecisionAllow
+from .agent_approval_decision_deny import AgentApprovalDecisionDeny
 
-AgentApprovalDecision = typing.Union[AgentApprovalDecisionZero, AgentApprovalDecisionReason]
+AgentApprovalDecision = typing.Union[AgentApprovalDecisionAllow, AgentApprovalDecisionDeny]

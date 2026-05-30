@@ -7,7 +7,7 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .agent_responses_stateful_input import AgentResponsesStatefulInput
 
 
-class AgentResponsesNamedAgent(UniversalBaseModel):
+class AgentResponsesSavedAgent(UniversalBaseModel):
     agent_name: str
     variables: typing.Optional[typing.Dict[str, str]] = None
     previous_response_id: typing.Optional[str] = pydantic.Field(default=None)

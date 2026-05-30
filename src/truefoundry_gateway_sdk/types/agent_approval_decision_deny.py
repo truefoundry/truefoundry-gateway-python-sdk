@@ -6,8 +6,9 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class AgentApprovalDecisionZero(UniversalBaseModel):
-    status: typing.Literal["allow"] = "allow"
+class AgentApprovalDecisionDeny(UniversalBaseModel):
+    status: typing.Literal["deny"] = "deny"
+    reason: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2
