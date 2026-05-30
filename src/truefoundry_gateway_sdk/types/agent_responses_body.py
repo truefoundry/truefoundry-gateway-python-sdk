@@ -3,6 +3,6 @@
 import typing
 
 from .agent_responses_inline_agent import AgentResponsesInlineAgent
-from .agent_responses_named_agent import AgentResponsesNamedAgent
+from .agent_responses_saved_agent import AgentResponsesSavedAgent
 
-AgentResponsesBody = typing.Union[AgentResponsesInlineAgent, AgentResponsesNamedAgent]
+AgentResponsesBody = typing.Union[AgentResponsesInlineAgent, AgentResponsesSavedAgent]

@@ -4,10 +4,10 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .agent_responses_stateful_input import AgentResponsesStatefulInput
+from .agent_responses_input import AgentResponsesInput
 
 
-class AgentResponsesNamedAgent(UniversalBaseModel):
+class AgentResponsesSavedAgent(UniversalBaseModel):
     agent_name: str
     variables: typing.Optional[typing.Dict[str, str]] = None
     previous_response_id: typing.Optional[str] = pydantic.Field(default=None)
@@ -15,7 +15,7 @@ class AgentResponsesNamedAgent(UniversalBaseModel):
     ID of a prior stored response. Pass to continue a stateful conversation.
     """
 
-    input: typing.Optional[AgentResponsesStatefulInput] = None
+    input: typing.Optional[AgentResponsesInput] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

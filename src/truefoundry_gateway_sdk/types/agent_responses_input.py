@@ -5,6 +5,4 @@ import typing
 from .agent_approval_or_tool_response_message import AgentApprovalOrToolResponseMessage
 from .agent_input_user_message import AgentInputUserMessage
 
-AgentResponsesStatefulInput = typing.Union[
-    typing.List[AgentInputUserMessage], typing.List[AgentApprovalOrToolResponseMessage]
-]
+AgentResponsesInput = typing.Union[typing.List[AgentInputUserMessage], typing.List[AgentApprovalOrToolResponseMessage]]

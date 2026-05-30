@@ -9,7 +9,7 @@ from .agent_model_params import AgentModelParams
 from .agent_responses_format import AgentResponsesFormat
 from .agent_responses_inline_agent_messages_item import AgentResponsesInlineAgentMessagesItem
 from .agent_responses_inline_agent_sandbox import AgentResponsesInlineAgentSandbox
-from .agent_responses_stateful_input import AgentResponsesStatefulInput
+from .agent_responses_input import AgentResponsesInput
 from .agent_skill_mount import AgentSkillMount
 
 
@@ -29,7 +29,7 @@ class AgentResponsesInlineAgent(UniversalBaseModel):
     ID of a prior stored response. Pass to continue a stateful conversation.
     """
 
-    input: typing.Optional[AgentResponsesStatefulInput] = None
+    input: typing.Optional[AgentResponsesInput] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2
