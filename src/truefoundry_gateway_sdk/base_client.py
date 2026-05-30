@@ -14,7 +14,7 @@ if typing.TYPE_CHECKING:
     from .agents.client import AgentsClient, AsyncAgentsClient
 
 
-class BaseTruefoundryGateway:
+class BaseTrueFoundryGateway:
     """
     Use this class to access the different functions within the SDK. You can instantiate any number of clients with different configuration that will propagate to these functions.
 
@@ -41,9 +41,9 @@ class BaseTruefoundryGateway:
 
     Examples
     --------
-    from truefoundry_gateway_sdk import TruefoundryGateway
+    from truefoundry_gateway_sdk import TrueFoundryGateway
 
-    client = TruefoundryGateway(
+    client = TrueFoundryGateway(
         api_key="YOUR_API_KEY",
         base_url="https://yourhost.com/path/to/api",
     )
@@ -106,7 +106,7 @@ def _make_default_async_client(
     return httpx.AsyncClient(timeout=timeout)
 
 
-class AsyncBaseTruefoundryGateway:
+class AsyncBaseTrueFoundryGateway:
     """
     Use this class to access the different functions within the SDK. You can instantiate any number of clients with different configuration that will propagate to these functions.
 
@@ -136,9 +136,9 @@ class AsyncBaseTruefoundryGateway:
 
     Examples
     --------
-    from truefoundry_gateway_sdk import AsyncTruefoundryGateway
+    from truefoundry_gateway_sdk import AsyncTrueFoundryGateway
 
-    client = AsyncTruefoundryGateway(
+    client = AsyncTrueFoundryGateway(
         api_key="YOUR_API_KEY",
         base_url="https://yourhost.com/path/to/api",
     )

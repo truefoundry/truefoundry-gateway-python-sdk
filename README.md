@@ -85,9 +85,9 @@ A full reference for this library is available [here](https://github.com/truefou
 Instantiate and use the client with the following:
 
 ```python
-from truefoundry_gateway_sdk import TruefoundryGateway, AgentResponsesInlineAgent
+from truefoundry_gateway_sdk import TrueFoundryGateway, AgentResponsesInlineAgent
 
-client = TruefoundryGateway(
+client = TrueFoundryGateway(
     api_key="<token>",
     base_url="https://yourhost.com/path/to/api",
 )
@@ -119,9 +119,9 @@ The SDK also exports an `async` client so that you can make non-blocking calls t
 ```python
 import asyncio
 
-from truefoundry_gateway_sdk import AsyncTruefoundryGateway
+from truefoundry_gateway_sdk import AsyncTrueFoundryGateway
 
-client = AsyncTruefoundryGateway(
+client = AsyncTrueFoundryGateway(
     api_key="<token>",
     base_url="https://yourhost.com/path/to/api",
 )
@@ -158,9 +158,9 @@ except ApiError as e:
 The SDK supports streaming responses, as well, the response will be a generator that you can loop over.
 
 ```python
-from truefoundry_gateway_sdk import TruefoundryGateway, AgentResponsesInlineAgent
+from truefoundry_gateway_sdk import TrueFoundryGateway, AgentResponsesInlineAgent
 
-client = TruefoundryGateway(
+client = TrueFoundryGateway(
     api_key="<token>",
     base_url="https://yourhost.com/path/to/api",
 )
@@ -180,9 +180,9 @@ The SDK provides access to raw response data, including headers, through the `.w
 The `.with_raw_response` property returns a "raw" client that can be used to access the `.headers` and `.data` attributes.
 
 ```python
-from truefoundry_gateway_sdk import TruefoundryGateway
+from truefoundry_gateway_sdk import TrueFoundryGateway
 
-client = TruefoundryGateway(...)
+client = TrueFoundryGateway(...)
 response = client.agents.responses.with_raw_response.create(...)
 print(response.headers)  # access the response headers
 print(response.status_code)  # access the response status code
@@ -224,9 +224,9 @@ client.agents.responses.create(..., request_options={
 The SDK defaults to a 60 second timeout. You can configure this with a timeout option at the client or request level.
 
 ```python
-from truefoundry_gateway_sdk import TruefoundryGateway
+from truefoundry_gateway_sdk import TrueFoundryGateway
 
-client = TruefoundryGateway(..., timeout=20.0)
+client = TrueFoundryGateway(..., timeout=20.0)
 
 # Override timeout for a specific method
 client.agents.responses.create(..., request_options={
@@ -241,9 +241,9 @@ and transports.
 
 ```python
 import httpx
-from truefoundry_gateway_sdk import TruefoundryGateway
+from truefoundry_gateway_sdk import TrueFoundryGateway
 
-client = TruefoundryGateway(
+client = TrueFoundryGateway(
     ...,
     httpx_client=httpx.Client(
         proxy="http://my.test.proxy.example.com",

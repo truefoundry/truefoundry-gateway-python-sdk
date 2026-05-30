@@ -96,7 +96,7 @@ if typing.TYPE_CHECKING:
     )
     from . import agents
     from ._default_clients import DefaultAioHttpClient, DefaultAsyncHttpxClient
-    from .client import AsyncTruefoundryGateway, TruefoundryGateway
+    from .client import AsyncTrueFoundryGateway, TrueFoundryGateway
     from .version import __version__
 _dynamic_imports: typing.Dict[str, str] = {
     "AgentApprovalDecision": ".types",
@@ -168,7 +168,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "AgentToolCallRef": ".types",
     "AgentToolMessage": ".types",
     "AgentToolResponseRequired": ".types",
-    "AsyncTruefoundryGateway": ".client",
+    "AsyncTrueFoundryGateway": ".client",
     "BadRequestError": ".errors",
     "ChatCompletionChunkDeltaToolCall": ".types",
     "ChatCompletionChunkDeltaToolCallFunction": ".types",
@@ -185,7 +185,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "PreconditionFailedError": ".errors",
     "RequestErrorResponse": ".types",
     "RequestErrorResponseError": ".types",
-    "TruefoundryGateway": ".client",
+    "TrueFoundryGateway": ".client",
     "UnauthorizedError": ".errors",
     "__version__": ".version",
     "agents": ".agents",
@@ -283,7 +283,7 @@ __all__ = [
     "AgentToolCallRef",
     "AgentToolMessage",
     "AgentToolResponseRequired",
-    "AsyncTruefoundryGateway",
+    "AsyncTrueFoundryGateway",
     "BadRequestError",
     "ChatCompletionChunkDeltaToolCall",
     "ChatCompletionChunkDeltaToolCallFunction",
@@ -300,7 +300,7 @@ __all__ = [
     "PreconditionFailedError",
     "RequestErrorResponse",
     "RequestErrorResponseError",
-    "TruefoundryGateway",
+    "TrueFoundryGateway",
     "UnauthorizedError",
     "__version__",
     "agents",

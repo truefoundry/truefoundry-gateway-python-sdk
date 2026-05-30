@@ -10,9 +10,9 @@
       "frozen": false
     },
     "client": {
-      "class_name": "BaseTruefoundryGateway",
+      "class_name": "BaseTrueFoundryGateway",
       "filename": "base_client.py",
-      "exported_class_name": "TruefoundryGateway",
+      "exported_class_name": "TrueFoundryGateway",
       "exported_filename": "client.py"
     },
     "pyproject_python_version": ">=3.9",
@@ -22,7 +22,7 @@
       "numpydoc": ">=1.7.0,<2.0.0"
     }
   },
-  "originGitCommit": "da1644b63249be4314b668f691926cb69d6487f1",
+  "originGitCommit": "7c73678acc9bd7a208e6f64661f8709b619bb774",
   "originGitCommitIsDirty": false,
   "invokedBy": "ci",
   "requestedVersion": "0.0.0",

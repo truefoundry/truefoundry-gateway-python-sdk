@@ -50,10 +50,10 @@ class ResponsesClient:
         --------
         from truefoundry_gateway_sdk import (
             AgentResponsesInlineAgent,
-            TruefoundryGateway,
+            TrueFoundryGateway,
         )
 
-        client = TruefoundryGateway(
+        client = TrueFoundryGateway(
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
@@ -88,9 +88,9 @@ class ResponsesClient:
 
         Examples
         --------
-        from truefoundry_gateway_sdk import TruefoundryGateway
+        from truefoundry_gateway_sdk import TrueFoundryGateway
 
-        client = TruefoundryGateway(
+        client = TrueFoundryGateway(
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
@@ -141,10 +141,10 @@ class AsyncResponsesClient:
 
         from truefoundry_gateway_sdk import (
             AgentResponsesInlineAgent,
-            AsyncTruefoundryGateway,
+            AsyncTrueFoundryGateway,
         )
 
-        client = AsyncTruefoundryGateway(
+        client = AsyncTrueFoundryGateway(
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
@@ -188,9 +188,9 @@ class AsyncResponsesClient:
         --------
         import asyncio
 
-        from truefoundry_gateway_sdk import AsyncTruefoundryGateway
+        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway
 
-        client = AsyncTruefoundryGateway(
+        client = AsyncTrueFoundryGateway(
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )

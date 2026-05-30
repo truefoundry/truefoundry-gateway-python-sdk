@@ -4,11 +4,11 @@ import os
 import typing
 
 import httpx
-from .base_client import AsyncBaseTruefoundryGateway, BaseTruefoundryGateway
+from .base_client import AsyncBaseTrueFoundryGateway, BaseTrueFoundryGateway
 from .core.logging import LogConfig, Logger
 
 
-class TruefoundryGateway(BaseTruefoundryGateway):
+class TrueFoundryGateway(BaseTrueFoundryGateway):
     def __init__(
         self,
         *,
@@ -31,7 +31,7 @@ class TruefoundryGateway(BaseTruefoundryGateway):
         )
 
 
-class AsyncTruefoundryGateway(AsyncBaseTruefoundryGateway):
+class AsyncTrueFoundryGateway(AsyncBaseTrueFoundryGateway):
     def __init__(
         self,
         *,
