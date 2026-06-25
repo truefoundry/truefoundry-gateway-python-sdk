@@ -6,8 +6,9 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class TurnStreamingEventAudio(UniversalBaseModel):
-    id: str
+class ModelMessageDeltaEventFunctionCall(UniversalBaseModel):
+    name: typing.Optional[str] = None
+    arguments: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

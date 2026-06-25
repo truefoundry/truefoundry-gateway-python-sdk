@@ -4,19 +4,22 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .agent_tool_call_ref import AgentToolCallRef
+from .agent_info import AgentInfo
+from .agent_parent import AgentParent
 
 
-class ToolApprovalRequiredEvent(UniversalBaseModel):
-    type: typing.Literal["tool.approval_required"] = "tool.approval_required"
+class ThreadCreatedEvent(UniversalBaseModel):
+    type: typing.Literal["thread.created"] = "thread.created"
     id: str = pydantic.Field()
     """
     Unique identifier for the event
     """
 
+    agent_info: AgentInfo
     created_at: str
+    parent: AgentParent
     thread_id: str
-    tool_calls: typing.List[AgentToolCallRef]
+    title: str
     sequence_number: int
 
     if IS_PYDANTIC_V2:

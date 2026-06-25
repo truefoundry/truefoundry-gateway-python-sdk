@@ -13,7 +13,7 @@ class Turn(UniversalBaseModel):
     id: str
     session_id: str
     previous_turn_id: typing.Optional[str] = None
-    input: typing.List[TurnInputItem]
+    input: typing.Optional[typing.List[TurnInputItem]] = None
     state: TurnState
     created_by_subject: Subject
     created_at: str

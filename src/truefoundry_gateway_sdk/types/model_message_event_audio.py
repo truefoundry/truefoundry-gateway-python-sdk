@@ -4,20 +4,10 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .agent_tool_call_ref import AgentToolCallRef
 
 
-class ToolApprovalRequiredEvent(UniversalBaseModel):
-    type: typing.Literal["tool.approval_required"] = "tool.approval_required"
-    id: str = pydantic.Field()
-    """
-    Unique identifier for the event
-    """
-
-    created_at: str
-    thread_id: str
-    tool_calls: typing.List[AgentToolCallRef]
-    sequence_number: int
+class ModelMessageEventAudio(UniversalBaseModel):
+    id: str
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

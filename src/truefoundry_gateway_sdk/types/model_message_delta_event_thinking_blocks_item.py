@@ -5,4 +5,4 @@ import typing
 from .agent_redacted_thinking_block import AgentRedactedThinkingBlock
 from .agent_thinking_block import AgentThinkingBlock
 
-TurnStreamingEventThinkingBlocksItem = typing.Union[AgentThinkingBlock, AgentRedactedThinkingBlock]
+ModelMessageDeltaEventThinkingBlocksItem = typing.Union[AgentThinkingBlock, AgentRedactedThinkingBlock]

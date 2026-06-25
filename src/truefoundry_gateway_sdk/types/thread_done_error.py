@@ -4,19 +4,24 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .agent_tool_call_ref import AgentToolCallRef
+from .agent_parent import AgentParent
+from .model_message_event import ModelMessageEvent
 
 
-class ToolApprovalRequiredEvent(UniversalBaseModel):
-    type: typing.Literal["tool.approval_required"] = "tool.approval_required"
+class ThreadDoneError(UniversalBaseModel):
+    type: typing.Literal["thread.done"] = "thread.done"
     id: str = pydantic.Field()
     """
     Unique identifier for the event
     """
 
     created_at: str
+    error: str
+    output: typing.Optional[ModelMessageEvent] = None
+    parent: typing.Optional[AgentParent] = None
+    status: typing.Literal["error"] = "error"
     thread_id: str
-    tool_calls: typing.List[AgentToolCallRef]
+    title: typing.Optional[str] = None
     sequence_number: int
 
     if IS_PYDANTIC_V2:

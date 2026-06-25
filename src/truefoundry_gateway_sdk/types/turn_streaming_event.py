@@ -2,57 +2,34 @@
 
 import typing
 
-import pydantic
-from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .agent_finish_reason import AgentFinishReason
-from .agent_info import AgentInfo
-from .agent_mcp_initialization_info import AgentMcpInitializationInfo
-from .agent_mcp_server_auth_info import AgentMcpServerAuthInfo
-from .agent_parent import AgentParent
-from .agent_tool_call_ref import AgentToolCallRef
-from .subject import Subject
-from .turn_state_error import TurnStateError
-from .turn_streaming_event_audio import TurnStreamingEventAudio
-from .turn_streaming_event_function_call import TurnStreamingEventFunctionCall
-from .turn_streaming_event_thinking_blocks_item import TurnStreamingEventThinkingBlocksItem
-from .turn_streaming_event_usage import TurnStreamingEventUsage
+from .mcp_auth_required_event import McpAuthRequiredEvent
+from .mcp_initialize_event import McpInitializeEvent
+from .model_message_delta_event import ModelMessageDeltaEvent
+from .model_message_event import ModelMessageEvent
+from .sandbox_created_event import SandboxCreatedEvent
+from .thread_created_event import ThreadCreatedEvent
+from .thread_done_event import ThreadDoneEvent
+from .tool_approval_required_event import ToolApprovalRequiredEvent
+from .tool_response_event import ToolResponseEvent
+from .tool_response_required_event import ToolResponseRequiredEvent
+from .turn_created_event import TurnCreatedEvent
+from .turn_done_cancelled import TurnDoneCancelled
+from .turn_done_completed import TurnDoneCompleted
+from .turn_done_error import TurnDoneError
 
-
-class TurnStreamingEvent(UniversalBaseModel):
-    audio: typing.Optional[TurnStreamingEventAudio] = None
-    content: typing.Optional[typing.List[AgentMcpInitializationInfo]] = None
-    function_call: typing.Optional[TurnStreamingEventFunctionCall] = None
-    name: typing.Optional[str] = None
-    refusal: typing.Optional[str] = None
-    thinking_blocks: typing.Optional[typing.List[TurnStreamingEventThinkingBlocksItem]] = None
-    tool_calls: typing.Optional[typing.List[AgentToolCallRef]] = None
-    type: typing.Optional[typing.Literal["turn.done"]] = None
-    id: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Unique identifier for the event
-    """
-
-    thread_id: typing.Optional[str] = None
-    finish_reason: typing.Optional[AgentFinishReason] = None
-    created_at: typing.Optional[str] = None
-    usage: typing.Optional[TurnStreamingEventUsage] = None
-    reasoning_content: typing.Optional[str] = None
-    tool_call_id: typing.Optional[str] = None
-    agent_info: typing.Optional[AgentInfo] = None
-    parent: typing.Optional[AgentParent] = None
-    title: typing.Optional[str] = None
-    servers: typing.Optional[typing.List[AgentMcpServerAuthInfo]] = None
-    sandbox_id: typing.Optional[str] = None
-    turn_id: typing.Optional[str] = None
-    previous_turn_id: typing.Optional[str] = None
-    state: typing.Optional[TurnStateError] = None
-    created_by: typing.Optional[Subject] = None
-    sequence_number: int
-
-    if IS_PYDANTIC_V2:
-        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2
-    else:
-
-        class Config:
-            smart_union = True
-            extra = pydantic.Extra.allow
+TurnStreamingEvent = typing.Union[
+    ModelMessageEvent,
+    ModelMessageDeltaEvent,
+    ToolResponseEvent,
+    ThreadCreatedEvent,
+    ThreadDoneEvent,
+    McpAuthRequiredEvent,
+    McpInitializeEvent,
+    SandboxCreatedEvent,
+    ToolApprovalRequiredEvent,
+    ToolResponseRequiredEvent,
+    TurnCreatedEvent,
+    TurnDoneCompleted,
+    TurnDoneCancelled,
+    TurnDoneError,
+]

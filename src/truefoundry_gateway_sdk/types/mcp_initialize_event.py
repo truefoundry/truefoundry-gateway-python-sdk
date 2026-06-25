@@ -4,11 +4,20 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .agent_mcp_initialization_info import AgentMcpInitializationInfo
 
 
-class TurnStreamingEventFunctionCall(UniversalBaseModel):
-    name: typing.Optional[str] = None
-    arguments: typing.Optional[str] = None
+class McpInitializeEvent(UniversalBaseModel):
+    type: typing.Literal["mcp.initialize"] = "mcp.initialize"
+    id: str = pydantic.Field()
+    """
+    Unique identifier for the event
+    """
+
+    created_at: str
+    thread_id: str
+    content: typing.List[AgentMcpInitializationInfo]
+    sequence_number: int
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

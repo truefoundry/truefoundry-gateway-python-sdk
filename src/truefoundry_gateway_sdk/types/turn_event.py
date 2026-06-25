@@ -2,50 +2,24 @@
 
 import typing
 
-import pydantic
-from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .agent_enriched_tool_call import AgentEnrichedToolCall
-from .agent_finish_reason import AgentFinishReason
-from .agent_info import AgentInfo
-from .agent_mcp_server_auth_info import AgentMcpServerAuthInfo
-from .agent_parent import AgentParent
-from .turn_event_audio import TurnEventAudio
-from .turn_event_content import TurnEventContent
-from .turn_event_function_call import TurnEventFunctionCall
-from .turn_event_thinking_blocks_item import TurnEventThinkingBlocksItem
-from .turn_event_usage import TurnEventUsage
+from .mcp_auth_required_event import McpAuthRequiredEvent
+from .mcp_initialize_event import McpInitializeEvent
+from .model_message_event import ModelMessageEvent
+from .sandbox_created_event import SandboxCreatedEvent
+from .thread_created_event import ThreadCreatedEvent
+from .thread_done_event import ThreadDoneEvent
+from .tool_approval_required_event import ToolApprovalRequiredEvent
+from .tool_response_event import ToolResponseEvent
+from .tool_response_required_event import ToolResponseRequiredEvent
 
-
-class TurnEvent(UniversalBaseModel):
-    audio: typing.Optional[TurnEventAudio] = None
-    content: typing.Optional[TurnEventContent] = None
-    function_call: typing.Optional[TurnEventFunctionCall] = None
-    name: typing.Optional[str] = None
-    refusal: typing.Optional[str] = None
-    thinking_blocks: typing.Optional[typing.List[TurnEventThinkingBlocksItem]] = None
-    tool_calls: typing.Optional[typing.List[AgentEnrichedToolCall]] = None
-    type: typing.Optional[typing.Literal["model.message"]] = None
-    id: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Unique identifier for the event
-    """
-
-    thread_id: typing.Optional[str] = None
-    finish_reason: typing.Optional[AgentFinishReason] = None
-    created_at: typing.Optional[str] = None
-    usage: typing.Optional[TurnEventUsage] = None
-    tool_call_id: typing.Optional[str] = None
-    agent_info: typing.Optional[AgentInfo] = None
-    parent: typing.Optional[AgentParent] = None
-    title: typing.Optional[str] = None
-    servers: typing.Optional[typing.List[AgentMcpServerAuthInfo]] = None
-    sandbox_id: typing.Optional[str] = None
-    sequence_number: int
-
-    if IS_PYDANTIC_V2:
-        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2
-    else:
-
-        class Config:
-            smart_union = True
-            extra = pydantic.Extra.allow
+TurnEvent = typing.Union[
+    ModelMessageEvent,
+    ToolResponseEvent,
+    ThreadCreatedEvent,
+    ThreadDoneEvent,
+    McpAuthRequiredEvent,
+    McpInitializeEvent,
+    SandboxCreatedEvent,
+    ToolApprovalRequiredEvent,
+    ToolResponseRequiredEvent,
+]

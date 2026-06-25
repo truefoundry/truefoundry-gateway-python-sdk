@@ -6,7 +6,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class TurnEventFunctionCall(UniversalBaseModel):
+class ModelMessageEventFunctionCall(UniversalBaseModel):
     name: str
     arguments: str
 

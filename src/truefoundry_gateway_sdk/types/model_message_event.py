@@ -6,20 +6,20 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .agent_enriched_tool_call import AgentEnrichedToolCall
 from .agent_finish_reason import AgentFinishReason
-from .turn_state_done_output_audio import TurnStateDoneOutputAudio
-from .turn_state_done_output_content import TurnStateDoneOutputContent
-from .turn_state_done_output_function_call import TurnStateDoneOutputFunctionCall
-from .turn_state_done_output_thinking_blocks_item import TurnStateDoneOutputThinkingBlocksItem
-from .turn_state_done_output_usage import TurnStateDoneOutputUsage
+from .model_message_event_audio import ModelMessageEventAudio
+from .model_message_event_content import ModelMessageEventContent
+from .model_message_event_function_call import ModelMessageEventFunctionCall
+from .model_message_event_thinking_blocks_item import ModelMessageEventThinkingBlocksItem
+from .model_message_event_usage import ModelMessageEventUsage
 
 
-class TurnStateDoneOutput(UniversalBaseModel):
-    audio: typing.Optional[TurnStateDoneOutputAudio] = None
-    content: typing.Optional[TurnStateDoneOutputContent] = None
-    function_call: typing.Optional[TurnStateDoneOutputFunctionCall] = None
+class ModelMessageEvent(UniversalBaseModel):
+    audio: typing.Optional[ModelMessageEventAudio] = None
+    content: typing.Optional[ModelMessageEventContent] = None
+    function_call: typing.Optional[ModelMessageEventFunctionCall] = None
     name: typing.Optional[str] = None
     refusal: typing.Optional[str] = None
-    thinking_blocks: typing.Optional[typing.List[TurnStateDoneOutputThinkingBlocksItem]] = None
+    thinking_blocks: typing.Optional[typing.List[ModelMessageEventThinkingBlocksItem]] = None
     tool_calls: typing.Optional[typing.List[AgentEnrichedToolCall]] = None
     type: typing.Literal["model.message"] = "model.message"
     id: str = pydantic.Field()
@@ -30,7 +30,7 @@ class TurnStateDoneOutput(UniversalBaseModel):
     thread_id: str
     finish_reason: typing.Optional[AgentFinishReason] = None
     created_at: str
-    usage: typing.Optional[TurnStateDoneOutputUsage] = None
+    usage: typing.Optional[ModelMessageEventUsage] = None
     sequence_number: int
 
     if IS_PYDANTIC_V2:

@@ -4,15 +4,19 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .turn_event_usage_input_tokens_breakdown import TurnEventUsageInputTokensBreakdown
 
 
-class TurnEventUsage(UniversalBaseModel):
-    input_tokens: int
-    output_tokens: int
-    cache_read_tokens: typing.Optional[int] = None
-    cache_write_tokens: typing.Optional[int] = None
-    input_tokens_breakdown: TurnEventUsageInputTokensBreakdown
+class SandboxCreatedEvent(UniversalBaseModel):
+    type: typing.Literal["sandbox.created"] = "sandbox.created"
+    id: str = pydantic.Field()
+    """
+    Unique identifier for the event
+    """
+
+    created_at: str
+    sandbox_id: str
+    thread_id: typing.Optional[str] = None
+    sequence_number: int
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

@@ -6,7 +6,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class TurnEventUsageInputTokensBreakdown(UniversalBaseModel):
+class ModelMessageEventUsageInputTokensBreakdown(UniversalBaseModel):
     harness: int
     skills: int
     instructions: int

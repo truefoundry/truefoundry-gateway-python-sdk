@@ -5,4 +5,4 @@ import typing
 from .chat_completion_content_part_refusal import ChatCompletionContentPartRefusal
 from .chat_completion_content_part_text import ChatCompletionContentPartText
 
-TurnStreamingEventContentOneItem = typing.Union[ChatCompletionContentPartText, ChatCompletionContentPartRefusal]
+ModelMessageEventContentOneItem = typing.Union[ChatCompletionContentPartText, ChatCompletionContentPartRefusal]

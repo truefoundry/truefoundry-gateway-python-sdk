@@ -4,19 +4,19 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .agent_tool_call_ref import AgentToolCallRef
+from .turn_state_done import TurnStateDone
 
 
-class ToolApprovalRequiredEvent(UniversalBaseModel):
-    type: typing.Literal["tool.approval_required"] = "tool.approval_required"
+class TurnDoneCompleted(UniversalBaseModel):
+    type: typing.Literal["turn.done"] = "turn.done"
     id: str = pydantic.Field()
     """
     Unique identifier for the event
     """
 
+    state: TurnStateDone
     created_at: str
-    thread_id: str
-    tool_calls: typing.List[AgentToolCallRef]
+    thread_id: typing.Optional[str] = None
     sequence_number: int
 
     if IS_PYDANTIC_V2:

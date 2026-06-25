@@ -4,15 +4,20 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .turn_streaming_event_usage_input_tokens_breakdown import TurnStreamingEventUsageInputTokensBreakdown
 
 
-class TurnStreamingEventUsage(UniversalBaseModel):
-    input_tokens: int
-    output_tokens: int
-    cache_read_tokens: typing.Optional[int] = None
-    cache_write_tokens: typing.Optional[int] = None
-    input_tokens_breakdown: TurnStreamingEventUsageInputTokensBreakdown
+class ToolResponseEvent(UniversalBaseModel):
+    tool_call_id: str
+    content: str
+    type: typing.Literal["tool.response"] = "tool.response"
+    id: str = pydantic.Field()
+    """
+    Unique identifier for the event
+    """
+
+    thread_id: str
+    created_at: str
+    sequence_number: int
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2
