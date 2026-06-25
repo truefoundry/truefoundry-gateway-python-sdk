@@ -2,7 +2,7 @@
 
 import typing
 
-from .agent_redacted_thinking_block import AgentRedactedThinkingBlock
-from .agent_thinking_block import AgentThinkingBlock
+from .redacted_thinking_block import RedactedThinkingBlock
+from .thinking_block import ThinkingBlock
 
-ModelMessageEventThinkingBlocksItem = typing.Union[AgentThinkingBlock, AgentRedactedThinkingBlock]
+ModelMessageEventThinkingBlocksItem = typing.Union[ThinkingBlock, RedactedThinkingBlock]

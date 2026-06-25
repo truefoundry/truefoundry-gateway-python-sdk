@@ -4,7 +4,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .agent_tool_call_ref import AgentToolCallRef
+from .tool_call_ref import ToolCallRef
 
 
 class ToolResponseRequiredEvent(UniversalBaseModel):
@@ -16,7 +16,7 @@ class ToolResponseRequiredEvent(UniversalBaseModel):
 
     created_at: str
     thread_id: str
-    tool_calls: typing.List[AgentToolCallRef]
+    tool_calls: typing.List[ToolCallRef]
     sequence_number: int
 
     if IS_PYDANTIC_V2:

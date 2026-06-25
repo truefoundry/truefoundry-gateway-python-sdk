@@ -3,23 +3,19 @@
 import typing
 
 import pydantic
-from .....core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .....types.mcp_server import McpServer
-from .....types.model import Model
-from .....types.response_format import ResponseFormat
-from .....types.runtime_config import RuntimeConfig
-from .....types.skill import Skill
-from .create_draft_session_request_agent_spec_messages_item import CreateDraftSessionRequestAgentSpecMessagesItem
+from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .agent_spec_messages_item import AgentSpecMessagesItem
+from .mcp_server import McpServer
+from .model import Model
+from .response_format import ResponseFormat
+from .runtime_config import RuntimeConfig
+from .skill import Skill
 
 
-class CreateDraftSessionRequestAgentSpec(UniversalBaseModel):
-    """
-    Inline agent definition.
-    """
-
+class AgentSpec(UniversalBaseModel):
     model: Model
     instructions: typing.Optional[str] = None
-    messages: typing.Optional[typing.List[CreateDraftSessionRequestAgentSpecMessagesItem]] = None
+    messages: typing.Optional[typing.List[AgentSpecMessagesItem]] = None
     mcp_servers: typing.Optional[typing.List[McpServer]] = None
     response_format: typing.Optional[ResponseFormat] = None
     skills: typing.Optional[typing.List[Skill]] = None

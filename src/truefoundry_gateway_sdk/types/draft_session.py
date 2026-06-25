@@ -4,13 +4,13 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .draft_session_agent_spec import DraftSessionAgentSpec
+from .agent_spec import AgentSpec
 from .subject import Subject
 
 
 class DraftSession(UniversalBaseModel):
     id: str
-    agent_spec: DraftSessionAgentSpec
+    agent_spec: AgentSpec
     agent_name: typing.Optional[str] = None
     title: typing.Optional[str] = None
     created_by_subject: Subject

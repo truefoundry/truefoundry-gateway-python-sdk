@@ -4,8 +4,8 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .agent_enriched_tool_call import AgentEnrichedToolCall
-from .agent_finish_reason import AgentFinishReason
+from .enriched_tool_call import EnrichedToolCall
+from .finish_reason import FinishReason
 from .turn_state_done_output_audio import TurnStateDoneOutputAudio
 from .turn_state_done_output_content import TurnStateDoneOutputContent
 from .turn_state_done_output_function_call import TurnStateDoneOutputFunctionCall
@@ -20,7 +20,7 @@ class TurnStateDoneOutput(UniversalBaseModel):
     name: typing.Optional[str] = None
     refusal: typing.Optional[str] = None
     thinking_blocks: typing.Optional[typing.List[TurnStateDoneOutputThinkingBlocksItem]] = None
-    tool_calls: typing.Optional[typing.List[AgentEnrichedToolCall]] = None
+    tool_calls: typing.Optional[typing.List[EnrichedToolCall]] = None
     type: typing.Literal["model.message"] = "model.message"
     id: str = pydantic.Field()
     """
@@ -28,7 +28,7 @@ class TurnStateDoneOutput(UniversalBaseModel):
     """
 
     thread_id: str
-    finish_reason: typing.Optional[AgentFinishReason] = None
+    finish_reason: typing.Optional[FinishReason] = None
     created_at: str
     usage: typing.Optional[TurnStateDoneOutputUsage] = None
     sequence_number: int

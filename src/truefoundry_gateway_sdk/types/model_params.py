@@ -4,20 +4,16 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .tool_call_ref import ToolCallRef
+from .model_params_reasoning_effort import ModelParamsReasoningEffort
 
 
-class ToolApprovalRequiredEvent(UniversalBaseModel):
-    type: typing.Literal["tool.approval_required"] = "tool.approval_required"
-    id: str = pydantic.Field()
-    """
-    Unique identifier for the event
-    """
-
-    created_at: str
-    thread_id: str
-    tool_calls: typing.List[ToolCallRef]
-    sequence_number: int
+class ModelParams(UniversalBaseModel):
+    max_tokens: typing.Optional[float] = None
+    temperature: typing.Optional[float] = None
+    top_p: typing.Optional[float] = None
+    top_k: typing.Optional[float] = None
+    parallel_tool_calls: typing.Optional[bool] = None
+    reasoning_effort: typing.Optional[ModelParamsReasoningEffort] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

@@ -3,21 +3,18 @@
 import typing
 
 import pydantic
+import typing_extensions
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .tool_call_ref import ToolCallRef
+from ..core.serialization import FieldMetadata
 
 
-class ToolApprovalRequiredEvent(UniversalBaseModel):
-    type: typing.Literal["tool.approval_required"] = "tool.approval_required"
-    id: str = pydantic.Field()
-    """
-    Unique identifier for the event
-    """
-
-    created_at: str
-    thread_id: str
-    tool_calls: typing.List[ToolCallRef]
-    sequence_number: int
+class ResponseFormatJsonSchemaJsonSchema(UniversalBaseModel):
+    name: str
+    description: typing.Optional[str] = None
+    schema_: typing_extensions.Annotated[
+        typing.Optional[typing.Dict[str, typing.Any]], FieldMetadata(alias="schema"), pydantic.Field(alias="schema")
+    ] = None
+    strict: typing.Optional[bool] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

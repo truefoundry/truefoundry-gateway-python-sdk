@@ -4,11 +4,11 @@ import typing
 
 import pydantic
 from .....core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .....types.agent_config import AgentConfig
-from .....types.agent_mcp_server_request import AgentMcpServerRequest
-from .....types.agent_model_spec import AgentModelSpec
-from .....types.agent_responses_format import AgentResponsesFormat
-from .....types.agent_skill_mount import AgentSkillMount
+from .....types.mcp_server import McpServer
+from .....types.model import Model
+from .....types.response_format import ResponseFormat
+from .....types.runtime_config import RuntimeConfig
+from .....types.skill import Skill
 from .update_draft_session_request_agent_spec_messages_item import UpdateDraftSessionRequestAgentSpecMessagesItem
 
 
@@ -17,13 +17,13 @@ class UpdateDraftSessionRequestAgentSpec(UniversalBaseModel):
     Replacement inline spec; never cleared.
     """
 
-    model: AgentModelSpec
+    model: Model
     instructions: typing.Optional[str] = None
     messages: typing.Optional[typing.List[UpdateDraftSessionRequestAgentSpecMessagesItem]] = None
-    mcp_servers: typing.Optional[typing.List[AgentMcpServerRequest]] = None
-    response_format: typing.Optional[AgentResponsesFormat] = None
-    skills: typing.Optional[typing.List[AgentSkillMount]] = None
-    config: typing.Optional[AgentConfig] = None
+    mcp_servers: typing.Optional[typing.List[McpServer]] = None
+    response_format: typing.Optional[ResponseFormat] = None
+    skills: typing.Optional[typing.List[Skill]] = None
+    config: typing.Optional[RuntimeConfig] = None
     variables: typing.Optional[typing.Dict[str, str]] = None
 
     if IS_PYDANTIC_V2:

@@ -4,7 +4,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .agent_mcp_initialization_info import AgentMcpInitializationInfo
+from .mcp_initialization_info import McpInitializationInfo
 
 
 class McpInitializeEvent(UniversalBaseModel):
@@ -16,7 +16,7 @@ class McpInitializeEvent(UniversalBaseModel):
 
     created_at: str
     thread_id: str
-    content: typing.List[AgentMcpInitializationInfo]
+    content: typing.List[McpInitializationInfo]
     sequence_number: int
 
     if IS_PYDANTIC_V2:

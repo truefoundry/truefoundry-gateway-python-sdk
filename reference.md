@@ -938,7 +938,7 @@ Create a draft session holding an inline agent spec, optionally linked to a save
 <dd>
 
 ```python
-from truefoundry_gateway_sdk import TrueFoundryGateway, AgentModelSpec
+from truefoundry_gateway_sdk import TrueFoundryGateway, Model
 from truefoundry_gateway_sdk.internal.agents.draft_sessions import CreateDraftSessionRequestAgentSpec
 
 client = TrueFoundryGateway(
@@ -948,7 +948,7 @@ client = TrueFoundryGateway(
 
 client.internal.agents.draft_sessions.create(
     agent_spec=CreateDraftSessionRequestAgentSpec(
-        model=AgentModelSpec(
+        model=Model(
             name="name",
         ),
     ),

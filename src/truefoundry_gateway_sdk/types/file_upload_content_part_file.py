@@ -4,20 +4,14 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .tool_call_ref import ToolCallRef
 
 
-class ToolApprovalRequiredEvent(UniversalBaseModel):
-    type: typing.Literal["tool.approval_required"] = "tool.approval_required"
-    id: str = pydantic.Field()
+class FileUploadContentPartFile(UniversalBaseModel):
+    filename: str
+    file_data: str = pydantic.Field()
     """
-    Unique identifier for the event
+    Data URI: `data:<mime>;base64,<payload>`
     """
-
-    created_at: str
-    thread_id: str
-    tool_calls: typing.List[ToolCallRef]
-    sequence_number: int
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

@@ -4,20 +4,13 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .tool_call_ref import ToolCallRef
+from .runtime_config_context_management_compaction import RuntimeConfigContextManagementCompaction
+from .runtime_config_context_management_large_tool_response import RuntimeConfigContextManagementLargeToolResponse
 
 
-class ToolApprovalRequiredEvent(UniversalBaseModel):
-    type: typing.Literal["tool.approval_required"] = "tool.approval_required"
-    id: str = pydantic.Field()
-    """
-    Unique identifier for the event
-    """
-
-    created_at: str
-    thread_id: str
-    tool_calls: typing.List[ToolCallRef]
-    sequence_number: int
+class RuntimeConfigContextManagement(UniversalBaseModel):
+    compaction: RuntimeConfigContextManagementCompaction
+    large_tool_response: RuntimeConfigContextManagementLargeToolResponse
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

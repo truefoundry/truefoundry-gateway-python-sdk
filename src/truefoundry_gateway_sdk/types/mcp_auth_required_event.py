@@ -4,7 +4,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .agent_mcp_server_auth_info import AgentMcpServerAuthInfo
+from .mcp_server_auth_info import McpServerAuthInfo
 
 
 class McpAuthRequiredEvent(UniversalBaseModel):
@@ -15,7 +15,7 @@ class McpAuthRequiredEvent(UniversalBaseModel):
     """
 
     created_at: str
-    servers: typing.List[AgentMcpServerAuthInfo]
+    servers: typing.List[McpServerAuthInfo]
     thread_id: typing.Optional[str] = None
     sequence_number: int
 

@@ -133,7 +133,7 @@ class DraftSessionsClient:
 
         Examples
         --------
-        from truefoundry_gateway_sdk import AgentModelSpec, TrueFoundryGateway
+        from truefoundry_gateway_sdk import Model, TrueFoundryGateway
         from truefoundry_gateway_sdk.internal.agents.draft_sessions import (
             CreateDraftSessionRequestAgentSpec,
         )
@@ -144,7 +144,7 @@ class DraftSessionsClient:
         )
         client.internal.agents.draft_sessions.create(
             agent_spec=CreateDraftSessionRequestAgentSpec(
-                model=AgentModelSpec(
+                model=Model(
                     name="name",
                 ),
             ),
@@ -354,7 +354,7 @@ class AsyncDraftSessionsClient:
         --------
         import asyncio
 
-        from truefoundry_gateway_sdk import AgentModelSpec, AsyncTrueFoundryGateway
+        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway, Model
         from truefoundry_gateway_sdk.internal.agents.draft_sessions import (
             CreateDraftSessionRequestAgentSpec,
         )
@@ -368,7 +368,7 @@ class AsyncDraftSessionsClient:
         async def main() -> None:
             await client.internal.agents.draft_sessions.create(
                 agent_spec=CreateDraftSessionRequestAgentSpec(
-                    model=AgentModelSpec(
+                    model=Model(
                         name="name",
                     ),
                 ),
