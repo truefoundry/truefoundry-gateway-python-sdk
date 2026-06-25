@@ -8,14 +8,14 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .raw_client import AsyncRawAgentsClient, RawAgentsClient
 
 if typing.TYPE_CHECKING:
-    from .responses.client import AsyncResponsesClient, ResponsesClient
+    from .sessions.client import AsyncSessionsClient, SessionsClient
 
 
 class AgentsClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._raw_client = RawAgentsClient(client_wrapper=client_wrapper)
         self._client_wrapper = client_wrapper
-        self._responses: typing.Optional[ResponsesClient] = None
+        self._sessions: typing.Optional[SessionsClient] = None
 
     @property
     def with_raw_response(self) -> RawAgentsClient:
@@ -29,19 +29,19 @@ class AgentsClient:
         return self._raw_client
 
     @property
-    def responses(self):
-        if self._responses is None:
-            from .responses.client import ResponsesClient  # noqa: E402
+    def sessions(self):
+        if self._sessions is None:
+            from .sessions.client import SessionsClient  # noqa: E402
 
-            self._responses = ResponsesClient(client_wrapper=self._client_wrapper)
-        return self._responses
+            self._sessions = SessionsClient(client_wrapper=self._client_wrapper)
+        return self._sessions
 
 
 class AsyncAgentsClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._raw_client = AsyncRawAgentsClient(client_wrapper=client_wrapper)
         self._client_wrapper = client_wrapper
-        self._responses: typing.Optional[AsyncResponsesClient] = None
+        self._sessions: typing.Optional[AsyncSessionsClient] = None
 
     @property
     def with_raw_response(self) -> AsyncRawAgentsClient:
@@ -55,9 +55,9 @@ class AsyncAgentsClient:
         return self._raw_client
 
     @property
-    def responses(self):
-        if self._responses is None:
-            from .responses.client import AsyncResponsesClient  # noqa: E402
+    def sessions(self):
+        if self._sessions is None:
+            from .sessions.client import AsyncSessionsClient  # noqa: E402
 
-            self._responses = AsyncResponsesClient(client_wrapper=self._client_wrapper)
-        return self._responses
+            self._sessions = AsyncSessionsClient(client_wrapper=self._client_wrapper)
+        return self._sessions

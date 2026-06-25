@@ -10,7 +10,7 @@ class AgentMcpServerAuthInfo(UniversalBaseModel):
     mcp_server_id: str
     mcp_server_name: str
     auth_url: str
-    execution_ids: typing.List[str]
+    thread_ids: typing.List[str]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

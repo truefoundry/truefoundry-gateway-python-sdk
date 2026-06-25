@@ -25,6 +25,7 @@ Call the gateway directly — not via the control-plane `/api/llm` proxy. The te
 - [Async Client](#async-client)
 - [Exception Handling](#exception-handling)
 - [Streaming](#streaming)
+- [Pagination](#pagination)
 - [Advanced](#advanced)
   - [Access Raw Response Data](#access-raw-response-data)
   - [Retries](#retries)
@@ -85,17 +86,15 @@ A full reference for this library is available [here](https://github.com/truefou
 Instantiate and use the client with the following:
 
 ```python
-from truefoundry_gateway_sdk import TrueFoundryGateway, AgentResponsesInlineAgent
+from truefoundry_gateway_sdk import TrueFoundryGateway
 
 client = TrueFoundryGateway(
     api_key="<token>",
     base_url="https://yourhost.com/path/to/api",
 )
 
-client.agents.responses.create(
-    request=AgentResponsesInlineAgent(
-        model="model",
-    ),
+client.agents.sessions.create_turn(
+    session_id="01arz3ndektsv4rrffq69g5fav.g",
 )
 ```
 
@@ -128,10 +127,8 @@ client = AsyncTrueFoundryGateway(
 
 
 async def main() -> None:
-    await client.agents.responses.create(
-        request=AgentResponsesInlineAgent(
-            model="model",
-        ),
+    await client.agents.sessions.create_turn(
+        session_id="01arz3ndektsv4rrffq69g5fav.g",
     )
 
 
@@ -147,7 +144,7 @@ will be thrown.
 from truefoundry_gateway_sdk.core.api_error import ApiError
 
 try:
-    client.agents.responses.create(...)
+    client.agents.sessions.create_turn(...)
 except ApiError as e:
     print(e.status_code)
     print(e.body)
@@ -158,18 +155,48 @@ except ApiError as e:
 The SDK supports streaming responses, as well, the response will be a generator that you can loop over.
 
 ```python
-from truefoundry_gateway_sdk import TrueFoundryGateway, AgentResponsesInlineAgent
+from truefoundry_gateway_sdk import TrueFoundryGateway
 
 client = TrueFoundryGateway(
     api_key="<token>",
     base_url="https://yourhost.com/path/to/api",
 )
 
-client.agents.responses.create(
-    request=AgentResponsesInlineAgent(
-        model="model",
-    ),
+client.agents.sessions.create_turn(
+    session_id="01arz3ndektsv4rrffq69g5fav.g",
 )
+```
+
+## Pagination
+
+Paginated requests will return a `SyncPager` or `AsyncPager`, which can be used as generators for the underlying object.
+
+```python
+from truefoundry_gateway_sdk import TrueFoundryGateway
+from truefoundry_gateway_sdk.agents.sessions import SessionsListRequestOrder
+
+client = TrueFoundryGateway(
+    api_key="<token>",
+    base_url="https://yourhost.com/path/to/api",
+)
+
+client.agents.sessions.list(
+    agent_name="agent_name",
+    limit=1,
+    order=SessionsListRequestOrder.ASC,
+    page_token="page_token",
+    start_timestamp="start_timestamp",
+    end_timestamp="end_timestamp",
+)
+```
+
+```python
+# You can also iterate through pages and access the typed response per page
+pager = client.agents.sessions.list(...)
+for page in pager.iter_pages():
+    print(page.response)  # access the typed response for each page
+    for item in page:
+        print(item)
 ```
 
 ## Advanced
@@ -183,7 +210,7 @@ The `.with_raw_response` property returns a "raw" client that can be used to acc
 from truefoundry_gateway_sdk import TrueFoundryGateway
 
 client = TrueFoundryGateway(...)
-response = client.agents.responses.with_raw_response.create(...)
+response = client.agents.sessions.with_raw_response.create_turn(...)
 print(response.headers)  # access the response headers
 print(response.status_code)  # access the response status code
 print(response.data)  # access the underlying object
@@ -214,7 +241,7 @@ Which status codes are retried depends on the `retryStatusCodes` generator confi
 Use the `max_retries` request option to configure this behavior.
 
 ```python
-client.agents.responses.create(..., request_options={
+client.agents.sessions.create_turn(..., request_options={
     "max_retries": 1
 })
 ```
@@ -229,7 +256,7 @@ from truefoundry_gateway_sdk import TrueFoundryGateway
 client = TrueFoundryGateway(..., timeout=20.0)
 
 # Override timeout for a specific method
-client.agents.responses.create(..., request_options={
+client.agents.sessions.create_turn(..., request_options={
     "timeout_in_seconds": 1
 })
 ```

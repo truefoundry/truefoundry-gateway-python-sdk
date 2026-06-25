@@ -4,15 +4,20 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .agent_mcp_tool import AgentMcpTool
+from .agent_mcp_server_request_disable_tools_item import AgentMcpServerRequestDisableToolsItem
+from .agent_mcp_server_request_enable_tools_item import AgentMcpServerRequestEnableToolsItem
+from .agent_mcp_server_request_preload_tools_item import AgentMcpServerRequestPreloadToolsItem
+from .agent_mcp_server_request_require_approval_for_tools_item import AgentMcpServerRequestRequireApprovalForToolsItem
 
 
 class AgentMcpServerRequest(UniversalBaseModel):
     name: str
     headers: typing.Optional[typing.Dict[str, str]] = None
-    enable_all_tools: bool = True
-    tools: typing.Optional[typing.List[AgentMcpTool]] = None
-    deferred: bool = False
+    enable_tools: typing.List[AgentMcpServerRequestEnableToolsItem]
+    disable_tools: typing.List[AgentMcpServerRequestDisableToolsItem]
+    preload_tools: typing.List[AgentMcpServerRequestPreloadToolsItem]
+    require_approval_for_tools: typing.List[AgentMcpServerRequestRequireApprovalForToolsItem]
+    preload: typing.Optional[bool] = False
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

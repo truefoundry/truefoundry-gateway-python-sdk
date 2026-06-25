@@ -7,9 +7,10 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class AgentInfo(UniversalBaseModel):
-    type: typing.Literal["agent-defined"] = "agent-defined"
+    type: typing.Literal["dynamic"] = "dynamic"
     name: str
     input: str
+    model: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

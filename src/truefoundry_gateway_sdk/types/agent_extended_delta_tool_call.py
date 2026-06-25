@@ -4,12 +4,12 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
-from .agent_mcp_tool_call_info import AgentMcpToolCallInfo
+from .agent_extended_delta_tool_call_tool_info import AgentExtendedDeltaToolCallToolInfo
 from .chat_completion_chunk_delta_tool_call import ChatCompletionChunkDeltaToolCall
 
 
 class AgentExtendedDeltaToolCall(ChatCompletionChunkDeltaToolCall):
-    tool_info: typing.Optional[AgentMcpToolCallInfo] = None
+    tool_info: typing.Optional[AgentExtendedDeltaToolCallToolInfo] = None
     provider_specific_fields: typing.Optional[typing.Dict[str, typing.Any]] = None
 
     if IS_PYDANTIC_V2:

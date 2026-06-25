@@ -6,9 +6,34 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from . import responses
-    from .responses import ResponsesCancelResponse
-_dynamic_imports: typing.Dict[str, str] = {"ResponsesCancelResponse": ".responses", "responses": ".responses"}
+    from . import sessions
+    from .sessions import (
+        CreateTurnRequestInputItem,
+        CreateTurnRequestPreviousTurnId,
+        SessionsCancelResponse,
+        SessionsCreateResponse,
+        SessionsGetResponse,
+        SessionsGetTurnResponse,
+        SessionsListRequestOrder,
+        SessionsListResponse,
+        SessionsListTurnEventsRequestOrder,
+        SessionsListTurnEventsResponse,
+        SessionsListTurnsResponse,
+    )
+_dynamic_imports: typing.Dict[str, str] = {
+    "CreateTurnRequestInputItem": ".sessions",
+    "CreateTurnRequestPreviousTurnId": ".sessions",
+    "SessionsCancelResponse": ".sessions",
+    "SessionsCreateResponse": ".sessions",
+    "SessionsGetResponse": ".sessions",
+    "SessionsGetTurnResponse": ".sessions",
+    "SessionsListRequestOrder": ".sessions",
+    "SessionsListResponse": ".sessions",
+    "SessionsListTurnEventsRequestOrder": ".sessions",
+    "SessionsListTurnEventsResponse": ".sessions",
+    "SessionsListTurnsResponse": ".sessions",
+    "sessions": ".sessions",
+}
 
 
 def __getattr__(attr_name: str) -> typing.Any:
@@ -32,4 +57,17 @@ def __dir__():
     return sorted(lazy_attrs)
 
 
-__all__ = ["ResponsesCancelResponse", "responses"]
+__all__ = [
+    "CreateTurnRequestInputItem",
+    "CreateTurnRequestPreviousTurnId",
+    "SessionsCancelResponse",
+    "SessionsCreateResponse",
+    "SessionsGetResponse",
+    "SessionsGetTurnResponse",
+    "SessionsListRequestOrder",
+    "SessionsListResponse",
+    "SessionsListTurnEventsRequestOrder",
+    "SessionsListTurnEventsResponse",
+    "SessionsListTurnsResponse",
+    "sessions",
+]

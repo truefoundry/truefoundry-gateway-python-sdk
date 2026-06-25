@@ -6,161 +6,291 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
+    from .action_required_event import ActionRequiredEvent
     from .agent_approval_decision import AgentApprovalDecision
     from .agent_approval_decision_allow import AgentApprovalDecisionAllow
     from .agent_approval_decision_deny import AgentApprovalDecisionDeny
-    from .agent_approval_decision_message import AgentApprovalDecisionMessage
-    from .agent_approval_or_tool_response_message import AgentApprovalOrToolResponseMessage
     from .agent_approval_required import AgentApprovalRequired
-    from .agent_assistant_message import AgentAssistantMessage
-    from .agent_client_side_tool_response_message import AgentClientSideToolResponseMessage
-    from .agent_enriched_assistant_message import AgentEnrichedAssistantMessage
-    from .agent_enriched_assistant_message_audio import AgentEnrichedAssistantMessageAudio
-    from .agent_enriched_assistant_message_content import AgentEnrichedAssistantMessageContent
-    from .agent_enriched_assistant_message_content_one_item import AgentEnrichedAssistantMessageContentOneItem
-    from .agent_enriched_assistant_message_function_call import AgentEnrichedAssistantMessageFunctionCall
-    from .agent_enriched_assistant_message_thinking_blocks_item import AgentEnrichedAssistantMessageThinkingBlocksItem
+    from .agent_completion_usage import AgentCompletionUsage
+    from .agent_completion_usage_completion_tokens_details import AgentCompletionUsageCompletionTokensDetails
+    from .agent_completion_usage_prompt_tokens_details import AgentCompletionUsagePromptTokensDetails
+    from .agent_config import AgentConfig
+    from .agent_config_ask_user_questions import AgentConfigAskUserQuestions
+    from .agent_config_context_management import AgentConfigContextManagement
+    from .agent_config_context_management_compaction import AgentConfigContextManagementCompaction
+    from .agent_config_context_management_large_tool_response import AgentConfigContextManagementLargeToolResponse
+    from .agent_config_dynamic_sub_agents import AgentConfigDynamicSubAgents
+    from .agent_config_generative_ui import AgentConfigGenerativeUi
+    from .agent_config_sandbox import AgentConfigSandbox
     from .agent_enriched_tool_call import AgentEnrichedToolCall
-    from .agent_execution_created import AgentExecutionCreated
-    from .agent_execution_done import AgentExecutionDone
-    from .agent_execution_error import AgentExecutionError
-    from .agent_extended_delta import AgentExtendedDelta
-    from .agent_extended_delta_function_call import AgentExtendedDeltaFunctionCall
-    from .agent_extended_delta_role import AgentExtendedDeltaRole
-    from .agent_extended_delta_thinking_blocks_item import AgentExtendedDeltaThinkingBlocksItem
+    from .agent_enriched_tool_call_tool_info import AgentEnrichedToolCallToolInfo
     from .agent_extended_delta_tool_call import AgentExtendedDeltaToolCall
+    from .agent_extended_delta_tool_call_tool_info import AgentExtendedDeltaToolCallToolInfo
     from .agent_file_upload_content_part import AgentFileUploadContentPart
     from .agent_file_upload_content_part_file import AgentFileUploadContentPartFile
     from .agent_finish_reason import AgentFinishReason
     from .agent_info import AgentInfo
-    from .agent_input_user_message import AgentInputUserMessage
-    from .agent_input_user_message_content import AgentInputUserMessageContent
-    from .agent_input_user_message_content_one_item import AgentInputUserMessageContentOneItem
-    from .agent_llm_message_delta import AgentLlmMessageDelta
+    from .agent_internal_enriched_assistant_message import AgentInternalEnrichedAssistantMessage
+    from .agent_internal_enriched_assistant_message_audio import AgentInternalEnrichedAssistantMessageAudio
+    from .agent_internal_enriched_assistant_message_content import AgentInternalEnrichedAssistantMessageContent
+    from .agent_internal_enriched_assistant_message_content_one_item import (
+        AgentInternalEnrichedAssistantMessageContentOneItem,
+    )
+    from .agent_internal_enriched_assistant_message_function_call import (
+        AgentInternalEnrichedAssistantMessageFunctionCall,
+    )
+    from .agent_internal_enriched_assistant_message_thinking_blocks_item import (
+        AgentInternalEnrichedAssistantMessageThinkingBlocksItem,
+    )
+    from .agent_internal_enriched_tool_call import AgentInternalEnrichedToolCall
+    from .agent_internal_tool_call_info import AgentInternalToolCallInfo
+    from .agent_internal_tool_call_info_type import AgentInternalToolCallInfoType
     from .agent_llm_tool_message import AgentLlmToolMessage
+    from .agent_llm_user_message import AgentLlmUserMessage
+    from .agent_llm_user_message_content import AgentLlmUserMessageContent
+    from .agent_llm_user_message_content_one_item import AgentLlmUserMessageContentOneItem
     from .agent_mcp_auth_required import AgentMcpAuthRequired
     from .agent_mcp_initialization_info import AgentMcpInitializationInfo
-    from .agent_mcp_initialize import AgentMcpInitialize
     from .agent_mcp_server_auth_info import AgentMcpServerAuthInfo
     from .agent_mcp_server_request import AgentMcpServerRequest
-    from .agent_mcp_tool import AgentMcpTool
+    from .agent_mcp_server_request_disable_tools_item import AgentMcpServerRequestDisableToolsItem
+    from .agent_mcp_server_request_enable_tools_item import AgentMcpServerRequestEnableToolsItem
+    from .agent_mcp_server_request_preload_tools_item import AgentMcpServerRequestPreloadToolsItem
+    from .agent_mcp_server_request_require_approval_for_tools_item import (
+        AgentMcpServerRequestRequireApprovalForToolsItem,
+    )
     from .agent_mcp_tool_call_info import AgentMcpToolCallInfo
     from .agent_model_params import AgentModelParams
     from .agent_model_params_reasoning_effort import AgentModelParamsReasoningEffort
+    from .agent_model_spec import AgentModelSpec
     from .agent_parent import AgentParent
     from .agent_raw_tool_call import AgentRawToolCall
     from .agent_redacted_thinking_block import AgentRedactedThinkingBlock
-    from .agent_response_created import AgentResponseCreated
-    from .agent_response_done import AgentResponseDone
-    from .agent_response_done_cancelled import AgentResponseDoneCancelled
-    from .agent_response_done_cancelled_cancellation_reason import AgentResponseDoneCancelledCancellationReason
-    from .agent_response_done_completed import AgentResponseDoneCompleted
-    from .agent_response_done_error import AgentResponseDoneError
-    from .agent_response_streaming_output_event import AgentResponseStreamingOutputEvent
-    from .agent_responses_body import AgentResponsesBody
     from .agent_responses_format import AgentResponsesFormat
     from .agent_responses_format_json_schema import AgentResponsesFormatJsonSchema
     from .agent_responses_format_json_schema_json_schema import AgentResponsesFormatJsonSchemaJsonSchema
     from .agent_responses_format_one import AgentResponsesFormatOne
     from .agent_responses_format_zero import AgentResponsesFormatZero
-    from .agent_responses_inline_agent import AgentResponsesInlineAgent
-    from .agent_responses_inline_agent_messages_item import AgentResponsesInlineAgentMessagesItem
-    from .agent_responses_inline_agent_sandbox import AgentResponsesInlineAgentSandbox
-    from .agent_responses_input import AgentResponsesInput
-    from .agent_responses_saved_agent import AgentResponsesSavedAgent
-    from .agent_sandbox_created import AgentSandboxCreated
     from .agent_skill_mount import AgentSkillMount
     from .agent_text_content_part import AgentTextContentPart
     from .agent_thinking_block import AgentThinkingBlock
     from .agent_tool_call_ref import AgentToolCallRef
-    from .agent_tool_message import AgentToolMessage
     from .agent_tool_response_required import AgentToolResponseRequired
+    from .agent_true_foundry_system_tool_call_info import AgentTrueFoundrySystemToolCallInfo
     from .chat_completion_chunk_delta_tool_call import ChatCompletionChunkDeltaToolCall
     from .chat_completion_chunk_delta_tool_call_function import ChatCompletionChunkDeltaToolCallFunction
+    from .chat_completion_content_part_file import ChatCompletionContentPartFile
+    from .chat_completion_content_part_file_file import ChatCompletionContentPartFileFile
+    from .chat_completion_content_part_image import ChatCompletionContentPartImage
+    from .chat_completion_content_part_image_image_url import ChatCompletionContentPartImageImageUrl
+    from .chat_completion_content_part_image_image_url_detail import ChatCompletionContentPartImageImageUrlDetail
+    from .chat_completion_content_part_input_audio import ChatCompletionContentPartInputAudio
+    from .chat_completion_content_part_input_audio_input_audio import ChatCompletionContentPartInputAudioInputAudio
+    from .chat_completion_content_part_input_audio_input_audio_format import (
+        ChatCompletionContentPartInputAudioInputAudioFormat,
+    )
     from .chat_completion_content_part_refusal import ChatCompletionContentPartRefusal
     from .chat_completion_content_part_text import ChatCompletionContentPartText
     from .chat_completion_message_tool_call import ChatCompletionMessageToolCall
     from .chat_completion_message_tool_call_function import ChatCompletionMessageToolCallFunction
-    from .request_error_response import RequestErrorResponse
-    from .request_error_response_error import RequestErrorResponseError
+    from .created_by_subject import CreatedBySubject
+    from .draft_session import DraftSession
+    from .draft_session_agent_spec import DraftSessionAgentSpec
+    from .draft_session_agent_spec_messages_item import DraftSessionAgentSpecMessagesItem
+    from .events_token_pagination import EventsTokenPagination
+    from .events_token_pagination_order import EventsTokenPaginationOrder
+    from .model_message import ModelMessage
+    from .model_message_audio import ModelMessageAudio
+    from .model_message_content import ModelMessageContent
+    from .model_message_content_one_item import ModelMessageContentOneItem
+    from .model_message_function_call import ModelMessageFunctionCall
+    from .model_message_thinking_blocks_item import ModelMessageThinkingBlocksItem
+    from .model_message_usage import ModelMessageUsage
+    from .model_message_usage_input_tokens_breakdown import ModelMessageUsageInputTokensBreakdown
+    from .sequenced_turn_persisted_event import SequencedTurnPersistedEvent
+    from .sequenced_turn_persisted_event_audio import SequencedTurnPersistedEventAudio
+    from .sequenced_turn_persisted_event_content import SequencedTurnPersistedEventContent
+    from .sequenced_turn_persisted_event_content_one_item import SequencedTurnPersistedEventContentOneItem
+    from .sequenced_turn_persisted_event_function_call import SequencedTurnPersistedEventFunctionCall
+    from .sequenced_turn_persisted_event_thinking_blocks_item import SequencedTurnPersistedEventThinkingBlocksItem
+    from .sequenced_turn_persisted_event_usage import SequencedTurnPersistedEventUsage
+    from .sequenced_turn_persisted_event_usage_input_tokens_breakdown import (
+        SequencedTurnPersistedEventUsageInputTokensBreakdown,
+    )
+    from .sequenced_turn_streaming_output_event import SequencedTurnStreamingOutputEvent
+    from .sequenced_turn_streaming_output_event_audio import SequencedTurnStreamingOutputEventAudio
+    from .sequenced_turn_streaming_output_event_content import SequencedTurnStreamingOutputEventContent
+    from .sequenced_turn_streaming_output_event_content_one_item import SequencedTurnStreamingOutputEventContentOneItem
+    from .sequenced_turn_streaming_output_event_context_item import SequencedTurnStreamingOutputEventContextItem
+    from .sequenced_turn_streaming_output_event_context_item_approval import (
+        SequencedTurnStreamingOutputEventContextItemApproval,
+    )
+    from .sequenced_turn_streaming_output_event_function_call import SequencedTurnStreamingOutputEventFunctionCall
+    from .sequenced_turn_streaming_output_event_thinking_blocks_item import (
+        SequencedTurnStreamingOutputEventThinkingBlocksItem,
+    )
+    from .sequenced_turn_streaming_output_event_usage import SequencedTurnStreamingOutputEventUsage
+    from .sequenced_turn_streaming_output_event_usage_input_tokens_breakdown import (
+        SequencedTurnStreamingOutputEventUsageInputTokensBreakdown,
+    )
+    from .session import Session
+    from .session_subject import SessionSubject
+    from .token_pagination import TokenPagination
+    from .turn import Turn
+    from .turn_input_item import TurnInputItem
+    from .turn_state import TurnState
+    from .turn_state_cancelled import TurnStateCancelled
+    from .turn_state_cancelled_reason import TurnStateCancelledReason
+    from .turn_state_done import TurnStateDone
+    from .turn_state_done_output import TurnStateDoneOutput
+    from .turn_state_done_output_audio import TurnStateDoneOutputAudio
+    from .turn_state_done_output_content import TurnStateDoneOutputContent
+    from .turn_state_done_output_content_one_item import TurnStateDoneOutputContentOneItem
+    from .turn_state_done_output_function_call import TurnStateDoneOutputFunctionCall
+    from .turn_state_done_output_thinking_blocks_item import TurnStateDoneOutputThinkingBlocksItem
+    from .turn_state_done_output_usage import TurnStateDoneOutputUsage
+    from .turn_state_done_output_usage_input_tokens_breakdown import TurnStateDoneOutputUsageInputTokensBreakdown
+    from .turn_state_error import TurnStateError
+    from .turn_state_running import TurnStateRunning
+    from .user_message import UserMessage
+    from .user_message_content import UserMessageContent
+    from .user_message_content_one_item import UserMessageContentOneItem
+    from .user_tool_approval_message import UserToolApprovalMessage
+    from .user_tool_response_message import UserToolResponseMessage
 _dynamic_imports: typing.Dict[str, str] = {
+    "ActionRequiredEvent": ".action_required_event",
     "AgentApprovalDecision": ".agent_approval_decision",
     "AgentApprovalDecisionAllow": ".agent_approval_decision_allow",
     "AgentApprovalDecisionDeny": ".agent_approval_decision_deny",
-    "AgentApprovalDecisionMessage": ".agent_approval_decision_message",
-    "AgentApprovalOrToolResponseMessage": ".agent_approval_or_tool_response_message",
     "AgentApprovalRequired": ".agent_approval_required",
-    "AgentAssistantMessage": ".agent_assistant_message",
-    "AgentClientSideToolResponseMessage": ".agent_client_side_tool_response_message",
-    "AgentEnrichedAssistantMessage": ".agent_enriched_assistant_message",
-    "AgentEnrichedAssistantMessageAudio": ".agent_enriched_assistant_message_audio",
-    "AgentEnrichedAssistantMessageContent": ".agent_enriched_assistant_message_content",
-    "AgentEnrichedAssistantMessageContentOneItem": ".agent_enriched_assistant_message_content_one_item",
-    "AgentEnrichedAssistantMessageFunctionCall": ".agent_enriched_assistant_message_function_call",
-    "AgentEnrichedAssistantMessageThinkingBlocksItem": ".agent_enriched_assistant_message_thinking_blocks_item",
+    "AgentCompletionUsage": ".agent_completion_usage",
+    "AgentCompletionUsageCompletionTokensDetails": ".agent_completion_usage_completion_tokens_details",
+    "AgentCompletionUsagePromptTokensDetails": ".agent_completion_usage_prompt_tokens_details",
+    "AgentConfig": ".agent_config",
+    "AgentConfigAskUserQuestions": ".agent_config_ask_user_questions",
+    "AgentConfigContextManagement": ".agent_config_context_management",
+    "AgentConfigContextManagementCompaction": ".agent_config_context_management_compaction",
+    "AgentConfigContextManagementLargeToolResponse": ".agent_config_context_management_large_tool_response",
+    "AgentConfigDynamicSubAgents": ".agent_config_dynamic_sub_agents",
+    "AgentConfigGenerativeUi": ".agent_config_generative_ui",
+    "AgentConfigSandbox": ".agent_config_sandbox",
     "AgentEnrichedToolCall": ".agent_enriched_tool_call",
-    "AgentExecutionCreated": ".agent_execution_created",
-    "AgentExecutionDone": ".agent_execution_done",
-    "AgentExecutionError": ".agent_execution_error",
-    "AgentExtendedDelta": ".agent_extended_delta",
-    "AgentExtendedDeltaFunctionCall": ".agent_extended_delta_function_call",
-    "AgentExtendedDeltaRole": ".agent_extended_delta_role",
-    "AgentExtendedDeltaThinkingBlocksItem": ".agent_extended_delta_thinking_blocks_item",
+    "AgentEnrichedToolCallToolInfo": ".agent_enriched_tool_call_tool_info",
     "AgentExtendedDeltaToolCall": ".agent_extended_delta_tool_call",
+    "AgentExtendedDeltaToolCallToolInfo": ".agent_extended_delta_tool_call_tool_info",
     "AgentFileUploadContentPart": ".agent_file_upload_content_part",
     "AgentFileUploadContentPartFile": ".agent_file_upload_content_part_file",
     "AgentFinishReason": ".agent_finish_reason",
     "AgentInfo": ".agent_info",
-    "AgentInputUserMessage": ".agent_input_user_message",
-    "AgentInputUserMessageContent": ".agent_input_user_message_content",
-    "AgentInputUserMessageContentOneItem": ".agent_input_user_message_content_one_item",
-    "AgentLlmMessageDelta": ".agent_llm_message_delta",
+    "AgentInternalEnrichedAssistantMessage": ".agent_internal_enriched_assistant_message",
+    "AgentInternalEnrichedAssistantMessageAudio": ".agent_internal_enriched_assistant_message_audio",
+    "AgentInternalEnrichedAssistantMessageContent": ".agent_internal_enriched_assistant_message_content",
+    "AgentInternalEnrichedAssistantMessageContentOneItem": ".agent_internal_enriched_assistant_message_content_one_item",
+    "AgentInternalEnrichedAssistantMessageFunctionCall": ".agent_internal_enriched_assistant_message_function_call",
+    "AgentInternalEnrichedAssistantMessageThinkingBlocksItem": ".agent_internal_enriched_assistant_message_thinking_blocks_item",
+    "AgentInternalEnrichedToolCall": ".agent_internal_enriched_tool_call",
+    "AgentInternalToolCallInfo": ".agent_internal_tool_call_info",
+    "AgentInternalToolCallInfoType": ".agent_internal_tool_call_info_type",
     "AgentLlmToolMessage": ".agent_llm_tool_message",
+    "AgentLlmUserMessage": ".agent_llm_user_message",
+    "AgentLlmUserMessageContent": ".agent_llm_user_message_content",
+    "AgentLlmUserMessageContentOneItem": ".agent_llm_user_message_content_one_item",
     "AgentMcpAuthRequired": ".agent_mcp_auth_required",
     "AgentMcpInitializationInfo": ".agent_mcp_initialization_info",
-    "AgentMcpInitialize": ".agent_mcp_initialize",
     "AgentMcpServerAuthInfo": ".agent_mcp_server_auth_info",
     "AgentMcpServerRequest": ".agent_mcp_server_request",
-    "AgentMcpTool": ".agent_mcp_tool",
+    "AgentMcpServerRequestDisableToolsItem": ".agent_mcp_server_request_disable_tools_item",
+    "AgentMcpServerRequestEnableToolsItem": ".agent_mcp_server_request_enable_tools_item",
+    "AgentMcpServerRequestPreloadToolsItem": ".agent_mcp_server_request_preload_tools_item",
+    "AgentMcpServerRequestRequireApprovalForToolsItem": ".agent_mcp_server_request_require_approval_for_tools_item",
     "AgentMcpToolCallInfo": ".agent_mcp_tool_call_info",
     "AgentModelParams": ".agent_model_params",
     "AgentModelParamsReasoningEffort": ".agent_model_params_reasoning_effort",
+    "AgentModelSpec": ".agent_model_spec",
     "AgentParent": ".agent_parent",
     "AgentRawToolCall": ".agent_raw_tool_call",
     "AgentRedactedThinkingBlock": ".agent_redacted_thinking_block",
-    "AgentResponseCreated": ".agent_response_created",
-    "AgentResponseDone": ".agent_response_done",
-    "AgentResponseDoneCancelled": ".agent_response_done_cancelled",
-    "AgentResponseDoneCancelledCancellationReason": ".agent_response_done_cancelled_cancellation_reason",
-    "AgentResponseDoneCompleted": ".agent_response_done_completed",
-    "AgentResponseDoneError": ".agent_response_done_error",
-    "AgentResponseStreamingOutputEvent": ".agent_response_streaming_output_event",
-    "AgentResponsesBody": ".agent_responses_body",
     "AgentResponsesFormat": ".agent_responses_format",
     "AgentResponsesFormatJsonSchema": ".agent_responses_format_json_schema",
     "AgentResponsesFormatJsonSchemaJsonSchema": ".agent_responses_format_json_schema_json_schema",
     "AgentResponsesFormatOne": ".agent_responses_format_one",
     "AgentResponsesFormatZero": ".agent_responses_format_zero",
-    "AgentResponsesInlineAgent": ".agent_responses_inline_agent",
-    "AgentResponsesInlineAgentMessagesItem": ".agent_responses_inline_agent_messages_item",
-    "AgentResponsesInlineAgentSandbox": ".agent_responses_inline_agent_sandbox",
-    "AgentResponsesInput": ".agent_responses_input",
-    "AgentResponsesSavedAgent": ".agent_responses_saved_agent",
-    "AgentSandboxCreated": ".agent_sandbox_created",
     "AgentSkillMount": ".agent_skill_mount",
     "AgentTextContentPart": ".agent_text_content_part",
     "AgentThinkingBlock": ".agent_thinking_block",
     "AgentToolCallRef": ".agent_tool_call_ref",
-    "AgentToolMessage": ".agent_tool_message",
     "AgentToolResponseRequired": ".agent_tool_response_required",
+    "AgentTrueFoundrySystemToolCallInfo": ".agent_true_foundry_system_tool_call_info",
     "ChatCompletionChunkDeltaToolCall": ".chat_completion_chunk_delta_tool_call",
     "ChatCompletionChunkDeltaToolCallFunction": ".chat_completion_chunk_delta_tool_call_function",
+    "ChatCompletionContentPartFile": ".chat_completion_content_part_file",
+    "ChatCompletionContentPartFileFile": ".chat_completion_content_part_file_file",
+    "ChatCompletionContentPartImage": ".chat_completion_content_part_image",
+    "ChatCompletionContentPartImageImageUrl": ".chat_completion_content_part_image_image_url",
+    "ChatCompletionContentPartImageImageUrlDetail": ".chat_completion_content_part_image_image_url_detail",
+    "ChatCompletionContentPartInputAudio": ".chat_completion_content_part_input_audio",
+    "ChatCompletionContentPartInputAudioInputAudio": ".chat_completion_content_part_input_audio_input_audio",
+    "ChatCompletionContentPartInputAudioInputAudioFormat": ".chat_completion_content_part_input_audio_input_audio_format",
     "ChatCompletionContentPartRefusal": ".chat_completion_content_part_refusal",
     "ChatCompletionContentPartText": ".chat_completion_content_part_text",
     "ChatCompletionMessageToolCall": ".chat_completion_message_tool_call",
     "ChatCompletionMessageToolCallFunction": ".chat_completion_message_tool_call_function",
-    "RequestErrorResponse": ".request_error_response",
-    "RequestErrorResponseError": ".request_error_response_error",
+    "CreatedBySubject": ".created_by_subject",
+    "DraftSession": ".draft_session",
+    "DraftSessionAgentSpec": ".draft_session_agent_spec",
+    "DraftSessionAgentSpecMessagesItem": ".draft_session_agent_spec_messages_item",
+    "EventsTokenPagination": ".events_token_pagination",
+    "EventsTokenPaginationOrder": ".events_token_pagination_order",
+    "ModelMessage": ".model_message",
+    "ModelMessageAudio": ".model_message_audio",
+    "ModelMessageContent": ".model_message_content",
+    "ModelMessageContentOneItem": ".model_message_content_one_item",
+    "ModelMessageFunctionCall": ".model_message_function_call",
+    "ModelMessageThinkingBlocksItem": ".model_message_thinking_blocks_item",
+    "ModelMessageUsage": ".model_message_usage",
+    "ModelMessageUsageInputTokensBreakdown": ".model_message_usage_input_tokens_breakdown",
+    "SequencedTurnPersistedEvent": ".sequenced_turn_persisted_event",
+    "SequencedTurnPersistedEventAudio": ".sequenced_turn_persisted_event_audio",
+    "SequencedTurnPersistedEventContent": ".sequenced_turn_persisted_event_content",
+    "SequencedTurnPersistedEventContentOneItem": ".sequenced_turn_persisted_event_content_one_item",
+    "SequencedTurnPersistedEventFunctionCall": ".sequenced_turn_persisted_event_function_call",
+    "SequencedTurnPersistedEventThinkingBlocksItem": ".sequenced_turn_persisted_event_thinking_blocks_item",
+    "SequencedTurnPersistedEventUsage": ".sequenced_turn_persisted_event_usage",
+    "SequencedTurnPersistedEventUsageInputTokensBreakdown": ".sequenced_turn_persisted_event_usage_input_tokens_breakdown",
+    "SequencedTurnStreamingOutputEvent": ".sequenced_turn_streaming_output_event",
+    "SequencedTurnStreamingOutputEventAudio": ".sequenced_turn_streaming_output_event_audio",
+    "SequencedTurnStreamingOutputEventContent": ".sequenced_turn_streaming_output_event_content",
+    "SequencedTurnStreamingOutputEventContentOneItem": ".sequenced_turn_streaming_output_event_content_one_item",
+    "SequencedTurnStreamingOutputEventContextItem": ".sequenced_turn_streaming_output_event_context_item",
+    "SequencedTurnStreamingOutputEventContextItemApproval": ".sequenced_turn_streaming_output_event_context_item_approval",
+    "SequencedTurnStreamingOutputEventFunctionCall": ".sequenced_turn_streaming_output_event_function_call",
+    "SequencedTurnStreamingOutputEventThinkingBlocksItem": ".sequenced_turn_streaming_output_event_thinking_blocks_item",
+    "SequencedTurnStreamingOutputEventUsage": ".sequenced_turn_streaming_output_event_usage",
+    "SequencedTurnStreamingOutputEventUsageInputTokensBreakdown": ".sequenced_turn_streaming_output_event_usage_input_tokens_breakdown",
+    "Session": ".session",
+    "SessionSubject": ".session_subject",
+    "TokenPagination": ".token_pagination",
+    "Turn": ".turn",
+    "TurnInputItem": ".turn_input_item",
+    "TurnState": ".turn_state",
+    "TurnStateCancelled": ".turn_state_cancelled",
+    "TurnStateCancelledReason": ".turn_state_cancelled_reason",
+    "TurnStateDone": ".turn_state_done",
+    "TurnStateDoneOutput": ".turn_state_done_output",
+    "TurnStateDoneOutputAudio": ".turn_state_done_output_audio",
+    "TurnStateDoneOutputContent": ".turn_state_done_output_content",
+    "TurnStateDoneOutputContentOneItem": ".turn_state_done_output_content_one_item",
+    "TurnStateDoneOutputFunctionCall": ".turn_state_done_output_function_call",
+    "TurnStateDoneOutputThinkingBlocksItem": ".turn_state_done_output_thinking_blocks_item",
+    "TurnStateDoneOutputUsage": ".turn_state_done_output_usage",
+    "TurnStateDoneOutputUsageInputTokensBreakdown": ".turn_state_done_output_usage_input_tokens_breakdown",
+    "TurnStateError": ".turn_state_error",
+    "TurnStateRunning": ".turn_state_running",
+    "UserMessage": ".user_message",
+    "UserMessageContent": ".user_message_content",
+    "UserMessageContentOneItem": ".user_message_content_one_item",
+    "UserToolApprovalMessage": ".user_tool_approval_message",
+    "UserToolResponseMessage": ".user_tool_response_message",
 }
 
 
@@ -186,81 +316,137 @@ def __dir__():
 
 
 __all__ = [
+    "ActionRequiredEvent",
     "AgentApprovalDecision",
     "AgentApprovalDecisionAllow",
     "AgentApprovalDecisionDeny",
-    "AgentApprovalDecisionMessage",
-    "AgentApprovalOrToolResponseMessage",
     "AgentApprovalRequired",
-    "AgentAssistantMessage",
-    "AgentClientSideToolResponseMessage",
-    "AgentEnrichedAssistantMessage",
-    "AgentEnrichedAssistantMessageAudio",
-    "AgentEnrichedAssistantMessageContent",
-    "AgentEnrichedAssistantMessageContentOneItem",
-    "AgentEnrichedAssistantMessageFunctionCall",
-    "AgentEnrichedAssistantMessageThinkingBlocksItem",
+    "AgentCompletionUsage",
+    "AgentCompletionUsageCompletionTokensDetails",
+    "AgentCompletionUsagePromptTokensDetails",
+    "AgentConfig",
+    "AgentConfigAskUserQuestions",
+    "AgentConfigContextManagement",
+    "AgentConfigContextManagementCompaction",
+    "AgentConfigContextManagementLargeToolResponse",
+    "AgentConfigDynamicSubAgents",
+    "AgentConfigGenerativeUi",
+    "AgentConfigSandbox",
     "AgentEnrichedToolCall",
-    "AgentExecutionCreated",
-    "AgentExecutionDone",
-    "AgentExecutionError",
-    "AgentExtendedDelta",
-    "AgentExtendedDeltaFunctionCall",
-    "AgentExtendedDeltaRole",
-    "AgentExtendedDeltaThinkingBlocksItem",
+    "AgentEnrichedToolCallToolInfo",
     "AgentExtendedDeltaToolCall",
+    "AgentExtendedDeltaToolCallToolInfo",
     "AgentFileUploadContentPart",
     "AgentFileUploadContentPartFile",
     "AgentFinishReason",
     "AgentInfo",
-    "AgentInputUserMessage",
-    "AgentInputUserMessageContent",
-    "AgentInputUserMessageContentOneItem",
-    "AgentLlmMessageDelta",
+    "AgentInternalEnrichedAssistantMessage",
+    "AgentInternalEnrichedAssistantMessageAudio",
+    "AgentInternalEnrichedAssistantMessageContent",
+    "AgentInternalEnrichedAssistantMessageContentOneItem",
+    "AgentInternalEnrichedAssistantMessageFunctionCall",
+    "AgentInternalEnrichedAssistantMessageThinkingBlocksItem",
+    "AgentInternalEnrichedToolCall",
+    "AgentInternalToolCallInfo",
+    "AgentInternalToolCallInfoType",
     "AgentLlmToolMessage",
+    "AgentLlmUserMessage",
+    "AgentLlmUserMessageContent",
+    "AgentLlmUserMessageContentOneItem",
     "AgentMcpAuthRequired",
     "AgentMcpInitializationInfo",
-    "AgentMcpInitialize",
     "AgentMcpServerAuthInfo",
     "AgentMcpServerRequest",
-    "AgentMcpTool",
+    "AgentMcpServerRequestDisableToolsItem",
+    "AgentMcpServerRequestEnableToolsItem",
+    "AgentMcpServerRequestPreloadToolsItem",
+    "AgentMcpServerRequestRequireApprovalForToolsItem",
     "AgentMcpToolCallInfo",
     "AgentModelParams",
     "AgentModelParamsReasoningEffort",
+    "AgentModelSpec",
     "AgentParent",
     "AgentRawToolCall",
     "AgentRedactedThinkingBlock",
-    "AgentResponseCreated",
-    "AgentResponseDone",
-    "AgentResponseDoneCancelled",
-    "AgentResponseDoneCancelledCancellationReason",
-    "AgentResponseDoneCompleted",
-    "AgentResponseDoneError",
-    "AgentResponseStreamingOutputEvent",
-    "AgentResponsesBody",
     "AgentResponsesFormat",
     "AgentResponsesFormatJsonSchema",
     "AgentResponsesFormatJsonSchemaJsonSchema",
     "AgentResponsesFormatOne",
     "AgentResponsesFormatZero",
-    "AgentResponsesInlineAgent",
-    "AgentResponsesInlineAgentMessagesItem",
-    "AgentResponsesInlineAgentSandbox",
-    "AgentResponsesInput",
-    "AgentResponsesSavedAgent",
-    "AgentSandboxCreated",
     "AgentSkillMount",
     "AgentTextContentPart",
     "AgentThinkingBlock",
     "AgentToolCallRef",
-    "AgentToolMessage",
     "AgentToolResponseRequired",
+    "AgentTrueFoundrySystemToolCallInfo",
     "ChatCompletionChunkDeltaToolCall",
     "ChatCompletionChunkDeltaToolCallFunction",
+    "ChatCompletionContentPartFile",
+    "ChatCompletionContentPartFileFile",
+    "ChatCompletionContentPartImage",
+    "ChatCompletionContentPartImageImageUrl",
+    "ChatCompletionContentPartImageImageUrlDetail",
+    "ChatCompletionContentPartInputAudio",
+    "ChatCompletionContentPartInputAudioInputAudio",
+    "ChatCompletionContentPartInputAudioInputAudioFormat",
     "ChatCompletionContentPartRefusal",
     "ChatCompletionContentPartText",
     "ChatCompletionMessageToolCall",
     "ChatCompletionMessageToolCallFunction",
-    "RequestErrorResponse",
-    "RequestErrorResponseError",
+    "CreatedBySubject",
+    "DraftSession",
+    "DraftSessionAgentSpec",
+    "DraftSessionAgentSpecMessagesItem",
+    "EventsTokenPagination",
+    "EventsTokenPaginationOrder",
+    "ModelMessage",
+    "ModelMessageAudio",
+    "ModelMessageContent",
+    "ModelMessageContentOneItem",
+    "ModelMessageFunctionCall",
+    "ModelMessageThinkingBlocksItem",
+    "ModelMessageUsage",
+    "ModelMessageUsageInputTokensBreakdown",
+    "SequencedTurnPersistedEvent",
+    "SequencedTurnPersistedEventAudio",
+    "SequencedTurnPersistedEventContent",
+    "SequencedTurnPersistedEventContentOneItem",
+    "SequencedTurnPersistedEventFunctionCall",
+    "SequencedTurnPersistedEventThinkingBlocksItem",
+    "SequencedTurnPersistedEventUsage",
+    "SequencedTurnPersistedEventUsageInputTokensBreakdown",
+    "SequencedTurnStreamingOutputEvent",
+    "SequencedTurnStreamingOutputEventAudio",
+    "SequencedTurnStreamingOutputEventContent",
+    "SequencedTurnStreamingOutputEventContentOneItem",
+    "SequencedTurnStreamingOutputEventContextItem",
+    "SequencedTurnStreamingOutputEventContextItemApproval",
+    "SequencedTurnStreamingOutputEventFunctionCall",
+    "SequencedTurnStreamingOutputEventThinkingBlocksItem",
+    "SequencedTurnStreamingOutputEventUsage",
+    "SequencedTurnStreamingOutputEventUsageInputTokensBreakdown",
+    "Session",
+    "SessionSubject",
+    "TokenPagination",
+    "Turn",
+    "TurnInputItem",
+    "TurnState",
+    "TurnStateCancelled",
+    "TurnStateCancelledReason",
+    "TurnStateDone",
+    "TurnStateDoneOutput",
+    "TurnStateDoneOutputAudio",
+    "TurnStateDoneOutputContent",
+    "TurnStateDoneOutputContentOneItem",
+    "TurnStateDoneOutputFunctionCall",
+    "TurnStateDoneOutputThinkingBlocksItem",
+    "TurnStateDoneOutputUsage",
+    "TurnStateDoneOutputUsageInputTokensBreakdown",
+    "TurnStateError",
+    "TurnStateRunning",
+    "UserMessage",
+    "UserMessageContent",
+    "UserMessageContentOneItem",
+    "UserToolApprovalMessage",
+    "UserToolResponseMessage",
 ]

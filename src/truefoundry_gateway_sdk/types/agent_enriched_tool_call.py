@@ -4,12 +4,12 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
-from .agent_mcp_tool_call_info import AgentMcpToolCallInfo
+from .agent_enriched_tool_call_tool_info import AgentEnrichedToolCallToolInfo
 from .agent_raw_tool_call import AgentRawToolCall
 
 
 class AgentEnrichedToolCall(AgentRawToolCall):
-    tool_info: AgentMcpToolCallInfo
+    tool_info: AgentEnrichedToolCallToolInfo
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

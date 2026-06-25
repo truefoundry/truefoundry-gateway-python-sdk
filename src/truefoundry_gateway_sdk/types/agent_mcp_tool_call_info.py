@@ -7,12 +7,10 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class AgentMcpToolCallInfo(UniversalBaseModel):
-    mcp_server_id: str
-    mcp_server_name: str
-    original_tool_name: str
-    is_approval_required: typing.Optional[bool] = None
-    is_deferred: typing.Optional[bool] = None
-    is_client_side: typing.Optional[bool] = None
+    type: typing.Literal["mcp"] = "mcp"
+    server_id: str
+    server_name: str
+    name: str
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

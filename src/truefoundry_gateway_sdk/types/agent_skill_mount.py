@@ -12,7 +12,7 @@ class AgentSkillMount(UniversalBaseModel):
     Fully qualified name of the agent skill version.
     """
 
-    preload_skill_md: bool = pydantic.Field(default=False)
+    preload: bool = pydantic.Field(default=False)
     """
     If true, the SKILL.md content is injected into the agent context.
     """

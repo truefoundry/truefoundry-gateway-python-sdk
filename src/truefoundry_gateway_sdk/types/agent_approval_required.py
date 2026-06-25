@@ -9,7 +9,13 @@ from .agent_tool_call_ref import AgentToolCallRef
 
 class AgentApprovalRequired(UniversalBaseModel):
     type: typing.Literal["tool.approval_required"] = "tool.approval_required"
-    execution_id: str
+    id: str = pydantic.Field()
+    """
+    Unique identifier for the event
+    """
+
+    created_at: str
+    thread_id: str
     tool_calls: typing.List[AgentToolCallRef]
 
     if IS_PYDANTIC_V2:
