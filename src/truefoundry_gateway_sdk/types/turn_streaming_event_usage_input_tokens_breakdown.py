@@ -4,18 +4,14 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .draft_session_agent_spec import DraftSessionAgentSpec
-from .subject import Subject
 
 
-class DraftSession(UniversalBaseModel):
-    id: str
-    agent_spec: DraftSessionAgentSpec
-    agent_name: typing.Optional[str] = None
-    title: typing.Optional[str] = None
-    created_by_subject: Subject
-    created_at: str
-    updated_at: str
+class TurnStreamingEventUsageInputTokensBreakdown(UniversalBaseModel):
+    harness: int
+    skills: int
+    instructions: int
+    tool_definitions: int
+    messages: int
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

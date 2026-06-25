@@ -7,8 +7,8 @@ from ...core.pagination import AsyncPager, SyncPager
 from ...core.request_options import RequestOptions
 from ...types.session import Session
 from ...types.turn import Turn
-from ...types.turn_output_event import TurnOutputEvent
-from ...types.turn_streaming_output_event import TurnStreamingOutputEvent
+from ...types.turn_event import TurnEvent
+from ...types.turn_streaming_event import TurnStreamingEvent
 from .raw_client import AsyncRawSessionsClient, RawSessionsClient
 from .types.create_turn_request_input_item import CreateTurnRequestInputItem
 from .types.create_turn_request_previous_turn_id import CreateTurnRequestPreviousTurnId
@@ -265,7 +265,7 @@ class SessionsClient:
         input: typing.Optional[typing.Sequence[CreateTurnRequestInputItem]] = OMIT,
         previous_turn_id: typing.Optional[CreateTurnRequestPreviousTurnId] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Iterator[TurnStreamingOutputEvent]:
+    ) -> typing.Iterator[TurnStreamingEvent]:
         """
         Start or continue a turn within a session. Responds with a Server-Sent Events stream.
         Use `previous_turn_id` to chain to the session's last turn (defaults to `auto`).
@@ -284,7 +284,7 @@ class SessionsClient:
 
         Yields
         ------
-        typing.Iterator[TurnStreamingOutputEvent]
+        typing.Iterator[TurnStreamingEvent]
             Server-Sent Events stream of turn events.
 
         Examples
@@ -349,7 +349,7 @@ class SessionsClient:
         *,
         after_sequence_number: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Iterator[TurnStreamingOutputEvent]:
+    ) -> typing.Iterator[TurnStreamingEvent]:
         """
         Subscribe to the live SSE stream for a turn. Pass after_sequence_number to resume after disconnect or server timeout, or send Last-Event-Id when after_sequence_number is omitted.
 
@@ -366,7 +366,7 @@ class SessionsClient:
 
         Yields
         ------
-        typing.Iterator[TurnStreamingOutputEvent]
+        typing.Iterator[TurnStreamingEvent]
             Server-Sent Events stream of turn events (deltas and lifecycle).
 
         Examples
@@ -398,7 +398,7 @@ class SessionsClient:
         limit: typing.Optional[int] = 25,
         order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[TurnOutputEvent, SessionsListTurnEventsResponse]:
+    ) -> SyncPager[TurnEvent, SessionsListTurnEventsResponse]:
         """
         Paginated list of turn events from the Redis events stream.
 
@@ -419,7 +419,7 @@ class SessionsClient:
 
         Returns
         -------
-        SyncPager[TurnOutputEvent, SessionsListTurnEventsResponse]
+        SyncPager[TurnEvent, SessionsListTurnEventsResponse]
             Paginated events.
 
         Examples
@@ -734,7 +734,7 @@ class AsyncSessionsClient:
         input: typing.Optional[typing.Sequence[CreateTurnRequestInputItem]] = OMIT,
         previous_turn_id: typing.Optional[CreateTurnRequestPreviousTurnId] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.AsyncIterator[TurnStreamingOutputEvent]:
+    ) -> typing.AsyncIterator[TurnStreamingEvent]:
         """
         Start or continue a turn within a session. Responds with a Server-Sent Events stream.
         Use `previous_turn_id` to chain to the session's last turn (defaults to `auto`).
@@ -753,7 +753,7 @@ class AsyncSessionsClient:
 
         Yields
         ------
-        typing.AsyncIterator[TurnStreamingOutputEvent]
+        typing.AsyncIterator[TurnStreamingEvent]
             Server-Sent Events stream of turn events.
 
         Examples
@@ -835,7 +835,7 @@ class AsyncSessionsClient:
         *,
         after_sequence_number: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.AsyncIterator[TurnStreamingOutputEvent]:
+    ) -> typing.AsyncIterator[TurnStreamingEvent]:
         """
         Subscribe to the live SSE stream for a turn. Pass after_sequence_number to resume after disconnect or server timeout, or send Last-Event-Id when after_sequence_number is omitted.
 
@@ -852,7 +852,7 @@ class AsyncSessionsClient:
 
         Yields
         ------
-        typing.AsyncIterator[TurnStreamingOutputEvent]
+        typing.AsyncIterator[TurnStreamingEvent]
             Server-Sent Events stream of turn events (deltas and lifecycle).
 
         Examples
@@ -893,7 +893,7 @@ class AsyncSessionsClient:
         limit: typing.Optional[int] = 25,
         order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[TurnOutputEvent, SessionsListTurnEventsResponse]:
+    ) -> AsyncPager[TurnEvent, SessionsListTurnEventsResponse]:
         """
         Paginated list of turn events from the Redis events stream.
 
@@ -914,7 +914,7 @@ class AsyncSessionsClient:
 
         Returns
         -------
-        AsyncPager[TurnOutputEvent, SessionsListTurnEventsResponse]
+        AsyncPager[TurnEvent, SessionsListTurnEventsResponse]
             Paginated events.
 
         Examples

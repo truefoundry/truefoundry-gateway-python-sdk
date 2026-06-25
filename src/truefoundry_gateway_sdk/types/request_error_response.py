@@ -4,18 +4,11 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .draft_session_agent_spec import DraftSessionAgentSpec
-from .subject import Subject
+from .request_error_response_error import RequestErrorResponseError
 
 
-class DraftSession(UniversalBaseModel):
-    id: str
-    agent_spec: DraftSessionAgentSpec
-    agent_name: typing.Optional[str] = None
-    title: typing.Optional[str] = None
-    created_by_subject: Subject
-    created_at: str
-    updated_at: str
+class RequestErrorResponse(UniversalBaseModel):
+    error: RequestErrorResponseError
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

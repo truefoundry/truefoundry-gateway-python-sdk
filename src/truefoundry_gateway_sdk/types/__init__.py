@@ -7,9 +7,6 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .action_required_event import ActionRequiredEvent
-    from .agent_completion_usage import AgentCompletionUsage
-    from .agent_completion_usage_completion_tokens_details import AgentCompletionUsageCompletionTokensDetails
-    from .agent_completion_usage_prompt_tokens_details import AgentCompletionUsagePromptTokensDetails
     from .agent_config import AgentConfig
     from .agent_config_ask_user_questions import AgentConfigAskUserQuestions
     from .agent_config_context_management import AgentConfigContextManagement
@@ -26,25 +23,6 @@ if typing.TYPE_CHECKING:
     from .agent_file_upload_content_part_file import AgentFileUploadContentPartFile
     from .agent_finish_reason import AgentFinishReason
     from .agent_info import AgentInfo
-    from .agent_internal_enriched_assistant_message import AgentInternalEnrichedAssistantMessage
-    from .agent_internal_enriched_assistant_message_audio import AgentInternalEnrichedAssistantMessageAudio
-    from .agent_internal_enriched_assistant_message_content import AgentInternalEnrichedAssistantMessageContent
-    from .agent_internal_enriched_assistant_message_content_one_item import (
-        AgentInternalEnrichedAssistantMessageContentOneItem,
-    )
-    from .agent_internal_enriched_assistant_message_function_call import (
-        AgentInternalEnrichedAssistantMessageFunctionCall,
-    )
-    from .agent_internal_enriched_assistant_message_thinking_blocks_item import (
-        AgentInternalEnrichedAssistantMessageThinkingBlocksItem,
-    )
-    from .agent_internal_enriched_tool_call import AgentInternalEnrichedToolCall
-    from .agent_internal_tool_call_info import AgentInternalToolCallInfo
-    from .agent_internal_tool_call_info_type import AgentInternalToolCallInfoType
-    from .agent_llm_tool_message import AgentLlmToolMessage
-    from .agent_llm_user_message import AgentLlmUserMessage
-    from .agent_llm_user_message_content import AgentLlmUserMessageContent
-    from .agent_llm_user_message_content_one_item import AgentLlmUserMessageContentOneItem
     from .agent_mcp_initialization_info import AgentMcpInitializationInfo
     from .agent_mcp_server_auth_info import AgentMcpServerAuthInfo
     from .agent_mcp_server_request import AgentMcpServerRequest
@@ -76,50 +54,31 @@ if typing.TYPE_CHECKING:
     from .approval_deny import ApprovalDeny
     from .chat_completion_chunk_delta_tool_call import ChatCompletionChunkDeltaToolCall
     from .chat_completion_chunk_delta_tool_call_function import ChatCompletionChunkDeltaToolCallFunction
-    from .chat_completion_content_part_file import ChatCompletionContentPartFile
-    from .chat_completion_content_part_file_file import ChatCompletionContentPartFileFile
-    from .chat_completion_content_part_image import ChatCompletionContentPartImage
-    from .chat_completion_content_part_image_image_url import ChatCompletionContentPartImageImageUrl
-    from .chat_completion_content_part_image_image_url_detail import ChatCompletionContentPartImageImageUrlDetail
-    from .chat_completion_content_part_input_audio import ChatCompletionContentPartInputAudio
-    from .chat_completion_content_part_input_audio_input_audio import ChatCompletionContentPartInputAudioInputAudio
-    from .chat_completion_content_part_input_audio_input_audio_format import (
-        ChatCompletionContentPartInputAudioInputAudioFormat,
-    )
     from .chat_completion_content_part_refusal import ChatCompletionContentPartRefusal
     from .chat_completion_content_part_text import ChatCompletionContentPartText
     from .chat_completion_message_tool_call import ChatCompletionMessageToolCall
     from .chat_completion_message_tool_call_function import ChatCompletionMessageToolCallFunction
-    from .created_by_subject import CreatedBySubject
     from .draft_session import DraftSession
     from .draft_session_agent_spec import DraftSessionAgentSpec
     from .draft_session_agent_spec_messages_item import DraftSessionAgentSpecMessagesItem
-    from .events_token_pagination import EventsTokenPagination
-    from .events_token_pagination_order import EventsTokenPaginationOrder
     from .mcp_auth_required_event import McpAuthRequiredEvent
-    from .model_message_event import ModelMessageEvent
-    from .model_message_event_audio import ModelMessageEventAudio
-    from .model_message_event_content import ModelMessageEventContent
-    from .model_message_event_content_one_item import ModelMessageEventContentOneItem
-    from .model_message_event_function_call import ModelMessageEventFunctionCall
-    from .model_message_event_thinking_blocks_item import ModelMessageEventThinkingBlocksItem
-    from .model_message_event_usage import ModelMessageEventUsage
-    from .model_message_event_usage_input_tokens_breakdown import ModelMessageEventUsageInputTokensBreakdown
+    from .request_error_response import RequestErrorResponse
+    from .request_error_response_error import RequestErrorResponseError
     from .session import Session
-    from .session_subject import SessionSubject
+    from .subject import Subject
     from .token_pagination import TokenPagination
     from .tool_approval_required_event import ToolApprovalRequiredEvent
     from .tool_response_required_event import ToolResponseRequiredEvent
     from .turn import Turn
+    from .turn_event import TurnEvent
+    from .turn_event_audio import TurnEventAudio
+    from .turn_event_content import TurnEventContent
+    from .turn_event_content_one_item import TurnEventContentOneItem
+    from .turn_event_function_call import TurnEventFunctionCall
+    from .turn_event_thinking_blocks_item import TurnEventThinkingBlocksItem
+    from .turn_event_usage import TurnEventUsage
+    from .turn_event_usage_input_tokens_breakdown import TurnEventUsageInputTokensBreakdown
     from .turn_input_item import TurnInputItem
-    from .turn_output_event import TurnOutputEvent
-    from .turn_output_event_audio import TurnOutputEventAudio
-    from .turn_output_event_content import TurnOutputEventContent
-    from .turn_output_event_content_one_item import TurnOutputEventContentOneItem
-    from .turn_output_event_function_call import TurnOutputEventFunctionCall
-    from .turn_output_event_thinking_blocks_item import TurnOutputEventThinkingBlocksItem
-    from .turn_output_event_usage import TurnOutputEventUsage
-    from .turn_output_event_usage_input_tokens_breakdown import TurnOutputEventUsageInputTokensBreakdown
     from .turn_state import TurnState
     from .turn_state_cancelled import TurnStateCancelled
     from .turn_state_cancelled_reason import TurnStateCancelledReason
@@ -134,18 +93,14 @@ if typing.TYPE_CHECKING:
     from .turn_state_done_output_usage_input_tokens_breakdown import TurnStateDoneOutputUsageInputTokensBreakdown
     from .turn_state_error import TurnStateError
     from .turn_state_running import TurnStateRunning
-    from .turn_streaming_output_event import TurnStreamingOutputEvent
-    from .turn_streaming_output_event_audio import TurnStreamingOutputEventAudio
-    from .turn_streaming_output_event_content import TurnStreamingOutputEventContent
-    from .turn_streaming_output_event_content_one_item import TurnStreamingOutputEventContentOneItem
-    from .turn_streaming_output_event_context_item import TurnStreamingOutputEventContextItem
-    from .turn_streaming_output_event_context_item_approval import TurnStreamingOutputEventContextItemApproval
-    from .turn_streaming_output_event_function_call import TurnStreamingOutputEventFunctionCall
-    from .turn_streaming_output_event_thinking_blocks_item import TurnStreamingOutputEventThinkingBlocksItem
-    from .turn_streaming_output_event_usage import TurnStreamingOutputEventUsage
-    from .turn_streaming_output_event_usage_input_tokens_breakdown import (
-        TurnStreamingOutputEventUsageInputTokensBreakdown,
-    )
+    from .turn_streaming_event import TurnStreamingEvent
+    from .turn_streaming_event_audio import TurnStreamingEventAudio
+    from .turn_streaming_event_content import TurnStreamingEventContent
+    from .turn_streaming_event_content_one_item import TurnStreamingEventContentOneItem
+    from .turn_streaming_event_function_call import TurnStreamingEventFunctionCall
+    from .turn_streaming_event_thinking_blocks_item import TurnStreamingEventThinkingBlocksItem
+    from .turn_streaming_event_usage import TurnStreamingEventUsage
+    from .turn_streaming_event_usage_input_tokens_breakdown import TurnStreamingEventUsageInputTokensBreakdown
     from .user_message import UserMessage
     from .user_message_content import UserMessageContent
     from .user_message_content_one_item import UserMessageContentOneItem
@@ -153,9 +108,6 @@ if typing.TYPE_CHECKING:
     from .user_tool_response_event import UserToolResponseEvent
 _dynamic_imports: typing.Dict[str, str] = {
     "ActionRequiredEvent": ".action_required_event",
-    "AgentCompletionUsage": ".agent_completion_usage",
-    "AgentCompletionUsageCompletionTokensDetails": ".agent_completion_usage_completion_tokens_details",
-    "AgentCompletionUsagePromptTokensDetails": ".agent_completion_usage_prompt_tokens_details",
     "AgentConfig": ".agent_config",
     "AgentConfigAskUserQuestions": ".agent_config_ask_user_questions",
     "AgentConfigContextManagement": ".agent_config_context_management",
@@ -172,19 +124,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "AgentFileUploadContentPartFile": ".agent_file_upload_content_part_file",
     "AgentFinishReason": ".agent_finish_reason",
     "AgentInfo": ".agent_info",
-    "AgentInternalEnrichedAssistantMessage": ".agent_internal_enriched_assistant_message",
-    "AgentInternalEnrichedAssistantMessageAudio": ".agent_internal_enriched_assistant_message_audio",
-    "AgentInternalEnrichedAssistantMessageContent": ".agent_internal_enriched_assistant_message_content",
-    "AgentInternalEnrichedAssistantMessageContentOneItem": ".agent_internal_enriched_assistant_message_content_one_item",
-    "AgentInternalEnrichedAssistantMessageFunctionCall": ".agent_internal_enriched_assistant_message_function_call",
-    "AgentInternalEnrichedAssistantMessageThinkingBlocksItem": ".agent_internal_enriched_assistant_message_thinking_blocks_item",
-    "AgentInternalEnrichedToolCall": ".agent_internal_enriched_tool_call",
-    "AgentInternalToolCallInfo": ".agent_internal_tool_call_info",
-    "AgentInternalToolCallInfoType": ".agent_internal_tool_call_info_type",
-    "AgentLlmToolMessage": ".agent_llm_tool_message",
-    "AgentLlmUserMessage": ".agent_llm_user_message",
-    "AgentLlmUserMessageContent": ".agent_llm_user_message_content",
-    "AgentLlmUserMessageContentOneItem": ".agent_llm_user_message_content_one_item",
     "AgentMcpInitializationInfo": ".agent_mcp_initialization_info",
     "AgentMcpServerAuthInfo": ".agent_mcp_server_auth_info",
     "AgentMcpServerRequest": ".agent_mcp_server_request",
@@ -214,48 +153,31 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ApprovalDeny": ".approval_deny",
     "ChatCompletionChunkDeltaToolCall": ".chat_completion_chunk_delta_tool_call",
     "ChatCompletionChunkDeltaToolCallFunction": ".chat_completion_chunk_delta_tool_call_function",
-    "ChatCompletionContentPartFile": ".chat_completion_content_part_file",
-    "ChatCompletionContentPartFileFile": ".chat_completion_content_part_file_file",
-    "ChatCompletionContentPartImage": ".chat_completion_content_part_image",
-    "ChatCompletionContentPartImageImageUrl": ".chat_completion_content_part_image_image_url",
-    "ChatCompletionContentPartImageImageUrlDetail": ".chat_completion_content_part_image_image_url_detail",
-    "ChatCompletionContentPartInputAudio": ".chat_completion_content_part_input_audio",
-    "ChatCompletionContentPartInputAudioInputAudio": ".chat_completion_content_part_input_audio_input_audio",
-    "ChatCompletionContentPartInputAudioInputAudioFormat": ".chat_completion_content_part_input_audio_input_audio_format",
     "ChatCompletionContentPartRefusal": ".chat_completion_content_part_refusal",
     "ChatCompletionContentPartText": ".chat_completion_content_part_text",
     "ChatCompletionMessageToolCall": ".chat_completion_message_tool_call",
     "ChatCompletionMessageToolCallFunction": ".chat_completion_message_tool_call_function",
-    "CreatedBySubject": ".created_by_subject",
     "DraftSession": ".draft_session",
     "DraftSessionAgentSpec": ".draft_session_agent_spec",
     "DraftSessionAgentSpecMessagesItem": ".draft_session_agent_spec_messages_item",
-    "EventsTokenPagination": ".events_token_pagination",
-    "EventsTokenPaginationOrder": ".events_token_pagination_order",
     "McpAuthRequiredEvent": ".mcp_auth_required_event",
-    "ModelMessageEvent": ".model_message_event",
-    "ModelMessageEventAudio": ".model_message_event_audio",
-    "ModelMessageEventContent": ".model_message_event_content",
-    "ModelMessageEventContentOneItem": ".model_message_event_content_one_item",
-    "ModelMessageEventFunctionCall": ".model_message_event_function_call",
-    "ModelMessageEventThinkingBlocksItem": ".model_message_event_thinking_blocks_item",
-    "ModelMessageEventUsage": ".model_message_event_usage",
-    "ModelMessageEventUsageInputTokensBreakdown": ".model_message_event_usage_input_tokens_breakdown",
+    "RequestErrorResponse": ".request_error_response",
+    "RequestErrorResponseError": ".request_error_response_error",
     "Session": ".session",
-    "SessionSubject": ".session_subject",
+    "Subject": ".subject",
     "TokenPagination": ".token_pagination",
     "ToolApprovalRequiredEvent": ".tool_approval_required_event",
     "ToolResponseRequiredEvent": ".tool_response_required_event",
     "Turn": ".turn",
+    "TurnEvent": ".turn_event",
+    "TurnEventAudio": ".turn_event_audio",
+    "TurnEventContent": ".turn_event_content",
+    "TurnEventContentOneItem": ".turn_event_content_one_item",
+    "TurnEventFunctionCall": ".turn_event_function_call",
+    "TurnEventThinkingBlocksItem": ".turn_event_thinking_blocks_item",
+    "TurnEventUsage": ".turn_event_usage",
+    "TurnEventUsageInputTokensBreakdown": ".turn_event_usage_input_tokens_breakdown",
     "TurnInputItem": ".turn_input_item",
-    "TurnOutputEvent": ".turn_output_event",
-    "TurnOutputEventAudio": ".turn_output_event_audio",
-    "TurnOutputEventContent": ".turn_output_event_content",
-    "TurnOutputEventContentOneItem": ".turn_output_event_content_one_item",
-    "TurnOutputEventFunctionCall": ".turn_output_event_function_call",
-    "TurnOutputEventThinkingBlocksItem": ".turn_output_event_thinking_blocks_item",
-    "TurnOutputEventUsage": ".turn_output_event_usage",
-    "TurnOutputEventUsageInputTokensBreakdown": ".turn_output_event_usage_input_tokens_breakdown",
     "TurnState": ".turn_state",
     "TurnStateCancelled": ".turn_state_cancelled",
     "TurnStateCancelledReason": ".turn_state_cancelled_reason",
@@ -270,16 +192,14 @@ _dynamic_imports: typing.Dict[str, str] = {
     "TurnStateDoneOutputUsageInputTokensBreakdown": ".turn_state_done_output_usage_input_tokens_breakdown",
     "TurnStateError": ".turn_state_error",
     "TurnStateRunning": ".turn_state_running",
-    "TurnStreamingOutputEvent": ".turn_streaming_output_event",
-    "TurnStreamingOutputEventAudio": ".turn_streaming_output_event_audio",
-    "TurnStreamingOutputEventContent": ".turn_streaming_output_event_content",
-    "TurnStreamingOutputEventContentOneItem": ".turn_streaming_output_event_content_one_item",
-    "TurnStreamingOutputEventContextItem": ".turn_streaming_output_event_context_item",
-    "TurnStreamingOutputEventContextItemApproval": ".turn_streaming_output_event_context_item_approval",
-    "TurnStreamingOutputEventFunctionCall": ".turn_streaming_output_event_function_call",
-    "TurnStreamingOutputEventThinkingBlocksItem": ".turn_streaming_output_event_thinking_blocks_item",
-    "TurnStreamingOutputEventUsage": ".turn_streaming_output_event_usage",
-    "TurnStreamingOutputEventUsageInputTokensBreakdown": ".turn_streaming_output_event_usage_input_tokens_breakdown",
+    "TurnStreamingEvent": ".turn_streaming_event",
+    "TurnStreamingEventAudio": ".turn_streaming_event_audio",
+    "TurnStreamingEventContent": ".turn_streaming_event_content",
+    "TurnStreamingEventContentOneItem": ".turn_streaming_event_content_one_item",
+    "TurnStreamingEventFunctionCall": ".turn_streaming_event_function_call",
+    "TurnStreamingEventThinkingBlocksItem": ".turn_streaming_event_thinking_blocks_item",
+    "TurnStreamingEventUsage": ".turn_streaming_event_usage",
+    "TurnStreamingEventUsageInputTokensBreakdown": ".turn_streaming_event_usage_input_tokens_breakdown",
     "UserMessage": ".user_message",
     "UserMessageContent": ".user_message_content",
     "UserMessageContentOneItem": ".user_message_content_one_item",
@@ -311,9 +231,6 @@ def __dir__():
 
 __all__ = [
     "ActionRequiredEvent",
-    "AgentCompletionUsage",
-    "AgentCompletionUsageCompletionTokensDetails",
-    "AgentCompletionUsagePromptTokensDetails",
     "AgentConfig",
     "AgentConfigAskUserQuestions",
     "AgentConfigContextManagement",
@@ -330,19 +247,6 @@ __all__ = [
     "AgentFileUploadContentPartFile",
     "AgentFinishReason",
     "AgentInfo",
-    "AgentInternalEnrichedAssistantMessage",
-    "AgentInternalEnrichedAssistantMessageAudio",
-    "AgentInternalEnrichedAssistantMessageContent",
-    "AgentInternalEnrichedAssistantMessageContentOneItem",
-    "AgentInternalEnrichedAssistantMessageFunctionCall",
-    "AgentInternalEnrichedAssistantMessageThinkingBlocksItem",
-    "AgentInternalEnrichedToolCall",
-    "AgentInternalToolCallInfo",
-    "AgentInternalToolCallInfoType",
-    "AgentLlmToolMessage",
-    "AgentLlmUserMessage",
-    "AgentLlmUserMessageContent",
-    "AgentLlmUserMessageContentOneItem",
     "AgentMcpInitializationInfo",
     "AgentMcpServerAuthInfo",
     "AgentMcpServerRequest",
@@ -372,48 +276,31 @@ __all__ = [
     "ApprovalDeny",
     "ChatCompletionChunkDeltaToolCall",
     "ChatCompletionChunkDeltaToolCallFunction",
-    "ChatCompletionContentPartFile",
-    "ChatCompletionContentPartFileFile",
-    "ChatCompletionContentPartImage",
-    "ChatCompletionContentPartImageImageUrl",
-    "ChatCompletionContentPartImageImageUrlDetail",
-    "ChatCompletionContentPartInputAudio",
-    "ChatCompletionContentPartInputAudioInputAudio",
-    "ChatCompletionContentPartInputAudioInputAudioFormat",
     "ChatCompletionContentPartRefusal",
     "ChatCompletionContentPartText",
     "ChatCompletionMessageToolCall",
     "ChatCompletionMessageToolCallFunction",
-    "CreatedBySubject",
     "DraftSession",
     "DraftSessionAgentSpec",
     "DraftSessionAgentSpecMessagesItem",
-    "EventsTokenPagination",
-    "EventsTokenPaginationOrder",
     "McpAuthRequiredEvent",
-    "ModelMessageEvent",
-    "ModelMessageEventAudio",
-    "ModelMessageEventContent",
-    "ModelMessageEventContentOneItem",
-    "ModelMessageEventFunctionCall",
-    "ModelMessageEventThinkingBlocksItem",
-    "ModelMessageEventUsage",
-    "ModelMessageEventUsageInputTokensBreakdown",
+    "RequestErrorResponse",
+    "RequestErrorResponseError",
     "Session",
-    "SessionSubject",
+    "Subject",
     "TokenPagination",
     "ToolApprovalRequiredEvent",
     "ToolResponseRequiredEvent",
     "Turn",
+    "TurnEvent",
+    "TurnEventAudio",
+    "TurnEventContent",
+    "TurnEventContentOneItem",
+    "TurnEventFunctionCall",
+    "TurnEventThinkingBlocksItem",
+    "TurnEventUsage",
+    "TurnEventUsageInputTokensBreakdown",
     "TurnInputItem",
-    "TurnOutputEvent",
-    "TurnOutputEventAudio",
-    "TurnOutputEventContent",
-    "TurnOutputEventContentOneItem",
-    "TurnOutputEventFunctionCall",
-    "TurnOutputEventThinkingBlocksItem",
-    "TurnOutputEventUsage",
-    "TurnOutputEventUsageInputTokensBreakdown",
     "TurnState",
     "TurnStateCancelled",
     "TurnStateCancelledReason",
@@ -428,16 +315,14 @@ __all__ = [
     "TurnStateDoneOutputUsageInputTokensBreakdown",
     "TurnStateError",
     "TurnStateRunning",
-    "TurnStreamingOutputEvent",
-    "TurnStreamingOutputEventAudio",
-    "TurnStreamingOutputEventContent",
-    "TurnStreamingOutputEventContentOneItem",
-    "TurnStreamingOutputEventContextItem",
-    "TurnStreamingOutputEventContextItemApproval",
-    "TurnStreamingOutputEventFunctionCall",
-    "TurnStreamingOutputEventThinkingBlocksItem",
-    "TurnStreamingOutputEventUsage",
-    "TurnStreamingOutputEventUsageInputTokensBreakdown",
+    "TurnStreamingEvent",
+    "TurnStreamingEventAudio",
+    "TurnStreamingEventContent",
+    "TurnStreamingEventContentOneItem",
+    "TurnStreamingEventFunctionCall",
+    "TurnStreamingEventThinkingBlocksItem",
+    "TurnStreamingEventUsage",
+    "TurnStreamingEventUsageInputTokensBreakdown",
     "UserMessage",
     "UserMessageContent",
     "UserMessageContentOneItem",

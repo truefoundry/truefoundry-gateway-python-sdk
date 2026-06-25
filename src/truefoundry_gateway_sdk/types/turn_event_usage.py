@@ -4,18 +4,15 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .draft_session_agent_spec import DraftSessionAgentSpec
-from .subject import Subject
+from .turn_event_usage_input_tokens_breakdown import TurnEventUsageInputTokensBreakdown
 
 
-class DraftSession(UniversalBaseModel):
-    id: str
-    agent_spec: DraftSessionAgentSpec
-    agent_name: typing.Optional[str] = None
-    title: typing.Optional[str] = None
-    created_by_subject: Subject
-    created_at: str
-    updated_at: str
+class TurnEventUsage(UniversalBaseModel):
+    input_tokens: int
+    output_tokens: int
+    cache_read_tokens: typing.Optional[int] = None
+    cache_write_tokens: typing.Optional[int] = None
+    input_tokens_breakdown: TurnEventUsageInputTokensBreakdown
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

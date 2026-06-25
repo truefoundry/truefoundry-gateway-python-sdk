@@ -24,10 +24,11 @@ from ...errors.not_found_error import NotFoundError
 from ...errors.precondition_failed_error import PreconditionFailedError
 from ...errors.unauthorized_error import UnauthorizedError
 from ...errors.unprocessable_entity_error import UnprocessableEntityError
+from ...types.request_error_response import RequestErrorResponse
 from ...types.session import Session
 from ...types.turn import Turn
-from ...types.turn_output_event import TurnOutputEvent
-from ...types.turn_streaming_output_event import TurnStreamingOutputEvent
+from ...types.turn_event import TurnEvent
+from ...types.turn_streaming_event import TurnStreamingEvent
 from .types.create_turn_request_input_item import CreateTurnRequestInputItem
 from .types.create_turn_request_previous_turn_id import CreateTurnRequestPreviousTurnId
 from .types.sessions_cancel_response import SessionsCancelResponse
@@ -127,9 +128,9 @@ class RawSessionsClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -138,9 +139,9 @@ class RawSessionsClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -149,9 +150,9 @@ class RawSessionsClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -160,9 +161,9 @@ class RawSessionsClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -171,9 +172,9 @@ class RawSessionsClient:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -232,9 +233,9 @@ class RawSessionsClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -243,9 +244,9 @@ class RawSessionsClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -254,9 +255,9 @@ class RawSessionsClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -265,9 +266,9 @@ class RawSessionsClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -276,9 +277,9 @@ class RawSessionsClient:
                 raise ConflictError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -287,9 +288,9 @@ class RawSessionsClient:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -340,9 +341,9 @@ class RawSessionsClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -351,9 +352,9 @@ class RawSessionsClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -362,9 +363,9 @@ class RawSessionsClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -420,9 +421,9 @@ class RawSessionsClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -431,9 +432,9 @@ class RawSessionsClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -442,9 +443,9 @@ class RawSessionsClient:
                 raise PreconditionFailedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -453,9 +454,9 @@ class RawSessionsClient:
                 raise FailedDependencyError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -531,9 +532,9 @@ class RawSessionsClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -542,9 +543,9 @@ class RawSessionsClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -566,7 +567,7 @@ class RawSessionsClient:
         input: typing.Optional[typing.Sequence[CreateTurnRequestInputItem]] = OMIT,
         previous_turn_id: typing.Optional[CreateTurnRequestPreviousTurnId] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Iterator[HttpResponse[typing.Iterator[TurnStreamingOutputEvent]]]:
+    ) -> typing.Iterator[HttpResponse[typing.Iterator[TurnStreamingEvent]]]:
         """
         Start or continue a turn within a session. Responds with a Server-Sent Events stream.
         Use `previous_turn_id` to chain to the session's last turn (defaults to `auto`).
@@ -585,7 +586,7 @@ class RawSessionsClient:
 
         Yields
         ------
-        typing.Iterator[HttpResponse[typing.Iterator[TurnStreamingOutputEvent]]]
+        typing.Iterator[HttpResponse[typing.Iterator[TurnStreamingEvent]]]
             Server-Sent Events stream of turn events.
         """
         with self._client_wrapper.httpx_client.stream(
@@ -606,7 +607,7 @@ class RawSessionsClient:
             omit=OMIT,
         ) as _response:
 
-            def _stream() -> HttpResponse[typing.Iterator[TurnStreamingOutputEvent]]:
+            def _stream() -> HttpResponse[typing.Iterator[TurnStreamingEvent]]:
                 try:
                     if 200 <= _response.status_code < 300:
 
@@ -617,10 +618,10 @@ class RawSessionsClient:
                                     return
                                 try:
                                     yield typing.cast(
-                                        TurnStreamingOutputEvent,
+                                        TurnStreamingEvent,
                                         parse_sse_obj(
                                             sse=_sse,
-                                            type_=TurnStreamingOutputEvent,  # type: ignore
+                                            type_=TurnStreamingEvent,  # type: ignore
                                         ),
                                     )
                                 except JSONDecodeError as e:
@@ -641,9 +642,9 @@ class RawSessionsClient:
                         raise BadRequestError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Any,
+                                RequestErrorResponse,
                                 parse_obj_as(
-                                    type_=typing.Any,  # type: ignore
+                                    type_=RequestErrorResponse,  # type: ignore
                                     object_=_response.json(),
                                 ),
                             ),
@@ -652,9 +653,9 @@ class RawSessionsClient:
                         raise ForbiddenError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Any,
+                                RequestErrorResponse,
                                 parse_obj_as(
-                                    type_=typing.Any,  # type: ignore
+                                    type_=RequestErrorResponse,  # type: ignore
                                     object_=_response.json(),
                                 ),
                             ),
@@ -663,9 +664,9 @@ class RawSessionsClient:
                         raise NotFoundError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Any,
+                                RequestErrorResponse,
                                 parse_obj_as(
-                                    type_=typing.Any,  # type: ignore
+                                    type_=RequestErrorResponse,  # type: ignore
                                     object_=_response.json(),
                                 ),
                             ),
@@ -725,9 +726,9 @@ class RawSessionsClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -736,9 +737,9 @@ class RawSessionsClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -760,7 +761,7 @@ class RawSessionsClient:
         *,
         after_sequence_number: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Iterator[HttpResponse[typing.Iterator[TurnStreamingOutputEvent]]]:
+    ) -> typing.Iterator[HttpResponse[typing.Iterator[TurnStreamingEvent]]]:
         """
         Subscribe to the live SSE stream for a turn. Pass after_sequence_number to resume after disconnect or server timeout, or send Last-Event-Id when after_sequence_number is omitted.
 
@@ -777,7 +778,7 @@ class RawSessionsClient:
 
         Yields
         ------
-        typing.Iterator[HttpResponse[typing.Iterator[TurnStreamingOutputEvent]]]
+        typing.Iterator[HttpResponse[typing.Iterator[TurnStreamingEvent]]]
             Server-Sent Events stream of turn events (deltas and lifecycle).
         """
         with self._client_wrapper.httpx_client.stream(
@@ -793,7 +794,7 @@ class RawSessionsClient:
             omit=OMIT,
         ) as _response:
 
-            def _stream() -> HttpResponse[typing.Iterator[TurnStreamingOutputEvent]]:
+            def _stream() -> HttpResponse[typing.Iterator[TurnStreamingEvent]]:
                 try:
                     if 200 <= _response.status_code < 300:
 
@@ -804,10 +805,10 @@ class RawSessionsClient:
                                     return
                                 try:
                                     yield typing.cast(
-                                        TurnStreamingOutputEvent,
+                                        TurnStreamingEvent,
                                         parse_sse_obj(
                                             sse=_sse,
-                                            type_=TurnStreamingOutputEvent,  # type: ignore
+                                            type_=TurnStreamingEvent,  # type: ignore
                                         ),
                                     )
                                 except JSONDecodeError as e:
@@ -828,9 +829,9 @@ class RawSessionsClient:
                         raise BadRequestError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Any,
+                                RequestErrorResponse,
                                 parse_obj_as(
-                                    type_=typing.Any,  # type: ignore
+                                    type_=RequestErrorResponse,  # type: ignore
                                     object_=_response.json(),
                                 ),
                             ),
@@ -839,9 +840,9 @@ class RawSessionsClient:
                         raise NotFoundError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Any,
+                                RequestErrorResponse,
                                 parse_obj_as(
-                                    type_=typing.Any,  # type: ignore
+                                    type_=RequestErrorResponse,  # type: ignore
                                     object_=_response.json(),
                                 ),
                             ),
@@ -850,9 +851,9 @@ class RawSessionsClient:
                         raise PreconditionFailedError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Any,
+                                RequestErrorResponse,
                                 parse_obj_as(
-                                    type_=typing.Any,  # type: ignore
+                                    type_=RequestErrorResponse,  # type: ignore
                                     object_=_response.json(),
                                 ),
                             ),
@@ -861,9 +862,9 @@ class RawSessionsClient:
                         raise GatewayTimeoutError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Any,
+                                RequestErrorResponse,
                                 parse_obj_as(
-                                    type_=typing.Any,  # type: ignore
+                                    type_=RequestErrorResponse,  # type: ignore
                                     object_=_response.json(),
                                 ),
                             ),
@@ -893,7 +894,7 @@ class RawSessionsClient:
         limit: typing.Optional[int] = 25,
         order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[TurnOutputEvent, SessionsListTurnEventsResponse]:
+    ) -> SyncPager[TurnEvent, SessionsListTurnEventsResponse]:
         """
         Paginated list of turn events from the Redis events stream.
 
@@ -914,7 +915,7 @@ class RawSessionsClient:
 
         Returns
         -------
-        SyncPager[TurnOutputEvent, SessionsListTurnEventsResponse]
+        SyncPager[TurnEvent, SessionsListTurnEventsResponse]
             Paginated events.
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -955,9 +956,9 @@ class RawSessionsClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -966,9 +967,9 @@ class RawSessionsClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -977,9 +978,9 @@ class RawSessionsClient:
                 raise PreconditionFailedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1079,9 +1080,9 @@ class AsyncRawSessionsClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1090,9 +1091,9 @@ class AsyncRawSessionsClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1101,9 +1102,9 @@ class AsyncRawSessionsClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1112,9 +1113,9 @@ class AsyncRawSessionsClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1123,9 +1124,9 @@ class AsyncRawSessionsClient:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1184,9 +1185,9 @@ class AsyncRawSessionsClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1195,9 +1196,9 @@ class AsyncRawSessionsClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1206,9 +1207,9 @@ class AsyncRawSessionsClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1217,9 +1218,9 @@ class AsyncRawSessionsClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1228,9 +1229,9 @@ class AsyncRawSessionsClient:
                 raise ConflictError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1239,9 +1240,9 @@ class AsyncRawSessionsClient:
                 raise UnprocessableEntityError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1292,9 +1293,9 @@ class AsyncRawSessionsClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1303,9 +1304,9 @@ class AsyncRawSessionsClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1314,9 +1315,9 @@ class AsyncRawSessionsClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1372,9 +1373,9 @@ class AsyncRawSessionsClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1383,9 +1384,9 @@ class AsyncRawSessionsClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1394,9 +1395,9 @@ class AsyncRawSessionsClient:
                 raise PreconditionFailedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1405,9 +1406,9 @@ class AsyncRawSessionsClient:
                 raise FailedDependencyError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1486,9 +1487,9 @@ class AsyncRawSessionsClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1497,9 +1498,9 @@ class AsyncRawSessionsClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1521,7 +1522,7 @@ class AsyncRawSessionsClient:
         input: typing.Optional[typing.Sequence[CreateTurnRequestInputItem]] = OMIT,
         previous_turn_id: typing.Optional[CreateTurnRequestPreviousTurnId] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[TurnStreamingOutputEvent]]]:
+    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[TurnStreamingEvent]]]:
         """
         Start or continue a turn within a session. Responds with a Server-Sent Events stream.
         Use `previous_turn_id` to chain to the session's last turn (defaults to `auto`).
@@ -1540,7 +1541,7 @@ class AsyncRawSessionsClient:
 
         Yields
         ------
-        typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[TurnStreamingOutputEvent]]]
+        typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[TurnStreamingEvent]]]
             Server-Sent Events stream of turn events.
         """
         async with self._client_wrapper.httpx_client.stream(
@@ -1561,7 +1562,7 @@ class AsyncRawSessionsClient:
             omit=OMIT,
         ) as _response:
 
-            async def _stream() -> AsyncHttpResponse[typing.AsyncIterator[TurnStreamingOutputEvent]]:
+            async def _stream() -> AsyncHttpResponse[typing.AsyncIterator[TurnStreamingEvent]]:
                 try:
                     if 200 <= _response.status_code < 300:
 
@@ -1572,10 +1573,10 @@ class AsyncRawSessionsClient:
                                     return
                                 try:
                                     yield typing.cast(
-                                        TurnStreamingOutputEvent,
+                                        TurnStreamingEvent,
                                         parse_sse_obj(
                                             sse=_sse,
-                                            type_=TurnStreamingOutputEvent,  # type: ignore
+                                            type_=TurnStreamingEvent,  # type: ignore
                                         ),
                                     )
                                 except JSONDecodeError as e:
@@ -1596,9 +1597,9 @@ class AsyncRawSessionsClient:
                         raise BadRequestError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Any,
+                                RequestErrorResponse,
                                 parse_obj_as(
-                                    type_=typing.Any,  # type: ignore
+                                    type_=RequestErrorResponse,  # type: ignore
                                     object_=_response.json(),
                                 ),
                             ),
@@ -1607,9 +1608,9 @@ class AsyncRawSessionsClient:
                         raise ForbiddenError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Any,
+                                RequestErrorResponse,
                                 parse_obj_as(
-                                    type_=typing.Any,  # type: ignore
+                                    type_=RequestErrorResponse,  # type: ignore
                                     object_=_response.json(),
                                 ),
                             ),
@@ -1618,9 +1619,9 @@ class AsyncRawSessionsClient:
                         raise NotFoundError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Any,
+                                RequestErrorResponse,
                                 parse_obj_as(
-                                    type_=typing.Any,  # type: ignore
+                                    type_=RequestErrorResponse,  # type: ignore
                                     object_=_response.json(),
                                 ),
                             ),
@@ -1680,9 +1681,9 @@ class AsyncRawSessionsClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1691,9 +1692,9 @@ class AsyncRawSessionsClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1715,7 +1716,7 @@ class AsyncRawSessionsClient:
         *,
         after_sequence_number: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[TurnStreamingOutputEvent]]]:
+    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[TurnStreamingEvent]]]:
         """
         Subscribe to the live SSE stream for a turn. Pass after_sequence_number to resume after disconnect or server timeout, or send Last-Event-Id when after_sequence_number is omitted.
 
@@ -1732,7 +1733,7 @@ class AsyncRawSessionsClient:
 
         Yields
         ------
-        typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[TurnStreamingOutputEvent]]]
+        typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[TurnStreamingEvent]]]
             Server-Sent Events stream of turn events (deltas and lifecycle).
         """
         async with self._client_wrapper.httpx_client.stream(
@@ -1748,7 +1749,7 @@ class AsyncRawSessionsClient:
             omit=OMIT,
         ) as _response:
 
-            async def _stream() -> AsyncHttpResponse[typing.AsyncIterator[TurnStreamingOutputEvent]]:
+            async def _stream() -> AsyncHttpResponse[typing.AsyncIterator[TurnStreamingEvent]]:
                 try:
                     if 200 <= _response.status_code < 300:
 
@@ -1759,10 +1760,10 @@ class AsyncRawSessionsClient:
                                     return
                                 try:
                                     yield typing.cast(
-                                        TurnStreamingOutputEvent,
+                                        TurnStreamingEvent,
                                         parse_sse_obj(
                                             sse=_sse,
-                                            type_=TurnStreamingOutputEvent,  # type: ignore
+                                            type_=TurnStreamingEvent,  # type: ignore
                                         ),
                                     )
                                 except JSONDecodeError as e:
@@ -1783,9 +1784,9 @@ class AsyncRawSessionsClient:
                         raise BadRequestError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Any,
+                                RequestErrorResponse,
                                 parse_obj_as(
-                                    type_=typing.Any,  # type: ignore
+                                    type_=RequestErrorResponse,  # type: ignore
                                     object_=_response.json(),
                                 ),
                             ),
@@ -1794,9 +1795,9 @@ class AsyncRawSessionsClient:
                         raise NotFoundError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Any,
+                                RequestErrorResponse,
                                 parse_obj_as(
-                                    type_=typing.Any,  # type: ignore
+                                    type_=RequestErrorResponse,  # type: ignore
                                     object_=_response.json(),
                                 ),
                             ),
@@ -1805,9 +1806,9 @@ class AsyncRawSessionsClient:
                         raise PreconditionFailedError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Any,
+                                RequestErrorResponse,
                                 parse_obj_as(
-                                    type_=typing.Any,  # type: ignore
+                                    type_=RequestErrorResponse,  # type: ignore
                                     object_=_response.json(),
                                 ),
                             ),
@@ -1816,9 +1817,9 @@ class AsyncRawSessionsClient:
                         raise GatewayTimeoutError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Any,
+                                RequestErrorResponse,
                                 parse_obj_as(
-                                    type_=typing.Any,  # type: ignore
+                                    type_=RequestErrorResponse,  # type: ignore
                                     object_=_response.json(),
                                 ),
                             ),
@@ -1848,7 +1849,7 @@ class AsyncRawSessionsClient:
         limit: typing.Optional[int] = 25,
         order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[TurnOutputEvent, SessionsListTurnEventsResponse]:
+    ) -> AsyncPager[TurnEvent, SessionsListTurnEventsResponse]:
         """
         Paginated list of turn events from the Redis events stream.
 
@@ -1869,7 +1870,7 @@ class AsyncRawSessionsClient:
 
         Returns
         -------
-        AsyncPager[TurnOutputEvent, SessionsListTurnEventsResponse]
+        AsyncPager[TurnEvent, SessionsListTurnEventsResponse]
             Paginated events.
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1913,9 +1914,9 @@ class AsyncRawSessionsClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1924,9 +1925,9 @@ class AsyncRawSessionsClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1935,9 +1936,9 @@ class AsyncRawSessionsClient:
                 raise PreconditionFailedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),

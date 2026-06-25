@@ -4,13 +4,13 @@ import typing
 
 import pydantic
 from ....core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ....types.events_token_pagination import EventsTokenPagination
-from ....types.turn_output_event import TurnOutputEvent
+from ....types.token_pagination import TokenPagination
+from ....types.turn_event import TurnEvent
 
 
 class SessionsListTurnEventsResponse(UniversalBaseModel):
-    data: typing.List[TurnOutputEvent]
-    pagination: EventsTokenPagination
+    data: typing.List[TurnEvent]
+    pagination: TokenPagination
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

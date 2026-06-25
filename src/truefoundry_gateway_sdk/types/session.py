@@ -4,14 +4,14 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .session_subject import SessionSubject
+from .subject import Subject
 
 
 class Session(UniversalBaseModel):
     id: str
     agent_name: str
     title: typing.Optional[str] = None
-    created_by_subject: SessionSubject
+    created_by_subject: Subject
     created_at: str
     updated_at: str
 
