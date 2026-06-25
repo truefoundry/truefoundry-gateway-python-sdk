@@ -24,10 +24,10 @@ from ...errors.not_found_error import NotFoundError
 from ...errors.precondition_failed_error import PreconditionFailedError
 from ...errors.unauthorized_error import UnauthorizedError
 from ...errors.unprocessable_entity_error import UnprocessableEntityError
-from ...types.sequenced_turn_persisted_event import SequencedTurnPersistedEvent
-from ...types.sequenced_turn_streaming_output_event import SequencedTurnStreamingOutputEvent
 from ...types.session import Session
 from ...types.turn import Turn
+from ...types.turn_output_event import TurnOutputEvent
+from ...types.turn_streaming_output_event import TurnStreamingOutputEvent
 from .types.create_turn_request_input_item import CreateTurnRequestInputItem
 from .types.create_turn_request_previous_turn_id import CreateTurnRequestPreviousTurnId
 from .types.sessions_cancel_response import SessionsCancelResponse
@@ -566,7 +566,7 @@ class RawSessionsClient:
         input: typing.Optional[typing.Sequence[CreateTurnRequestInputItem]] = OMIT,
         previous_turn_id: typing.Optional[CreateTurnRequestPreviousTurnId] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Iterator[HttpResponse[typing.Iterator[SequencedTurnStreamingOutputEvent]]]:
+    ) -> typing.Iterator[HttpResponse[typing.Iterator[TurnStreamingOutputEvent]]]:
         """
         Start or continue a turn within a session. Responds with a Server-Sent Events stream.
         Use `previous_turn_id` to chain to the session's last turn (defaults to `auto`).
@@ -585,7 +585,7 @@ class RawSessionsClient:
 
         Yields
         ------
-        typing.Iterator[HttpResponse[typing.Iterator[SequencedTurnStreamingOutputEvent]]]
+        typing.Iterator[HttpResponse[typing.Iterator[TurnStreamingOutputEvent]]]
             Server-Sent Events stream of turn events.
         """
         with self._client_wrapper.httpx_client.stream(
@@ -606,7 +606,7 @@ class RawSessionsClient:
             omit=OMIT,
         ) as _response:
 
-            def _stream() -> HttpResponse[typing.Iterator[SequencedTurnStreamingOutputEvent]]:
+            def _stream() -> HttpResponse[typing.Iterator[TurnStreamingOutputEvent]]:
                 try:
                     if 200 <= _response.status_code < 300:
 
@@ -617,10 +617,10 @@ class RawSessionsClient:
                                     return
                                 try:
                                     yield typing.cast(
-                                        SequencedTurnStreamingOutputEvent,
+                                        TurnStreamingOutputEvent,
                                         parse_sse_obj(
                                             sse=_sse,
-                                            type_=SequencedTurnStreamingOutputEvent,  # type: ignore
+                                            type_=TurnStreamingOutputEvent,  # type: ignore
                                         ),
                                     )
                                 except JSONDecodeError as e:
@@ -760,7 +760,7 @@ class RawSessionsClient:
         *,
         after_sequence_number: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Iterator[HttpResponse[typing.Iterator[SequencedTurnStreamingOutputEvent]]]:
+    ) -> typing.Iterator[HttpResponse[typing.Iterator[TurnStreamingOutputEvent]]]:
         """
         Subscribe to the live SSE stream for a turn. Pass after_sequence_number to resume after disconnect or server timeout, or send Last-Event-Id when after_sequence_number is omitted.
 
@@ -777,7 +777,7 @@ class RawSessionsClient:
 
         Yields
         ------
-        typing.Iterator[HttpResponse[typing.Iterator[SequencedTurnStreamingOutputEvent]]]
+        typing.Iterator[HttpResponse[typing.Iterator[TurnStreamingOutputEvent]]]
             Server-Sent Events stream of turn events (deltas and lifecycle).
         """
         with self._client_wrapper.httpx_client.stream(
@@ -793,7 +793,7 @@ class RawSessionsClient:
             omit=OMIT,
         ) as _response:
 
-            def _stream() -> HttpResponse[typing.Iterator[SequencedTurnStreamingOutputEvent]]:
+            def _stream() -> HttpResponse[typing.Iterator[TurnStreamingOutputEvent]]:
                 try:
                     if 200 <= _response.status_code < 300:
 
@@ -804,10 +804,10 @@ class RawSessionsClient:
                                     return
                                 try:
                                     yield typing.cast(
-                                        SequencedTurnStreamingOutputEvent,
+                                        TurnStreamingOutputEvent,
                                         parse_sse_obj(
                                             sse=_sse,
-                                            type_=SequencedTurnStreamingOutputEvent,  # type: ignore
+                                            type_=TurnStreamingOutputEvent,  # type: ignore
                                         ),
                                     )
                                 except JSONDecodeError as e:
@@ -893,7 +893,7 @@ class RawSessionsClient:
         limit: typing.Optional[int] = 25,
         order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[SequencedTurnPersistedEvent, SessionsListTurnEventsResponse]:
+    ) -> SyncPager[TurnOutputEvent, SessionsListTurnEventsResponse]:
         """
         Paginated list of turn events from the Redis events stream.
 
@@ -914,7 +914,7 @@ class RawSessionsClient:
 
         Returns
         -------
-        SyncPager[SequencedTurnPersistedEvent, SessionsListTurnEventsResponse]
+        SyncPager[TurnOutputEvent, SessionsListTurnEventsResponse]
             Paginated events.
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -1521,7 +1521,7 @@ class AsyncRawSessionsClient:
         input: typing.Optional[typing.Sequence[CreateTurnRequestInputItem]] = OMIT,
         previous_turn_id: typing.Optional[CreateTurnRequestPreviousTurnId] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[SequencedTurnStreamingOutputEvent]]]:
+    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[TurnStreamingOutputEvent]]]:
         """
         Start or continue a turn within a session. Responds with a Server-Sent Events stream.
         Use `previous_turn_id` to chain to the session's last turn (defaults to `auto`).
@@ -1540,7 +1540,7 @@ class AsyncRawSessionsClient:
 
         Yields
         ------
-        typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[SequencedTurnStreamingOutputEvent]]]
+        typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[TurnStreamingOutputEvent]]]
             Server-Sent Events stream of turn events.
         """
         async with self._client_wrapper.httpx_client.stream(
@@ -1561,7 +1561,7 @@ class AsyncRawSessionsClient:
             omit=OMIT,
         ) as _response:
 
-            async def _stream() -> AsyncHttpResponse[typing.AsyncIterator[SequencedTurnStreamingOutputEvent]]:
+            async def _stream() -> AsyncHttpResponse[typing.AsyncIterator[TurnStreamingOutputEvent]]:
                 try:
                     if 200 <= _response.status_code < 300:
 
@@ -1572,10 +1572,10 @@ class AsyncRawSessionsClient:
                                     return
                                 try:
                                     yield typing.cast(
-                                        SequencedTurnStreamingOutputEvent,
+                                        TurnStreamingOutputEvent,
                                         parse_sse_obj(
                                             sse=_sse,
-                                            type_=SequencedTurnStreamingOutputEvent,  # type: ignore
+                                            type_=TurnStreamingOutputEvent,  # type: ignore
                                         ),
                                     )
                                 except JSONDecodeError as e:
@@ -1715,7 +1715,7 @@ class AsyncRawSessionsClient:
         *,
         after_sequence_number: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[SequencedTurnStreamingOutputEvent]]]:
+    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[TurnStreamingOutputEvent]]]:
         """
         Subscribe to the live SSE stream for a turn. Pass after_sequence_number to resume after disconnect or server timeout, or send Last-Event-Id when after_sequence_number is omitted.
 
@@ -1732,7 +1732,7 @@ class AsyncRawSessionsClient:
 
         Yields
         ------
-        typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[SequencedTurnStreamingOutputEvent]]]
+        typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[TurnStreamingOutputEvent]]]
             Server-Sent Events stream of turn events (deltas and lifecycle).
         """
         async with self._client_wrapper.httpx_client.stream(
@@ -1748,7 +1748,7 @@ class AsyncRawSessionsClient:
             omit=OMIT,
         ) as _response:
 
-            async def _stream() -> AsyncHttpResponse[typing.AsyncIterator[SequencedTurnStreamingOutputEvent]]:
+            async def _stream() -> AsyncHttpResponse[typing.AsyncIterator[TurnStreamingOutputEvent]]:
                 try:
                     if 200 <= _response.status_code < 300:
 
@@ -1759,10 +1759,10 @@ class AsyncRawSessionsClient:
                                     return
                                 try:
                                     yield typing.cast(
-                                        SequencedTurnStreamingOutputEvent,
+                                        TurnStreamingOutputEvent,
                                         parse_sse_obj(
                                             sse=_sse,
-                                            type_=SequencedTurnStreamingOutputEvent,  # type: ignore
+                                            type_=TurnStreamingOutputEvent,  # type: ignore
                                         ),
                                     )
                                 except JSONDecodeError as e:
@@ -1848,7 +1848,7 @@ class AsyncRawSessionsClient:
         limit: typing.Optional[int] = 25,
         order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[SequencedTurnPersistedEvent, SessionsListTurnEventsResponse]:
+    ) -> AsyncPager[TurnOutputEvent, SessionsListTurnEventsResponse]:
         """
         Paginated list of turn events from the Redis events stream.
 
@@ -1869,7 +1869,7 @@ class AsyncRawSessionsClient:
 
         Returns
         -------
-        AsyncPager[SequencedTurnPersistedEvent, SessionsListTurnEventsResponse]
+        AsyncPager[TurnOutputEvent, SessionsListTurnEventsResponse]
             Paginated events.
         """
         _response = await self._client_wrapper.httpx_client.request(

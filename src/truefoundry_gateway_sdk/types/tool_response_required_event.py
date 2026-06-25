@@ -4,16 +4,19 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .session_subject import SessionSubject
+from .agent_tool_call_ref import AgentToolCallRef
 
 
-class Session(UniversalBaseModel):
-    id: str
-    agent_name: str
-    title: typing.Optional[str] = None
-    created_by_subject: SessionSubject
+class ToolResponseRequiredEvent(UniversalBaseModel):
+    type: typing.Literal["tool.response_required"] = "tool.response_required"
+    id: str = pydantic.Field()
+    """
+    Unique identifier for the event
+    """
+
     created_at: str
-    updated_at: str
+    thread_id: str
+    tool_calls: typing.List[AgentToolCallRef]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

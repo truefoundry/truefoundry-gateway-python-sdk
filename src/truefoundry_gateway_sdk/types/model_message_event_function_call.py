@@ -4,16 +4,11 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .session_subject import SessionSubject
 
 
-class Session(UniversalBaseModel):
-    id: str
-    agent_name: str
-    title: typing.Optional[str] = None
-    created_by_subject: SessionSubject
-    created_at: str
-    updated_at: str
+class ModelMessageEventFunctionCall(UniversalBaseModel):
+    name: str
+    arguments: str
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

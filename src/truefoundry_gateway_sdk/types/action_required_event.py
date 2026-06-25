@@ -2,8 +2,8 @@
 
 import typing
 
-from .agent_approval_required import AgentApprovalRequired
-from .agent_mcp_auth_required import AgentMcpAuthRequired
-from .agent_tool_response_required import AgentToolResponseRequired
+from .mcp_auth_required_event import McpAuthRequiredEvent
+from .tool_approval_required_event import ToolApprovalRequiredEvent
+from .tool_response_required_event import ToolResponseRequiredEvent
 
-ActionRequiredEvent = typing.Union[AgentApprovalRequired, AgentToolResponseRequired, AgentMcpAuthRequired]
+ActionRequiredEvent = typing.Union[ToolApprovalRequiredEvent, ToolResponseRequiredEvent, McpAuthRequiredEvent]

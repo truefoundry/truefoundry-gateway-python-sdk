@@ -4,16 +4,14 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .session_subject import SessionSubject
+from .approval_decision import ApprovalDecision
 
 
-class Session(UniversalBaseModel):
-    id: str
-    agent_name: str
-    title: typing.Optional[str] = None
-    created_by_subject: SessionSubject
-    created_at: str
-    updated_at: str
+class UserToolApprovalEvent(UniversalBaseModel):
+    type: typing.Literal["user.tool_approval"] = "user.tool_approval"
+    thread_id: str
+    tool_call_id: str
+    approval: ApprovalDecision
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

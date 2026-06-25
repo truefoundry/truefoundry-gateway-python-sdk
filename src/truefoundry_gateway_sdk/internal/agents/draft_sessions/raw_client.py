@@ -349,7 +349,7 @@ class RawDraftSessionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[DraftSessionsUpdateResponse]:
         """
-        Update a draft session's inline spec and/or title. Owner-only. An empty body is a valid no-op that refreshes `updated_at`.
+        Update a draft session's inline spec. Owner-only. An empty body is a valid no-op that refreshes `updated_at`.
 
         Parameters
         ----------
@@ -765,7 +765,7 @@ class AsyncRawDraftSessionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[DraftSessionsUpdateResponse]:
         """
-        Update a draft session's inline spec and/or title. Owner-only. An empty body is a valid no-op that refreshes `updated_at`.
+        Update a draft session's inline spec. Owner-only. An empty body is a valid no-op that refreshes `updated_at`.
 
         Parameters
         ----------

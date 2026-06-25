@@ -4,16 +4,19 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .session_subject import SessionSubject
+from .agent_mcp_server_auth_info import AgentMcpServerAuthInfo
 
 
-class Session(UniversalBaseModel):
-    id: str
-    agent_name: str
-    title: typing.Optional[str] = None
-    created_by_subject: SessionSubject
+class McpAuthRequiredEvent(UniversalBaseModel):
+    type: typing.Literal["mcp.auth_required"] = "mcp.auth_required"
+    id: str = pydantic.Field()
+    """
+    Unique identifier for the event
+    """
+
     created_at: str
-    updated_at: str
+    servers: typing.List[AgentMcpServerAuthInfo]
+    thread_id: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

@@ -4,16 +4,15 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .session_subject import SessionSubject
+from .turn_streaming_output_event_usage_input_tokens_breakdown import TurnStreamingOutputEventUsageInputTokensBreakdown
 
 
-class Session(UniversalBaseModel):
-    id: str
-    agent_name: str
-    title: typing.Optional[str] = None
-    created_by_subject: SessionSubject
-    created_at: str
-    updated_at: str
+class TurnStreamingOutputEventUsage(UniversalBaseModel):
+    input_tokens: int
+    output_tokens: int
+    cache_read_tokens: typing.Optional[int] = None
+    cache_write_tokens: typing.Optional[int] = None
+    input_tokens_breakdown: TurnStreamingOutputEventUsageInputTokensBreakdown
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

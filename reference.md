@@ -1080,7 +1080,7 @@ client.internal.agents.draft_sessions.get(
 <dl>
 <dd>
 
-Update a draft session's inline spec and/or title. Owner-only. An empty body is a valid no-op that refreshes `updated_at`.
+Update a draft session's inline spec. Owner-only. An empty body is a valid no-op that refreshes `updated_at`.
 </dd>
 </dl>
 </dd>

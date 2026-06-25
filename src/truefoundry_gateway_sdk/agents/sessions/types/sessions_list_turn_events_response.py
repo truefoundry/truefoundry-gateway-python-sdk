@@ -5,11 +5,11 @@ import typing
 import pydantic
 from ....core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ....types.events_token_pagination import EventsTokenPagination
-from ....types.sequenced_turn_persisted_event import SequencedTurnPersistedEvent
+from ....types.turn_output_event import TurnOutputEvent
 
 
 class SessionsListTurnEventsResponse(UniversalBaseModel):
-    data: typing.List[SequencedTurnPersistedEvent]
+    data: typing.List[TurnOutputEvent]
     pagination: EventsTokenPagination
 
     if IS_PYDANTIC_V2:
