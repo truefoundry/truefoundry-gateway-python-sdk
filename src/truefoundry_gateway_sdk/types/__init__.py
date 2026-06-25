@@ -21,8 +21,6 @@ if typing.TYPE_CHECKING:
     from .chat_completion_message_tool_call import ChatCompletionMessageToolCall
     from .chat_completion_message_tool_call_function import ChatCompletionMessageToolCallFunction
     from .draft_session import DraftSession
-    from .enriched_tool_call import EnrichedToolCall
-    from .enriched_tool_call_tool_info import EnrichedToolCallToolInfo
     from .extended_chunk_delta_tool_call import ExtendedChunkDeltaToolCall
     from .extended_chunk_delta_tool_call_tool_info import ExtendedChunkDeltaToolCallToolInfo
     from .file_upload_content_part import FileUploadContentPart
@@ -81,7 +79,9 @@ if typing.TYPE_CHECKING:
     from .thread_done_event import ThreadDoneEvent
     from .token_pagination import TokenPagination
     from .tool_approval_required_event import ToolApprovalRequiredEvent
+    from .tool_call import ToolCall
     from .tool_call_ref import ToolCallRef
+    from .tool_call_tool_info import ToolCallToolInfo
     from .tool_response_event import ToolResponseEvent
     from .tool_response_required_event import ToolResponseRequiredEvent
     from .true_foundry_system_tool_call_info import TrueFoundrySystemToolCallInfo
@@ -128,8 +128,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ChatCompletionMessageToolCall": ".chat_completion_message_tool_call",
     "ChatCompletionMessageToolCallFunction": ".chat_completion_message_tool_call_function",
     "DraftSession": ".draft_session",
-    "EnrichedToolCall": ".enriched_tool_call",
-    "EnrichedToolCallToolInfo": ".enriched_tool_call_tool_info",
     "ExtendedChunkDeltaToolCall": ".extended_chunk_delta_tool_call",
     "ExtendedChunkDeltaToolCallToolInfo": ".extended_chunk_delta_tool_call_tool_info",
     "FileUploadContentPart": ".file_upload_content_part",
@@ -188,7 +186,9 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ThreadDoneEvent": ".thread_done_event",
     "TokenPagination": ".token_pagination",
     "ToolApprovalRequiredEvent": ".tool_approval_required_event",
+    "ToolCall": ".tool_call",
     "ToolCallRef": ".tool_call_ref",
+    "ToolCallToolInfo": ".tool_call_tool_info",
     "ToolResponseEvent": ".tool_response_event",
     "ToolResponseRequiredEvent": ".tool_response_required_event",
     "TrueFoundrySystemToolCallInfo": ".true_foundry_system_tool_call_info",
@@ -259,8 +259,6 @@ __all__ = [
     "ChatCompletionMessageToolCall",
     "ChatCompletionMessageToolCallFunction",
     "DraftSession",
-    "EnrichedToolCall",
-    "EnrichedToolCallToolInfo",
     "ExtendedChunkDeltaToolCall",
     "ExtendedChunkDeltaToolCallToolInfo",
     "FileUploadContentPart",
@@ -319,7 +317,9 @@ __all__ = [
     "ThreadDoneEvent",
     "TokenPagination",
     "ToolApprovalRequiredEvent",
+    "ToolCall",
     "ToolCallRef",
+    "ToolCallToolInfo",
     "ToolResponseEvent",
     "ToolResponseRequiredEvent",
     "TrueFoundrySystemToolCallInfo",

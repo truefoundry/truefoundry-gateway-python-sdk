@@ -4,13 +4,13 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .enriched_tool_call import EnrichedToolCall
 from .finish_reason import FinishReason
 from .model_message_event_audio import ModelMessageEventAudio
 from .model_message_event_content import ModelMessageEventContent
 from .model_message_event_function_call import ModelMessageEventFunctionCall
 from .model_message_event_thinking_blocks_item import ModelMessageEventThinkingBlocksItem
 from .model_message_event_usage import ModelMessageEventUsage
+from .tool_call import ToolCall
 
 
 class ModelMessageEvent(UniversalBaseModel):
@@ -20,7 +20,7 @@ class ModelMessageEvent(UniversalBaseModel):
     name: typing.Optional[str] = None
     refusal: typing.Optional[str] = None
     thinking_blocks: typing.Optional[typing.List[ModelMessageEventThinkingBlocksItem]] = None
-    tool_calls: typing.Optional[typing.List[EnrichedToolCall]] = None
+    tool_calls: typing.Optional[typing.List[ToolCall]] = None
     type: typing.Literal["model.message"] = "model.message"
     id: str = pydantic.Field()
     """
