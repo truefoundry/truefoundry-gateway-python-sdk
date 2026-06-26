@@ -10,6 +10,7 @@ from .turn_state_cancelled_reason import TurnStateCancelledReason
 class TurnStateCancelled(UniversalBaseModel):
     status: typing.Literal["cancelled"] = "cancelled"
     reason: TurnStateCancelledReason
+    completed_at: str
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

@@ -67,9 +67,10 @@ if typing.TYPE_CHECKING:
     from .subject import Subject
     from .text_content_part import TextContentPart
     from .thread_created_event import ThreadCreatedEvent
-    from .thread_done_completed import ThreadDoneCompleted
-    from .thread_done_error import ThreadDoneError
     from .thread_done_event import ThreadDoneEvent
+    from .thread_state import ThreadState
+    from .thread_state_done import ThreadStateDone
+    from .thread_state_error import ThreadStateError
     from .token_pagination import TokenPagination
     from .tool_approval_required_event import ToolApprovalRequiredEvent
     from .tool_call import ToolCall
@@ -161,9 +162,10 @@ _dynamic_imports: typing.Dict[str, str] = {
     "Subject": ".subject",
     "TextContentPart": ".text_content_part",
     "ThreadCreatedEvent": ".thread_created_event",
-    "ThreadDoneCompleted": ".thread_done_completed",
-    "ThreadDoneError": ".thread_done_error",
     "ThreadDoneEvent": ".thread_done_event",
+    "ThreadState": ".thread_state",
+    "ThreadStateDone": ".thread_state_done",
+    "ThreadStateError": ".thread_state_error",
     "TokenPagination": ".token_pagination",
     "ToolApprovalRequiredEvent": ".tool_approval_required_event",
     "ToolCall": ".tool_call",
@@ -279,9 +281,10 @@ __all__ = [
     "Subject",
     "TextContentPart",
     "ThreadCreatedEvent",
-    "ThreadDoneCompleted",
-    "ThreadDoneError",
     "ThreadDoneEvent",
+    "ThreadState",
+    "ThreadStateDone",
+    "ThreadStateError",
     "TokenPagination",
     "ToolApprovalRequiredEvent",
     "ToolCall",

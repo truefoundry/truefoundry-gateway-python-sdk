@@ -12,6 +12,7 @@ class TurnStateDone(UniversalBaseModel):
     status: typing.Literal["done"] = "done"
     output: typing.Optional[TurnStateDoneOutput] = None
     required_actions: typing.List[ActionRequiredEvent]
+    completed_at: str
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

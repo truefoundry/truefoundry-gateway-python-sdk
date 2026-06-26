@@ -4,23 +4,12 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .agent_parent import AgentParent
 from .model_message_event import ModelMessageEvent
 
 
-class ThreadDoneCompleted(UniversalBaseModel):
-    type: typing.Literal["thread.done"] = "thread.done"
-    id: str = pydantic.Field()
-    """
-    Unique identifier for the event
-    """
-
-    created_at: str
-    output: ModelMessageEvent
-    parent: typing.Optional[AgentParent] = None
+class ThreadStateDone(UniversalBaseModel):
     status: typing.Literal["done"] = "done"
-    thread_id: str
-    title: str
+    output: ModelMessageEvent
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

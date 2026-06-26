@@ -2,7 +2,29 @@
 
 import typing
 
-from .thread_done_completed import ThreadDoneCompleted
-from .thread_done_error import ThreadDoneError
+import pydantic
+from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .agent_parent import AgentParent
+from .thread_state import ThreadState
 
-ThreadDoneEvent = typing.Union[ThreadDoneCompleted, ThreadDoneError]
+
+class ThreadDoneEvent(UniversalBaseModel):
+    type: typing.Literal["thread.done"] = "thread.done"
+    id: str = pydantic.Field()
+    """
+    Unique identifier for the event
+    """
+
+    created_at: str
+    parent: typing.Optional[AgentParent] = None
+    state: ThreadState
+    thread_id: str
+    title: str
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            smart_union = True
+            extra = pydantic.Extra.allow
