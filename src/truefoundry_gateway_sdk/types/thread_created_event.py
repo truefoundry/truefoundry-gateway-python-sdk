@@ -20,7 +20,6 @@ class ThreadCreatedEvent(UniversalBaseModel):
     parent: AgentParent
     thread_id: str
     title: str
-    sequence_number: int
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

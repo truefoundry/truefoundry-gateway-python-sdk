@@ -16,7 +16,6 @@ class SandboxCreatedEvent(UniversalBaseModel):
     created_at: str
     sandbox_id: str
     thread_id: typing.Optional[str] = None
-    sequence_number: int
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

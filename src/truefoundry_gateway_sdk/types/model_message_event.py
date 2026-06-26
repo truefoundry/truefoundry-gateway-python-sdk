@@ -31,7 +31,6 @@ class ModelMessageEvent(UniversalBaseModel):
     finish_reason: typing.Optional[FinishReason] = None
     created_at: str
     usage: typing.Optional[ModelMessageEventUsage] = None
-    sequence_number: int
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

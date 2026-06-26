@@ -17,7 +17,6 @@ class ToolResponseEvent(UniversalBaseModel):
 
     thread_id: str
     created_at: str
-    sequence_number: int
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

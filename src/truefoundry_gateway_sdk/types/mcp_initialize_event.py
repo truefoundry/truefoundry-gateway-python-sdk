@@ -17,7 +17,6 @@ class McpInitializeEvent(UniversalBaseModel):
     created_at: str
     thread_id: str
     content: typing.List[McpInitializationInfo]
-    sequence_number: int
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

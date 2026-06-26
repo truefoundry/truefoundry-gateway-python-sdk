@@ -8,9 +8,6 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 class RuntimeConfigContextManagementLargeToolResponse(UniversalBaseModel):
     enabled: bool = True
-    individual_tool_response_token_threshold: int = 6000
-    total_tool_response_token_threshold: int = 10000
-    preview_number_of_characters: int = 100
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

@@ -15,7 +15,7 @@ class RuntimeConfig(UniversalBaseModel):
     iteration_limit: int = 100
     sandbox: typing.Optional[RuntimeConfigSandbox] = None
     dynamic_sub_agents: typing.Optional[RuntimeConfigDynamicSubAgents] = None
-    context_management: typing.Optional[RuntimeConfigContextManagement] = None
+    context_management: RuntimeConfigContextManagement
     generative_ui: typing.Optional[RuntimeConfigGenerativeUi] = None
     ask_user_questions: typing.Optional[RuntimeConfigAskUserQuestions] = None
 

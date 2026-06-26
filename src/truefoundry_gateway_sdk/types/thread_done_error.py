@@ -22,7 +22,6 @@ class ThreadDoneError(UniversalBaseModel):
     status: typing.Literal["error"] = "error"
     thread_id: str
     title: typing.Optional[str] = None
-    sequence_number: int
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2
