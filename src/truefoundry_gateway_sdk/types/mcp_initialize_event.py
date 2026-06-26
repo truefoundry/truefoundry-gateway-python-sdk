@@ -4,7 +4,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .mcp_initialization_info import McpInitializationInfo
+from .mcp_server_init_info import McpServerInitInfo
 
 
 class McpInitializeEvent(UniversalBaseModel):
@@ -16,7 +16,7 @@ class McpInitializeEvent(UniversalBaseModel):
 
     created_at: str
     thread_id: str
-    content: typing.List[McpInitializationInfo]
+    mcp_servers: typing.List[McpServerInitInfo]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

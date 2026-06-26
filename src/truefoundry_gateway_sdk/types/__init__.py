@@ -27,12 +27,12 @@ if typing.TYPE_CHECKING:
     from .file_upload_content_part_file import FileUploadContentPartFile
     from .finish_reason import FinishReason
     from .mcp_auth_required_event import McpAuthRequiredEvent
-    from .mcp_initialization_info import McpInitializationInfo
     from .mcp_initialize_event import McpInitializeEvent
     from .mcp_server import McpServer
     from .mcp_server_auth_info import McpServerAuthInfo
     from .mcp_server_disable_tools_item import McpServerDisableToolsItem
     from .mcp_server_enable_tools_item import McpServerEnableToolsItem
+    from .mcp_server_init_info import McpServerInitInfo
     from .mcp_server_preload_tools_item import McpServerPreloadToolsItem
     from .mcp_server_require_approval_for_tools_item import McpServerRequireApprovalForToolsItem
     from .mcp_tool_call_info import McpToolCallInfo
@@ -87,9 +87,8 @@ if typing.TYPE_CHECKING:
     from .true_foundry_system_tool_call_info import TrueFoundrySystemToolCallInfo
     from .turn import Turn
     from .turn_created_event import TurnCreatedEvent
-    from .turn_done_cancelled import TurnDoneCancelled
-    from .turn_done_completed import TurnDoneCompleted
-    from .turn_done_error import TurnDoneError
+    from .turn_done_event import TurnDoneEvent
+    from .turn_done_event_state import TurnDoneEventState
     from .turn_event import TurnEvent
     from .turn_input_item import TurnInputItem
     from .turn_state import TurnState
@@ -134,12 +133,12 @@ _dynamic_imports: typing.Dict[str, str] = {
     "FileUploadContentPartFile": ".file_upload_content_part_file",
     "FinishReason": ".finish_reason",
     "McpAuthRequiredEvent": ".mcp_auth_required_event",
-    "McpInitializationInfo": ".mcp_initialization_info",
     "McpInitializeEvent": ".mcp_initialize_event",
     "McpServer": ".mcp_server",
     "McpServerAuthInfo": ".mcp_server_auth_info",
     "McpServerDisableToolsItem": ".mcp_server_disable_tools_item",
     "McpServerEnableToolsItem": ".mcp_server_enable_tools_item",
+    "McpServerInitInfo": ".mcp_server_init_info",
     "McpServerPreloadToolsItem": ".mcp_server_preload_tools_item",
     "McpServerRequireApprovalForToolsItem": ".mcp_server_require_approval_for_tools_item",
     "McpToolCallInfo": ".mcp_tool_call_info",
@@ -194,9 +193,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "TrueFoundrySystemToolCallInfo": ".true_foundry_system_tool_call_info",
     "Turn": ".turn",
     "TurnCreatedEvent": ".turn_created_event",
-    "TurnDoneCancelled": ".turn_done_cancelled",
-    "TurnDoneCompleted": ".turn_done_completed",
-    "TurnDoneError": ".turn_done_error",
+    "TurnDoneEvent": ".turn_done_event",
+    "TurnDoneEventState": ".turn_done_event_state",
     "TurnEvent": ".turn_event",
     "TurnInputItem": ".turn_input_item",
     "TurnState": ".turn_state",
@@ -265,12 +263,12 @@ __all__ = [
     "FileUploadContentPartFile",
     "FinishReason",
     "McpAuthRequiredEvent",
-    "McpInitializationInfo",
     "McpInitializeEvent",
     "McpServer",
     "McpServerAuthInfo",
     "McpServerDisableToolsItem",
     "McpServerEnableToolsItem",
+    "McpServerInitInfo",
     "McpServerPreloadToolsItem",
     "McpServerRequireApprovalForToolsItem",
     "McpToolCallInfo",
@@ -325,9 +323,8 @@ __all__ = [
     "TrueFoundrySystemToolCallInfo",
     "Turn",
     "TurnCreatedEvent",
-    "TurnDoneCancelled",
-    "TurnDoneCompleted",
-    "TurnDoneError",
+    "TurnDoneEvent",
+    "TurnDoneEventState",
     "TurnEvent",
     "TurnInputItem",
     "TurnState",

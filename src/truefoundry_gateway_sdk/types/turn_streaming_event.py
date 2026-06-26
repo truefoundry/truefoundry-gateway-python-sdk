@@ -13,9 +13,7 @@ from .tool_approval_required_event import ToolApprovalRequiredEvent
 from .tool_response_event import ToolResponseEvent
 from .tool_response_required_event import ToolResponseRequiredEvent
 from .turn_created_event import TurnCreatedEvent
-from .turn_done_cancelled import TurnDoneCancelled
-from .turn_done_completed import TurnDoneCompleted
-from .turn_done_error import TurnDoneError
+from .turn_done_event import TurnDoneEvent
 
 TurnStreamingEvent = typing.Union[
     ModelMessageEvent,
@@ -29,7 +27,5 @@ TurnStreamingEvent = typing.Union[
     ToolApprovalRequiredEvent,
     ToolResponseRequiredEvent,
     TurnCreatedEvent,
-    TurnDoneCompleted,
-    TurnDoneCancelled,
-    TurnDoneError,
+    TurnDoneEvent,
 ]

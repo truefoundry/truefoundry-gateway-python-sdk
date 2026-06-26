@@ -20,6 +20,7 @@ class TurnStateDoneOutput(UniversalBaseModel):
     name: typing.Optional[str] = None
     refusal: typing.Optional[str] = None
     thinking_blocks: typing.Optional[typing.List[TurnStateDoneOutputThinkingBlocksItem]] = None
+    reasoning_content: typing.Optional[str] = None
     tool_calls: typing.Optional[typing.List[ToolCall]] = None
     type: typing.Literal["model.message"] = "model.message"
     id: str = pydantic.Field()

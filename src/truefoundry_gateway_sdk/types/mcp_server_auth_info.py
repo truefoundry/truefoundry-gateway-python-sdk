@@ -7,8 +7,8 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class McpServerAuthInfo(UniversalBaseModel):
-    mcp_server_id: str
-    mcp_server_name: str
+    id: str
+    name: str
     auth_url: str
     thread_ids: typing.List[str]
 

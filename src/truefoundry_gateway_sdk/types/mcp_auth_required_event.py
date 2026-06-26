@@ -15,7 +15,7 @@ class McpAuthRequiredEvent(UniversalBaseModel):
     """
 
     created_at: str
-    servers: typing.List[McpServerAuthInfo]
+    mcp_servers: typing.List[McpServerAuthInfo]
     thread_id: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:

@@ -4,19 +4,12 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .turn_state_done import TurnStateDone
 
 
-class TurnDoneCompleted(UniversalBaseModel):
-    type: typing.Literal["turn.done"] = "turn.done"
-    id: str = pydantic.Field()
-    """
-    Unique identifier for the event
-    """
-
-    state: TurnStateDone
-    created_at: str
-    thread_id: typing.Optional[str] = None
+class McpServerInitInfo(UniversalBaseModel):
+    id: str
+    name: str
+    session_id: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

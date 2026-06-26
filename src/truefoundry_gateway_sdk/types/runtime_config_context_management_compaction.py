@@ -8,7 +8,7 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 class RuntimeConfigContextManagementCompaction(UniversalBaseModel):
     enabled: bool = True
-    compaction_threshold_tokens: int = 50000
+    compaction_threshold_tokens: typing.Optional[int] = 50000
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

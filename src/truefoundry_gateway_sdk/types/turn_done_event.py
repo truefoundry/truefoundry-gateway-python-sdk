@@ -4,17 +4,17 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .turn_state_error import TurnStateError
+from .turn_done_event_state import TurnDoneEventState
 
 
-class TurnDoneError(UniversalBaseModel):
+class TurnDoneEvent(UniversalBaseModel):
     type: typing.Literal["turn.done"] = "turn.done"
     id: str = pydantic.Field()
     """
     Unique identifier for the event
     """
 
-    state: TurnStateError
+    state: TurnDoneEventState
     created_at: str
     thread_id: typing.Optional[str] = None
 
