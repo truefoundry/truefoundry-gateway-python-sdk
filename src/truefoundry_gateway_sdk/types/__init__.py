@@ -38,20 +38,14 @@ if typing.TYPE_CHECKING:
     from .mcp_tool_call_info import McpToolCallInfo
     from .model import Model
     from .model_message_delta_event import ModelMessageDeltaEvent
-    from .model_message_delta_event_function_call import ModelMessageDeltaEventFunctionCall
-    from .model_message_delta_event_thinking_blocks_item import ModelMessageDeltaEventThinkingBlocksItem
     from .model_message_event import ModelMessageEvent
-    from .model_message_event_audio import ModelMessageEventAudio
     from .model_message_event_content import ModelMessageEventContent
     from .model_message_event_content_one_item import ModelMessageEventContentOneItem
-    from .model_message_event_function_call import ModelMessageEventFunctionCall
-    from .model_message_event_thinking_blocks_item import ModelMessageEventThinkingBlocksItem
-    from .model_message_event_usage import ModelMessageEventUsage
-    from .model_message_event_usage_input_tokens_breakdown import ModelMessageEventUsageInputTokensBreakdown
+    from .model_message_usage import ModelMessageUsage
+    from .model_message_usage_input_tokens_breakdown import ModelMessageUsageInputTokensBreakdown
     from .model_params import ModelParams
     from .model_params_reasoning_effort import ModelParamsReasoningEffort
     from .raw_tool_call import RawToolCall
-    from .redacted_thinking_block import RedactedThinkingBlock
     from .request_error_response import RequestErrorResponse
     from .request_error_response_error import RequestErrorResponseError
     from .response_format import ResponseFormat
@@ -72,7 +66,6 @@ if typing.TYPE_CHECKING:
     from .skill import Skill
     from .subject import Subject
     from .text_content_part import TextContentPart
-    from .thinking_block import ThinkingBlock
     from .thread_created_event import ThreadCreatedEvent
     from .thread_done_completed import ThreadDoneCompleted
     from .thread_done_error import ThreadDoneError
@@ -96,13 +89,8 @@ if typing.TYPE_CHECKING:
     from .turn_state_cancelled_reason import TurnStateCancelledReason
     from .turn_state_done import TurnStateDone
     from .turn_state_done_output import TurnStateDoneOutput
-    from .turn_state_done_output_audio import TurnStateDoneOutputAudio
     from .turn_state_done_output_content import TurnStateDoneOutputContent
     from .turn_state_done_output_content_one_item import TurnStateDoneOutputContentOneItem
-    from .turn_state_done_output_function_call import TurnStateDoneOutputFunctionCall
-    from .turn_state_done_output_thinking_blocks_item import TurnStateDoneOutputThinkingBlocksItem
-    from .turn_state_done_output_usage import TurnStateDoneOutputUsage
-    from .turn_state_done_output_usage_input_tokens_breakdown import TurnStateDoneOutputUsageInputTokensBreakdown
     from .turn_state_error import TurnStateError
     from .turn_state_running import TurnStateRunning
     from .turn_streaming_event import TurnStreamingEvent
@@ -144,20 +132,14 @@ _dynamic_imports: typing.Dict[str, str] = {
     "McpToolCallInfo": ".mcp_tool_call_info",
     "Model": ".model",
     "ModelMessageDeltaEvent": ".model_message_delta_event",
-    "ModelMessageDeltaEventFunctionCall": ".model_message_delta_event_function_call",
-    "ModelMessageDeltaEventThinkingBlocksItem": ".model_message_delta_event_thinking_blocks_item",
     "ModelMessageEvent": ".model_message_event",
-    "ModelMessageEventAudio": ".model_message_event_audio",
     "ModelMessageEventContent": ".model_message_event_content",
     "ModelMessageEventContentOneItem": ".model_message_event_content_one_item",
-    "ModelMessageEventFunctionCall": ".model_message_event_function_call",
-    "ModelMessageEventThinkingBlocksItem": ".model_message_event_thinking_blocks_item",
-    "ModelMessageEventUsage": ".model_message_event_usage",
-    "ModelMessageEventUsageInputTokensBreakdown": ".model_message_event_usage_input_tokens_breakdown",
+    "ModelMessageUsage": ".model_message_usage",
+    "ModelMessageUsageInputTokensBreakdown": ".model_message_usage_input_tokens_breakdown",
     "ModelParams": ".model_params",
     "ModelParamsReasoningEffort": ".model_params_reasoning_effort",
     "RawToolCall": ".raw_tool_call",
-    "RedactedThinkingBlock": ".redacted_thinking_block",
     "RequestErrorResponse": ".request_error_response",
     "RequestErrorResponseError": ".request_error_response_error",
     "ResponseFormat": ".response_format",
@@ -178,7 +160,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "Skill": ".skill",
     "Subject": ".subject",
     "TextContentPart": ".text_content_part",
-    "ThinkingBlock": ".thinking_block",
     "ThreadCreatedEvent": ".thread_created_event",
     "ThreadDoneCompleted": ".thread_done_completed",
     "ThreadDoneError": ".thread_done_error",
@@ -202,13 +183,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "TurnStateCancelledReason": ".turn_state_cancelled_reason",
     "TurnStateDone": ".turn_state_done",
     "TurnStateDoneOutput": ".turn_state_done_output",
-    "TurnStateDoneOutputAudio": ".turn_state_done_output_audio",
     "TurnStateDoneOutputContent": ".turn_state_done_output_content",
     "TurnStateDoneOutputContentOneItem": ".turn_state_done_output_content_one_item",
-    "TurnStateDoneOutputFunctionCall": ".turn_state_done_output_function_call",
-    "TurnStateDoneOutputThinkingBlocksItem": ".turn_state_done_output_thinking_blocks_item",
-    "TurnStateDoneOutputUsage": ".turn_state_done_output_usage",
-    "TurnStateDoneOutputUsageInputTokensBreakdown": ".turn_state_done_output_usage_input_tokens_breakdown",
     "TurnStateError": ".turn_state_error",
     "TurnStateRunning": ".turn_state_running",
     "TurnStreamingEvent": ".turn_streaming_event",
@@ -274,20 +250,14 @@ __all__ = [
     "McpToolCallInfo",
     "Model",
     "ModelMessageDeltaEvent",
-    "ModelMessageDeltaEventFunctionCall",
-    "ModelMessageDeltaEventThinkingBlocksItem",
     "ModelMessageEvent",
-    "ModelMessageEventAudio",
     "ModelMessageEventContent",
     "ModelMessageEventContentOneItem",
-    "ModelMessageEventFunctionCall",
-    "ModelMessageEventThinkingBlocksItem",
-    "ModelMessageEventUsage",
-    "ModelMessageEventUsageInputTokensBreakdown",
+    "ModelMessageUsage",
+    "ModelMessageUsageInputTokensBreakdown",
     "ModelParams",
     "ModelParamsReasoningEffort",
     "RawToolCall",
-    "RedactedThinkingBlock",
     "RequestErrorResponse",
     "RequestErrorResponseError",
     "ResponseFormat",
@@ -308,7 +278,6 @@ __all__ = [
     "Skill",
     "Subject",
     "TextContentPart",
-    "ThinkingBlock",
     "ThreadCreatedEvent",
     "ThreadDoneCompleted",
     "ThreadDoneError",
@@ -332,13 +301,8 @@ __all__ = [
     "TurnStateCancelledReason",
     "TurnStateDone",
     "TurnStateDoneOutput",
-    "TurnStateDoneOutputAudio",
     "TurnStateDoneOutputContent",
     "TurnStateDoneOutputContentOneItem",
-    "TurnStateDoneOutputFunctionCall",
-    "TurnStateDoneOutputThinkingBlocksItem",
-    "TurnStateDoneOutputUsage",
-    "TurnStateDoneOutputUsageInputTokensBreakdown",
     "TurnStateError",
     "TurnStateRunning",
     "TurnStreamingEvent",

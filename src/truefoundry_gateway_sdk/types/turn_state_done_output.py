@@ -5,21 +5,15 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .finish_reason import FinishReason
+from .model_message_usage import ModelMessageUsage
 from .tool_call import ToolCall
-from .turn_state_done_output_audio import TurnStateDoneOutputAudio
 from .turn_state_done_output_content import TurnStateDoneOutputContent
-from .turn_state_done_output_function_call import TurnStateDoneOutputFunctionCall
-from .turn_state_done_output_thinking_blocks_item import TurnStateDoneOutputThinkingBlocksItem
-from .turn_state_done_output_usage import TurnStateDoneOutputUsage
 
 
 class TurnStateDoneOutput(UniversalBaseModel):
-    audio: typing.Optional[TurnStateDoneOutputAudio] = None
     content: typing.Optional[TurnStateDoneOutputContent] = None
-    function_call: typing.Optional[TurnStateDoneOutputFunctionCall] = None
     name: typing.Optional[str] = None
     refusal: typing.Optional[str] = None
-    thinking_blocks: typing.Optional[typing.List[TurnStateDoneOutputThinkingBlocksItem]] = None
     reasoning_content: typing.Optional[str] = None
     tool_calls: typing.Optional[typing.List[ToolCall]] = None
     type: typing.Literal["model.message"] = "model.message"
@@ -31,7 +25,7 @@ class TurnStateDoneOutput(UniversalBaseModel):
     thread_id: str
     finish_reason: typing.Optional[FinishReason] = None
     created_at: str
-    usage: typing.Optional[TurnStateDoneOutputUsage] = None
+    usage: typing.Optional[ModelMessageUsage] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

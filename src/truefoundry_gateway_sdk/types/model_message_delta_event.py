@@ -6,16 +6,13 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .extended_chunk_delta_tool_call import ExtendedChunkDeltaToolCall
 from .finish_reason import FinishReason
-from .model_message_delta_event_function_call import ModelMessageDeltaEventFunctionCall
-from .model_message_delta_event_thinking_blocks_item import ModelMessageDeltaEventThinkingBlocksItem
+from .model_message_usage import ModelMessageUsage
 
 
 class ModelMessageDeltaEvent(UniversalBaseModel):
     content: typing.Optional[str] = None
     refusal: typing.Optional[str] = None
-    function_call: typing.Optional[ModelMessageDeltaEventFunctionCall] = None
     tool_calls: typing.Optional[typing.List[ExtendedChunkDeltaToolCall]] = None
-    thinking_blocks: typing.Optional[typing.List[ModelMessageDeltaEventThinkingBlocksItem]] = None
     reasoning_content: typing.Optional[str] = None
     type: typing.Literal["model.message.delta"] = "model.message.delta"
     id: str = pydantic.Field()
@@ -26,6 +23,7 @@ class ModelMessageDeltaEvent(UniversalBaseModel):
     thread_id: str
     created_at: typing.Optional[str] = None
     finish_reason: typing.Optional[FinishReason] = None
+    usage: typing.Optional[ModelMessageUsage] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

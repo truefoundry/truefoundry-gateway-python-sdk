@@ -4,15 +4,14 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .model_message_event_usage_input_tokens_breakdown import ModelMessageEventUsageInputTokensBreakdown
 
 
-class ModelMessageEventUsage(UniversalBaseModel):
-    input_tokens: int
-    output_tokens: int
-    cache_read_tokens: typing.Optional[int] = None
-    cache_write_tokens: typing.Optional[int] = None
-    input_tokens_breakdown: ModelMessageEventUsageInputTokensBreakdown
+class ModelMessageUsageInputTokensBreakdown(UniversalBaseModel):
+    harness: int
+    skills: int
+    instructions: int
+    tool_definitions: int
+    messages: int
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

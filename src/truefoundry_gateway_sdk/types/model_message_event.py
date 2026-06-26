@@ -5,21 +5,15 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .finish_reason import FinishReason
-from .model_message_event_audio import ModelMessageEventAudio
 from .model_message_event_content import ModelMessageEventContent
-from .model_message_event_function_call import ModelMessageEventFunctionCall
-from .model_message_event_thinking_blocks_item import ModelMessageEventThinkingBlocksItem
-from .model_message_event_usage import ModelMessageEventUsage
+from .model_message_usage import ModelMessageUsage
 from .tool_call import ToolCall
 
 
 class ModelMessageEvent(UniversalBaseModel):
-    audio: typing.Optional[ModelMessageEventAudio] = None
     content: typing.Optional[ModelMessageEventContent] = None
-    function_call: typing.Optional[ModelMessageEventFunctionCall] = None
     name: typing.Optional[str] = None
     refusal: typing.Optional[str] = None
-    thinking_blocks: typing.Optional[typing.List[ModelMessageEventThinkingBlocksItem]] = None
     reasoning_content: typing.Optional[str] = None
     tool_calls: typing.Optional[typing.List[ToolCall]] = None
     type: typing.Literal["model.message"] = "model.message"
@@ -31,7 +25,7 @@ class ModelMessageEvent(UniversalBaseModel):
     thread_id: str
     finish_reason: typing.Optional[FinishReason] = None
     created_at: str
-    usage: typing.Optional[ModelMessageEventUsage] = None
+    usage: typing.Optional[ModelMessageUsage] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2
