@@ -14,6 +14,8 @@ if typing.TYPE_CHECKING:
     from .approval_allow import ApprovalAllow
     from .approval_decision import ApprovalDecision
     from .approval_deny import ApprovalDeny
+    from .base_mcp_auth_required_event import BaseMcpAuthRequiredEvent
+    from .base_thread_done_event import BaseThreadDoneEvent
     from .chat_completion_chunk_delta_tool_call import ChatCompletionChunkDeltaToolCall
     from .chat_completion_chunk_delta_tool_call_function import ChatCompletionChunkDeltaToolCallFunction
     from .chat_completion_content_part_refusal import ChatCompletionContentPartRefusal
@@ -75,7 +77,7 @@ if typing.TYPE_CHECKING:
     from .tool_approval_required_event import ToolApprovalRequiredEvent
     from .tool_call import ToolCall
     from .tool_call_ref import ToolCallRef
-    from .tool_call_tool_info import ToolCallToolInfo
+    from .tool_info import ToolInfo
     from .tool_response_event import ToolResponseEvent
     from .tool_response_required_event import ToolResponseRequiredEvent
     from .true_foundry_system_tool_call_info import TrueFoundrySystemToolCallInfo
@@ -109,6 +111,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ApprovalAllow": ".approval_allow",
     "ApprovalDecision": ".approval_decision",
     "ApprovalDeny": ".approval_deny",
+    "BaseMcpAuthRequiredEvent": ".base_mcp_auth_required_event",
+    "BaseThreadDoneEvent": ".base_thread_done_event",
     "ChatCompletionChunkDeltaToolCall": ".chat_completion_chunk_delta_tool_call",
     "ChatCompletionChunkDeltaToolCallFunction": ".chat_completion_chunk_delta_tool_call_function",
     "ChatCompletionContentPartRefusal": ".chat_completion_content_part_refusal",
@@ -170,7 +174,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ToolApprovalRequiredEvent": ".tool_approval_required_event",
     "ToolCall": ".tool_call",
     "ToolCallRef": ".tool_call_ref",
-    "ToolCallToolInfo": ".tool_call_tool_info",
+    "ToolInfo": ".tool_info",
     "ToolResponseEvent": ".tool_response_event",
     "ToolResponseRequiredEvent": ".tool_response_required_event",
     "TrueFoundrySystemToolCallInfo": ".true_foundry_system_tool_call_info",
@@ -228,6 +232,8 @@ __all__ = [
     "ApprovalAllow",
     "ApprovalDecision",
     "ApprovalDeny",
+    "BaseMcpAuthRequiredEvent",
+    "BaseThreadDoneEvent",
     "ChatCompletionChunkDeltaToolCall",
     "ChatCompletionChunkDeltaToolCallFunction",
     "ChatCompletionContentPartRefusal",
@@ -289,7 +295,7 @@ __all__ = [
     "ToolApprovalRequiredEvent",
     "ToolCall",
     "ToolCallRef",
-    "ToolCallToolInfo",
+    "ToolInfo",
     "ToolResponseEvent",
     "ToolResponseRequiredEvent",
     "TrueFoundrySystemToolCallInfo",

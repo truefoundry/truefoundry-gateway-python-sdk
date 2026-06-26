@@ -3,12 +3,12 @@
 import typing
 
 import pydantic
-from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .agent_parent import AgentParent
+from ..core.pydantic_utilities import IS_PYDANTIC_V2
+from .base_thread_done_event import BaseThreadDoneEvent
 from .thread_state import ThreadState
 
 
-class ThreadDoneEvent(UniversalBaseModel):
+class ThreadDoneEvent(BaseThreadDoneEvent):
     type: typing.Literal["thread.done"] = "thread.done"
     id: str = pydantic.Field()
     """
@@ -16,10 +16,7 @@ class ThreadDoneEvent(UniversalBaseModel):
     """
 
     created_at: str
-    parent: typing.Optional[AgentParent] = None
     state: ThreadState
-    thread_id: str
-    title: str
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2
