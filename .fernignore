@@ -3,5 +3,6 @@
 # across releases without Fern overwriting the implementation. Keep this list
 # narrow so Fern can keep regenerating sibling tests (conftest.py, utils/,
 # test_aiohttp_autodetect.py, custom/, etc.) on each release.
-src/truefoundry_gateway_sdk/agent/
+src/truefoundry_gateway_sdk/client.py
+src/truefoundry_gateway_sdk/agents/
 .github/workflows/ci.yml

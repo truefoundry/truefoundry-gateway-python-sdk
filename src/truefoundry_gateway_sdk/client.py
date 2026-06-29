@@ -6,6 +6,7 @@ import typing
 import httpx
 from .base_client import AsyncBaseTrueFoundryGateway, BaseTrueFoundryGateway
 from .core.logging import LogConfig, Logger
+from .private.agents.client import AgentsClient, AsyncAgentsClient
 
 
 class TrueFoundryGateway(BaseTrueFoundryGateway):
@@ -35,6 +36,13 @@ class TrueFoundryGateway(BaseTrueFoundryGateway):
             httpx_client=httpx_client,
             logging=logging,
         )
+        self._agents: typing.Optional[AgentsClient] = None
+
+    @property
+    def agents(self) -> AgentsClient:
+        if self._agents is None:
+            self._agents = AgentsClient(client_wrapper=self._client_wrapper)
+        return self._agents
 
 
 class AsyncTrueFoundryGateway(AsyncBaseTrueFoundryGateway):
@@ -66,3 +74,10 @@ class AsyncTrueFoundryGateway(AsyncBaseTrueFoundryGateway):
             httpx_client=httpx_client,
             logging=logging,
         )
+        self._agents: typing.Optional[AsyncAgentsClient] = None
+
+    @property
+    def agents(self) -> AsyncAgentsClient:
+        if self._agents is None:
+            self._agents = AsyncAgentsClient(client_wrapper=self._client_wrapper)
+        return self._agents

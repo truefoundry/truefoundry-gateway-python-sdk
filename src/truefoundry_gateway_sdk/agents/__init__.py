@@ -1,3 +1,5 @@
+from ..private import agents as _private_agents
+from ..private.agents import *  # noqa: F401, F403
 from ..types.action_required_event import ActionRequiredEvent
 from ..types.mcp_auth_required_event import McpAuthRequiredEvent
 from ..types.mcp_initialize_event import McpInitializeEvent
@@ -33,7 +35,8 @@ from .prepared_turn import AsyncPreparedTurn, PreparedTurn
 from .turn import AsyncTurn, Turn
 from .turn_stream_data import TurnStreamData
 
-__all__ = [
+__all__ = [  # type: ignore[reportUnsupportedDunderAll]
+    *_private_agents.__all__,
     "ActionRequiredEvent",
     "AgentSession",
     "AgentSessionClient",
