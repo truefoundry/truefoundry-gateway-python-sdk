@@ -18,11 +18,11 @@ from ....errors.not_found_error import NotFoundError
 from ....errors.unauthorized_error import UnauthorizedError
 from ....errors.unprocessable_entity_error import UnprocessableEntityError
 from ....types.draft_session import DraftSession
+from ....types.order import Order
 from ....types.request_error_response import RequestErrorResponse
 from .types.create_draft_session_request_agent_spec import CreateDraftSessionRequestAgentSpec
 from .types.draft_sessions_create_response import DraftSessionsCreateResponse
 from .types.draft_sessions_get_response import DraftSessionsGetResponse
-from .types.draft_sessions_list_request_order import DraftSessionsListRequestOrder
 from .types.draft_sessions_list_response import DraftSessionsListResponse
 from .types.draft_sessions_update_response import DraftSessionsUpdateResponse
 from .types.update_draft_session_request_agent_spec import UpdateDraftSessionRequestAgentSpec
@@ -41,7 +41,7 @@ class RawDraftSessionsClient:
         *,
         agent_name: typing.Optional[str] = None,
         limit: typing.Optional[int] = 10,
-        order: typing.Optional[DraftSessionsListRequestOrder] = None,
+        order: typing.Optional[Order] = None,
         page_token: typing.Optional[str] = None,
         start_timestamp: typing.Optional[str] = None,
         end_timestamp: typing.Optional[str] = None,
@@ -56,7 +56,7 @@ class RawDraftSessionsClient:
 
         limit : typing.Optional[int]
 
-        order : typing.Optional[DraftSessionsListRequestOrder]
+        order : typing.Optional[Order]
 
         page_token : typing.Optional[str]
 
@@ -454,7 +454,7 @@ class AsyncRawDraftSessionsClient:
         *,
         agent_name: typing.Optional[str] = None,
         limit: typing.Optional[int] = 10,
-        order: typing.Optional[DraftSessionsListRequestOrder] = None,
+        order: typing.Optional[Order] = None,
         page_token: typing.Optional[str] = None,
         start_timestamp: typing.Optional[str] = None,
         end_timestamp: typing.Optional[str] = None,
@@ -469,7 +469,7 @@ class AsyncRawDraftSessionsClient:
 
         limit : typing.Optional[int]
 
-        order : typing.Optional[DraftSessionsListRequestOrder]
+        order : typing.Optional[Order]
 
         page_token : typing.Optional[str]
 

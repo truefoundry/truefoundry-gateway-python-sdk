@@ -16,6 +16,7 @@ if typing.TYPE_CHECKING:
     from .approval_deny import ApprovalDeny
     from .base_mcp_auth_required_event import BaseMcpAuthRequiredEvent
     from .base_thread_done_event import BaseThreadDoneEvent
+    from .cancel_session_response import CancelSessionResponse
     from .chat_completion_chunk_delta_tool_call import ChatCompletionChunkDeltaToolCall
     from .chat_completion_chunk_delta_tool_call_function import ChatCompletionChunkDeltaToolCallFunction
     from .chat_completion_content_part_refusal import ChatCompletionContentPartRefusal
@@ -117,6 +118,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ApprovalDeny": ".approval_deny",
     "BaseMcpAuthRequiredEvent": ".base_mcp_auth_required_event",
     "BaseThreadDoneEvent": ".base_thread_done_event",
+    "CancelSessionResponse": ".cancel_session_response",
     "ChatCompletionChunkDeltaToolCall": ".chat_completion_chunk_delta_tool_call",
     "ChatCompletionChunkDeltaToolCallFunction": ".chat_completion_chunk_delta_tool_call_function",
     "ChatCompletionContentPartRefusal": ".chat_completion_content_part_refusal",
@@ -242,6 +244,7 @@ __all__ = [
     "ApprovalDeny",
     "BaseMcpAuthRequiredEvent",
     "BaseThreadDoneEvent",
+    "CancelSessionResponse",
     "ChatCompletionChunkDeltaToolCall",
     "ChatCompletionChunkDeltaToolCallFunction",
     "ChatCompletionContentPartRefusal",

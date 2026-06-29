@@ -10,13 +10,11 @@ if typing.TYPE_CHECKING:
     from .sessions import (
         CreateTurnRequestInputItem,
         CreateTurnRequestPreviousTurnId,
-        SessionsCancelResponse,
         SessionsListTurnEventsRequestOrder,
     )
 _dynamic_imports: typing.Dict[str, str] = {
     "CreateTurnRequestInputItem": ".sessions",
     "CreateTurnRequestPreviousTurnId": ".sessions",
-    "SessionsCancelResponse": ".sessions",
     "SessionsListTurnEventsRequestOrder": ".sessions",
     "sessions": ".sessions",
 }
@@ -46,7 +44,6 @@ def __dir__():
 __all__ = [
     "CreateTurnRequestInputItem",
     "CreateTurnRequestPreviousTurnId",
-    "SessionsCancelResponse",
     "SessionsListTurnEventsRequestOrder",
     "sessions",
 ]

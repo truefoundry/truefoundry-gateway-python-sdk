@@ -6,11 +6,11 @@ from ....core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ....core.pagination import AsyncPager, SyncPager
 from ....core.request_options import RequestOptions
 from ....types.draft_session import DraftSession
+from ....types.order import Order
 from .raw_client import AsyncRawDraftSessionsClient, RawDraftSessionsClient
 from .types.create_draft_session_request_agent_spec import CreateDraftSessionRequestAgentSpec
 from .types.draft_sessions_create_response import DraftSessionsCreateResponse
 from .types.draft_sessions_get_response import DraftSessionsGetResponse
-from .types.draft_sessions_list_request_order import DraftSessionsListRequestOrder
 from .types.draft_sessions_list_response import DraftSessionsListResponse
 from .types.draft_sessions_update_response import DraftSessionsUpdateResponse
 from .types.update_draft_session_request_agent_spec import UpdateDraftSessionRequestAgentSpec
@@ -39,7 +39,7 @@ class DraftSessionsClient:
         *,
         agent_name: typing.Optional[str] = None,
         limit: typing.Optional[int] = 10,
-        order: typing.Optional[DraftSessionsListRequestOrder] = None,
+        order: typing.Optional[Order] = None,
         page_token: typing.Optional[str] = None,
         start_timestamp: typing.Optional[str] = None,
         end_timestamp: typing.Optional[str] = None,
@@ -54,7 +54,7 @@ class DraftSessionsClient:
 
         limit : typing.Optional[int]
 
-        order : typing.Optional[DraftSessionsListRequestOrder]
+        order : typing.Optional[Order]
 
         page_token : typing.Optional[str]
 
@@ -72,10 +72,7 @@ class DraftSessionsClient:
 
         Examples
         --------
-        from truefoundry_gateway_sdk import TrueFoundryGateway
-        from truefoundry_gateway_sdk.internal.agents.draft_sessions import (
-            DraftSessionsListRequestOrder,
-        )
+        from truefoundry_gateway_sdk import Order, TrueFoundryGateway
 
         client = TrueFoundryGateway(
             api_key="YOUR_API_KEY",
@@ -84,7 +81,7 @@ class DraftSessionsClient:
         response = client.internal.agents.draft_sessions.list(
             agent_name="agent_name",
             limit=1,
-            order=DraftSessionsListRequestOrder.ASC,
+            order=Order.ASC,
             page_token="page_token",
             start_timestamp="start_timestamp",
             end_timestamp="end_timestamp",
@@ -249,7 +246,7 @@ class AsyncDraftSessionsClient:
         *,
         agent_name: typing.Optional[str] = None,
         limit: typing.Optional[int] = 10,
-        order: typing.Optional[DraftSessionsListRequestOrder] = None,
+        order: typing.Optional[Order] = None,
         page_token: typing.Optional[str] = None,
         start_timestamp: typing.Optional[str] = None,
         end_timestamp: typing.Optional[str] = None,
@@ -264,7 +261,7 @@ class AsyncDraftSessionsClient:
 
         limit : typing.Optional[int]
 
-        order : typing.Optional[DraftSessionsListRequestOrder]
+        order : typing.Optional[Order]
 
         page_token : typing.Optional[str]
 
@@ -284,10 +281,7 @@ class AsyncDraftSessionsClient:
         --------
         import asyncio
 
-        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway
-        from truefoundry_gateway_sdk.internal.agents.draft_sessions import (
-            DraftSessionsListRequestOrder,
-        )
+        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway, Order
 
         client = AsyncTrueFoundryGateway(
             api_key="YOUR_API_KEY",
@@ -299,7 +293,7 @@ class AsyncDraftSessionsClient:
             response = await client.internal.agents.draft_sessions.list(
                 agent_name="agent_name",
                 limit=1,
-                order=DraftSessionsListRequestOrder.ASC,
+                order=Order.ASC,
                 page_token="page_token",
                 start_timestamp="start_timestamp",
                 end_timestamp="end_timestamp",

@@ -261,7 +261,7 @@ client.agents.sessions.get(
 </dl>
 </details>
 
-<details><summary><code>client.agents.sessions.<a href="src/truefoundry_gateway_sdk/agents/sessions/client.py">cancel</a>(...) -> SessionsCancelResponse</code></summary>
+<details><summary><code>client.agents.sessions.<a href="src/truefoundry_gateway_sdk/agents/sessions/client.py">cancel</a>(...) -> CancelSessionResponse</code></summary>
 <dl>
 <dd>
 
@@ -718,11 +718,11 @@ client = TrueFoundryGateway(
 )
 
 client.agents.sessions.list_turn_events(
-    session_id="01arz3ndektsv4rrffq69g5fav.g",
+    session_id="sessionId",
     turn_id="01arz3ndektsv4rrffq69g5fav.g.ab12cd",
+    order=SessionsListTurnEventsRequestOrder.ASC,
     page_token="page_token",
     limit=1,
-    order=SessionsListTurnEventsRequestOrder.ASC,
 )
 
 ```
@@ -755,6 +755,14 @@ client.agents.sessions.list_turn_events(
 <dl>
 <dd>
 
+**order:** `typing.Optional[SessionsListTurnEventsRequestOrder]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **page_token:** `typing.Optional[str]` 
     
 </dd>
@@ -764,14 +772,6 @@ client.agents.sessions.list_turn_events(
 <dd>
 
 **limit:** `typing.Optional[int]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**order:** `typing.Optional[SessionsListTurnEventsRequestOrder]` 
     
 </dd>
 </dl>
@@ -819,8 +819,7 @@ List the caller-owned draft sessions (newest first by default), keyset-paginated
 <dd>
 
 ```python
-from truefoundry_gateway_sdk import TrueFoundryGateway
-from truefoundry_gateway_sdk.internal.agents.draft_sessions import DraftSessionsListRequestOrder
+from truefoundry_gateway_sdk import TrueFoundryGateway, Order
 
 client = TrueFoundryGateway(
     api_key="<token>",
@@ -830,7 +829,7 @@ client = TrueFoundryGateway(
 client.internal.agents.draft_sessions.list(
     agent_name="agent_name",
     limit=1,
-    order=DraftSessionsListRequestOrder.ASC,
+    order=Order.ASC,
     page_token="page_token",
     start_timestamp="start_timestamp",
     end_timestamp="end_timestamp",
@@ -866,7 +865,7 @@ client.internal.agents.draft_sessions.list(
 <dl>
 <dd>
 
-**order:** `typing.Optional[DraftSessionsListRequestOrder]` 
+**order:** `typing.Optional[Order]` 
     
 </dd>
 </dl>

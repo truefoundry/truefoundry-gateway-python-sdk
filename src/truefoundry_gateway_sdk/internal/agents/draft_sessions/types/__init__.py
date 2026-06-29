@@ -10,7 +10,6 @@ if typing.TYPE_CHECKING:
     from .create_draft_session_request_agent_spec_messages_item import CreateDraftSessionRequestAgentSpecMessagesItem
     from .draft_sessions_create_response import DraftSessionsCreateResponse
     from .draft_sessions_get_response import DraftSessionsGetResponse
-    from .draft_sessions_list_request_order import DraftSessionsListRequestOrder
     from .draft_sessions_list_response import DraftSessionsListResponse
     from .draft_sessions_update_response import DraftSessionsUpdateResponse
     from .update_draft_session_request_agent_spec import UpdateDraftSessionRequestAgentSpec
@@ -20,7 +19,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreateDraftSessionRequestAgentSpecMessagesItem": ".create_draft_session_request_agent_spec_messages_item",
     "DraftSessionsCreateResponse": ".draft_sessions_create_response",
     "DraftSessionsGetResponse": ".draft_sessions_get_response",
-    "DraftSessionsListRequestOrder": ".draft_sessions_list_request_order",
     "DraftSessionsListResponse": ".draft_sessions_list_response",
     "DraftSessionsUpdateResponse": ".draft_sessions_update_response",
     "UpdateDraftSessionRequestAgentSpec": ".update_draft_session_request_agent_spec",
@@ -54,7 +52,6 @@ __all__ = [
     "CreateDraftSessionRequestAgentSpecMessagesItem",
     "DraftSessionsCreateResponse",
     "DraftSessionsGetResponse",
-    "DraftSessionsListRequestOrder",
     "DraftSessionsListResponse",
     "DraftSessionsUpdateResponse",
     "UpdateDraftSessionRequestAgentSpec",

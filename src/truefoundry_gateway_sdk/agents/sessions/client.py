@@ -5,6 +5,7 @@ import typing
 from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.pagination import AsyncPager, SyncPager
 from ...core.request_options import RequestOptions
+from ...types.cancel_session_response import CancelSessionResponse
 from ...types.get_session_response import GetSessionResponse
 from ...types.get_turn_response import GetTurnResponse
 from ...types.list_events_response import ListEventsResponse
@@ -18,7 +19,6 @@ from ...types.turn_streaming_event import TurnStreamingEvent
 from .raw_client import AsyncRawSessionsClient, RawSessionsClient
 from .types.create_turn_request_input_item import CreateTurnRequestInputItem
 from .types.create_turn_request_previous_turn_id import CreateTurnRequestPreviousTurnId
-from .types.sessions_cancel_response import SessionsCancelResponse
 from .types.sessions_list_turn_events_request_order import SessionsListTurnEventsRequestOrder
 
 # this is used as the default value for optional parameters
@@ -173,7 +173,7 @@ class SessionsClient:
 
     def cancel(
         self, session_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> SessionsCancelResponse:
+    ) -> CancelSessionResponse:
         """
         Cancel the running last turn for a session.
 
@@ -186,7 +186,7 @@ class SessionsClient:
 
         Returns
         -------
-        SessionsCancelResponse
+        CancelSessionResponse
             Turn cancelled.
 
         Examples
@@ -390,9 +390,9 @@ class SessionsClient:
         session_id: str,
         turn_id: str,
         *,
+        order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
         page_token: typing.Optional[str] = None,
         limit: typing.Optional[int] = 25,
-        order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[TurnEvent, ListEventsResponse]:
         """
@@ -404,11 +404,11 @@ class SessionsClient:
 
         turn_id : str
 
+        order : typing.Optional[SessionsListTurnEventsRequestOrder]
+
         page_token : typing.Optional[str]
 
         limit : typing.Optional[int]
-
-        order : typing.Optional[SessionsListTurnEventsRequestOrder]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -430,11 +430,11 @@ class SessionsClient:
             base_url="https://yourhost.com/path/to/api",
         )
         response = client.agents.sessions.list_turn_events(
-            session_id="01arz3ndektsv4rrffq69g5fav.g",
+            session_id="sessionId",
             turn_id="01arz3ndektsv4rrffq69g5fav.g.ab12cd",
+            order=SessionsListTurnEventsRequestOrder.ASC,
             page_token="page_token",
             limit=1,
-            order=SessionsListTurnEventsRequestOrder.ASC,
         )
         for item in response:
             yield item
@@ -443,7 +443,7 @@ class SessionsClient:
             yield page
         """
         return self._raw_client.list_turn_events(
-            session_id, turn_id, page_token=page_token, limit=limit, order=order, request_options=request_options
+            session_id, turn_id, order=order, page_token=page_token, limit=limit, request_options=request_options
         )
 
 
@@ -624,7 +624,7 @@ class AsyncSessionsClient:
 
     async def cancel(
         self, session_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> SessionsCancelResponse:
+    ) -> CancelSessionResponse:
         """
         Cancel the running last turn for a session.
 
@@ -637,7 +637,7 @@ class AsyncSessionsClient:
 
         Returns
         -------
-        SessionsCancelResponse
+        CancelSessionResponse
             Turn cancelled.
 
         Examples
@@ -884,9 +884,9 @@ class AsyncSessionsClient:
         session_id: str,
         turn_id: str,
         *,
+        order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
         page_token: typing.Optional[str] = None,
         limit: typing.Optional[int] = 25,
-        order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[TurnEvent, ListEventsResponse]:
         """
@@ -898,11 +898,11 @@ class AsyncSessionsClient:
 
         turn_id : str
 
+        order : typing.Optional[SessionsListTurnEventsRequestOrder]
+
         page_token : typing.Optional[str]
 
         limit : typing.Optional[int]
-
-        order : typing.Optional[SessionsListTurnEventsRequestOrder]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -929,11 +929,11 @@ class AsyncSessionsClient:
 
         async def main() -> None:
             response = await client.agents.sessions.list_turn_events(
-                session_id="01arz3ndektsv4rrffq69g5fav.g",
+                session_id="sessionId",
                 turn_id="01arz3ndektsv4rrffq69g5fav.g.ab12cd",
+                order=SessionsListTurnEventsRequestOrder.ASC,
                 page_token="page_token",
                 limit=1,
-                order=SessionsListTurnEventsRequestOrder.ASC,
             )
             async for item in response:
                 yield item
@@ -946,5 +946,5 @@ class AsyncSessionsClient:
         asyncio.run(main())
         """
         return await self._raw_client.list_turn_events(
-            session_id, turn_id, page_token=page_token, limit=limit, order=order, request_options=request_options
+            session_id, turn_id, order=order, page_token=page_token, limit=limit, request_options=request_options
         )

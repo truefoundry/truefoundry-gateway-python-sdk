@@ -24,6 +24,7 @@ from ...errors.not_found_error import NotFoundError
 from ...errors.precondition_failed_error import PreconditionFailedError
 from ...errors.unauthorized_error import UnauthorizedError
 from ...errors.unprocessable_entity_error import UnprocessableEntityError
+from ...types.cancel_session_response import CancelSessionResponse
 from ...types.get_session_response import GetSessionResponse
 from ...types.get_turn_response import GetTurnResponse
 from ...types.list_events_response import ListEventsResponse
@@ -37,7 +38,6 @@ from ...types.turn_event import TurnEvent
 from ...types.turn_streaming_event import TurnStreamingEvent
 from .types.create_turn_request_input_item import CreateTurnRequestInputItem
 from .types.create_turn_request_previous_turn_id import CreateTurnRequestPreviousTurnId
-from .types.sessions_cancel_response import SessionsCancelResponse
 from .types.sessions_list_turn_events_request_order import SessionsListTurnEventsRequestOrder
 from pydantic import ValidationError
 
@@ -380,7 +380,7 @@ class RawSessionsClient:
 
     def cancel(
         self, session_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[SessionsCancelResponse]:
+    ) -> HttpResponse[CancelSessionResponse]:
         """
         Cancel the running last turn for a session.
 
@@ -393,7 +393,7 @@ class RawSessionsClient:
 
         Returns
         -------
-        HttpResponse[SessionsCancelResponse]
+        HttpResponse[CancelSessionResponse]
             Turn cancelled.
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -409,26 +409,15 @@ class RawSessionsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    SessionsCancelResponse,
+                    CancelSessionResponse,
                     parse_obj_as(
-                        type_=SessionsCancelResponse,  # type: ignore
+                        type_=CancelSessionResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        RequestErrorResponse,
-                        parse_obj_as(
-                            type_=RequestErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         RequestErrorResponse,
@@ -540,6 +529,17 @@ class RawSessionsClient:
                 )
             if _response.status_code == 404:
                 raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        RequestErrorResponse,
+                        parse_obj_as(
+                            type_=RequestErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 412:
+                raise PreconditionFailedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         RequestErrorResponse,
@@ -661,6 +661,17 @@ class RawSessionsClient:
                         )
                     if _response.status_code == 404:
                         raise NotFoundError(
+                            headers=dict(_response.headers),
+                            body=typing.cast(
+                                RequestErrorResponse,
+                                parse_obj_as(
+                                    type_=RequestErrorResponse,  # type: ignore
+                                    object_=_response.json(),
+                                ),
+                            ),
+                        )
+                    if _response.status_code == 412:
+                        raise PreconditionFailedError(
                             headers=dict(_response.headers),
                             body=typing.cast(
                                 RequestErrorResponse,
@@ -889,9 +900,9 @@ class RawSessionsClient:
         session_id: str,
         turn_id: str,
         *,
+        order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
         page_token: typing.Optional[str] = None,
         limit: typing.Optional[int] = 25,
-        order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[TurnEvent, ListEventsResponse]:
         """
@@ -903,11 +914,11 @@ class RawSessionsClient:
 
         turn_id : str
 
+        order : typing.Optional[SessionsListTurnEventsRequestOrder]
+
         page_token : typing.Optional[str]
 
         limit : typing.Optional[int]
-
-        order : typing.Optional[SessionsListTurnEventsRequestOrder]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -921,9 +932,9 @@ class RawSessionsClient:
             f"v1/agents/sessions/{encode_path_param(session_id)}/turns/{encode_path_param(turn_id)}/events",
             method="GET",
             params={
+                "order": order,
                 "page_token": page_token,
                 "limit": limit,
-                "order": order,
             },
             request_options=request_options,
         )
@@ -945,9 +956,9 @@ class RawSessionsClient:
                     _get_next = lambda: self.list_turn_events(
                         session_id,
                         turn_id,
+                        order=order,
                         page_token=_parsed_next,
                         limit=limit,
-                        order=order,
                         request_options=request_options,
                     )
                 return SyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
@@ -1332,7 +1343,7 @@ class AsyncRawSessionsClient:
 
     async def cancel(
         self, session_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[SessionsCancelResponse]:
+    ) -> AsyncHttpResponse[CancelSessionResponse]:
         """
         Cancel the running last turn for a session.
 
@@ -1345,7 +1356,7 @@ class AsyncRawSessionsClient:
 
         Returns
         -------
-        AsyncHttpResponse[SessionsCancelResponse]
+        AsyncHttpResponse[CancelSessionResponse]
             Turn cancelled.
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1361,26 +1372,15 @@ class AsyncRawSessionsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    SessionsCancelResponse,
+                    CancelSessionResponse,
                     parse_obj_as(
-                        type_=SessionsCancelResponse,  # type: ignore
+                        type_=CancelSessionResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        RequestErrorResponse,
-                        parse_obj_as(
-                            type_=RequestErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         RequestErrorResponse,
@@ -1504,6 +1504,17 @@ class AsyncRawSessionsClient:
                         ),
                     ),
                 )
+            if _response.status_code == 412:
+                raise PreconditionFailedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        RequestErrorResponse,
+                        parse_obj_as(
+                            type_=RequestErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -1616,6 +1627,17 @@ class AsyncRawSessionsClient:
                         )
                     if _response.status_code == 404:
                         raise NotFoundError(
+                            headers=dict(_response.headers),
+                            body=typing.cast(
+                                RequestErrorResponse,
+                                parse_obj_as(
+                                    type_=RequestErrorResponse,  # type: ignore
+                                    object_=_response.json(),
+                                ),
+                            ),
+                        )
+                    if _response.status_code == 412:
+                        raise PreconditionFailedError(
                             headers=dict(_response.headers),
                             body=typing.cast(
                                 RequestErrorResponse,
@@ -1844,9 +1866,9 @@ class AsyncRawSessionsClient:
         session_id: str,
         turn_id: str,
         *,
+        order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
         page_token: typing.Optional[str] = None,
         limit: typing.Optional[int] = 25,
-        order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[TurnEvent, ListEventsResponse]:
         """
@@ -1858,11 +1880,11 @@ class AsyncRawSessionsClient:
 
         turn_id : str
 
+        order : typing.Optional[SessionsListTurnEventsRequestOrder]
+
         page_token : typing.Optional[str]
 
         limit : typing.Optional[int]
-
-        order : typing.Optional[SessionsListTurnEventsRequestOrder]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1876,9 +1898,9 @@ class AsyncRawSessionsClient:
             f"v1/agents/sessions/{encode_path_param(session_id)}/turns/{encode_path_param(turn_id)}/events",
             method="GET",
             params={
+                "order": order,
                 "page_token": page_token,
                 "limit": limit,
-                "order": order,
             },
             request_options=request_options,
         )
@@ -1902,9 +1924,9 @@ class AsyncRawSessionsClient:
                         return await self.list_turn_events(
                             session_id,
                             turn_id,
+                            order=order,
                             page_token=_parsed_next,
                             limit=limit,
-                            order=order,
                             request_options=request_options,
                         )
 
