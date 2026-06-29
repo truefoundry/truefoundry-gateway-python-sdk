@@ -41,6 +41,9 @@ class PreparedTurn:
         self._started: bool = False
         self._turn: typing.Optional[Turn] = None
 
+    def __repr__(self) -> str:
+        return f"PreparedTurn(session_id={self._session_id!r}, started={self._started!r})"
+
     # --- Properties that delegate to the inner Turn (None until execute is called) ---
 
     @property
@@ -245,6 +248,9 @@ class AsyncPreparedTurn:
         self._client = client
         self._started: bool = False
         self._turn: typing.Optional[AsyncTurn] = None
+
+    def __repr__(self) -> str:
+        return f"AsyncPreparedTurn(session_id={self._session_id!r}, started={self._started!r})"
 
     # --- Properties that delegate to the inner AsyncTurn (None until execute is called) ---
 
