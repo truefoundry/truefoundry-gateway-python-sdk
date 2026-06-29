@@ -2,7 +2,7 @@ import typing
 
 from ..agents.sessions.types.create_turn_request_input_item import CreateTurnRequestInputItem
 from ..agents.sessions.types.create_turn_request_previous_turn_id import CreateTurnRequestPreviousTurnId
-from ..agents.sessions.types.sessions_list_turns_response import SessionsListTurnsResponse
+from ..types.list_turns_response import ListTurnsResponse
 from ..core.pagination import AsyncPager, SyncPager
 from ..core.request_options import RequestOptions
 from ..types.session import Session as RawSession
@@ -13,13 +13,13 @@ from .turn import AsyncTurn, Turn
 
 
 def _wrap_turns_pager(
-    raw_pager: SyncPager[RawTurn, SessionsListTurnsResponse],
+    raw_pager: SyncPager[RawTurn, ListTurnsResponse],
     session: "AgentSession",
     client: typing.Any,
-) -> SyncPager[Turn, SessionsListTurnsResponse]:
+) -> SyncPager[Turn, ListTurnsResponse]:
     wrapped_items = [Turn(t, session, client) for t in (raw_pager.items or [])]
 
-    def get_next() -> typing.Optional[SyncPager[Turn, SessionsListTurnsResponse]]:
+    def get_next() -> typing.Optional[SyncPager[Turn, ListTurnsResponse]]:
         if raw_pager.get_next is None:
             return None
         next_raw = raw_pager.get_next()
@@ -36,13 +36,13 @@ def _wrap_turns_pager(
 
 
 async def _async_wrap_turns_pager(
-    raw_pager: AsyncPager[RawTurn, SessionsListTurnsResponse],
+    raw_pager: AsyncPager[RawTurn, ListTurnsResponse],
     session: "AsyncAgentSession",
     client: typing.Any,
-) -> AsyncPager[AsyncTurn, SessionsListTurnsResponse]:
+) -> AsyncPager[AsyncTurn, ListTurnsResponse]:
     wrapped_items = [AsyncTurn(t, session, client) for t in (raw_pager.items or [])]
 
-    async def get_next() -> typing.Optional[AsyncPager[AsyncTurn, SessionsListTurnsResponse]]:
+    async def get_next() -> typing.Optional[AsyncPager[AsyncTurn, ListTurnsResponse]]:
         if raw_pager.get_next is None:
             return None
         next_raw = await raw_pager.get_next()
@@ -115,7 +115,7 @@ class AgentSession:
         page_token: typing.Optional[str] = None,
         limit: typing.Optional[int] = 10,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[Turn, SessionsListTurnsResponse]:
+    ) -> SyncPager[Turn, ListTurnsResponse]:
         raw_pager = self._client.agents.sessions.list_turns(
             self._id, page_token=page_token, limit=limit, request_options=request_options
         )
@@ -191,7 +191,7 @@ class AsyncAgentSession:
         page_token: typing.Optional[str] = None,
         limit: typing.Optional[int] = 10,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[AsyncTurn, SessionsListTurnsResponse]:
+    ) -> AsyncPager[AsyncTurn, ListTurnsResponse]:
         raw_pager = await self._client.agents.sessions.list_turns(
             self._id, page_token=page_token, limit=limit, request_options=request_options
         )

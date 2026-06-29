@@ -3,12 +3,13 @@ import typing
 from ..agents.sessions.types.create_turn_request_input_item import CreateTurnRequestInputItem
 from ..agents.sessions.types.create_turn_request_previous_turn_id import CreateTurnRequestPreviousTurnId
 from ..agents.sessions.types.sessions_list_turn_events_request_order import SessionsListTurnEventsRequestOrder
-from ..agents.sessions.types.sessions_list_turn_events_response import SessionsListTurnEventsResponse
 from ..core.pagination import AsyncPager, SyncPager
 from ..core.request_options import RequestOptions
+from ..types.list_events_response import ListEventsResponse
 from ..types.subject import Subject
 from ..types.turn import Turn as RawTurn
 from ..types.turn_created_event import TurnCreatedEvent
+from ..types.turn_done_event import TurnDoneEvent
 from ..types.turn_event import TurnEvent
 from ..types.turn_input_item import TurnInputItem
 from ..types.turn_state import TurnState
@@ -123,8 +124,9 @@ class PreparedTurn:
             after_sequence_number=after_sequence_number, request_options=request_options
         )
 
-    def sync_state(self, *, request_options: typing.Optional[RequestOptions] = None) -> TurnState:
-        return self._must_get_turn().sync_state(request_options=request_options)
+    def refresh(self, *, request_options: typing.Optional[RequestOptions] = None) -> "PreparedTurn":
+        self._must_get_turn().refresh(request_options=request_options)
+        return self
 
     def wait_for_completion(
         self,
@@ -146,7 +148,7 @@ class PreparedTurn:
         limit: typing.Optional[int] = 25,
         order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[TurnEvent, SessionsListTurnEventsResponse]:
+    ) -> SyncPager[TurnEvent, ListEventsResponse]:
         return self._must_get_turn().list_events(
             page_token=page_token, limit=limit, order=order, request_options=request_options
         )
@@ -174,8 +176,8 @@ class PreparedTurn:
         ):
             if isinstance(event, TurnCreatedEvent) and self._turn is None:
                 self._adopt_turn(event)
-            elif self._turn is not None:
-                self._turn._apply_event(event)
+            elif self._turn is not None and isinstance(event, TurnDoneEvent):
+                self._replace_turn_state(event.state)
             yield TurnStreamData(sequence_number=None, event=event)
 
     def _must_get_turn(self) -> Turn:
@@ -201,6 +203,23 @@ class PreparedTurn:
                 state=event.state,
                 created_by_subject=event.created_by,
                 created_at=event.created_at,
+            ),
+            self._session,
+            self._client,
+        )
+
+    def _replace_turn_state(self, state: TurnState) -> None:
+        """Replace the inner Turn with a fresh one carrying the new state."""
+        turn = self._must_get_turn()
+        self._turn = Turn(
+            RawTurn(
+                id=turn.id,
+                session_id=turn.session_id,
+                previous_turn_id=turn.previous_turn_id,
+                input=turn.input,  # type: ignore[arg-type]
+                state=state,
+                created_by_subject=turn.created_by_subject,
+                created_at=turn.created_at,
             ),
             self._session,
             self._client,
@@ -311,8 +330,9 @@ class AsyncPreparedTurn:
         ):
             yield item
 
-    async def sync_state(self, *, request_options: typing.Optional[RequestOptions] = None) -> TurnState:
-        return await self._must_get_turn().sync_state(request_options=request_options)
+    async def refresh(self, *, request_options: typing.Optional[RequestOptions] = None) -> "AsyncPreparedTurn":
+        await self._must_get_turn().refresh(request_options=request_options)
+        return self
 
     async def wait_for_completion(
         self,
@@ -334,7 +354,7 @@ class AsyncPreparedTurn:
         limit: typing.Optional[int] = 25,
         order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[TurnEvent, SessionsListTurnEventsResponse]:
+    ) -> AsyncPager[TurnEvent, ListEventsResponse]:
         return await self._must_get_turn().list_events(
             page_token=page_token, limit=limit, order=order, request_options=request_options
         )
@@ -366,8 +386,8 @@ class AsyncPreparedTurn:
         ):
             if isinstance(event, TurnCreatedEvent) and self._turn is None:
                 self._adopt_turn(event)
-            elif self._turn is not None:
-                self._turn._apply_event(event)
+            elif self._turn is not None and isinstance(event, TurnDoneEvent):
+                self._replace_turn_state(event.state)
             yield TurnStreamData(sequence_number=None, event=event)
 
     def _must_get_turn(self) -> AsyncTurn:
@@ -391,6 +411,23 @@ class AsyncPreparedTurn:
                 state=event.state,
                 created_by_subject=event.created_by,
                 created_at=event.created_at,
+            ),
+            self._session,
+            self._client,
+        )
+
+    def _replace_turn_state(self, state: TurnState) -> None:
+        """Replace the inner Turn with a fresh one carrying the new state."""
+        turn = self._must_get_turn()
+        self._turn = AsyncTurn(
+            RawTurn(
+                id=turn.id,
+                session_id=turn.session_id,
+                previous_turn_id=turn.previous_turn_id,
+                input=turn.input,  # type: ignore[arg-type]
+                state=state,
+                created_by_subject=turn.created_by_subject,
+                created_at=turn.created_at,
             ),
             self._session,
             self._client,

@@ -2,9 +2,9 @@ import time
 import typing
 
 from ..agents.sessions.types.sessions_list_turn_events_request_order import SessionsListTurnEventsRequestOrder
-from ..agents.sessions.types.sessions_list_turn_events_response import SessionsListTurnEventsResponse
 from ..core.pagination import AsyncPager, SyncPager
 from ..core.request_options import RequestOptions
+from ..types.list_events_response import ListEventsResponse
 from ..types.subject import Subject
 from ..types.turn import Turn as RawTurn
 from ..types.turn_created_event import TurnCreatedEvent
@@ -12,6 +12,9 @@ from ..types.turn_done_event import TurnDoneEvent
 from ..types.turn_event import TurnEvent
 from ..types.turn_input_item import TurnInputItem
 from ..types.turn_state import TurnState
+from ..types.turn_state_cancelled import TurnStateCancelled
+from ..types.turn_state_done import TurnStateDone
+from ..types.turn_state_error import TurnStateError
 from ..types.turn_streaming_event import TurnStreamingEvent
 from .turn_stream_data import TurnStreamData
 
@@ -26,7 +29,7 @@ _MIN_POLL_INTERVAL_MS = 3000
 class Turn:
     """
     A started turn that owns all data and behavior. Identity fields are immutable;
-    state is updated in-place by sync_state() / wait_for_completion().
+    state is updated in-place by refresh() / wait_for_completion().
     """
 
     def __init__(
@@ -80,20 +83,20 @@ class Turn:
         return self._session
 
     def _is_terminal(self, state: TurnState) -> bool:
-        return state.status != "running"
+        # Terminal states are listed explicitly (not checking for running) so a newly added
+        # non-terminal status keeps polling by default; new terminal states must be added here.
+        return isinstance(state, (TurnStateDone, TurnStateCancelled, TurnStateError))
 
     def _apply_event(self, event: TurnStreamingEvent) -> None:
         """Keep _state in sync from streamed events that carry a state snapshot."""
         if isinstance(event, (TurnCreatedEvent, TurnDoneEvent)):
             self._state = event.state
 
-    def sync_state(self, *, request_options: typing.Optional[RequestOptions] = None) -> TurnState:
-        """Refetch only when cached state is non-terminal; updates state in-place and returns it."""
-        if self._is_terminal(self._state):
-            return self._state
+    def refresh(self, *, request_options: typing.Optional[RequestOptions] = None) -> "Turn":
+        """Refetch from the server, update state in-place and return self."""
         response = self._client.agents.sessions.get_turn(self._session_id, self._id, request_options=request_options)
         self._state = response.data.state
-        return self._state
+        return self
 
     def wait_for_completion(
         self,
@@ -105,7 +108,7 @@ class Turn:
             raise ValueError(f"poll_interval_ms must be at least {_MIN_POLL_INTERVAL_MS}ms")
         while not self._is_terminal(self._state):
             time.sleep(poll_interval_ms / 1000.0)
-            self.sync_state(request_options=request_options)
+            self.refresh(request_options=request_options)
         return self._state
 
     def stream(
@@ -134,7 +137,7 @@ class Turn:
         limit: typing.Optional[int] = 25,
         order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[TurnEvent, SessionsListTurnEventsResponse]:
+    ) -> SyncPager[TurnEvent, ListEventsResponse]:
         return self._client.agents.sessions.list_turn_events(
             self._session_id,
             self._id,
@@ -201,22 +204,22 @@ class AsyncTurn:
         return self._session
 
     def _is_terminal(self, state: TurnState) -> bool:
-        return state.status != "running"
+        # Terminal states are listed explicitly (not checking for running) so a newly added
+        # non-terminal status keeps polling by default; new terminal states must be added here.
+        return isinstance(state, (TurnStateDone, TurnStateCancelled, TurnStateError))
 
     def _apply_event(self, event: TurnStreamingEvent) -> None:
         """Keep _state in sync from streamed events that carry a state snapshot."""
         if isinstance(event, (TurnCreatedEvent, TurnDoneEvent)):
             self._state = event.state
 
-    async def sync_state(self, *, request_options: typing.Optional[RequestOptions] = None) -> TurnState:
-        """Refetch only when cached state is non-terminal; updates state in-place and returns it."""
-        if self._is_terminal(self._state):
-            return self._state
+    async def refresh(self, *, request_options: typing.Optional[RequestOptions] = None) -> "AsyncTurn":
+        """Refetch from the server, update state in-place and return self."""
         response = await self._client.agents.sessions.get_turn(
             self._session_id, self._id, request_options=request_options
         )
         self._state = response.data.state
-        return self._state
+        return self
 
     async def wait_for_completion(
         self,
@@ -230,7 +233,7 @@ class AsyncTurn:
             raise ValueError(f"poll_interval_ms must be at least {_MIN_POLL_INTERVAL_MS}ms")
         while not self._is_terminal(self._state):
             await asyncio.sleep(poll_interval_ms / 1000.0)
-            await self.sync_state(request_options=request_options)
+            await self.refresh(request_options=request_options)
         return self._state
 
     async def stream(
@@ -259,7 +262,7 @@ class AsyncTurn:
         limit: typing.Optional[int] = 25,
         order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[TurnEvent, SessionsListTurnEventsResponse]:
+    ) -> AsyncPager[TurnEvent, ListEventsResponse]:
         return await self._client.agents.sessions.list_turn_events(
             self._session_id,
             self._id,

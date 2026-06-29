@@ -2,8 +2,8 @@ import os
 import typing
 
 import httpx
-from ..agents.sessions.types.sessions_list_request_order import SessionsListRequestOrder
-from ..agents.sessions.types.sessions_list_response import SessionsListResponse
+from ..types.list_sessions_response import ListSessionsResponse
+from ..types.order import Order
 from ..core.logging import LogConfig, Logger
 from ..core.pagination import AsyncPager, SyncPager
 from ..core.request_options import RequestOptions
@@ -12,12 +12,12 @@ from .agent_session import AgentSession, AsyncAgentSession
 
 
 def _wrap_sessions_pager(
-    raw_pager: SyncPager[RawSession, SessionsListResponse],
+    raw_pager: SyncPager[RawSession, ListSessionsResponse],
     client: typing.Any,
-) -> SyncPager[AgentSession, SessionsListResponse]:
+) -> SyncPager[AgentSession, ListSessionsResponse]:
     wrapped_items = [AgentSession(s, client) for s in (raw_pager.items or [])]
 
-    def get_next() -> typing.Optional[SyncPager[AgentSession, SessionsListResponse]]:
+    def get_next() -> typing.Optional[SyncPager[AgentSession, ListSessionsResponse]]:
         if raw_pager.get_next is None:
             return None
         next_raw = raw_pager.get_next()
@@ -34,12 +34,12 @@ def _wrap_sessions_pager(
 
 
 async def _async_wrap_sessions_pager(
-    raw_pager: AsyncPager[RawSession, SessionsListResponse],
+    raw_pager: AsyncPager[RawSession, ListSessionsResponse],
     client: typing.Any,
-) -> AsyncPager[AsyncAgentSession, SessionsListResponse]:
+) -> AsyncPager[AsyncAgentSession, ListSessionsResponse]:
     wrapped_items = [AsyncAgentSession(s, client) for s in (raw_pager.items or [])]
 
-    async def get_next() -> typing.Optional[AsyncPager[AsyncAgentSession, SessionsListResponse]]:
+    async def get_next() -> typing.Optional[AsyncPager[AsyncAgentSession, ListSessionsResponse]]:
         if raw_pager.get_next is None:
             return None
         next_raw = await raw_pager.get_next()
@@ -100,12 +100,12 @@ class AgentSessionClient:
         *,
         agent_name: str,
         limit: typing.Optional[int] = 10,
-        order: typing.Optional[SessionsListRequestOrder] = None,
+        order: typing.Optional[Order] = None,
         page_token: typing.Optional[str] = None,
         start_timestamp: typing.Optional[str] = None,
         end_timestamp: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[AgentSession, SessionsListResponse]:
+    ) -> SyncPager[AgentSession, ListSessionsResponse]:
         raw_pager = self._client.agents.sessions.list(
             agent_name=agent_name,
             limit=limit,
@@ -174,12 +174,12 @@ class AsyncAgentSessionClient:
         *,
         agent_name: str,
         limit: typing.Optional[int] = 10,
-        order: typing.Optional[SessionsListRequestOrder] = None,
+        order: typing.Optional[Order] = None,
         page_token: typing.Optional[str] = None,
         start_timestamp: typing.Optional[str] = None,
         end_timestamp: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[AsyncAgentSession, SessionsListResponse]:
+    ) -> AsyncPager[AsyncAgentSession, ListSessionsResponse]:
         raw_pager = await self._client.agents.sessions.list(
             agent_name=agent_name,
             limit=limit,
