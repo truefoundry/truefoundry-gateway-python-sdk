@@ -17,13 +17,12 @@ from ....errors.internal_server_error import InternalServerError
 from ....errors.not_found_error import NotFoundError
 from ....errors.unauthorized_error import UnauthorizedError
 from ....errors.unprocessable_entity_error import UnprocessableEntityError
+from ....types.agent_spec import AgentSpec
 from ....types.draft_session import DraftSession
 from ....types.get_draft_session_response import GetDraftSessionResponse
 from ....types.list_draft_sessions_order import ListDraftSessionsOrder
 from ....types.list_draft_sessions_response import ListDraftSessionsResponse
 from ....types.request_error_response import RequestErrorResponse
-from .types.create_draft_session_request_agent_spec import CreateDraftSessionRequestAgentSpec
-from .types.update_draft_session_request_agent_spec import UpdateDraftSessionRequestAgentSpec
 from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
@@ -170,7 +169,7 @@ class RawDraftSessionsClient:
     def create(
         self,
         *,
-        agent_spec: CreateDraftSessionRequestAgentSpec,
+        agent_spec: AgentSpec,
         agent_name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[GetDraftSessionResponse]:
@@ -179,8 +178,7 @@ class RawDraftSessionsClient:
 
         Parameters
         ----------
-        agent_spec : CreateDraftSessionRequestAgentSpec
-            Agent Definition
+        agent_spec : AgentSpec
 
         agent_name : typing.Optional[str]
             Optionally link the draft to an existing saved agent in the tenant. Omit for a standalone draft.
@@ -198,7 +196,7 @@ class RawDraftSessionsClient:
             method="POST",
             json={
                 "agent_spec": convert_and_respect_annotation_metadata(
-                    object_=agent_spec, annotation=CreateDraftSessionRequestAgentSpec, direction="write"
+                    object_=agent_spec, annotation=AgentSpec, direction="write"
                 ),
                 "agent_name": agent_name,
             },
@@ -351,7 +349,7 @@ class RawDraftSessionsClient:
         self,
         draft_session_id: str,
         *,
-        agent_spec: typing.Optional[UpdateDraftSessionRequestAgentSpec] = OMIT,
+        agent_spec: typing.Optional[AgentSpec] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[GetDraftSessionResponse]:
         """
@@ -362,8 +360,7 @@ class RawDraftSessionsClient:
         draft_session_id : str
             Draft session identifier.
 
-        agent_spec : typing.Optional[UpdateDraftSessionRequestAgentSpec]
-            Agent definition
+        agent_spec : typing.Optional[AgentSpec]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -378,7 +375,7 @@ class RawDraftSessionsClient:
             method="PATCH",
             json={
                 "agent_spec": convert_and_respect_annotation_metadata(
-                    object_=agent_spec, annotation=UpdateDraftSessionRequestAgentSpec, direction="write"
+                    object_=agent_spec, annotation=AgentSpec, direction="write"
                 ),
             },
             headers={
@@ -594,7 +591,7 @@ class AsyncRawDraftSessionsClient:
     async def create(
         self,
         *,
-        agent_spec: CreateDraftSessionRequestAgentSpec,
+        agent_spec: AgentSpec,
         agent_name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[GetDraftSessionResponse]:
@@ -603,8 +600,7 @@ class AsyncRawDraftSessionsClient:
 
         Parameters
         ----------
-        agent_spec : CreateDraftSessionRequestAgentSpec
-            Agent Definition
+        agent_spec : AgentSpec
 
         agent_name : typing.Optional[str]
             Optionally link the draft to an existing saved agent in the tenant. Omit for a standalone draft.
@@ -622,7 +618,7 @@ class AsyncRawDraftSessionsClient:
             method="POST",
             json={
                 "agent_spec": convert_and_respect_annotation_metadata(
-                    object_=agent_spec, annotation=CreateDraftSessionRequestAgentSpec, direction="write"
+                    object_=agent_spec, annotation=AgentSpec, direction="write"
                 ),
                 "agent_name": agent_name,
             },
@@ -775,7 +771,7 @@ class AsyncRawDraftSessionsClient:
         self,
         draft_session_id: str,
         *,
-        agent_spec: typing.Optional[UpdateDraftSessionRequestAgentSpec] = OMIT,
+        agent_spec: typing.Optional[AgentSpec] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[GetDraftSessionResponse]:
         """
@@ -786,8 +782,7 @@ class AsyncRawDraftSessionsClient:
         draft_session_id : str
             Draft session identifier.
 
-        agent_spec : typing.Optional[UpdateDraftSessionRequestAgentSpec]
-            Agent definition
+        agent_spec : typing.Optional[AgentSpec]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -802,7 +797,7 @@ class AsyncRawDraftSessionsClient:
             method="PATCH",
             json={
                 "agent_spec": convert_and_respect_annotation_metadata(
-                    object_=agent_spec, annotation=UpdateDraftSessionRequestAgentSpec, direction="write"
+                    object_=agent_spec, annotation=AgentSpec, direction="write"
                 ),
             },
             headers={

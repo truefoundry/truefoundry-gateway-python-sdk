@@ -13,6 +13,10 @@ from .skill_mount import SkillMount
 
 
 class AgentSpec(UniversalBaseModel):
+    """
+    Agent Definition
+    """
+
     model: Model
     instructions: typing.Optional[str] = None
     messages: typing.Optional[typing.List[AgentSpecUserMessage]] = None

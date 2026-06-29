@@ -7,13 +7,7 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from . import draft_sessions, sessions
-    from .draft_sessions import CreateDraftSessionRequestAgentSpec, UpdateDraftSessionRequestAgentSpec
-_dynamic_imports: typing.Dict[str, str] = {
-    "CreateDraftSessionRequestAgentSpec": ".draft_sessions",
-    "UpdateDraftSessionRequestAgentSpec": ".draft_sessions",
-    "draft_sessions": ".draft_sessions",
-    "sessions": ".sessions",
-}
+_dynamic_imports: typing.Dict[str, str] = {"draft_sessions": ".draft_sessions", "sessions": ".sessions"}
 
 
 def __getattr__(attr_name: str) -> typing.Any:
@@ -37,4 +31,4 @@ def __dir__():
     return sorted(lazy_attrs)
 
 
-__all__ = ["CreateDraftSessionRequestAgentSpec", "UpdateDraftSessionRequestAgentSpec", "draft_sessions", "sessions"]
+__all__ = ["draft_sessions", "sessions"]

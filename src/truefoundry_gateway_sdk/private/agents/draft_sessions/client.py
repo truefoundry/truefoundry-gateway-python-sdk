@@ -5,13 +5,12 @@ import typing
 from ....core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ....core.pagination import AsyncPager, SyncPager
 from ....core.request_options import RequestOptions
+from ....types.agent_spec import AgentSpec
 from ....types.draft_session import DraftSession
 from ....types.get_draft_session_response import GetDraftSessionResponse
 from ....types.list_draft_sessions_order import ListDraftSessionsOrder
 from ....types.list_draft_sessions_response import ListDraftSessionsResponse
 from .raw_client import AsyncRawDraftSessionsClient, RawDraftSessionsClient
-from .types.create_draft_session_request_agent_spec import CreateDraftSessionRequestAgentSpec
-from .types.update_draft_session_request_agent_spec import UpdateDraftSessionRequestAgentSpec
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -109,7 +108,7 @@ class DraftSessionsClient:
     def create(
         self,
         *,
-        agent_spec: CreateDraftSessionRequestAgentSpec,
+        agent_spec: AgentSpec,
         agent_name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> GetDraftSessionResponse:
@@ -118,8 +117,7 @@ class DraftSessionsClient:
 
         Parameters
         ----------
-        agent_spec : CreateDraftSessionRequestAgentSpec
-            Agent Definition
+        agent_spec : AgentSpec
 
         agent_name : typing.Optional[str]
             Optionally link the draft to an existing saved agent in the tenant. Omit for a standalone draft.
@@ -134,17 +132,14 @@ class DraftSessionsClient:
 
         Examples
         --------
-        from truefoundry_gateway_sdk import Model, TrueFoundryGateway
-        from truefoundry_gateway_sdk.private.agents.draft_sessions import (
-            CreateDraftSessionRequestAgentSpec,
-        )
+        from truefoundry_gateway_sdk import AgentSpec, Model, TrueFoundryGateway
 
         client = TrueFoundryGateway(
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
         client.private.agents.draft_sessions.create(
-            agent_spec=CreateDraftSessionRequestAgentSpec(
+            agent_spec=AgentSpec(
                 model=Model(
                     name="name",
                 ),
@@ -194,7 +189,7 @@ class DraftSessionsClient:
         self,
         draft_session_id: str,
         *,
-        agent_spec: typing.Optional[UpdateDraftSessionRequestAgentSpec] = OMIT,
+        agent_spec: typing.Optional[AgentSpec] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> GetDraftSessionResponse:
         """
@@ -205,8 +200,7 @@ class DraftSessionsClient:
         draft_session_id : str
             Draft session identifier.
 
-        agent_spec : typing.Optional[UpdateDraftSessionRequestAgentSpec]
-            Agent definition
+        agent_spec : typing.Optional[AgentSpec]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -336,7 +330,7 @@ class AsyncDraftSessionsClient:
     async def create(
         self,
         *,
-        agent_spec: CreateDraftSessionRequestAgentSpec,
+        agent_spec: AgentSpec,
         agent_name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> GetDraftSessionResponse:
@@ -345,8 +339,7 @@ class AsyncDraftSessionsClient:
 
         Parameters
         ----------
-        agent_spec : CreateDraftSessionRequestAgentSpec
-            Agent Definition
+        agent_spec : AgentSpec
 
         agent_name : typing.Optional[str]
             Optionally link the draft to an existing saved agent in the tenant. Omit for a standalone draft.
@@ -363,10 +356,7 @@ class AsyncDraftSessionsClient:
         --------
         import asyncio
 
-        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway, Model
-        from truefoundry_gateway_sdk.private.agents.draft_sessions import (
-            CreateDraftSessionRequestAgentSpec,
-        )
+        from truefoundry_gateway_sdk import AgentSpec, AsyncTrueFoundryGateway, Model
 
         client = AsyncTrueFoundryGateway(
             api_key="YOUR_API_KEY",
@@ -376,7 +366,7 @@ class AsyncDraftSessionsClient:
 
         async def main() -> None:
             await client.private.agents.draft_sessions.create(
-                agent_spec=CreateDraftSessionRequestAgentSpec(
+                agent_spec=AgentSpec(
                     model=Model(
                         name="name",
                     ),
@@ -437,7 +427,7 @@ class AsyncDraftSessionsClient:
         self,
         draft_session_id: str,
         *,
-        agent_spec: typing.Optional[UpdateDraftSessionRequestAgentSpec] = OMIT,
+        agent_spec: typing.Optional[AgentSpec] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> GetDraftSessionResponse:
         """
@@ -448,8 +438,7 @@ class AsyncDraftSessionsClient:
         draft_session_id : str
             Draft session identifier.
 
-        agent_spec : typing.Optional[UpdateDraftSessionRequestAgentSpec]
-            Agent definition
+        agent_spec : typing.Optional[AgentSpec]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
