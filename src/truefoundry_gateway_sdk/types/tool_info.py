@@ -2,7 +2,7 @@
 
 import typing
 
-from .mcp_tool_call_info import McpToolCallInfo
-from .true_foundry_system_tool_call_info import TrueFoundrySystemToolCallInfo
+from .mcp_tool_info import McpToolInfo
+from .true_foundry_system_tool_info import TrueFoundrySystemToolInfo
 
-ToolInfo = typing.Union[TrueFoundrySystemToolCallInfo, McpToolCallInfo]
+ToolInfo = typing.Union[TrueFoundrySystemToolInfo, McpToolInfo]

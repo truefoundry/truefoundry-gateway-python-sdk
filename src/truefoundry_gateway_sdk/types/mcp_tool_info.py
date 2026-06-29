@@ -6,7 +6,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class McpToolCallInfo(UniversalBaseModel):
+class McpToolInfo(UniversalBaseModel):
     type: typing.Literal["mcp"] = "mcp"
     server_id: str
     server_name: str

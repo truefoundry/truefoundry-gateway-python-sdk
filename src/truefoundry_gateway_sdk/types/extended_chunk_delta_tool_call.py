@@ -5,11 +5,11 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 from .chat_completion_chunk_delta_tool_call import ChatCompletionChunkDeltaToolCall
-from .extended_chunk_delta_tool_call_tool_info import ExtendedChunkDeltaToolCallToolInfo
+from .tool_info import ToolInfo
 
 
 class ExtendedChunkDeltaToolCall(ChatCompletionChunkDeltaToolCall):
-    tool_info: typing.Optional[ExtendedChunkDeltaToolCallToolInfo] = None
+    tool_info: typing.Optional[ToolInfo] = None
     provider_specific_fields: typing.Optional[typing.Dict[str, typing.Any]] = None
 
     if IS_PYDANTIC_V2:

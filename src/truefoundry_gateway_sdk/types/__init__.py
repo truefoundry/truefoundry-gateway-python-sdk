@@ -24,7 +24,6 @@ if typing.TYPE_CHECKING:
     from .chat_completion_message_tool_call_function import ChatCompletionMessageToolCallFunction
     from .draft_session import DraftSession
     from .extended_chunk_delta_tool_call import ExtendedChunkDeltaToolCall
-    from .extended_chunk_delta_tool_call_tool_info import ExtendedChunkDeltaToolCallToolInfo
     from .file_upload_content_part import FileUploadContentPart
     from .file_upload_content_part_file import FileUploadContentPartFile
     from .finish_reason import FinishReason
@@ -37,7 +36,7 @@ if typing.TYPE_CHECKING:
     from .mcp_server_init_info import McpServerInitInfo
     from .mcp_server_preload_tools_item import McpServerPreloadToolsItem
     from .mcp_server_require_approval_for_tools_item import McpServerRequireApprovalForToolsItem
-    from .mcp_tool_call_info import McpToolCallInfo
+    from .mcp_tool_info import McpToolInfo
     from .model import Model
     from .model_message_delta_event import ModelMessageDeltaEvent
     from .model_message_event import ModelMessageEvent
@@ -79,7 +78,7 @@ if typing.TYPE_CHECKING:
     from .tool_info import ToolInfo
     from .tool_response_event import ToolResponseEvent
     from .tool_response_required_event import ToolResponseRequiredEvent
-    from .true_foundry_system_tool_call_info import TrueFoundrySystemToolCallInfo
+    from .true_foundry_system_tool_info import TrueFoundrySystemToolInfo
     from .turn import Turn
     from .turn_created_event import TurnCreatedEvent
     from .turn_done_event import TurnDoneEvent
@@ -120,7 +119,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ChatCompletionMessageToolCallFunction": ".chat_completion_message_tool_call_function",
     "DraftSession": ".draft_session",
     "ExtendedChunkDeltaToolCall": ".extended_chunk_delta_tool_call",
-    "ExtendedChunkDeltaToolCallToolInfo": ".extended_chunk_delta_tool_call_tool_info",
     "FileUploadContentPart": ".file_upload_content_part",
     "FileUploadContentPartFile": ".file_upload_content_part_file",
     "FinishReason": ".finish_reason",
@@ -133,7 +131,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "McpServerInitInfo": ".mcp_server_init_info",
     "McpServerPreloadToolsItem": ".mcp_server_preload_tools_item",
     "McpServerRequireApprovalForToolsItem": ".mcp_server_require_approval_for_tools_item",
-    "McpToolCallInfo": ".mcp_tool_call_info",
+    "McpToolInfo": ".mcp_tool_info",
     "Model": ".model",
     "ModelMessageDeltaEvent": ".model_message_delta_event",
     "ModelMessageEvent": ".model_message_event",
@@ -175,7 +173,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ToolInfo": ".tool_info",
     "ToolResponseEvent": ".tool_response_event",
     "ToolResponseRequiredEvent": ".tool_response_required_event",
-    "TrueFoundrySystemToolCallInfo": ".true_foundry_system_tool_call_info",
+    "TrueFoundrySystemToolInfo": ".true_foundry_system_tool_info",
     "Turn": ".turn",
     "TurnCreatedEvent": ".turn_created_event",
     "TurnDoneEvent": ".turn_done_event",
@@ -240,7 +238,6 @@ __all__ = [
     "ChatCompletionMessageToolCallFunction",
     "DraftSession",
     "ExtendedChunkDeltaToolCall",
-    "ExtendedChunkDeltaToolCallToolInfo",
     "FileUploadContentPart",
     "FileUploadContentPartFile",
     "FinishReason",
@@ -253,7 +250,7 @@ __all__ = [
     "McpServerInitInfo",
     "McpServerPreloadToolsItem",
     "McpServerRequireApprovalForToolsItem",
-    "McpToolCallInfo",
+    "McpToolInfo",
     "Model",
     "ModelMessageDeltaEvent",
     "ModelMessageEvent",
@@ -295,7 +292,7 @@ __all__ = [
     "ToolInfo",
     "ToolResponseEvent",
     "ToolResponseRequiredEvent",
-    "TrueFoundrySystemToolCallInfo",
+    "TrueFoundrySystemToolInfo",
     "Turn",
     "TurnCreatedEvent",
     "TurnDoneEvent",
