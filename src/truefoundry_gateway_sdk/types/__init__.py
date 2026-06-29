@@ -46,7 +46,6 @@ if typing.TYPE_CHECKING:
     from .model_message_usage import ModelMessageUsage
     from .model_message_usage_input_tokens_breakdown import ModelMessageUsageInputTokensBreakdown
     from .model_params import ModelParams
-    from .model_params_reasoning_effort import ModelParamsReasoningEffort
     from .raw_tool_call import RawToolCall
     from .request_error_response import RequestErrorResponse
     from .request_error_response_error import RequestErrorResponseError
@@ -143,7 +142,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ModelMessageUsage": ".model_message_usage",
     "ModelMessageUsageInputTokensBreakdown": ".model_message_usage_input_tokens_breakdown",
     "ModelParams": ".model_params",
-    "ModelParamsReasoningEffort": ".model_params_reasoning_effort",
     "RawToolCall": ".raw_tool_call",
     "RequestErrorResponse": ".request_error_response",
     "RequestErrorResponseError": ".request_error_response_error",
@@ -264,7 +262,6 @@ __all__ = [
     "ModelMessageUsage",
     "ModelMessageUsageInputTokensBreakdown",
     "ModelParams",
-    "ModelParamsReasoningEffort",
     "RawToolCall",
     "RequestErrorResponse",
     "RequestErrorResponseError",

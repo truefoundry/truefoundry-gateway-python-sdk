@@ -4,7 +4,6 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .model_params_reasoning_effort import ModelParamsReasoningEffort
 
 
 class ModelParams(UniversalBaseModel):
@@ -13,7 +12,7 @@ class ModelParams(UniversalBaseModel):
     top_p: typing.Optional[float] = None
     top_k: typing.Optional[float] = None
     parallel_tool_calls: typing.Optional[bool] = None
-    reasoning_effort: typing.Optional[ModelParamsReasoningEffort] = None
+    reasoning_effort: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2
