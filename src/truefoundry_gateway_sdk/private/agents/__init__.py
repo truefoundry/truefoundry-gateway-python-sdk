@@ -7,25 +7,10 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from . import draft_sessions, sessions
-    from .draft_sessions import (
-        CreateDraftSessionRequestAgentSpec,
-        CreateDraftSessionRequestAgentSpecMessagesItem,
-        DraftSessionsCreateResponse,
-        DraftSessionsGetResponse,
-        DraftSessionsListResponse,
-        DraftSessionsUpdateResponse,
-        UpdateDraftSessionRequestAgentSpec,
-        UpdateDraftSessionRequestAgentSpecMessagesItem,
-    )
+    from .draft_sessions import CreateDraftSessionRequestAgentSpec, UpdateDraftSessionRequestAgentSpec
 _dynamic_imports: typing.Dict[str, str] = {
     "CreateDraftSessionRequestAgentSpec": ".draft_sessions",
-    "CreateDraftSessionRequestAgentSpecMessagesItem": ".draft_sessions",
-    "DraftSessionsCreateResponse": ".draft_sessions",
-    "DraftSessionsGetResponse": ".draft_sessions",
-    "DraftSessionsListResponse": ".draft_sessions",
-    "DraftSessionsUpdateResponse": ".draft_sessions",
     "UpdateDraftSessionRequestAgentSpec": ".draft_sessions",
-    "UpdateDraftSessionRequestAgentSpecMessagesItem": ".draft_sessions",
     "draft_sessions": ".draft_sessions",
     "sessions": ".sessions",
 }
@@ -52,15 +37,4 @@ def __dir__():
     return sorted(lazy_attrs)
 
 
-__all__ = [
-    "CreateDraftSessionRequestAgentSpec",
-    "CreateDraftSessionRequestAgentSpecMessagesItem",
-    "DraftSessionsCreateResponse",
-    "DraftSessionsGetResponse",
-    "DraftSessionsListResponse",
-    "DraftSessionsUpdateResponse",
-    "UpdateDraftSessionRequestAgentSpec",
-    "UpdateDraftSessionRequestAgentSpecMessagesItem",
-    "draft_sessions",
-    "sessions",
-]
+__all__ = ["CreateDraftSessionRequestAgentSpec", "UpdateDraftSessionRequestAgentSpec", "draft_sessions", "sessions"]

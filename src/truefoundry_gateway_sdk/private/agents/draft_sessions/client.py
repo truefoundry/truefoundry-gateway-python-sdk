@@ -6,13 +6,11 @@ from ....core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ....core.pagination import AsyncPager, SyncPager
 from ....core.request_options import RequestOptions
 from ....types.draft_session import DraftSession
+from ....types.get_draft_session_response import GetDraftSessionResponse
 from ....types.list_draft_sessions_order import ListDraftSessionsOrder
+from ....types.list_draft_sessions_response import ListDraftSessionsResponse
 from .raw_client import AsyncRawDraftSessionsClient, RawDraftSessionsClient
 from .types.create_draft_session_request_agent_spec import CreateDraftSessionRequestAgentSpec
-from .types.draft_sessions_create_response import DraftSessionsCreateResponse
-from .types.draft_sessions_get_response import DraftSessionsGetResponse
-from .types.draft_sessions_list_response import DraftSessionsListResponse
-from .types.draft_sessions_update_response import DraftSessionsUpdateResponse
 from .types.update_draft_session_request_agent_spec import UpdateDraftSessionRequestAgentSpec
 
 # this is used as the default value for optional parameters
@@ -44,7 +42,7 @@ class DraftSessionsClient:
         start_timestamp: typing.Optional[str] = None,
         end_timestamp: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[DraftSession, DraftSessionsListResponse]:
+    ) -> SyncPager[DraftSession, ListDraftSessionsResponse]:
         """
         List the caller-owned draft sessions (newest first by default), keyset-paginated. Optionally filter by `agent_name`. Pass `page_token` to fetch the next page, keeping the other query params constant.
 
@@ -73,7 +71,7 @@ class DraftSessionsClient:
 
         Returns
         -------
-        SyncPager[DraftSession, DraftSessionsListResponse]
+        SyncPager[DraftSession, ListDraftSessionsResponse]
             Paginated draft sessions.
 
         Examples
@@ -114,14 +112,14 @@ class DraftSessionsClient:
         agent_spec: CreateDraftSessionRequestAgentSpec,
         agent_name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> DraftSessionsCreateResponse:
+    ) -> GetDraftSessionResponse:
         """
         Create a draft session holding an inline agent spec, optionally linked to a saved agent. Owner is the token subject.
 
         Parameters
         ----------
         agent_spec : CreateDraftSessionRequestAgentSpec
-            Inline agent definition.
+            Agent Definition
 
         agent_name : typing.Optional[str]
             Optionally link the draft to an existing saved agent in the tenant. Omit for a standalone draft.
@@ -131,7 +129,7 @@ class DraftSessionsClient:
 
         Returns
         -------
-        DraftSessionsCreateResponse
+        GetDraftSessionResponse
             Draft session created.
 
         Examples
@@ -160,7 +158,7 @@ class DraftSessionsClient:
 
     def get(
         self, draft_session_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> DraftSessionsGetResponse:
+    ) -> GetDraftSessionResponse:
         """
         Get a draft session by id. Owner-only.
 
@@ -174,7 +172,7 @@ class DraftSessionsClient:
 
         Returns
         -------
-        DraftSessionsGetResponse
+        GetDraftSessionResponse
             Draft session data.
 
         Examples
@@ -198,7 +196,7 @@ class DraftSessionsClient:
         *,
         agent_spec: typing.Optional[UpdateDraftSessionRequestAgentSpec] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> DraftSessionsUpdateResponse:
+    ) -> GetDraftSessionResponse:
         """
         Update a draft session's inline spec. Owner-only. An empty body is a valid no-op that refreshes `updated_at`.
 
@@ -208,14 +206,14 @@ class DraftSessionsClient:
             Draft session identifier.
 
         agent_spec : typing.Optional[UpdateDraftSessionRequestAgentSpec]
-            Replacement inline spec; never cleared.
+            Agent definition
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        DraftSessionsUpdateResponse
+        GetDraftSessionResponse
             Draft session updated.
 
         Examples
@@ -259,7 +257,7 @@ class AsyncDraftSessionsClient:
         start_timestamp: typing.Optional[str] = None,
         end_timestamp: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[DraftSession, DraftSessionsListResponse]:
+    ) -> AsyncPager[DraftSession, ListDraftSessionsResponse]:
         """
         List the caller-owned draft sessions (newest first by default), keyset-paginated. Optionally filter by `agent_name`. Pass `page_token` to fetch the next page, keeping the other query params constant.
 
@@ -288,7 +286,7 @@ class AsyncDraftSessionsClient:
 
         Returns
         -------
-        AsyncPager[DraftSession, DraftSessionsListResponse]
+        AsyncPager[DraftSession, ListDraftSessionsResponse]
             Paginated draft sessions.
 
         Examples
@@ -341,14 +339,14 @@ class AsyncDraftSessionsClient:
         agent_spec: CreateDraftSessionRequestAgentSpec,
         agent_name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> DraftSessionsCreateResponse:
+    ) -> GetDraftSessionResponse:
         """
         Create a draft session holding an inline agent spec, optionally linked to a saved agent. Owner is the token subject.
 
         Parameters
         ----------
         agent_spec : CreateDraftSessionRequestAgentSpec
-            Inline agent definition.
+            Agent Definition
 
         agent_name : typing.Optional[str]
             Optionally link the draft to an existing saved agent in the tenant. Omit for a standalone draft.
@@ -358,7 +356,7 @@ class AsyncDraftSessionsClient:
 
         Returns
         -------
-        DraftSessionsCreateResponse
+        GetDraftSessionResponse
             Draft session created.
 
         Examples
@@ -395,7 +393,7 @@ class AsyncDraftSessionsClient:
 
     async def get(
         self, draft_session_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> DraftSessionsGetResponse:
+    ) -> GetDraftSessionResponse:
         """
         Get a draft session by id. Owner-only.
 
@@ -409,7 +407,7 @@ class AsyncDraftSessionsClient:
 
         Returns
         -------
-        DraftSessionsGetResponse
+        GetDraftSessionResponse
             Draft session data.
 
         Examples
@@ -441,7 +439,7 @@ class AsyncDraftSessionsClient:
         *,
         agent_spec: typing.Optional[UpdateDraftSessionRequestAgentSpec] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> DraftSessionsUpdateResponse:
+    ) -> GetDraftSessionResponse:
         """
         Update a draft session's inline spec. Owner-only. An empty body is a valid no-op that refreshes `updated_at`.
 
@@ -451,14 +449,14 @@ class AsyncDraftSessionsClient:
             Draft session identifier.
 
         agent_spec : typing.Optional[UpdateDraftSessionRequestAgentSpec]
-            Replacement inline spec; never cleared.
+            Agent definition
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        DraftSessionsUpdateResponse
+        GetDraftSessionResponse
             Draft session updated.
 
         Examples

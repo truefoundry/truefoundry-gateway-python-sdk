@@ -10,7 +10,7 @@ if typing.TYPE_CHECKING:
     from .agent_info import AgentInfo
     from .agent_parent import AgentParent
     from .agent_spec import AgentSpec
-    from .agent_spec_messages_item import AgentSpecMessagesItem
+    from .agent_spec_user_message import AgentSpecUserMessage
     from .approval_allow import ApprovalAllow
     from .approval_decision import ApprovalDecision
     from .approval_deny import ApprovalDeny
@@ -32,10 +32,12 @@ if typing.TYPE_CHECKING:
     from .file_content import FileContent
     from .finish_reason import FinishReason
     from .generative_ui_config import GenerativeUiConfig
+    from .get_draft_session_response import GetDraftSessionResponse
     from .get_session_response import GetSessionResponse
     from .get_turn_response import GetTurnResponse
     from .large_tool_response_config import LargeToolResponseConfig
     from .list_draft_sessions_order import ListDraftSessionsOrder
+    from .list_draft_sessions_response import ListDraftSessionsResponse
     from .list_events_order import ListEventsOrder
     from .list_events_response import ListEventsResponse
     from .list_sessions_order import ListSessionsOrder
@@ -72,7 +74,7 @@ if typing.TYPE_CHECKING:
     from .sandbox_config import SandboxConfig
     from .sandbox_created_event import SandboxCreatedEvent
     from .session import Session
-    from .skill import Skill
+    from .skill_mount import SkillMount
     from .subject import Subject
     from .text_content_part import TextContentPart
     from .thread_created_event import ThreadCreatedEvent
@@ -114,7 +116,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "AgentInfo": ".agent_info",
     "AgentParent": ".agent_parent",
     "AgentSpec": ".agent_spec",
-    "AgentSpecMessagesItem": ".agent_spec_messages_item",
+    "AgentSpecUserMessage": ".agent_spec_user_message",
     "ApprovalAllow": ".approval_allow",
     "ApprovalDecision": ".approval_decision",
     "ApprovalDeny": ".approval_deny",
@@ -136,10 +138,12 @@ _dynamic_imports: typing.Dict[str, str] = {
     "FileContent": ".file_content",
     "FinishReason": ".finish_reason",
     "GenerativeUiConfig": ".generative_ui_config",
+    "GetDraftSessionResponse": ".get_draft_session_response",
     "GetSessionResponse": ".get_session_response",
     "GetTurnResponse": ".get_turn_response",
     "LargeToolResponseConfig": ".large_tool_response_config",
     "ListDraftSessionsOrder": ".list_draft_sessions_order",
+    "ListDraftSessionsResponse": ".list_draft_sessions_response",
     "ListEventsOrder": ".list_events_order",
     "ListEventsResponse": ".list_events_response",
     "ListSessionsOrder": ".list_sessions_order",
@@ -176,7 +180,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "SandboxConfig": ".sandbox_config",
     "SandboxCreatedEvent": ".sandbox_created_event",
     "Session": ".session",
-    "Skill": ".skill",
+    "SkillMount": ".skill_mount",
     "Subject": ".subject",
     "TextContentPart": ".text_content_part",
     "ThreadCreatedEvent": ".thread_created_event",
@@ -242,7 +246,7 @@ __all__ = [
     "AgentInfo",
     "AgentParent",
     "AgentSpec",
-    "AgentSpecMessagesItem",
+    "AgentSpecUserMessage",
     "ApprovalAllow",
     "ApprovalDecision",
     "ApprovalDeny",
@@ -264,10 +268,12 @@ __all__ = [
     "FileContent",
     "FinishReason",
     "GenerativeUiConfig",
+    "GetDraftSessionResponse",
     "GetSessionResponse",
     "GetTurnResponse",
     "LargeToolResponseConfig",
     "ListDraftSessionsOrder",
+    "ListDraftSessionsResponse",
     "ListEventsOrder",
     "ListEventsResponse",
     "ListSessionsOrder",
@@ -304,7 +310,7 @@ __all__ = [
     "SandboxConfig",
     "SandboxCreatedEvent",
     "Session",
-    "Skill",
+    "SkillMount",
     "Subject",
     "TextContentPart",
     "ThreadCreatedEvent",

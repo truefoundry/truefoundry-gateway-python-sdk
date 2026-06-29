@@ -1,6 +1,6 @@
 # Reference
 ## Private Agents DraftSessions
-<details><summary><code>client.private.agents.draft_sessions.<a href="src/truefoundry_gateway_sdk/private/agents/draft_sessions/client.py">list</a>(...) -> DraftSessionsListResponse</code></summary>
+<details><summary><code>client.private.agents.draft_sessions.<a href="src/truefoundry_gateway_sdk/private/agents/draft_sessions/client.py">list</a>(...) -> ListDraftSessionsResponse</code></summary>
 <dl>
 <dd>
 
@@ -117,7 +117,7 @@ client.private.agents.draft_sessions.list(
 </dl>
 </details>
 
-<details><summary><code>client.private.agents.draft_sessions.<a href="src/truefoundry_gateway_sdk/private/agents/draft_sessions/client.py">create</a>(...) -> DraftSessionsCreateResponse</code></summary>
+<details><summary><code>client.private.agents.draft_sessions.<a href="src/truefoundry_gateway_sdk/private/agents/draft_sessions/client.py">create</a>(...) -> GetDraftSessionResponse</code></summary>
 <dl>
 <dd>
 
@@ -174,7 +174,7 @@ client.private.agents.draft_sessions.create(
 <dl>
 <dd>
 
-**agent_spec:** `CreateDraftSessionRequestAgentSpec` — Inline agent definition.
+**agent_spec:** `CreateDraftSessionRequestAgentSpec` — Agent Definition
     
 </dd>
 </dl>
@@ -202,7 +202,7 @@ client.private.agents.draft_sessions.create(
 </dl>
 </details>
 
-<details><summary><code>client.private.agents.draft_sessions.<a href="src/truefoundry_gateway_sdk/private/agents/draft_sessions/client.py">get</a>(...) -> DraftSessionsGetResponse</code></summary>
+<details><summary><code>client.private.agents.draft_sessions.<a href="src/truefoundry_gateway_sdk/private/agents/draft_sessions/client.py">get</a>(...) -> GetDraftSessionResponse</code></summary>
 <dl>
 <dd>
 
@@ -274,7 +274,7 @@ client.private.agents.draft_sessions.get(
 </dl>
 </details>
 
-<details><summary><code>client.private.agents.draft_sessions.<a href="src/truefoundry_gateway_sdk/private/agents/draft_sessions/client.py">update</a>(...) -> DraftSessionsUpdateResponse</code></summary>
+<details><summary><code>client.private.agents.draft_sessions.<a href="src/truefoundry_gateway_sdk/private/agents/draft_sessions/client.py">update</a>(...) -> GetDraftSessionResponse</code></summary>
 <dl>
 <dd>
 
@@ -334,7 +334,7 @@ client.private.agents.draft_sessions.update(
 <dl>
 <dd>
 
-**agent_spec:** `typing.Optional[UpdateDraftSessionRequestAgentSpec]` — Replacement inline spec; never cleared.
+**agent_spec:** `typing.Optional[UpdateDraftSessionRequestAgentSpec]` — Agent definition
     
 </dd>
 </dl>

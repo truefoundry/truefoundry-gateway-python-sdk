@@ -6,9 +6,16 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class AgentSpecMessagesItem(UniversalBaseModel):
-    role: typing.Literal["user"] = "user"
-    content: str
+class SkillMount(UniversalBaseModel):
+    fqn: str = pydantic.Field()
+    """
+    Fully qualified name of the agent skill version.
+    """
+
+    preload: typing.Optional[bool] = pydantic.Field(default=False)
+    """
+    If true, the SKILL.md content is injected into the agent context.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

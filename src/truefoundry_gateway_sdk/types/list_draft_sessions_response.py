@@ -3,12 +3,14 @@
 import typing
 
 import pydantic
-from .....core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .draft_session import DraftSession
+from .token_pagination import TokenPagination
 
 
-class CreateDraftSessionRequestAgentSpecMessagesItem(UniversalBaseModel):
-    role: typing.Literal["user"] = "user"
-    content: str
+class ListDraftSessionsResponse(UniversalBaseModel):
+    data: typing.List[DraftSession]
+    pagination: TokenPagination
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2
