@@ -2,11 +2,11 @@ import os
 import typing
 
 import httpx
-from ..types.list_sessions_response import ListSessionsResponse
-from ..types.order import Order
 from ..core.logging import LogConfig, Logger
 from ..core.pagination import AsyncPager, SyncPager
 from ..core.request_options import RequestOptions
+from ..types.list_sessions_order import ListSessionsOrder
+from ..types.list_sessions_response import ListSessionsResponse
 from ..types.session import Session as RawSession
 from .agent_session import AgentSession, AsyncAgentSession
 
@@ -100,7 +100,7 @@ class AgentSessionClient:
         *,
         agent_name: str,
         limit: typing.Optional[int] = 10,
-        order: typing.Optional[Order] = None,
+        order: typing.Optional[ListSessionsOrder] = None,
         page_token: typing.Optional[str] = None,
         start_timestamp: typing.Optional[str] = None,
         end_timestamp: typing.Optional[str] = None,
@@ -174,7 +174,7 @@ class AsyncAgentSessionClient:
         *,
         agent_name: str,
         limit: typing.Optional[int] = 10,
-        order: typing.Optional[Order] = None,
+        order: typing.Optional[ListSessionsOrder] = None,
         page_token: typing.Optional[str] = None,
         start_timestamp: typing.Optional[str] = None,
         end_timestamp: typing.Optional[str] = None,

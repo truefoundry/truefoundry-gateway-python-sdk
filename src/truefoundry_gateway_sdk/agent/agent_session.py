@@ -1,13 +1,13 @@
 import typing
 
-from ..agents.sessions.types.create_turn_request_input_item import CreateTurnRequestInputItem
-from ..agents.sessions.types.create_turn_request_previous_turn_id import CreateTurnRequestPreviousTurnId
-from ..types.list_turns_response import ListTurnsResponse
 from ..core.pagination import AsyncPager, SyncPager
 from ..core.request_options import RequestOptions
+from ..types.list_turns_response import ListTurnsResponse
+from ..types.previous_turn_id_input import PreviousTurnIdInput
 from ..types.session import Session as RawSession
 from ..types.subject import Subject
 from ..types.turn import Turn as RawTurn
+from ..types.turn_input_item import TurnInputItem
 from .prepared_turn import AsyncPreparedTurn, PreparedTurn
 from .turn import AsyncTurn, Turn
 
@@ -99,8 +99,8 @@ class AgentSession:
     def prepare_turn(
         self,
         *,
-        input: typing.Optional[typing.Sequence[CreateTurnRequestInputItem]] = None,
-        previous_turn_id: typing.Optional[CreateTurnRequestPreviousTurnId] = None,
+        input: typing.Optional[typing.Sequence[TurnInputItem]] = None,
+        previous_turn_id: typing.Optional[PreviousTurnIdInput] = None,
     ) -> PreparedTurn:
         return PreparedTurn(
             input=input,
@@ -175,8 +175,8 @@ class AsyncAgentSession:
     def prepare_turn(
         self,
         *,
-        input: typing.Optional[typing.Sequence[CreateTurnRequestInputItem]] = None,
-        previous_turn_id: typing.Optional[CreateTurnRequestPreviousTurnId] = None,
+        input: typing.Optional[typing.Sequence[TurnInputItem]] = None,
+        previous_turn_id: typing.Optional[PreviousTurnIdInput] = None,
     ) -> AsyncPreparedTurn:
         return AsyncPreparedTurn(
             input=input,

@@ -1,11 +1,10 @@
 import typing
 
-from ..agents.sessions.types.create_turn_request_input_item import CreateTurnRequestInputItem
-from ..agents.sessions.types.create_turn_request_previous_turn_id import CreateTurnRequestPreviousTurnId
-from ..agents.sessions.types.sessions_list_turn_events_request_order import SessionsListTurnEventsRequestOrder
 from ..core.pagination import AsyncPager, SyncPager
 from ..core.request_options import RequestOptions
+from ..types.list_events_order import ListEventsOrder
 from ..types.list_events_response import ListEventsResponse
+from ..types.previous_turn_id_input import PreviousTurnIdInput
 from ..types.subject import Subject
 from ..types.turn import Turn as RawTurn
 from ..types.turn_created_event import TurnCreatedEvent
@@ -29,8 +28,8 @@ class PreparedTurn:
     def __init__(
         self,
         *,
-        input: typing.Optional[typing.Sequence[CreateTurnRequestInputItem]],
-        previous_turn_id: typing.Optional[CreateTurnRequestPreviousTurnId],
+        input: typing.Optional[typing.Sequence[TurnInputItem]],
+        previous_turn_id: typing.Optional[PreviousTurnIdInput],
         session: "AgentSession",
         client: typing.Any,
     ) -> None:
@@ -146,7 +145,7 @@ class PreparedTurn:
         *,
         page_token: typing.Optional[str] = None,
         limit: typing.Optional[int] = 25,
-        order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
+        order: typing.Optional[ListEventsOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[TurnEvent, ListEventsResponse]:
         return self._must_get_turn().list_events(
@@ -234,8 +233,8 @@ class AsyncPreparedTurn:
     def __init__(
         self,
         *,
-        input: typing.Optional[typing.Sequence[CreateTurnRequestInputItem]],
-        previous_turn_id: typing.Optional[CreateTurnRequestPreviousTurnId],
+        input: typing.Optional[typing.Sequence[TurnInputItem]],
+        previous_turn_id: typing.Optional[PreviousTurnIdInput],
         session: "AsyncAgentSession",
         client: typing.Any,
     ) -> None:
@@ -352,7 +351,7 @@ class AsyncPreparedTurn:
         *,
         page_token: typing.Optional[str] = None,
         limit: typing.Optional[int] = 25,
-        order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
+        order: typing.Optional[ListEventsOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[TurnEvent, ListEventsResponse]:
         return await self._must_get_turn().list_events(

@@ -1,9 +1,9 @@
 import time
 import typing
 
-from ..agents.sessions.types.sessions_list_turn_events_request_order import SessionsListTurnEventsRequestOrder
 from ..core.pagination import AsyncPager, SyncPager
 from ..core.request_options import RequestOptions
+from ..types.list_events_order import ListEventsOrder
 from ..types.list_events_response import ListEventsResponse
 from ..types.subject import Subject
 from ..types.turn import Turn as RawTurn
@@ -135,7 +135,7 @@ class Turn:
         *,
         page_token: typing.Optional[str] = None,
         limit: typing.Optional[int] = 25,
-        order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
+        order: typing.Optional[ListEventsOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[TurnEvent, ListEventsResponse]:
         return self._client.agents.sessions.list_turn_events(
@@ -260,7 +260,7 @@ class AsyncTurn:
         *,
         page_token: typing.Optional[str] = None,
         limit: typing.Optional[int] = 25,
-        order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
+        order: typing.Optional[ListEventsOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[TurnEvent, ListEventsResponse]:
         return await self._client.agents.sessions.list_turn_events(
