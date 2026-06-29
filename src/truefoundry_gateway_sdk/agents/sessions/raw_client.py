@@ -27,18 +27,18 @@ from ...errors.unprocessable_entity_error import UnprocessableEntityError
 from ...types.cancel_session_response import CancelSessionResponse
 from ...types.get_session_response import GetSessionResponse
 from ...types.get_turn_response import GetTurnResponse
+from ...types.list_events_order import ListEventsOrder
 from ...types.list_events_response import ListEventsResponse
+from ...types.list_sessions_order import ListSessionsOrder
 from ...types.list_sessions_response import ListSessionsResponse
 from ...types.list_turns_response import ListTurnsResponse
-from ...types.order import Order
+from ...types.previous_turn_id_input import PreviousTurnIdInput
 from ...types.request_error_response import RequestErrorResponse
 from ...types.session import Session
 from ...types.turn import Turn
 from ...types.turn_event import TurnEvent
+from ...types.turn_input_item import TurnInputItem
 from ...types.turn_streaming_event import TurnStreamingEvent
-from .types.create_turn_request_input_item import CreateTurnRequestInputItem
-from .types.create_turn_request_previous_turn_id import CreateTurnRequestPreviousTurnId
-from .types.sessions_list_turn_events_request_order import SessionsListTurnEventsRequestOrder
 from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
@@ -54,7 +54,7 @@ class RawSessionsClient:
         *,
         agent_name: str,
         limit: typing.Optional[int] = 10,
-        order: typing.Optional[Order] = None,
+        order: typing.Optional[ListSessionsOrder] = None,
         page_token: typing.Optional[str] = None,
         start_timestamp: typing.Optional[str] = None,
         end_timestamp: typing.Optional[str] = None,
@@ -66,16 +66,22 @@ class RawSessionsClient:
         Parameters
         ----------
         agent_name : str
+            Agent whose sessions to list. Must exist in the tenant.
 
         limit : typing.Optional[int]
+            Page size. Defaults to 10, max 100.
 
-        order : typing.Optional[Order]
+        order : typing.Optional[ListSessionsOrder]
+            Sort sessions by creation time. Defaults to "desc".
 
         page_token : typing.Optional[str]
+            Opaque token from a previous response `next_page_token`.
 
         start_timestamp : typing.Optional[str]
+            Inclusive lower bound on `created_at` (ISO-8601). Defaults upstream to 30 min before `end_timestamp`.
 
         end_timestamp : typing.Optional[str]
+            Inclusive upper bound on `created_at` (ISO-8601). Defaults upstream to now.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -312,6 +318,7 @@ class RawSessionsClient:
         Parameters
         ----------
         session_id : str
+            Session identifier.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -476,6 +483,7 @@ class RawSessionsClient:
         page_token : typing.Optional[str]
 
         limit : typing.Optional[int]
+            Page size. Defaults to 10, max 25.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -563,8 +571,8 @@ class RawSessionsClient:
         self,
         session_id: str,
         *,
-        input: typing.Optional[typing.Sequence[CreateTurnRequestInputItem]] = OMIT,
-        previous_turn_id: typing.Optional[CreateTurnRequestPreviousTurnId] = OMIT,
+        input: typing.Optional[typing.Sequence[TurnInputItem]] = OMIT,
+        previous_turn_id: typing.Optional[PreviousTurnIdInput] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.Iterator[HttpResponse[typing.Iterator[TurnStreamingEvent]]]:
         """
@@ -575,10 +583,9 @@ class RawSessionsClient:
         ----------
         session_id : str
 
-        input : typing.Optional[typing.Sequence[CreateTurnRequestInputItem]]
+        input : typing.Optional[typing.Sequence[TurnInputItem]]
 
-        previous_turn_id : typing.Optional[CreateTurnRequestPreviousTurnId]
-            Defaults to 'auto' (chain to session last turn). Use 'null' for the session's first turn.
+        previous_turn_id : typing.Optional[PreviousTurnIdInput]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -593,10 +600,10 @@ class RawSessionsClient:
             method="POST",
             json={
                 "input": convert_and_respect_annotation_metadata(
-                    object_=input, annotation=typing.Sequence[CreateTurnRequestInputItem], direction="write"
+                    object_=input, annotation=typing.Sequence[TurnInputItem], direction="write"
                 ),
                 "previous_turn_id": convert_and_respect_annotation_metadata(
-                    object_=previous_turn_id, annotation=CreateTurnRequestPreviousTurnId, direction="write"
+                    object_=previous_turn_id, annotation=PreviousTurnIdInput, direction="write"
                 ),
             },
             headers={
@@ -809,7 +816,22 @@ class RawSessionsClient:
                     if 200 <= _response.status_code < 300:
 
                         def _iter():
-                            _event_source = EventSource(_response)
+                            _event_source = EventSource(
+                                _response,
+                                resumable=True,
+                                stream_reconnection_enabled=request_options.get(
+                                    "stream_reconnection_enabled",
+                                    self._client_wrapper.get_stream_reconnection_enabled(),
+                                )
+                                if request_options is not None
+                                else self._client_wrapper.get_stream_reconnection_enabled(),
+                                max_stream_reconnection_attempts=request_options.get(
+                                    "max_stream_reconnection_attempts",
+                                    self._client_wrapper.get_max_stream_reconnection_attempts(),
+                                )
+                                if request_options is not None
+                                else self._client_wrapper.get_max_stream_reconnection_attempts(),
+                            )
                             for _sse in _event_source.iter_sse():
                                 if _sse.data == None:
                                     return
@@ -900,9 +922,9 @@ class RawSessionsClient:
         session_id: str,
         turn_id: str,
         *,
-        order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
         page_token: typing.Optional[str] = None,
         limit: typing.Optional[int] = 25,
+        order: typing.Optional[ListEventsOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[TurnEvent, ListEventsResponse]:
         """
@@ -914,11 +936,13 @@ class RawSessionsClient:
 
         turn_id : str
 
-        order : typing.Optional[SessionsListTurnEventsRequestOrder]
-
         page_token : typing.Optional[str]
 
         limit : typing.Optional[int]
+            Page size. Defaults to 25, max 25.
+
+        order : typing.Optional[ListEventsOrder]
+            Sort events by creation time. Defaults to "asc".
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -932,9 +956,9 @@ class RawSessionsClient:
             f"v1/agents/sessions/{encode_path_param(session_id)}/turns/{encode_path_param(turn_id)}/events",
             method="GET",
             params={
-                "order": order,
                 "page_token": page_token,
                 "limit": limit,
+                "order": order,
             },
             request_options=request_options,
         )
@@ -956,9 +980,9 @@ class RawSessionsClient:
                     _get_next = lambda: self.list_turn_events(
                         session_id,
                         turn_id,
-                        order=order,
                         page_token=_parsed_next,
                         limit=limit,
+                        order=order,
                         request_options=request_options,
                     )
                 return SyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
@@ -1014,7 +1038,7 @@ class AsyncRawSessionsClient:
         *,
         agent_name: str,
         limit: typing.Optional[int] = 10,
-        order: typing.Optional[Order] = None,
+        order: typing.Optional[ListSessionsOrder] = None,
         page_token: typing.Optional[str] = None,
         start_timestamp: typing.Optional[str] = None,
         end_timestamp: typing.Optional[str] = None,
@@ -1026,16 +1050,22 @@ class AsyncRawSessionsClient:
         Parameters
         ----------
         agent_name : str
+            Agent whose sessions to list. Must exist in the tenant.
 
         limit : typing.Optional[int]
+            Page size. Defaults to 10, max 100.
 
-        order : typing.Optional[Order]
+        order : typing.Optional[ListSessionsOrder]
+            Sort sessions by creation time. Defaults to "desc".
 
         page_token : typing.Optional[str]
+            Opaque token from a previous response `next_page_token`.
 
         start_timestamp : typing.Optional[str]
+            Inclusive lower bound on `created_at` (ISO-8601). Defaults upstream to 30 min before `end_timestamp`.
 
         end_timestamp : typing.Optional[str]
+            Inclusive upper bound on `created_at` (ISO-8601). Defaults upstream to now.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1275,6 +1305,7 @@ class AsyncRawSessionsClient:
         Parameters
         ----------
         session_id : str
+            Session identifier.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1439,6 +1470,7 @@ class AsyncRawSessionsClient:
         page_token : typing.Optional[str]
 
         limit : typing.Optional[int]
+            Page size. Defaults to 10, max 25.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1529,8 +1561,8 @@ class AsyncRawSessionsClient:
         self,
         session_id: str,
         *,
-        input: typing.Optional[typing.Sequence[CreateTurnRequestInputItem]] = OMIT,
-        previous_turn_id: typing.Optional[CreateTurnRequestPreviousTurnId] = OMIT,
+        input: typing.Optional[typing.Sequence[TurnInputItem]] = OMIT,
+        previous_turn_id: typing.Optional[PreviousTurnIdInput] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[TurnStreamingEvent]]]:
         """
@@ -1541,10 +1573,9 @@ class AsyncRawSessionsClient:
         ----------
         session_id : str
 
-        input : typing.Optional[typing.Sequence[CreateTurnRequestInputItem]]
+        input : typing.Optional[typing.Sequence[TurnInputItem]]
 
-        previous_turn_id : typing.Optional[CreateTurnRequestPreviousTurnId]
-            Defaults to 'auto' (chain to session last turn). Use 'null' for the session's first turn.
+        previous_turn_id : typing.Optional[PreviousTurnIdInput]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1559,10 +1590,10 @@ class AsyncRawSessionsClient:
             method="POST",
             json={
                 "input": convert_and_respect_annotation_metadata(
-                    object_=input, annotation=typing.Sequence[CreateTurnRequestInputItem], direction="write"
+                    object_=input, annotation=typing.Sequence[TurnInputItem], direction="write"
                 ),
                 "previous_turn_id": convert_and_respect_annotation_metadata(
-                    object_=previous_turn_id, annotation=CreateTurnRequestPreviousTurnId, direction="write"
+                    object_=previous_turn_id, annotation=PreviousTurnIdInput, direction="write"
                 ),
             },
             headers={
@@ -1775,7 +1806,22 @@ class AsyncRawSessionsClient:
                     if 200 <= _response.status_code < 300:
 
                         async def _iter():
-                            _event_source = EventSource(_response)
+                            _event_source = EventSource(
+                                _response,
+                                resumable=True,
+                                stream_reconnection_enabled=request_options.get(
+                                    "stream_reconnection_enabled",
+                                    self._client_wrapper.get_stream_reconnection_enabled(),
+                                )
+                                if request_options is not None
+                                else self._client_wrapper.get_stream_reconnection_enabled(),
+                                max_stream_reconnection_attempts=request_options.get(
+                                    "max_stream_reconnection_attempts",
+                                    self._client_wrapper.get_max_stream_reconnection_attempts(),
+                                )
+                                if request_options is not None
+                                else self._client_wrapper.get_max_stream_reconnection_attempts(),
+                            )
                             async for _sse in _event_source.aiter_sse():
                                 if _sse.data == None:
                                     return
@@ -1866,9 +1912,9 @@ class AsyncRawSessionsClient:
         session_id: str,
         turn_id: str,
         *,
-        order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
         page_token: typing.Optional[str] = None,
         limit: typing.Optional[int] = 25,
+        order: typing.Optional[ListEventsOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[TurnEvent, ListEventsResponse]:
         """
@@ -1880,11 +1926,13 @@ class AsyncRawSessionsClient:
 
         turn_id : str
 
-        order : typing.Optional[SessionsListTurnEventsRequestOrder]
-
         page_token : typing.Optional[str]
 
         limit : typing.Optional[int]
+            Page size. Defaults to 25, max 25.
+
+        order : typing.Optional[ListEventsOrder]
+            Sort events by creation time. Defaults to "asc".
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1898,9 +1946,9 @@ class AsyncRawSessionsClient:
             f"v1/agents/sessions/{encode_path_param(session_id)}/turns/{encode_path_param(turn_id)}/events",
             method="GET",
             params={
-                "order": order,
                 "page_token": page_token,
                 "limit": limit,
+                "order": order,
             },
             request_options=request_options,
         )
@@ -1924,9 +1972,9 @@ class AsyncRawSessionsClient:
                         return await self.list_turn_events(
                             session_id,
                             turn_id,
-                            order=order,
                             page_token=_parsed_next,
                             limit=limit,
+                            order=order,
                             request_options=request_options,
                         )
 

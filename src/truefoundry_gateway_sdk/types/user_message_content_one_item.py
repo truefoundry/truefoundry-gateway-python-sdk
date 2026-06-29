@@ -2,7 +2,7 @@
 
 import typing
 
-from .file_upload_content_part import FileUploadContentPart
+from .file_content import FileContent
 from .text_content_part import TextContentPart
 
-UserMessageContentOneItem = typing.Union[TextContentPart, FileUploadContentPart]
+UserMessageContentOneItem = typing.Union[TextContentPart, FileContent]

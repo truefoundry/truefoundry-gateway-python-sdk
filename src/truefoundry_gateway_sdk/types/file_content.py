@@ -6,8 +6,13 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class RuntimeConfigContextManagementLargeToolResponse(UniversalBaseModel):
-    enabled: bool = True
+class FileContent(UniversalBaseModel):
+    type: typing.Literal["file"] = "file"
+    name: str
+    data: str = pydantic.Field()
+    """
+    Data URI: `data:<mime>;base64,<payload>`. MIME type is parsed from the URI.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

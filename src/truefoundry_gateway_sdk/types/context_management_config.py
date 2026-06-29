@@ -4,13 +4,13 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .runtime_config_context_management_compaction import RuntimeConfigContextManagementCompaction
-from .runtime_config_context_management_large_tool_response import RuntimeConfigContextManagementLargeToolResponse
+from .context_management_config_compaction import ContextManagementConfigCompaction
+from .large_tool_response_config import LargeToolResponseConfig
 
 
-class RuntimeConfigContextManagement(UniversalBaseModel):
-    compaction: RuntimeConfigContextManagementCompaction
-    large_tool_response: RuntimeConfigContextManagementLargeToolResponse
+class ContextManagementConfig(UniversalBaseModel):
+    compaction: typing.Optional[ContextManagementConfigCompaction] = None
+    large_tool_response: typing.Optional[LargeToolResponseConfig] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

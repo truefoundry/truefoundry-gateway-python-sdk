@@ -6,8 +6,9 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class RuntimeConfigDynamicSubAgents(UniversalBaseModel):
-    enabled: bool = True
+class SandboxConfig(UniversalBaseModel):
+    enabled: bool
+    file_downloads: typing.Optional[bool] = True
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

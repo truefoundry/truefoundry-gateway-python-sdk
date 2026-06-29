@@ -8,6 +8,10 @@ T_Result = typing.TypeVar("T_Result")
 
 
 class TurnStateCancelledReason(enum.StrEnum):
+    """
+    Reason for the cancellation.
+    """
+
     SERVER_EXECUTION_TIMEOUT = "server-execution-timeout"
     CLIENT_CANCELLED = "client-cancelled"
     CANCELLED_FOR_NEXT_TURN = "cancelled-for-next-turn"

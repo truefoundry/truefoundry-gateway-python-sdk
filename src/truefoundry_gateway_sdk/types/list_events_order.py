@@ -2,25 +2,25 @@
 
 import typing
 
-from ....core import enum
+from ..core import enum
 
 T_Result = typing.TypeVar("T_Result")
 
 
-class SessionsListTurnEventsRequestOrder(enum.StrEnum):
+class ListEventsOrder(enum.StrEnum):
     """
-    Sort order by sequence_number. Defaults to 'asc'.
+    Sort events by creation time. Defaults to "asc".
     """
 
     ASC = "asc"
     DESC = "desc"
-    _UNKNOWN = "__SESSIONSLISTTURNEVENTSREQUESTORDER_UNKNOWN__"
+    _UNKNOWN = "__LISTEVENTSORDER_UNKNOWN__"
     """
     This member is used for forward compatibility. If the value is not recognized by the enum, it will be stored here, and the raw value is accessible through `.value`.
     """
 
     @classmethod
-    def _missing_(cls, value: typing.Any) -> "SessionsListTurnEventsRequestOrder":
+    def _missing_(cls, value: typing.Any) -> "ListEventsOrder":
         unknown = cls._UNKNOWN
         unknown._value_ = value
         return unknown
@@ -31,8 +31,8 @@ class SessionsListTurnEventsRequestOrder(enum.StrEnum):
         desc: typing.Callable[[], T_Result],
         _unknown_member: typing.Callable[[str], T_Result],
     ) -> T_Result:
-        if self is SessionsListTurnEventsRequestOrder.ASC:
+        if self is ListEventsOrder.ASC:
             return asc()
-        if self is SessionsListTurnEventsRequestOrder.DESC:
+        if self is ListEventsOrder.DESC:
             return desc()
         return _unknown_member(self._value_)

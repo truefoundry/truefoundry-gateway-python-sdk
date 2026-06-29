@@ -6,7 +6,7 @@ from ....core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ....core.pagination import AsyncPager, SyncPager
 from ....core.request_options import RequestOptions
 from ....types.draft_session import DraftSession
-from ....types.order import Order
+from ....types.list_draft_sessions_order import ListDraftSessionsOrder
 from .raw_client import AsyncRawDraftSessionsClient, RawDraftSessionsClient
 from .types.create_draft_session_request_agent_spec import CreateDraftSessionRequestAgentSpec
 from .types.draft_sessions_create_response import DraftSessionsCreateResponse
@@ -39,7 +39,7 @@ class DraftSessionsClient:
         *,
         agent_name: typing.Optional[str] = None,
         limit: typing.Optional[int] = 10,
-        order: typing.Optional[Order] = None,
+        order: typing.Optional[ListDraftSessionsOrder] = None,
         page_token: typing.Optional[str] = None,
         start_timestamp: typing.Optional[str] = None,
         end_timestamp: typing.Optional[str] = None,
@@ -51,16 +51,22 @@ class DraftSessionsClient:
         Parameters
         ----------
         agent_name : typing.Optional[str]
+            Filter to drafts linked to this saved agent. Omit to list all of the caller-owned drafts.
 
         limit : typing.Optional[int]
+            Page size. Defaults to 10, max 100.
 
-        order : typing.Optional[Order]
+        order : typing.Optional[ListDraftSessionsOrder]
+            Sort draft sessions by creation time. Defaults to "desc".
 
         page_token : typing.Optional[str]
+            Opaque token from a previous response `next_page_token`.
 
         start_timestamp : typing.Optional[str]
+            Inclusive lower bound on `created_at`. Defaults upstream to 30 min before `end_timestamp`.
 
         end_timestamp : typing.Optional[str]
+            Inclusive upper bound on `created_at`. Defaults upstream to now.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -72,7 +78,7 @@ class DraftSessionsClient:
 
         Examples
         --------
-        from truefoundry_gateway_sdk import Order, TrueFoundryGateway
+        from truefoundry_gateway_sdk import ListDraftSessionsOrder, TrueFoundryGateway
 
         client = TrueFoundryGateway(
             api_key="YOUR_API_KEY",
@@ -81,7 +87,7 @@ class DraftSessionsClient:
         response = client.internal.agents.draft_sessions.list(
             agent_name="agent_name",
             limit=1,
-            order=Order.ASC,
+            order=ListDraftSessionsOrder.ASC,
             page_token="page_token",
             start_timestamp="start_timestamp",
             end_timestamp="end_timestamp",
@@ -161,6 +167,7 @@ class DraftSessionsClient:
         Parameters
         ----------
         draft_session_id : str
+            Draft session identifier.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -198,6 +205,7 @@ class DraftSessionsClient:
         Parameters
         ----------
         draft_session_id : str
+            Draft session identifier.
 
         agent_spec : typing.Optional[UpdateDraftSessionRequestAgentSpec]
             Replacement inline spec; never cleared.
@@ -246,7 +254,7 @@ class AsyncDraftSessionsClient:
         *,
         agent_name: typing.Optional[str] = None,
         limit: typing.Optional[int] = 10,
-        order: typing.Optional[Order] = None,
+        order: typing.Optional[ListDraftSessionsOrder] = None,
         page_token: typing.Optional[str] = None,
         start_timestamp: typing.Optional[str] = None,
         end_timestamp: typing.Optional[str] = None,
@@ -258,16 +266,22 @@ class AsyncDraftSessionsClient:
         Parameters
         ----------
         agent_name : typing.Optional[str]
+            Filter to drafts linked to this saved agent. Omit to list all of the caller-owned drafts.
 
         limit : typing.Optional[int]
+            Page size. Defaults to 10, max 100.
 
-        order : typing.Optional[Order]
+        order : typing.Optional[ListDraftSessionsOrder]
+            Sort draft sessions by creation time. Defaults to "desc".
 
         page_token : typing.Optional[str]
+            Opaque token from a previous response `next_page_token`.
 
         start_timestamp : typing.Optional[str]
+            Inclusive lower bound on `created_at`. Defaults upstream to 30 min before `end_timestamp`.
 
         end_timestamp : typing.Optional[str]
+            Inclusive upper bound on `created_at`. Defaults upstream to now.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -281,7 +295,10 @@ class AsyncDraftSessionsClient:
         --------
         import asyncio
 
-        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway, Order
+        from truefoundry_gateway_sdk import (
+            AsyncTrueFoundryGateway,
+            ListDraftSessionsOrder,
+        )
 
         client = AsyncTrueFoundryGateway(
             api_key="YOUR_API_KEY",
@@ -293,7 +310,7 @@ class AsyncDraftSessionsClient:
             response = await client.internal.agents.draft_sessions.list(
                 agent_name="agent_name",
                 limit=1,
-                order=Order.ASC,
+                order=ListDraftSessionsOrder.ASC,
                 page_token="page_token",
                 start_timestamp="start_timestamp",
                 end_timestamp="end_timestamp",
@@ -385,6 +402,7 @@ class AsyncDraftSessionsClient:
         Parameters
         ----------
         draft_session_id : str
+            Draft session identifier.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -430,6 +448,7 @@ class AsyncDraftSessionsClient:
         Parameters
         ----------
         draft_session_id : str
+            Draft session identifier.
 
         agent_spec : typing.Optional[UpdateDraftSessionRequestAgentSpec]
             Replacement inline spec; never cleared.

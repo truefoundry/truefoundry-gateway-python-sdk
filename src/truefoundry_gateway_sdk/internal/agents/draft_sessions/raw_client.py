@@ -18,7 +18,7 @@ from ....errors.not_found_error import NotFoundError
 from ....errors.unauthorized_error import UnauthorizedError
 from ....errors.unprocessable_entity_error import UnprocessableEntityError
 from ....types.draft_session import DraftSession
-from ....types.order import Order
+from ....types.list_draft_sessions_order import ListDraftSessionsOrder
 from ....types.request_error_response import RequestErrorResponse
 from .types.create_draft_session_request_agent_spec import CreateDraftSessionRequestAgentSpec
 from .types.draft_sessions_create_response import DraftSessionsCreateResponse
@@ -41,7 +41,7 @@ class RawDraftSessionsClient:
         *,
         agent_name: typing.Optional[str] = None,
         limit: typing.Optional[int] = 10,
-        order: typing.Optional[Order] = None,
+        order: typing.Optional[ListDraftSessionsOrder] = None,
         page_token: typing.Optional[str] = None,
         start_timestamp: typing.Optional[str] = None,
         end_timestamp: typing.Optional[str] = None,
@@ -53,16 +53,22 @@ class RawDraftSessionsClient:
         Parameters
         ----------
         agent_name : typing.Optional[str]
+            Filter to drafts linked to this saved agent. Omit to list all of the caller-owned drafts.
 
         limit : typing.Optional[int]
+            Page size. Defaults to 10, max 100.
 
-        order : typing.Optional[Order]
+        order : typing.Optional[ListDraftSessionsOrder]
+            Sort draft sessions by creation time. Defaults to "desc".
 
         page_token : typing.Optional[str]
+            Opaque token from a previous response `next_page_token`.
 
         start_timestamp : typing.Optional[str]
+            Inclusive lower bound on `created_at`. Defaults upstream to 30 min before `end_timestamp`.
 
         end_timestamp : typing.Optional[str]
+            Inclusive upper bound on `created_at`. Defaults upstream to now.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -287,6 +293,7 @@ class RawDraftSessionsClient:
         Parameters
         ----------
         draft_session_id : str
+            Draft session identifier.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -355,6 +362,7 @@ class RawDraftSessionsClient:
         Parameters
         ----------
         draft_session_id : str
+            Draft session identifier.
 
         agent_spec : typing.Optional[UpdateDraftSessionRequestAgentSpec]
             Replacement inline spec; never cleared.
@@ -454,7 +462,7 @@ class AsyncRawDraftSessionsClient:
         *,
         agent_name: typing.Optional[str] = None,
         limit: typing.Optional[int] = 10,
-        order: typing.Optional[Order] = None,
+        order: typing.Optional[ListDraftSessionsOrder] = None,
         page_token: typing.Optional[str] = None,
         start_timestamp: typing.Optional[str] = None,
         end_timestamp: typing.Optional[str] = None,
@@ -466,16 +474,22 @@ class AsyncRawDraftSessionsClient:
         Parameters
         ----------
         agent_name : typing.Optional[str]
+            Filter to drafts linked to this saved agent. Omit to list all of the caller-owned drafts.
 
         limit : typing.Optional[int]
+            Page size. Defaults to 10, max 100.
 
-        order : typing.Optional[Order]
+        order : typing.Optional[ListDraftSessionsOrder]
+            Sort draft sessions by creation time. Defaults to "desc".
 
         page_token : typing.Optional[str]
+            Opaque token from a previous response `next_page_token`.
 
         start_timestamp : typing.Optional[str]
+            Inclusive lower bound on `created_at`. Defaults upstream to 30 min before `end_timestamp`.
 
         end_timestamp : typing.Optional[str]
+            Inclusive upper bound on `created_at`. Defaults upstream to now.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -703,6 +717,7 @@ class AsyncRawDraftSessionsClient:
         Parameters
         ----------
         draft_session_id : str
+            Draft session identifier.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -771,6 +786,7 @@ class AsyncRawDraftSessionsClient:
         Parameters
         ----------
         draft_session_id : str
+            Draft session identifier.
 
         agent_spec : typing.Optional[UpdateDraftSessionRequestAgentSpec]
             Replacement inline spec; never cleared.

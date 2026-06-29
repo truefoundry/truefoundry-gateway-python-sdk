@@ -6,8 +6,8 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class RuntimeConfigAskUserQuestions(UniversalBaseModel):
-    enabled: bool = True
+class LargeToolResponseConfig(UniversalBaseModel):
+    enabled: typing.Optional[bool] = True
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

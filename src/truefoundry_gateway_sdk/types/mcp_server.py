@@ -13,10 +13,10 @@ from .mcp_server_require_approval_for_tools_item import McpServerRequireApproval
 class McpServer(UniversalBaseModel):
     name: str
     headers: typing.Optional[typing.Dict[str, str]] = None
-    enable_tools: typing.List[McpServerEnableToolsItem]
-    disable_tools: typing.List[McpServerDisableToolsItem]
-    preload_tools: typing.List[McpServerPreloadToolsItem]
-    require_approval_for_tools: typing.List[McpServerRequireApprovalForToolsItem]
+    enable_tools: typing.Optional[typing.List[McpServerEnableToolsItem]] = None
+    disable_tools: typing.Optional[typing.List[McpServerDisableToolsItem]] = None
+    preload_tools: typing.Optional[typing.List[McpServerPreloadToolsItem]] = None
+    require_approval_for_tools: typing.Optional[typing.List[McpServerRequireApprovalForToolsItem]] = None
     preload: typing.Optional[bool] = False
 
     if IS_PYDANTIC_V2:

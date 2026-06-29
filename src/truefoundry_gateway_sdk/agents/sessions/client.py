@@ -8,18 +8,18 @@ from ...core.request_options import RequestOptions
 from ...types.cancel_session_response import CancelSessionResponse
 from ...types.get_session_response import GetSessionResponse
 from ...types.get_turn_response import GetTurnResponse
+from ...types.list_events_order import ListEventsOrder
 from ...types.list_events_response import ListEventsResponse
+from ...types.list_sessions_order import ListSessionsOrder
 from ...types.list_sessions_response import ListSessionsResponse
 from ...types.list_turns_response import ListTurnsResponse
-from ...types.order import Order
+from ...types.previous_turn_id_input import PreviousTurnIdInput
 from ...types.session import Session
 from ...types.turn import Turn
 from ...types.turn_event import TurnEvent
+from ...types.turn_input_item import TurnInputItem
 from ...types.turn_streaming_event import TurnStreamingEvent
 from .raw_client import AsyncRawSessionsClient, RawSessionsClient
-from .types.create_turn_request_input_item import CreateTurnRequestInputItem
-from .types.create_turn_request_previous_turn_id import CreateTurnRequestPreviousTurnId
-from .types.sessions_list_turn_events_request_order import SessionsListTurnEventsRequestOrder
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -45,7 +45,7 @@ class SessionsClient:
         *,
         agent_name: str,
         limit: typing.Optional[int] = 10,
-        order: typing.Optional[Order] = None,
+        order: typing.Optional[ListSessionsOrder] = None,
         page_token: typing.Optional[str] = None,
         start_timestamp: typing.Optional[str] = None,
         end_timestamp: typing.Optional[str] = None,
@@ -57,16 +57,22 @@ class SessionsClient:
         Parameters
         ----------
         agent_name : str
+            Agent whose sessions to list. Must exist in the tenant.
 
         limit : typing.Optional[int]
+            Page size. Defaults to 10, max 100.
 
-        order : typing.Optional[Order]
+        order : typing.Optional[ListSessionsOrder]
+            Sort sessions by creation time. Defaults to "desc".
 
         page_token : typing.Optional[str]
+            Opaque token from a previous response `next_page_token`.
 
         start_timestamp : typing.Optional[str]
+            Inclusive lower bound on `created_at` (ISO-8601). Defaults upstream to 30 min before `end_timestamp`.
 
         end_timestamp : typing.Optional[str]
+            Inclusive upper bound on `created_at` (ISO-8601). Defaults upstream to now.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -78,7 +84,7 @@ class SessionsClient:
 
         Examples
         --------
-        from truefoundry_gateway_sdk import Order, TrueFoundryGateway
+        from truefoundry_gateway_sdk import ListSessionsOrder, TrueFoundryGateway
 
         client = TrueFoundryGateway(
             api_key="YOUR_API_KEY",
@@ -87,7 +93,7 @@ class SessionsClient:
         response = client.agents.sessions.list(
             agent_name="agent_name",
             limit=1,
-            order=Order.ASC,
+            order=ListSessionsOrder.ASC,
             page_token="page_token",
             start_timestamp="start_timestamp",
             end_timestamp="end_timestamp",
@@ -147,6 +153,7 @@ class SessionsClient:
         Parameters
         ----------
         session_id : str
+            Session identifier.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -222,6 +229,7 @@ class SessionsClient:
         page_token : typing.Optional[str]
 
         limit : typing.Optional[int]
+            Page size. Defaults to 10, max 25.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -258,8 +266,8 @@ class SessionsClient:
         self,
         session_id: str,
         *,
-        input: typing.Optional[typing.Sequence[CreateTurnRequestInputItem]] = OMIT,
-        previous_turn_id: typing.Optional[CreateTurnRequestPreviousTurnId] = OMIT,
+        input: typing.Optional[typing.Sequence[TurnInputItem]] = OMIT,
+        previous_turn_id: typing.Optional[PreviousTurnIdInput] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.Iterator[TurnStreamingEvent]:
         """
@@ -270,10 +278,9 @@ class SessionsClient:
         ----------
         session_id : str
 
-        input : typing.Optional[typing.Sequence[CreateTurnRequestInputItem]]
+        input : typing.Optional[typing.Sequence[TurnInputItem]]
 
-        previous_turn_id : typing.Optional[CreateTurnRequestPreviousTurnId]
-            Defaults to 'auto' (chain to session last turn). Use 'null' for the session's first turn.
+        previous_turn_id : typing.Optional[PreviousTurnIdInput]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -390,9 +397,9 @@ class SessionsClient:
         session_id: str,
         turn_id: str,
         *,
-        order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
         page_token: typing.Optional[str] = None,
         limit: typing.Optional[int] = 25,
+        order: typing.Optional[ListEventsOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[TurnEvent, ListEventsResponse]:
         """
@@ -404,11 +411,13 @@ class SessionsClient:
 
         turn_id : str
 
-        order : typing.Optional[SessionsListTurnEventsRequestOrder]
-
         page_token : typing.Optional[str]
 
         limit : typing.Optional[int]
+            Page size. Defaults to 25, max 25.
+
+        order : typing.Optional[ListEventsOrder]
+            Sort events by creation time. Defaults to "asc".
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -420,21 +429,18 @@ class SessionsClient:
 
         Examples
         --------
-        from truefoundry_gateway_sdk import TrueFoundryGateway
-        from truefoundry_gateway_sdk.agents.sessions import (
-            SessionsListTurnEventsRequestOrder,
-        )
+        from truefoundry_gateway_sdk import ListEventsOrder, TrueFoundryGateway
 
         client = TrueFoundryGateway(
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
         response = client.agents.sessions.list_turn_events(
-            session_id="sessionId",
+            session_id="01arz3ndektsv4rrffq69g5fav.g",
             turn_id="01arz3ndektsv4rrffq69g5fav.g.ab12cd",
-            order=SessionsListTurnEventsRequestOrder.ASC,
             page_token="page_token",
             limit=1,
+            order=ListEventsOrder.ASC,
         )
         for item in response:
             yield item
@@ -443,7 +449,7 @@ class SessionsClient:
             yield page
         """
         return self._raw_client.list_turn_events(
-            session_id, turn_id, order=order, page_token=page_token, limit=limit, request_options=request_options
+            session_id, turn_id, page_token=page_token, limit=limit, order=order, request_options=request_options
         )
 
 
@@ -467,7 +473,7 @@ class AsyncSessionsClient:
         *,
         agent_name: str,
         limit: typing.Optional[int] = 10,
-        order: typing.Optional[Order] = None,
+        order: typing.Optional[ListSessionsOrder] = None,
         page_token: typing.Optional[str] = None,
         start_timestamp: typing.Optional[str] = None,
         end_timestamp: typing.Optional[str] = None,
@@ -479,16 +485,22 @@ class AsyncSessionsClient:
         Parameters
         ----------
         agent_name : str
+            Agent whose sessions to list. Must exist in the tenant.
 
         limit : typing.Optional[int]
+            Page size. Defaults to 10, max 100.
 
-        order : typing.Optional[Order]
+        order : typing.Optional[ListSessionsOrder]
+            Sort sessions by creation time. Defaults to "desc".
 
         page_token : typing.Optional[str]
+            Opaque token from a previous response `next_page_token`.
 
         start_timestamp : typing.Optional[str]
+            Inclusive lower bound on `created_at` (ISO-8601). Defaults upstream to 30 min before `end_timestamp`.
 
         end_timestamp : typing.Optional[str]
+            Inclusive upper bound on `created_at` (ISO-8601). Defaults upstream to now.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -502,7 +514,7 @@ class AsyncSessionsClient:
         --------
         import asyncio
 
-        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway, Order
+        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway, ListSessionsOrder
 
         client = AsyncTrueFoundryGateway(
             api_key="YOUR_API_KEY",
@@ -514,7 +526,7 @@ class AsyncSessionsClient:
             response = await client.agents.sessions.list(
                 agent_name="agent_name",
                 limit=1,
-                order=Order.ASC,
+                order=ListSessionsOrder.ASC,
                 page_token="page_token",
                 start_timestamp="start_timestamp",
                 end_timestamp="end_timestamp",
@@ -590,6 +602,7 @@ class AsyncSessionsClient:
         Parameters
         ----------
         session_id : str
+            Session identifier.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -681,6 +694,7 @@ class AsyncSessionsClient:
         page_token : typing.Optional[str]
 
         limit : typing.Optional[int]
+            Page size. Defaults to 10, max 25.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -726,8 +740,8 @@ class AsyncSessionsClient:
         self,
         session_id: str,
         *,
-        input: typing.Optional[typing.Sequence[CreateTurnRequestInputItem]] = OMIT,
-        previous_turn_id: typing.Optional[CreateTurnRequestPreviousTurnId] = OMIT,
+        input: typing.Optional[typing.Sequence[TurnInputItem]] = OMIT,
+        previous_turn_id: typing.Optional[PreviousTurnIdInput] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.AsyncIterator[TurnStreamingEvent]:
         """
@@ -738,10 +752,9 @@ class AsyncSessionsClient:
         ----------
         session_id : str
 
-        input : typing.Optional[typing.Sequence[CreateTurnRequestInputItem]]
+        input : typing.Optional[typing.Sequence[TurnInputItem]]
 
-        previous_turn_id : typing.Optional[CreateTurnRequestPreviousTurnId]
-            Defaults to 'auto' (chain to session last turn). Use 'null' for the session's first turn.
+        previous_turn_id : typing.Optional[PreviousTurnIdInput]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -884,9 +897,9 @@ class AsyncSessionsClient:
         session_id: str,
         turn_id: str,
         *,
-        order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
         page_token: typing.Optional[str] = None,
         limit: typing.Optional[int] = 25,
+        order: typing.Optional[ListEventsOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[TurnEvent, ListEventsResponse]:
         """
@@ -898,11 +911,13 @@ class AsyncSessionsClient:
 
         turn_id : str
 
-        order : typing.Optional[SessionsListTurnEventsRequestOrder]
-
         page_token : typing.Optional[str]
 
         limit : typing.Optional[int]
+            Page size. Defaults to 25, max 25.
+
+        order : typing.Optional[ListEventsOrder]
+            Sort events by creation time. Defaults to "asc".
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -916,10 +931,7 @@ class AsyncSessionsClient:
         --------
         import asyncio
 
-        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway
-        from truefoundry_gateway_sdk.agents.sessions import (
-            SessionsListTurnEventsRequestOrder,
-        )
+        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway, ListEventsOrder
 
         client = AsyncTrueFoundryGateway(
             api_key="YOUR_API_KEY",
@@ -929,11 +941,11 @@ class AsyncSessionsClient:
 
         async def main() -> None:
             response = await client.agents.sessions.list_turn_events(
-                session_id="sessionId",
+                session_id="01arz3ndektsv4rrffq69g5fav.g",
                 turn_id="01arz3ndektsv4rrffq69g5fav.g.ab12cd",
-                order=SessionsListTurnEventsRequestOrder.ASC,
                 page_token="page_token",
                 limit=1,
+                order=ListEventsOrder.ASC,
             )
             async for item in response:
                 yield item
@@ -946,5 +958,5 @@ class AsyncSessionsClient:
         asyncio.run(main())
         """
         return await self._raw_client.list_turn_events(
-            session_id, turn_id, order=order, page_token=page_token, limit=limit, request_options=request_options
+            session_id, turn_id, page_token=page_token, limit=limit, order=order, request_options=request_options
         )

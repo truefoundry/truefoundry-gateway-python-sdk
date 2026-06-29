@@ -27,7 +27,7 @@ List sessions for an agent (newest first by default), keyset-paginated. Pass `pa
 <dd>
 
 ```python
-from truefoundry_gateway_sdk import TrueFoundryGateway, Order
+from truefoundry_gateway_sdk import TrueFoundryGateway, ListSessionsOrder
 
 client = TrueFoundryGateway(
     api_key="<token>",
@@ -37,7 +37,7 @@ client = TrueFoundryGateway(
 client.agents.sessions.list(
     agent_name="agent_name",
     limit=1,
-    order=Order.ASC,
+    order=ListSessionsOrder.ASC,
     page_token="page_token",
     start_timestamp="start_timestamp",
     end_timestamp="end_timestamp",
@@ -57,7 +57,7 @@ client.agents.sessions.list(
 <dl>
 <dd>
 
-**agent_name:** `str` 
+**agent_name:** `str` — Agent whose sessions to list. Must exist in the tenant.
     
 </dd>
 </dl>
@@ -65,7 +65,7 @@ client.agents.sessions.list(
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` 
+**limit:** `typing.Optional[int]` — Page size. Defaults to 10, max 100.
     
 </dd>
 </dl>
@@ -73,7 +73,7 @@ client.agents.sessions.list(
 <dl>
 <dd>
 
-**order:** `typing.Optional[Order]` 
+**order:** `typing.Optional[ListSessionsOrder]` — Sort sessions by creation time. Defaults to "desc".
     
 </dd>
 </dl>
@@ -81,7 +81,7 @@ client.agents.sessions.list(
 <dl>
 <dd>
 
-**page_token:** `typing.Optional[str]` 
+**page_token:** `typing.Optional[str]` — Opaque token from a previous response `next_page_token`.
     
 </dd>
 </dl>
@@ -89,7 +89,7 @@ client.agents.sessions.list(
 <dl>
 <dd>
 
-**start_timestamp:** `typing.Optional[str]` 
+**start_timestamp:** `typing.Optional[str]` — Inclusive lower bound on `created_at` (ISO-8601). Defaults upstream to 30 min before `end_timestamp`.
     
 </dd>
 </dl>
@@ -97,7 +97,7 @@ client.agents.sessions.list(
 <dl>
 <dd>
 
-**end_timestamp:** `typing.Optional[str]` 
+**end_timestamp:** `typing.Optional[str]` — Inclusive upper bound on `created_at` (ISO-8601). Defaults upstream to now.
     
 </dd>
 </dl>
@@ -241,7 +241,7 @@ client.agents.sessions.get(
 <dl>
 <dd>
 
-**session_id:** `str` 
+**session_id:** `str` — Session identifier.
     
 </dd>
 </dl>
@@ -403,7 +403,7 @@ client.agents.sessions.list_turns(
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` 
+**limit:** `typing.Optional[int]` — Page size. Defaults to 10, max 25.
     
 </dd>
 </dl>
@@ -484,7 +484,7 @@ client.agents.sessions.create_turn(
 <dl>
 <dd>
 
-**input:** `typing.Optional[typing.List[CreateTurnRequestInputItem]]` 
+**input:** `typing.Optional[typing.List[TurnInputItem]]` 
     
 </dd>
 </dl>
@@ -492,7 +492,7 @@ client.agents.sessions.create_turn(
 <dl>
 <dd>
 
-**previous_turn_id:** `typing.Optional[CreateTurnRequestPreviousTurnId]` — Defaults to 'auto' (chain to session last turn). Use 'null' for the session's first turn.
+**previous_turn_id:** `typing.Optional[PreviousTurnIdInput]` 
     
 </dd>
 </dl>
@@ -709,8 +709,7 @@ Paginated list of turn events from the Redis events stream.
 <dd>
 
 ```python
-from truefoundry_gateway_sdk import TrueFoundryGateway
-from truefoundry_gateway_sdk.agents.sessions import SessionsListTurnEventsRequestOrder
+from truefoundry_gateway_sdk import TrueFoundryGateway, ListEventsOrder
 
 client = TrueFoundryGateway(
     api_key="<token>",
@@ -718,11 +717,11 @@ client = TrueFoundryGateway(
 )
 
 client.agents.sessions.list_turn_events(
-    session_id="sessionId",
+    session_id="01arz3ndektsv4rrffq69g5fav.g",
     turn_id="01arz3ndektsv4rrffq69g5fav.g.ab12cd",
-    order=SessionsListTurnEventsRequestOrder.ASC,
     page_token="page_token",
     limit=1,
+    order=ListEventsOrder.ASC,
 )
 
 ```
@@ -755,14 +754,6 @@ client.agents.sessions.list_turn_events(
 <dl>
 <dd>
 
-**order:** `typing.Optional[SessionsListTurnEventsRequestOrder]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **page_token:** `typing.Optional[str]` 
     
 </dd>
@@ -771,7 +762,15 @@ client.agents.sessions.list_turn_events(
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` 
+**limit:** `typing.Optional[int]` — Page size. Defaults to 25, max 25.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**order:** `typing.Optional[ListEventsOrder]` — Sort events by creation time. Defaults to "asc".
     
 </dd>
 </dl>
@@ -819,7 +818,7 @@ List the caller-owned draft sessions (newest first by default), keyset-paginated
 <dd>
 
 ```python
-from truefoundry_gateway_sdk import TrueFoundryGateway, Order
+from truefoundry_gateway_sdk import TrueFoundryGateway, ListDraftSessionsOrder
 
 client = TrueFoundryGateway(
     api_key="<token>",
@@ -829,7 +828,7 @@ client = TrueFoundryGateway(
 client.internal.agents.draft_sessions.list(
     agent_name="agent_name",
     limit=1,
-    order=Order.ASC,
+    order=ListDraftSessionsOrder.ASC,
     page_token="page_token",
     start_timestamp="start_timestamp",
     end_timestamp="end_timestamp",
@@ -849,7 +848,7 @@ client.internal.agents.draft_sessions.list(
 <dl>
 <dd>
 
-**agent_name:** `typing.Optional[str]` 
+**agent_name:** `typing.Optional[str]` — Filter to drafts linked to this saved agent. Omit to list all of the caller-owned drafts.
     
 </dd>
 </dl>
@@ -857,7 +856,7 @@ client.internal.agents.draft_sessions.list(
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` 
+**limit:** `typing.Optional[int]` — Page size. Defaults to 10, max 100.
     
 </dd>
 </dl>
@@ -865,7 +864,7 @@ client.internal.agents.draft_sessions.list(
 <dl>
 <dd>
 
-**order:** `typing.Optional[Order]` 
+**order:** `typing.Optional[ListDraftSessionsOrder]` — Sort draft sessions by creation time. Defaults to "desc".
     
 </dd>
 </dl>
@@ -873,7 +872,7 @@ client.internal.agents.draft_sessions.list(
 <dl>
 <dd>
 
-**page_token:** `typing.Optional[str]` 
+**page_token:** `typing.Optional[str]` — Opaque token from a previous response `next_page_token`.
     
 </dd>
 </dl>
@@ -881,7 +880,7 @@ client.internal.agents.draft_sessions.list(
 <dl>
 <dd>
 
-**start_timestamp:** `typing.Optional[str]` 
+**start_timestamp:** `typing.Optional[str]` — Inclusive lower bound on `created_at`. Defaults upstream to 30 min before `end_timestamp`.
     
 </dd>
 </dl>
@@ -889,7 +888,7 @@ client.internal.agents.draft_sessions.list(
 <dl>
 <dd>
 
-**end_timestamp:** `typing.Optional[str]` 
+**end_timestamp:** `typing.Optional[str]` — Inclusive upper bound on `created_at`. Defaults upstream to now.
     
 </dd>
 </dl>
@@ -1046,7 +1045,7 @@ client.internal.agents.draft_sessions.get(
 <dl>
 <dd>
 
-**draft_session_id:** `str` 
+**draft_session_id:** `str` — Draft session identifier.
     
 </dd>
 </dl>
@@ -1118,7 +1117,7 @@ client.internal.agents.draft_sessions.update(
 <dl>
 <dd>
 
-**draft_session_id:** `str` 
+**draft_session_id:** `str` — Draft session identifier.
     
 </dd>
 </dl>

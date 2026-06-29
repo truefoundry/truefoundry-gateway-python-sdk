@@ -14,6 +14,7 @@ if typing.TYPE_CHECKING:
     from .approval_allow import ApprovalAllow
     from .approval_decision import ApprovalDecision
     from .approval_deny import ApprovalDeny
+    from .ask_user_questions_config import AskUserQuestionsConfig
     from .base_mcp_auth_required_event import BaseMcpAuthRequiredEvent
     from .base_thread_done_event import BaseThreadDoneEvent
     from .cancel_session_response import CancelSessionResponse
@@ -23,14 +24,21 @@ if typing.TYPE_CHECKING:
     from .chat_completion_content_part_text import ChatCompletionContentPartText
     from .chat_completion_message_tool_call import ChatCompletionMessageToolCall
     from .chat_completion_message_tool_call_function import ChatCompletionMessageToolCallFunction
+    from .context_management_config import ContextManagementConfig
+    from .context_management_config_compaction import ContextManagementConfigCompaction
     from .draft_session import DraftSession
+    from .dynamic_sub_agents_config import DynamicSubAgentsConfig
     from .extended_chunk_delta_tool_call import ExtendedChunkDeltaToolCall
-    from .file_upload_content_part import FileUploadContentPart
-    from .file_upload_content_part_file import FileUploadContentPartFile
+    from .file_content import FileContent
     from .finish_reason import FinishReason
+    from .generative_ui_config import GenerativeUiConfig
     from .get_session_response import GetSessionResponse
     from .get_turn_response import GetTurnResponse
+    from .large_tool_response_config import LargeToolResponseConfig
+    from .list_draft_sessions_order import ListDraftSessionsOrder
+    from .list_events_order import ListEventsOrder
     from .list_events_response import ListEventsResponse
+    from .list_sessions_order import ListSessionsOrder
     from .list_sessions_response import ListSessionsResponse
     from .list_turns_response import ListTurnsResponse
     from .mcp_auth_required_event import McpAuthRequiredEvent
@@ -51,7 +59,7 @@ if typing.TYPE_CHECKING:
     from .model_message_usage import ModelMessageUsage
     from .model_message_usage_input_tokens_breakdown import ModelMessageUsageInputTokensBreakdown
     from .model_params import ModelParams
-    from .order import Order
+    from .previous_turn_id_input import PreviousTurnIdInput
     from .raw_tool_call import RawToolCall
     from .request_error_response import RequestErrorResponse
     from .request_error_response_error import RequestErrorResponseError
@@ -61,13 +69,7 @@ if typing.TYPE_CHECKING:
     from .response_format_one import ResponseFormatOne
     from .response_format_zero import ResponseFormatZero
     from .runtime_config import RuntimeConfig
-    from .runtime_config_ask_user_questions import RuntimeConfigAskUserQuestions
-    from .runtime_config_context_management import RuntimeConfigContextManagement
-    from .runtime_config_context_management_compaction import RuntimeConfigContextManagementCompaction
-    from .runtime_config_context_management_large_tool_response import RuntimeConfigContextManagementLargeToolResponse
-    from .runtime_config_dynamic_sub_agents import RuntimeConfigDynamicSubAgents
-    from .runtime_config_generative_ui import RuntimeConfigGenerativeUi
-    from .runtime_config_sandbox import RuntimeConfigSandbox
+    from .sandbox_config import SandboxConfig
     from .sandbox_created_event import SandboxCreatedEvent
     from .session import Session
     from .skill import Skill
@@ -116,6 +118,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ApprovalAllow": ".approval_allow",
     "ApprovalDecision": ".approval_decision",
     "ApprovalDeny": ".approval_deny",
+    "AskUserQuestionsConfig": ".ask_user_questions_config",
     "BaseMcpAuthRequiredEvent": ".base_mcp_auth_required_event",
     "BaseThreadDoneEvent": ".base_thread_done_event",
     "CancelSessionResponse": ".cancel_session_response",
@@ -125,14 +128,21 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ChatCompletionContentPartText": ".chat_completion_content_part_text",
     "ChatCompletionMessageToolCall": ".chat_completion_message_tool_call",
     "ChatCompletionMessageToolCallFunction": ".chat_completion_message_tool_call_function",
+    "ContextManagementConfig": ".context_management_config",
+    "ContextManagementConfigCompaction": ".context_management_config_compaction",
     "DraftSession": ".draft_session",
+    "DynamicSubAgentsConfig": ".dynamic_sub_agents_config",
     "ExtendedChunkDeltaToolCall": ".extended_chunk_delta_tool_call",
-    "FileUploadContentPart": ".file_upload_content_part",
-    "FileUploadContentPartFile": ".file_upload_content_part_file",
+    "FileContent": ".file_content",
     "FinishReason": ".finish_reason",
+    "GenerativeUiConfig": ".generative_ui_config",
     "GetSessionResponse": ".get_session_response",
     "GetTurnResponse": ".get_turn_response",
+    "LargeToolResponseConfig": ".large_tool_response_config",
+    "ListDraftSessionsOrder": ".list_draft_sessions_order",
+    "ListEventsOrder": ".list_events_order",
     "ListEventsResponse": ".list_events_response",
+    "ListSessionsOrder": ".list_sessions_order",
     "ListSessionsResponse": ".list_sessions_response",
     "ListTurnsResponse": ".list_turns_response",
     "McpAuthRequiredEvent": ".mcp_auth_required_event",
@@ -153,7 +163,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ModelMessageUsage": ".model_message_usage",
     "ModelMessageUsageInputTokensBreakdown": ".model_message_usage_input_tokens_breakdown",
     "ModelParams": ".model_params",
-    "Order": ".order",
+    "PreviousTurnIdInput": ".previous_turn_id_input",
     "RawToolCall": ".raw_tool_call",
     "RequestErrorResponse": ".request_error_response",
     "RequestErrorResponseError": ".request_error_response_error",
@@ -163,13 +173,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ResponseFormatOne": ".response_format_one",
     "ResponseFormatZero": ".response_format_zero",
     "RuntimeConfig": ".runtime_config",
-    "RuntimeConfigAskUserQuestions": ".runtime_config_ask_user_questions",
-    "RuntimeConfigContextManagement": ".runtime_config_context_management",
-    "RuntimeConfigContextManagementCompaction": ".runtime_config_context_management_compaction",
-    "RuntimeConfigContextManagementLargeToolResponse": ".runtime_config_context_management_large_tool_response",
-    "RuntimeConfigDynamicSubAgents": ".runtime_config_dynamic_sub_agents",
-    "RuntimeConfigGenerativeUi": ".runtime_config_generative_ui",
-    "RuntimeConfigSandbox": ".runtime_config_sandbox",
+    "SandboxConfig": ".sandbox_config",
     "SandboxCreatedEvent": ".sandbox_created_event",
     "Session": ".session",
     "Skill": ".skill",
@@ -242,6 +246,7 @@ __all__ = [
     "ApprovalAllow",
     "ApprovalDecision",
     "ApprovalDeny",
+    "AskUserQuestionsConfig",
     "BaseMcpAuthRequiredEvent",
     "BaseThreadDoneEvent",
     "CancelSessionResponse",
@@ -251,14 +256,21 @@ __all__ = [
     "ChatCompletionContentPartText",
     "ChatCompletionMessageToolCall",
     "ChatCompletionMessageToolCallFunction",
+    "ContextManagementConfig",
+    "ContextManagementConfigCompaction",
     "DraftSession",
+    "DynamicSubAgentsConfig",
     "ExtendedChunkDeltaToolCall",
-    "FileUploadContentPart",
-    "FileUploadContentPartFile",
+    "FileContent",
     "FinishReason",
+    "GenerativeUiConfig",
     "GetSessionResponse",
     "GetTurnResponse",
+    "LargeToolResponseConfig",
+    "ListDraftSessionsOrder",
+    "ListEventsOrder",
     "ListEventsResponse",
+    "ListSessionsOrder",
     "ListSessionsResponse",
     "ListTurnsResponse",
     "McpAuthRequiredEvent",
@@ -279,7 +291,7 @@ __all__ = [
     "ModelMessageUsage",
     "ModelMessageUsageInputTokensBreakdown",
     "ModelParams",
-    "Order",
+    "PreviousTurnIdInput",
     "RawToolCall",
     "RequestErrorResponse",
     "RequestErrorResponseError",
@@ -289,13 +301,7 @@ __all__ = [
     "ResponseFormatOne",
     "ResponseFormatZero",
     "RuntimeConfig",
-    "RuntimeConfigAskUserQuestions",
-    "RuntimeConfigContextManagement",
-    "RuntimeConfigContextManagementCompaction",
-    "RuntimeConfigContextManagementLargeToolResponse",
-    "RuntimeConfigDynamicSubAgents",
-    "RuntimeConfigGenerativeUi",
-    "RuntimeConfigSandbox",
+    "SandboxConfig",
     "SandboxCreatedEvent",
     "Session",
     "Skill",

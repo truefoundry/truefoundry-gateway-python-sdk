@@ -6,8 +6,8 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class RuntimeConfigContextManagementCompaction(UniversalBaseModel):
-    enabled: bool = True
+class ContextManagementConfigCompaction(UniversalBaseModel):
+    enabled: typing.Optional[bool] = True
     compaction_threshold_tokens: typing.Optional[int] = 50000
 
     if IS_PYDANTIC_V2:

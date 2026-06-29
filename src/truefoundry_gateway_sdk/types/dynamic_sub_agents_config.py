@@ -4,12 +4,10 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .file_upload_content_part_file import FileUploadContentPartFile
 
 
-class FileUploadContentPart(UniversalBaseModel):
-    type: typing.Literal["file_upload"] = "file_upload"
-    file: FileUploadContentPartFile
+class DynamicSubAgentsConfig(UniversalBaseModel):
+    enabled: typing.Optional[bool] = True
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

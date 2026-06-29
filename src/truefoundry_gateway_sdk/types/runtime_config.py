@@ -4,20 +4,20 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .runtime_config_ask_user_questions import RuntimeConfigAskUserQuestions
-from .runtime_config_context_management import RuntimeConfigContextManagement
-from .runtime_config_dynamic_sub_agents import RuntimeConfigDynamicSubAgents
-from .runtime_config_generative_ui import RuntimeConfigGenerativeUi
-from .runtime_config_sandbox import RuntimeConfigSandbox
+from .ask_user_questions_config import AskUserQuestionsConfig
+from .context_management_config import ContextManagementConfig
+from .dynamic_sub_agents_config import DynamicSubAgentsConfig
+from .generative_ui_config import GenerativeUiConfig
+from .sandbox_config import SandboxConfig
 
 
 class RuntimeConfig(UniversalBaseModel):
-    iteration_limit: int = 100
-    sandbox: typing.Optional[RuntimeConfigSandbox] = None
-    dynamic_sub_agents: typing.Optional[RuntimeConfigDynamicSubAgents] = None
-    context_management: RuntimeConfigContextManagement
-    generative_ui: typing.Optional[RuntimeConfigGenerativeUi] = None
-    ask_user_questions: typing.Optional[RuntimeConfigAskUserQuestions] = None
+    iteration_limit: typing.Optional[int] = 100
+    sandbox: typing.Optional[SandboxConfig] = None
+    dynamic_sub_agents: typing.Optional[DynamicSubAgentsConfig] = None
+    context_management: typing.Optional[ContextManagementConfig] = None
+    generative_ui: typing.Optional[GenerativeUiConfig] = None
+    ask_user_questions: typing.Optional[AskUserQuestionsConfig] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2
