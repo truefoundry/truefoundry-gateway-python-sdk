@@ -2,23 +2,23 @@
 
 import typing
 
-from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
-from ...core.pagination import AsyncPager, SyncPager
-from ...core.request_options import RequestOptions
-from ...types.cancel_session_response import CancelSessionResponse
-from ...types.get_session_response import GetSessionResponse
-from ...types.get_turn_response import GetTurnResponse
-from ...types.list_events_order import ListEventsOrder
-from ...types.list_events_response import ListEventsResponse
-from ...types.list_sessions_order import ListSessionsOrder
-from ...types.list_sessions_response import ListSessionsResponse
-from ...types.list_turns_response import ListTurnsResponse
-from ...types.previous_turn_id_input import PreviousTurnIdInput
-from ...types.session import Session
-from ...types.turn import Turn
-from ...types.turn_event import TurnEvent
-from ...types.turn_input_item import TurnInputItem
-from ...types.turn_streaming_event import TurnStreamingEvent
+from ....core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
+from ....core.pagination import AsyncPager, SyncPager
+from ....core.request_options import RequestOptions
+from ....types.cancel_session_response import CancelSessionResponse
+from ....types.get_session_response import GetSessionResponse
+from ....types.get_turn_response import GetTurnResponse
+from ....types.list_events_order import ListEventsOrder
+from ....types.list_events_response import ListEventsResponse
+from ....types.list_sessions_order import ListSessionsOrder
+from ....types.list_sessions_response import ListSessionsResponse
+from ....types.list_turns_response import ListTurnsResponse
+from ....types.previous_turn_id_input import PreviousTurnIdInput
+from ....types.session import Session
+from ....types.turn import Turn
+from ....types.turn_event import TurnEvent
+from ....types.turn_input_item import TurnInputItem
+from ....types.turn_streaming_event import TurnStreamingEvent
 from .raw_client import AsyncRawSessionsClient, RawSessionsClient
 
 # this is used as the default value for optional parameters
@@ -90,7 +90,7 @@ class SessionsClient:
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
-        response = client.agents.sessions.list(
+        response = client.private.agents.sessions.list(
             agent_name="agent_name",
             limit=1,
             order=ListSessionsOrder.ASC,
@@ -139,7 +139,7 @@ class SessionsClient:
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
-        client.agents.sessions.create(
+        client.private.agents.sessions.create(
             agent_name="agent_name",
         )
         """
@@ -171,7 +171,7 @@ class SessionsClient:
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
-        client.agents.sessions.get(
+        client.private.agents.sessions.get(
             session_id="sessionId",
         )
         """
@@ -204,7 +204,7 @@ class SessionsClient:
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
-        client.agents.sessions.cancel(
+        client.private.agents.sessions.cancel(
             session_id="01arz3ndektsv4rrffq69g5fav.g",
         )
         """
@@ -247,7 +247,7 @@ class SessionsClient:
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
-        response = client.agents.sessions.list_turns(
+        response = client.private.agents.sessions.list_turns(
             session_id="01arz3ndektsv4rrffq69g5fav.g",
             page_token="page_token",
             limit=1,
@@ -298,7 +298,7 @@ class SessionsClient:
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
-        response = client.agents.sessions.create_turn(
+        response = client.private.agents.sessions.create_turn(
             session_id="01arz3ndektsv4rrffq69g5fav.g",
         )
         for chunk in response:
@@ -337,7 +337,7 @@ class SessionsClient:
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
-        client.agents.sessions.get_turn(
+        client.private.agents.sessions.get_turn(
             session_id="01arz3ndektsv4rrffq69g5fav.g",
             turn_id="01arz3ndektsv4rrffq69g5fav.g.ab12cd",
         )
@@ -380,7 +380,7 @@ class SessionsClient:
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
-        response = client.agents.sessions.subscribe_to_turn(
+        response = client.private.agents.sessions.subscribe_to_turn(
             session_id="01arz3ndektsv4rrffq69g5fav.g",
             turn_id="01arz3ndektsv4rrffq69g5fav.g.ab12cd",
         )
@@ -435,7 +435,7 @@ class SessionsClient:
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
-        response = client.agents.sessions.list_turn_events(
+        response = client.private.agents.sessions.list_turn_events(
             session_id="01arz3ndektsv4rrffq69g5fav.g",
             turn_id="01arz3ndektsv4rrffq69g5fav.g.ab12cd",
             page_token="page_token",
@@ -523,7 +523,7 @@ class AsyncSessionsClient:
 
 
         async def main() -> None:
-            response = await client.agents.sessions.list(
+            response = await client.private.agents.sessions.list(
                 agent_name="agent_name",
                 limit=1,
                 order=ListSessionsOrder.ASC,
@@ -583,7 +583,7 @@ class AsyncSessionsClient:
 
 
         async def main() -> None:
-            await client.agents.sessions.create(
+            await client.private.agents.sessions.create(
                 agent_name="agent_name",
             )
 
@@ -625,7 +625,7 @@ class AsyncSessionsClient:
 
 
         async def main() -> None:
-            await client.agents.sessions.get(
+            await client.private.agents.sessions.get(
                 session_id="sessionId",
             )
 
@@ -666,7 +666,7 @@ class AsyncSessionsClient:
 
 
         async def main() -> None:
-            await client.agents.sessions.cancel(
+            await client.private.agents.sessions.cancel(
                 session_id="01arz3ndektsv4rrffq69g5fav.g",
             )
 
@@ -717,7 +717,7 @@ class AsyncSessionsClient:
 
 
         async def main() -> None:
-            response = await client.agents.sessions.list_turns(
+            response = await client.private.agents.sessions.list_turns(
                 session_id="01arz3ndektsv4rrffq69g5fav.g",
                 page_token="page_token",
                 limit=1,
@@ -777,7 +777,7 @@ class AsyncSessionsClient:
 
 
         async def main() -> None:
-            response = await client.agents.sessions.create_turn(
+            response = await client.private.agents.sessions.create_turn(
                 session_id="01arz3ndektsv4rrffq69g5fav.g",
             )
             async for chunk in response:
@@ -825,7 +825,7 @@ class AsyncSessionsClient:
 
 
         async def main() -> None:
-            await client.agents.sessions.get_turn(
+            await client.private.agents.sessions.get_turn(
                 session_id="01arz3ndektsv4rrffq69g5fav.g",
                 turn_id="01arz3ndektsv4rrffq69g5fav.g.ab12cd",
             )
@@ -876,7 +876,7 @@ class AsyncSessionsClient:
 
 
         async def main() -> None:
-            response = await client.agents.sessions.subscribe_to_turn(
+            response = await client.private.agents.sessions.subscribe_to_turn(
                 session_id="01arz3ndektsv4rrffq69g5fav.g",
                 turn_id="01arz3ndektsv4rrffq69g5fav.g.ab12cd",
             )
@@ -940,7 +940,7 @@ class AsyncSessionsClient:
 
 
         async def main() -> None:
-            response = await client.agents.sessions.list_turn_events(
+            response = await client.private.agents.sessions.list_turn_events(
                 session_id="01arz3ndektsv4rrffq69g5fav.g",
                 turn_id="01arz3ndektsv4rrffq69g5fav.g.ab12cd",
                 page_token="page_token",

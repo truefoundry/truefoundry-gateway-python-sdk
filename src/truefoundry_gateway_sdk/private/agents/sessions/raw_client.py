@@ -5,40 +5,40 @@ import typing
 from json.decoder import JSONDecodeError
 from logging import error, warning
 
-from ...core.api_error import ApiError
-from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
-from ...core.http_response import AsyncHttpResponse, HttpResponse
-from ...core.http_sse._api import EventSource
-from ...core.jsonable_encoder import encode_path_param
-from ...core.pagination import AsyncPager, SyncPager
-from ...core.parse_error import ParsingError
-from ...core.pydantic_utilities import parse_obj_as, parse_sse_obj
-from ...core.request_options import RequestOptions
-from ...core.serialization import convert_and_respect_annotation_metadata
-from ...errors.bad_request_error import BadRequestError
-from ...errors.conflict_error import ConflictError
-from ...errors.failed_dependency_error import FailedDependencyError
-from ...errors.forbidden_error import ForbiddenError
-from ...errors.gateway_timeout_error import GatewayTimeoutError
-from ...errors.not_found_error import NotFoundError
-from ...errors.precondition_failed_error import PreconditionFailedError
-from ...errors.unauthorized_error import UnauthorizedError
-from ...errors.unprocessable_entity_error import UnprocessableEntityError
-from ...types.cancel_session_response import CancelSessionResponse
-from ...types.get_session_response import GetSessionResponse
-from ...types.get_turn_response import GetTurnResponse
-from ...types.list_events_order import ListEventsOrder
-from ...types.list_events_response import ListEventsResponse
-from ...types.list_sessions_order import ListSessionsOrder
-from ...types.list_sessions_response import ListSessionsResponse
-from ...types.list_turns_response import ListTurnsResponse
-from ...types.previous_turn_id_input import PreviousTurnIdInput
-from ...types.request_error_response import RequestErrorResponse
-from ...types.session import Session
-from ...types.turn import Turn
-from ...types.turn_event import TurnEvent
-from ...types.turn_input_item import TurnInputItem
-from ...types.turn_streaming_event import TurnStreamingEvent
+from ....core.api_error import ApiError
+from ....core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
+from ....core.http_response import AsyncHttpResponse, HttpResponse
+from ....core.http_sse._api import EventSource
+from ....core.jsonable_encoder import encode_path_param
+from ....core.pagination import AsyncPager, SyncPager
+from ....core.parse_error import ParsingError
+from ....core.pydantic_utilities import parse_obj_as, parse_sse_obj
+from ....core.request_options import RequestOptions
+from ....core.serialization import convert_and_respect_annotation_metadata
+from ....errors.bad_request_error import BadRequestError
+from ....errors.conflict_error import ConflictError
+from ....errors.failed_dependency_error import FailedDependencyError
+from ....errors.forbidden_error import ForbiddenError
+from ....errors.gateway_timeout_error import GatewayTimeoutError
+from ....errors.not_found_error import NotFoundError
+from ....errors.precondition_failed_error import PreconditionFailedError
+from ....errors.unauthorized_error import UnauthorizedError
+from ....errors.unprocessable_entity_error import UnprocessableEntityError
+from ....types.cancel_session_response import CancelSessionResponse
+from ....types.get_session_response import GetSessionResponse
+from ....types.get_turn_response import GetTurnResponse
+from ....types.list_events_order import ListEventsOrder
+from ....types.list_events_response import ListEventsResponse
+from ....types.list_sessions_order import ListSessionsOrder
+from ....types.list_sessions_response import ListSessionsResponse
+from ....types.list_turns_response import ListTurnsResponse
+from ....types.previous_turn_id_input import PreviousTurnIdInput
+from ....types.request_error_response import RequestErrorResponse
+from ....types.session import Session
+from ....types.turn import Turn
+from ....types.turn_event import TurnEvent
+from ....types.turn_input_item import TurnInputItem
+from ....types.turn_streaming_event import TurnStreamingEvent
 from pydantic import ValidationError
 
 # this is used as the default value for optional parameters

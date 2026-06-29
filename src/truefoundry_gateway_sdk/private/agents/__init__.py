@@ -6,7 +6,7 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from . import draft_sessions
+    from . import draft_sessions, sessions
     from .draft_sessions import (
         CreateDraftSessionRequestAgentSpec,
         CreateDraftSessionRequestAgentSpecMessagesItem,
@@ -27,6 +27,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "UpdateDraftSessionRequestAgentSpec": ".draft_sessions",
     "UpdateDraftSessionRequestAgentSpecMessagesItem": ".draft_sessions",
     "draft_sessions": ".draft_sessions",
+    "sessions": ".sessions",
 }
 
 
@@ -61,4 +62,5 @@ __all__ = [
     "UpdateDraftSessionRequestAgentSpec",
     "UpdateDraftSessionRequestAgentSpecMessagesItem",
     "draft_sessions",
+    "sessions",
 ]

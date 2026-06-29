@@ -93,7 +93,7 @@ client = TrueFoundryGateway(
     base_url="https://yourhost.com/path/to/api",
 )
 
-client.agents.sessions.create_turn(
+client.private.agents.sessions.create_turn(
     session_id="01arz3ndektsv4rrffq69g5fav.g",
 )
 ```
@@ -127,7 +127,7 @@ client = AsyncTrueFoundryGateway(
 
 
 async def main() -> None:
-    await client.agents.sessions.create_turn(
+    await client.private.agents.sessions.create_turn(
         session_id="01arz3ndektsv4rrffq69g5fav.g",
     )
 
@@ -144,7 +144,7 @@ will be thrown.
 from truefoundry_gateway_sdk.core.api_error import ApiError
 
 try:
-    client.agents.sessions.create_turn(...)
+    client.private.agents.sessions.create_turn(...)
 except ApiError as e:
     print(e.status_code)
     print(e.body)
@@ -162,7 +162,7 @@ client = TrueFoundryGateway(
     base_url="https://yourhost.com/path/to/api",
 )
 
-client.agents.sessions.create_turn(
+client.private.agents.sessions.create_turn(
     session_id="01arz3ndektsv4rrffq69g5fav.g",
 )
 ```
@@ -172,17 +172,17 @@ client.agents.sessions.create_turn(
 Paginated requests will return a `SyncPager` or `AsyncPager`, which can be used as generators for the underlying object.
 
 ```python
-from truefoundry_gateway_sdk import TrueFoundryGateway, ListSessionsOrder
+from truefoundry_gateway_sdk import TrueFoundryGateway, ListDraftSessionsOrder
 
 client = TrueFoundryGateway(
     api_key="<token>",
     base_url="https://yourhost.com/path/to/api",
 )
 
-client.agents.sessions.list(
+client.private.agents.draft_sessions.list(
     agent_name="agent_name",
     limit=1,
-    order=ListSessionsOrder.ASC,
+    order=ListDraftSessionsOrder.ASC,
     page_token="page_token",
     start_timestamp="start_timestamp",
     end_timestamp="end_timestamp",
@@ -191,7 +191,7 @@ client.agents.sessions.list(
 
 ```python
 # You can also iterate through pages and access the typed response per page
-pager = client.agents.sessions.list(...)
+pager = client.private.agents.draft_sessions.list(...)
 for page in pager.iter_pages():
     print(page.response)  # access the typed response for each page
     for item in page:
@@ -209,7 +209,7 @@ The `.with_raw_response` property returns a "raw" client that can be used to acc
 from truefoundry_gateway_sdk import TrueFoundryGateway
 
 client = TrueFoundryGateway(...)
-response = client.agents.sessions.with_raw_response.create_turn(...)
+response = client.private.agents.sessions.with_raw_response.create_turn(...)
 print(response.headers)  # access the response headers
 print(response.status_code)  # access the response status code
 print(response.data)  # access the underlying object
@@ -240,7 +240,7 @@ Which status codes are retried depends on the `retryStatusCodes` generator confi
 Use the `max_retries` request option to configure this behavior.
 
 ```python
-client.agents.sessions.create_turn(..., request_options={
+client.private.agents.sessions.create_turn(..., request_options={
     "max_retries": 1
 })
 ```
@@ -255,7 +255,7 @@ from truefoundry_gateway_sdk import TrueFoundryGateway
 client = TrueFoundryGateway(..., timeout=20.0)
 
 # Override timeout for a specific method
-client.agents.sessions.create_turn(..., request_options={
+client.private.agents.sessions.create_turn(..., request_options={
     "timeout_in_seconds": 1
 })
 ```

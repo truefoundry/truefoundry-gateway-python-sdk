@@ -84,7 +84,7 @@ class DraftSessionsClient:
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
-        response = client.internal.agents.draft_sessions.list(
+        response = client.private.agents.draft_sessions.list(
             agent_name="agent_name",
             limit=1,
             order=ListDraftSessionsOrder.ASC,
@@ -137,7 +137,7 @@ class DraftSessionsClient:
         Examples
         --------
         from truefoundry_gateway_sdk import Model, TrueFoundryGateway
-        from truefoundry_gateway_sdk.internal.agents.draft_sessions import (
+        from truefoundry_gateway_sdk.private.agents.draft_sessions import (
             CreateDraftSessionRequestAgentSpec,
         )
 
@@ -145,7 +145,7 @@ class DraftSessionsClient:
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
-        client.internal.agents.draft_sessions.create(
+        client.private.agents.draft_sessions.create(
             agent_spec=CreateDraftSessionRequestAgentSpec(
                 model=Model(
                     name="name",
@@ -185,7 +185,7 @@ class DraftSessionsClient:
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
-        client.internal.agents.draft_sessions.get(
+        client.private.agents.draft_sessions.get(
             draft_session_id="draftSessionId",
         )
         """
@@ -226,7 +226,7 @@ class DraftSessionsClient:
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
-        client.internal.agents.draft_sessions.update(
+        client.private.agents.draft_sessions.update(
             draft_session_id="draftSessionId",
         )
         """
@@ -307,7 +307,7 @@ class AsyncDraftSessionsClient:
 
 
         async def main() -> None:
-            response = await client.internal.agents.draft_sessions.list(
+            response = await client.private.agents.draft_sessions.list(
                 agent_name="agent_name",
                 limit=1,
                 order=ListDraftSessionsOrder.ASC,
@@ -366,7 +366,7 @@ class AsyncDraftSessionsClient:
         import asyncio
 
         from truefoundry_gateway_sdk import AsyncTrueFoundryGateway, Model
-        from truefoundry_gateway_sdk.internal.agents.draft_sessions import (
+        from truefoundry_gateway_sdk.private.agents.draft_sessions import (
             CreateDraftSessionRequestAgentSpec,
         )
 
@@ -377,7 +377,7 @@ class AsyncDraftSessionsClient:
 
 
         async def main() -> None:
-            await client.internal.agents.draft_sessions.create(
+            await client.private.agents.draft_sessions.create(
                 agent_spec=CreateDraftSessionRequestAgentSpec(
                     model=Model(
                         name="name",
@@ -425,7 +425,7 @@ class AsyncDraftSessionsClient:
 
 
         async def main() -> None:
-            await client.internal.agents.draft_sessions.get(
+            await client.private.agents.draft_sessions.get(
                 draft_session_id="draftSessionId",
             )
 
@@ -474,7 +474,7 @@ class AsyncDraftSessionsClient:
 
 
         async def main() -> None:
-            await client.internal.agents.draft_sessions.update(
+            await client.private.agents.draft_sessions.update(
                 draft_session_id="draftSessionId",
             )
 

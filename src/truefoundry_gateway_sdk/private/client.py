@@ -5,26 +5,26 @@ from __future__ import annotations
 import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
-from .raw_client import AsyncRawInternalClient, RawInternalClient
+from .raw_client import AsyncRawPrivateClient, RawPrivateClient
 
 if typing.TYPE_CHECKING:
     from .agents.client import AgentsClient, AsyncAgentsClient
 
 
-class InternalClient:
+class PrivateClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
-        self._raw_client = RawInternalClient(client_wrapper=client_wrapper)
+        self._raw_client = RawPrivateClient(client_wrapper=client_wrapper)
         self._client_wrapper = client_wrapper
         self._agents: typing.Optional[AgentsClient] = None
 
     @property
-    def with_raw_response(self) -> RawInternalClient:
+    def with_raw_response(self) -> RawPrivateClient:
         """
         Retrieves a raw implementation of this client that returns raw responses.
 
         Returns
         -------
-        RawInternalClient
+        RawPrivateClient
         """
         return self._raw_client
 
@@ -37,20 +37,20 @@ class InternalClient:
         return self._agents
 
 
-class AsyncInternalClient:
+class AsyncPrivateClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
-        self._raw_client = AsyncRawInternalClient(client_wrapper=client_wrapper)
+        self._raw_client = AsyncRawPrivateClient(client_wrapper=client_wrapper)
         self._client_wrapper = client_wrapper
         self._agents: typing.Optional[AsyncAgentsClient] = None
 
     @property
-    def with_raw_response(self) -> AsyncRawInternalClient:
+    def with_raw_response(self) -> AsyncRawPrivateClient:
         """
         Retrieves a raw implementation of this client that returns raw responses.
 
         Returns
         -------
-        AsyncRawInternalClient
+        AsyncRawPrivateClient
         """
         return self._raw_client
 

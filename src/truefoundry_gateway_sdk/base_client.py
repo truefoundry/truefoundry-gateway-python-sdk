@@ -11,8 +11,7 @@ from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .core.logging import LogConfig, Logger
 
 if typing.TYPE_CHECKING:
-    from .agents.client import AgentsClient, AsyncAgentsClient
-    from .internal.client import AsyncInternalClient, InternalClient
+    from .private.client import AsyncPrivateClient, PrivateClient
 
 
 class BaseTrueFoundryGateway:
@@ -94,24 +93,15 @@ class BaseTrueFoundryGateway:
             max_stream_reconnection_attempts=max_stream_reconnection_attempts,
             logging=logging,
         )
-        self._agents: typing.Optional[AgentsClient] = None
-        self._internal: typing.Optional[InternalClient] = None
+        self._private: typing.Optional[PrivateClient] = None
 
     @property
-    def agents(self):
-        if self._agents is None:
-            from .agents.client import AgentsClient  # noqa: E402
+    def private(self):
+        if self._private is None:
+            from .private.client import PrivateClient  # noqa: E402
 
-            self._agents = AgentsClient(client_wrapper=self._client_wrapper)
-        return self._agents
-
-    @property
-    def internal(self):
-        if self._internal is None:
-            from .internal.client import InternalClient  # noqa: E402
-
-            self._internal = InternalClient(client_wrapper=self._client_wrapper)
-        return self._internal
+            self._private = PrivateClient(client_wrapper=self._client_wrapper)
+        return self._private
 
 
 def _make_default_async_client(
@@ -214,21 +204,12 @@ class AsyncBaseTrueFoundryGateway:
             max_stream_reconnection_attempts=max_stream_reconnection_attempts,
             logging=logging,
         )
-        self._agents: typing.Optional[AsyncAgentsClient] = None
-        self._internal: typing.Optional[AsyncInternalClient] = None
+        self._private: typing.Optional[AsyncPrivateClient] = None
 
     @property
-    def agents(self):
-        if self._agents is None:
-            from .agents.client import AsyncAgentsClient  # noqa: E402
+    def private(self):
+        if self._private is None:
+            from .private.client import AsyncPrivateClient  # noqa: E402
 
-            self._agents = AsyncAgentsClient(client_wrapper=self._client_wrapper)
-        return self._agents
-
-    @property
-    def internal(self):
-        if self._internal is None:
-            from .internal.client import AsyncInternalClient  # noqa: E402
-
-            self._internal = AsyncInternalClient(client_wrapper=self._client_wrapper)
-        return self._internal
+            self._private = AsyncPrivateClient(client_wrapper=self._client_wrapper)
+        return self._private

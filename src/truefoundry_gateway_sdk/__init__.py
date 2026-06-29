@@ -123,7 +123,7 @@ if typing.TYPE_CHECKING:
         UnauthorizedError,
         UnprocessableEntityError,
     )
-    from . import agents, internal
+    from . import private
     from ._default_clients import DefaultAioHttpClient, DefaultAsyncHttpxClient
     from .client import AsyncTrueFoundryGateway, TrueFoundryGateway
     from .version import __version__
@@ -246,8 +246,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "UserToolApprovalEvent": ".types",
     "UserToolResponseEvent": ".types",
     "__version__": ".version",
-    "agents": ".agents",
-    "internal": ".internal",
+    "private": ".private",
 }
 
 
@@ -391,6 +390,5 @@ __all__ = [
     "UserToolApprovalEvent",
     "UserToolResponseEvent",
     "__version__",
-    "agents",
-    "internal",
+    "private",
 ]
