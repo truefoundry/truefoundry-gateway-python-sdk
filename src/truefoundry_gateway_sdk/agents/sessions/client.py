@@ -5,6 +5,12 @@ import typing
 from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.pagination import AsyncPager, SyncPager
 from ...core.request_options import RequestOptions
+from ...types.get_session_response import GetSessionResponse
+from ...types.get_turn_response import GetTurnResponse
+from ...types.list_events_response import ListEventsResponse
+from ...types.list_sessions_response import ListSessionsResponse
+from ...types.list_turns_response import ListTurnsResponse
+from ...types.order import Order
 from ...types.session import Session
 from ...types.turn import Turn
 from ...types.turn_event import TurnEvent
@@ -13,14 +19,7 @@ from .raw_client import AsyncRawSessionsClient, RawSessionsClient
 from .types.create_turn_request_input_item import CreateTurnRequestInputItem
 from .types.create_turn_request_previous_turn_id import CreateTurnRequestPreviousTurnId
 from .types.sessions_cancel_response import SessionsCancelResponse
-from .types.sessions_create_response import SessionsCreateResponse
-from .types.sessions_get_response import SessionsGetResponse
-from .types.sessions_get_turn_response import SessionsGetTurnResponse
-from .types.sessions_list_request_order import SessionsListRequestOrder
-from .types.sessions_list_response import SessionsListResponse
 from .types.sessions_list_turn_events_request_order import SessionsListTurnEventsRequestOrder
-from .types.sessions_list_turn_events_response import SessionsListTurnEventsResponse
-from .types.sessions_list_turns_response import SessionsListTurnsResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -46,12 +45,12 @@ class SessionsClient:
         *,
         agent_name: str,
         limit: typing.Optional[int] = 10,
-        order: typing.Optional[SessionsListRequestOrder] = None,
+        order: typing.Optional[Order] = None,
         page_token: typing.Optional[str] = None,
         start_timestamp: typing.Optional[str] = None,
         end_timestamp: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[Session, SessionsListResponse]:
+    ) -> SyncPager[Session, ListSessionsResponse]:
         """
         List sessions for an agent (newest first by default), keyset-paginated. Pass `page_token` to fetch the next page, keeping the other query params constant.
 
@@ -61,7 +60,7 @@ class SessionsClient:
 
         limit : typing.Optional[int]
 
-        order : typing.Optional[SessionsListRequestOrder]
+        order : typing.Optional[Order]
 
         page_token : typing.Optional[str]
 
@@ -74,13 +73,12 @@ class SessionsClient:
 
         Returns
         -------
-        SyncPager[Session, SessionsListResponse]
+        SyncPager[Session, ListSessionsResponse]
             Paginated sessions.
 
         Examples
         --------
-        from truefoundry_gateway_sdk import TrueFoundryGateway
-        from truefoundry_gateway_sdk.agents.sessions import SessionsListRequestOrder
+        from truefoundry_gateway_sdk import Order, TrueFoundryGateway
 
         client = TrueFoundryGateway(
             api_key="YOUR_API_KEY",
@@ -89,7 +87,7 @@ class SessionsClient:
         response = client.agents.sessions.list(
             agent_name="agent_name",
             limit=1,
-            order=SessionsListRequestOrder.ASC,
+            order=Order.ASC,
             page_token="page_token",
             start_timestamp="start_timestamp",
             end_timestamp="end_timestamp",
@@ -110,9 +108,7 @@ class SessionsClient:
             request_options=request_options,
         )
 
-    def create(
-        self, *, agent_name: str, request_options: typing.Optional[RequestOptions] = None
-    ) -> SessionsCreateResponse:
+    def create(self, *, agent_name: str, request_options: typing.Optional[RequestOptions] = None) -> GetSessionResponse:
         """
         Create a session for an existing named agent.
 
@@ -126,7 +122,7 @@ class SessionsClient:
 
         Returns
         -------
-        SessionsCreateResponse
+        GetSessionResponse
             Session created.
 
         Examples
@@ -144,7 +140,7 @@ class SessionsClient:
         _response = self._raw_client.create(agent_name=agent_name, request_options=request_options)
         return _response.data
 
-    def get(self, session_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> SessionsGetResponse:
+    def get(self, session_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> GetSessionResponse:
         """
         Get a session by id. Visible to the session owner or a manager of the session agent.
 
@@ -157,7 +153,7 @@ class SessionsClient:
 
         Returns
         -------
-        SessionsGetResponse
+        GetSessionResponse
             Session data.
 
         Examples
@@ -215,7 +211,7 @@ class SessionsClient:
         page_token: typing.Optional[str] = None,
         limit: typing.Optional[int] = 10,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[Turn, SessionsListTurnsResponse]:
+    ) -> SyncPager[Turn, ListTurnsResponse]:
         """
         List turns for a session (newest first). Pagination walks the ancestor chain from the session last turn, or from the turn in page_token when continuing.
 
@@ -232,7 +228,7 @@ class SessionsClient:
 
         Returns
         -------
-        SyncPager[Turn, SessionsListTurnsResponse]
+        SyncPager[Turn, ListTurnsResponse]
             Paginated turns.
 
         Examples
@@ -308,7 +304,7 @@ class SessionsClient:
 
     def get_turn(
         self, session_id: str, turn_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> SessionsGetTurnResponse:
+    ) -> GetTurnResponse:
         """
         Get a single turn by ID from Redis.
 
@@ -323,7 +319,7 @@ class SessionsClient:
 
         Returns
         -------
-        SessionsGetTurnResponse
+        GetTurnResponse
             Turn data.
 
         Examples
@@ -398,7 +394,7 @@ class SessionsClient:
         limit: typing.Optional[int] = 25,
         order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[TurnEvent, SessionsListTurnEventsResponse]:
+    ) -> SyncPager[TurnEvent, ListEventsResponse]:
         """
         Paginated list of turn events from the Redis events stream.
 
@@ -419,7 +415,7 @@ class SessionsClient:
 
         Returns
         -------
-        SyncPager[TurnEvent, SessionsListTurnEventsResponse]
+        SyncPager[TurnEvent, ListEventsResponse]
             Paginated events.
 
         Examples
@@ -471,12 +467,12 @@ class AsyncSessionsClient:
         *,
         agent_name: str,
         limit: typing.Optional[int] = 10,
-        order: typing.Optional[SessionsListRequestOrder] = None,
+        order: typing.Optional[Order] = None,
         page_token: typing.Optional[str] = None,
         start_timestamp: typing.Optional[str] = None,
         end_timestamp: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[Session, SessionsListResponse]:
+    ) -> AsyncPager[Session, ListSessionsResponse]:
         """
         List sessions for an agent (newest first by default), keyset-paginated. Pass `page_token` to fetch the next page, keeping the other query params constant.
 
@@ -486,7 +482,7 @@ class AsyncSessionsClient:
 
         limit : typing.Optional[int]
 
-        order : typing.Optional[SessionsListRequestOrder]
+        order : typing.Optional[Order]
 
         page_token : typing.Optional[str]
 
@@ -499,15 +495,14 @@ class AsyncSessionsClient:
 
         Returns
         -------
-        AsyncPager[Session, SessionsListResponse]
+        AsyncPager[Session, ListSessionsResponse]
             Paginated sessions.
 
         Examples
         --------
         import asyncio
 
-        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway
-        from truefoundry_gateway_sdk.agents.sessions import SessionsListRequestOrder
+        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway, Order
 
         client = AsyncTrueFoundryGateway(
             api_key="YOUR_API_KEY",
@@ -519,7 +514,7 @@ class AsyncSessionsClient:
             response = await client.agents.sessions.list(
                 agent_name="agent_name",
                 limit=1,
-                order=SessionsListRequestOrder.ASC,
+                order=Order.ASC,
                 page_token="page_token",
                 start_timestamp="start_timestamp",
                 end_timestamp="end_timestamp",
@@ -546,7 +541,7 @@ class AsyncSessionsClient:
 
     async def create(
         self, *, agent_name: str, request_options: typing.Optional[RequestOptions] = None
-    ) -> SessionsCreateResponse:
+    ) -> GetSessionResponse:
         """
         Create a session for an existing named agent.
 
@@ -560,7 +555,7 @@ class AsyncSessionsClient:
 
         Returns
         -------
-        SessionsCreateResponse
+        GetSessionResponse
             Session created.
 
         Examples
@@ -588,7 +583,7 @@ class AsyncSessionsClient:
 
     async def get(
         self, session_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> SessionsGetResponse:
+    ) -> GetSessionResponse:
         """
         Get a session by id. Visible to the session owner or a manager of the session agent.
 
@@ -601,7 +596,7 @@ class AsyncSessionsClient:
 
         Returns
         -------
-        SessionsGetResponse
+        GetSessionResponse
             Session data.
 
         Examples
@@ -675,7 +670,7 @@ class AsyncSessionsClient:
         page_token: typing.Optional[str] = None,
         limit: typing.Optional[int] = 10,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[Turn, SessionsListTurnsResponse]:
+    ) -> AsyncPager[Turn, ListTurnsResponse]:
         """
         List turns for a session (newest first). Pagination walks the ancestor chain from the session last turn, or from the turn in page_token when continuing.
 
@@ -692,7 +687,7 @@ class AsyncSessionsClient:
 
         Returns
         -------
-        AsyncPager[Turn, SessionsListTurnsResponse]
+        AsyncPager[Turn, ListTurnsResponse]
             Paginated turns.
 
         Examples
@@ -786,7 +781,7 @@ class AsyncSessionsClient:
 
     async def get_turn(
         self, session_id: str, turn_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> SessionsGetTurnResponse:
+    ) -> GetTurnResponse:
         """
         Get a single turn by ID from Redis.
 
@@ -801,7 +796,7 @@ class AsyncSessionsClient:
 
         Returns
         -------
-        SessionsGetTurnResponse
+        GetTurnResponse
             Turn data.
 
         Examples
@@ -893,7 +888,7 @@ class AsyncSessionsClient:
         limit: typing.Optional[int] = 25,
         order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[TurnEvent, SessionsListTurnEventsResponse]:
+    ) -> AsyncPager[TurnEvent, ListEventsResponse]:
         """
         Paginated list of turn events from the Redis events stream.
 
@@ -914,7 +909,7 @@ class AsyncSessionsClient:
 
         Returns
         -------
-        AsyncPager[TurnEvent, SessionsListTurnEventsResponse]
+        AsyncPager[TurnEvent, ListEventsResponse]
             Paginated events.
 
         Examples

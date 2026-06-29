@@ -3,12 +3,14 @@
 import typing
 
 import pydantic
-from ....core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ....types.session import Session
+from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .session import Session
+from .token_pagination import TokenPagination
 
 
-class SessionsCreateResponse(UniversalBaseModel):
-    data: Session
+class ListSessionsResponse(UniversalBaseModel):
+    data: typing.List[Session]
+    pagination: TokenPagination
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

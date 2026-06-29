@@ -24,6 +24,12 @@ from ...errors.not_found_error import NotFoundError
 from ...errors.precondition_failed_error import PreconditionFailedError
 from ...errors.unauthorized_error import UnauthorizedError
 from ...errors.unprocessable_entity_error import UnprocessableEntityError
+from ...types.get_session_response import GetSessionResponse
+from ...types.get_turn_response import GetTurnResponse
+from ...types.list_events_response import ListEventsResponse
+from ...types.list_sessions_response import ListSessionsResponse
+from ...types.list_turns_response import ListTurnsResponse
+from ...types.order import Order
 from ...types.request_error_response import RequestErrorResponse
 from ...types.session import Session
 from ...types.turn import Turn
@@ -32,14 +38,7 @@ from ...types.turn_streaming_event import TurnStreamingEvent
 from .types.create_turn_request_input_item import CreateTurnRequestInputItem
 from .types.create_turn_request_previous_turn_id import CreateTurnRequestPreviousTurnId
 from .types.sessions_cancel_response import SessionsCancelResponse
-from .types.sessions_create_response import SessionsCreateResponse
-from .types.sessions_get_response import SessionsGetResponse
-from .types.sessions_get_turn_response import SessionsGetTurnResponse
-from .types.sessions_list_request_order import SessionsListRequestOrder
-from .types.sessions_list_response import SessionsListResponse
 from .types.sessions_list_turn_events_request_order import SessionsListTurnEventsRequestOrder
-from .types.sessions_list_turn_events_response import SessionsListTurnEventsResponse
-from .types.sessions_list_turns_response import SessionsListTurnsResponse
 from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
@@ -55,12 +54,12 @@ class RawSessionsClient:
         *,
         agent_name: str,
         limit: typing.Optional[int] = 10,
-        order: typing.Optional[SessionsListRequestOrder] = None,
+        order: typing.Optional[Order] = None,
         page_token: typing.Optional[str] = None,
         start_timestamp: typing.Optional[str] = None,
         end_timestamp: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[Session, SessionsListResponse]:
+    ) -> SyncPager[Session, ListSessionsResponse]:
         """
         List sessions for an agent (newest first by default), keyset-paginated. Pass `page_token` to fetch the next page, keeping the other query params constant.
 
@@ -70,7 +69,7 @@ class RawSessionsClient:
 
         limit : typing.Optional[int]
 
-        order : typing.Optional[SessionsListRequestOrder]
+        order : typing.Optional[Order]
 
         page_token : typing.Optional[str]
 
@@ -83,7 +82,7 @@ class RawSessionsClient:
 
         Returns
         -------
-        SyncPager[Session, SessionsListResponse]
+        SyncPager[Session, ListSessionsResponse]
             Paginated sessions.
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -102,9 +101,9 @@ class RawSessionsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _parsed_response = typing.cast(
-                    SessionsListResponse,
+                    ListSessionsResponse,
                     parse_obj_as(
-                        type_=SessionsListResponse,  # type: ignore
+                        type_=ListSessionsResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -190,7 +189,7 @@ class RawSessionsClient:
 
     def create(
         self, *, agent_name: str, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[SessionsCreateResponse]:
+    ) -> HttpResponse[GetSessionResponse]:
         """
         Create a session for an existing named agent.
 
@@ -204,7 +203,7 @@ class RawSessionsClient:
 
         Returns
         -------
-        HttpResponse[SessionsCreateResponse]
+        HttpResponse[GetSessionResponse]
             Session created.
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -222,9 +221,9 @@ class RawSessionsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    SessionsCreateResponse,
+                    GetSessionResponse,
                     parse_obj_as(
-                        type_=SessionsCreateResponse,  # type: ignore
+                        type_=GetSessionResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -306,7 +305,7 @@ class RawSessionsClient:
 
     def get(
         self, session_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[SessionsGetResponse]:
+    ) -> HttpResponse[GetSessionResponse]:
         """
         Get a session by id. Visible to the session owner or a manager of the session agent.
 
@@ -319,7 +318,7 @@ class RawSessionsClient:
 
         Returns
         -------
-        HttpResponse[SessionsGetResponse]
+        HttpResponse[GetSessionResponse]
             Session data.
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -330,9 +329,9 @@ class RawSessionsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    SessionsGetResponse,
+                    GetSessionResponse,
                     parse_obj_as(
-                        type_=SessionsGetResponse,  # type: ignore
+                        type_=GetSessionResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -477,7 +476,7 @@ class RawSessionsClient:
         page_token: typing.Optional[str] = None,
         limit: typing.Optional[int] = 10,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[Turn, SessionsListTurnsResponse]:
+    ) -> SyncPager[Turn, ListTurnsResponse]:
         """
         List turns for a session (newest first). Pagination walks the ancestor chain from the session last turn, or from the turn in page_token when continuing.
 
@@ -494,7 +493,7 @@ class RawSessionsClient:
 
         Returns
         -------
-        SyncPager[Turn, SessionsListTurnsResponse]
+        SyncPager[Turn, ListTurnsResponse]
             Paginated turns.
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -509,9 +508,9 @@ class RawSessionsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _parsed_response = typing.cast(
-                    SessionsListTurnsResponse,
+                    ListTurnsResponse,
                     parse_obj_as(
-                        type_=SessionsListTurnsResponse,  # type: ignore
+                        type_=ListTurnsResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -689,7 +688,7 @@ class RawSessionsClient:
 
     def get_turn(
         self, session_id: str, turn_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[SessionsGetTurnResponse]:
+    ) -> HttpResponse[GetTurnResponse]:
         """
         Get a single turn by ID from Redis.
 
@@ -704,7 +703,7 @@ class RawSessionsClient:
 
         Returns
         -------
-        HttpResponse[SessionsGetTurnResponse]
+        HttpResponse[GetTurnResponse]
             Turn data.
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -715,9 +714,9 @@ class RawSessionsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    SessionsGetTurnResponse,
+                    GetTurnResponse,
                     parse_obj_as(
-                        type_=SessionsGetTurnResponse,  # type: ignore
+                        type_=GetTurnResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -894,7 +893,7 @@ class RawSessionsClient:
         limit: typing.Optional[int] = 25,
         order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[TurnEvent, SessionsListTurnEventsResponse]:
+    ) -> SyncPager[TurnEvent, ListEventsResponse]:
         """
         Paginated list of turn events from the Redis events stream.
 
@@ -915,7 +914,7 @@ class RawSessionsClient:
 
         Returns
         -------
-        SyncPager[TurnEvent, SessionsListTurnEventsResponse]
+        SyncPager[TurnEvent, ListEventsResponse]
             Paginated events.
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -931,9 +930,9 @@ class RawSessionsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _parsed_response = typing.cast(
-                    SessionsListTurnEventsResponse,
+                    ListEventsResponse,
                     parse_obj_as(
-                        type_=SessionsListTurnEventsResponse,  # type: ignore
+                        type_=ListEventsResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1004,12 +1003,12 @@ class AsyncRawSessionsClient:
         *,
         agent_name: str,
         limit: typing.Optional[int] = 10,
-        order: typing.Optional[SessionsListRequestOrder] = None,
+        order: typing.Optional[Order] = None,
         page_token: typing.Optional[str] = None,
         start_timestamp: typing.Optional[str] = None,
         end_timestamp: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[Session, SessionsListResponse]:
+    ) -> AsyncPager[Session, ListSessionsResponse]:
         """
         List sessions for an agent (newest first by default), keyset-paginated. Pass `page_token` to fetch the next page, keeping the other query params constant.
 
@@ -1019,7 +1018,7 @@ class AsyncRawSessionsClient:
 
         limit : typing.Optional[int]
 
-        order : typing.Optional[SessionsListRequestOrder]
+        order : typing.Optional[Order]
 
         page_token : typing.Optional[str]
 
@@ -1032,7 +1031,7 @@ class AsyncRawSessionsClient:
 
         Returns
         -------
-        AsyncPager[Session, SessionsListResponse]
+        AsyncPager[Session, ListSessionsResponse]
             Paginated sessions.
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1051,9 +1050,9 @@ class AsyncRawSessionsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _parsed_response = typing.cast(
-                    SessionsListResponse,
+                    ListSessionsResponse,
                     parse_obj_as(
-                        type_=SessionsListResponse,  # type: ignore
+                        type_=ListSessionsResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1142,7 +1141,7 @@ class AsyncRawSessionsClient:
 
     async def create(
         self, *, agent_name: str, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[SessionsCreateResponse]:
+    ) -> AsyncHttpResponse[GetSessionResponse]:
         """
         Create a session for an existing named agent.
 
@@ -1156,7 +1155,7 @@ class AsyncRawSessionsClient:
 
         Returns
         -------
-        AsyncHttpResponse[SessionsCreateResponse]
+        AsyncHttpResponse[GetSessionResponse]
             Session created.
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1174,9 +1173,9 @@ class AsyncRawSessionsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    SessionsCreateResponse,
+                    GetSessionResponse,
                     parse_obj_as(
-                        type_=SessionsCreateResponse,  # type: ignore
+                        type_=GetSessionResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1258,7 +1257,7 @@ class AsyncRawSessionsClient:
 
     async def get(
         self, session_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[SessionsGetResponse]:
+    ) -> AsyncHttpResponse[GetSessionResponse]:
         """
         Get a session by id. Visible to the session owner or a manager of the session agent.
 
@@ -1271,7 +1270,7 @@ class AsyncRawSessionsClient:
 
         Returns
         -------
-        AsyncHttpResponse[SessionsGetResponse]
+        AsyncHttpResponse[GetSessionResponse]
             Session data.
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1282,9 +1281,9 @@ class AsyncRawSessionsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    SessionsGetResponse,
+                    GetSessionResponse,
                     parse_obj_as(
-                        type_=SessionsGetResponse,  # type: ignore
+                        type_=GetSessionResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1429,7 +1428,7 @@ class AsyncRawSessionsClient:
         page_token: typing.Optional[str] = None,
         limit: typing.Optional[int] = 10,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[Turn, SessionsListTurnsResponse]:
+    ) -> AsyncPager[Turn, ListTurnsResponse]:
         """
         List turns for a session (newest first). Pagination walks the ancestor chain from the session last turn, or from the turn in page_token when continuing.
 
@@ -1446,7 +1445,7 @@ class AsyncRawSessionsClient:
 
         Returns
         -------
-        AsyncPager[Turn, SessionsListTurnsResponse]
+        AsyncPager[Turn, ListTurnsResponse]
             Paginated turns.
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1461,9 +1460,9 @@ class AsyncRawSessionsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _parsed_response = typing.cast(
-                    SessionsListTurnsResponse,
+                    ListTurnsResponse,
                     parse_obj_as(
-                        type_=SessionsListTurnsResponse,  # type: ignore
+                        type_=ListTurnsResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1644,7 +1643,7 @@ class AsyncRawSessionsClient:
 
     async def get_turn(
         self, session_id: str, turn_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[SessionsGetTurnResponse]:
+    ) -> AsyncHttpResponse[GetTurnResponse]:
         """
         Get a single turn by ID from Redis.
 
@@ -1659,7 +1658,7 @@ class AsyncRawSessionsClient:
 
         Returns
         -------
-        AsyncHttpResponse[SessionsGetTurnResponse]
+        AsyncHttpResponse[GetTurnResponse]
             Turn data.
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1670,9 +1669,9 @@ class AsyncRawSessionsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    SessionsGetTurnResponse,
+                    GetTurnResponse,
                     parse_obj_as(
-                        type_=SessionsGetTurnResponse,  # type: ignore
+                        type_=GetTurnResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1849,7 +1848,7 @@ class AsyncRawSessionsClient:
         limit: typing.Optional[int] = 25,
         order: typing.Optional[SessionsListTurnEventsRequestOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[TurnEvent, SessionsListTurnEventsResponse]:
+    ) -> AsyncPager[TurnEvent, ListEventsResponse]:
         """
         Paginated list of turn events from the Redis events stream.
 
@@ -1870,7 +1869,7 @@ class AsyncRawSessionsClient:
 
         Returns
         -------
-        AsyncPager[TurnEvent, SessionsListTurnEventsResponse]
+        AsyncPager[TurnEvent, ListEventsResponse]
             Paginated events.
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1886,9 +1885,9 @@ class AsyncRawSessionsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _parsed_response = typing.cast(
-                    SessionsListTurnEventsResponse,
+                    ListEventsResponse,
                     parse_obj_as(
-                        type_=SessionsListTurnEventsResponse,  # type: ignore
+                        type_=ListEventsResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

@@ -1,6 +1,6 @@
 # Reference
 ## Agents Sessions
-<details><summary><code>client.agents.sessions.<a href="src/truefoundry_gateway_sdk/agents/sessions/client.py">list</a>(...) -> SessionsListResponse</code></summary>
+<details><summary><code>client.agents.sessions.<a href="src/truefoundry_gateway_sdk/agents/sessions/client.py">list</a>(...) -> ListSessionsResponse</code></summary>
 <dl>
 <dd>
 
@@ -27,8 +27,7 @@ List sessions for an agent (newest first by default), keyset-paginated. Pass `pa
 <dd>
 
 ```python
-from truefoundry_gateway_sdk import TrueFoundryGateway
-from truefoundry_gateway_sdk.agents.sessions import SessionsListRequestOrder
+from truefoundry_gateway_sdk import TrueFoundryGateway, Order
 
 client = TrueFoundryGateway(
     api_key="<token>",
@@ -38,7 +37,7 @@ client = TrueFoundryGateway(
 client.agents.sessions.list(
     agent_name="agent_name",
     limit=1,
-    order=SessionsListRequestOrder.ASC,
+    order=Order.ASC,
     page_token="page_token",
     start_timestamp="start_timestamp",
     end_timestamp="end_timestamp",
@@ -74,7 +73,7 @@ client.agents.sessions.list(
 <dl>
 <dd>
 
-**order:** `typing.Optional[SessionsListRequestOrder]` 
+**order:** `typing.Optional[Order]` 
     
 </dd>
 </dl>
@@ -118,7 +117,7 @@ client.agents.sessions.list(
 </dl>
 </details>
 
-<details><summary><code>client.agents.sessions.<a href="src/truefoundry_gateway_sdk/agents/sessions/client.py">create</a>(...) -> SessionsCreateResponse</code></summary>
+<details><summary><code>client.agents.sessions.<a href="src/truefoundry_gateway_sdk/agents/sessions/client.py">create</a>(...) -> GetSessionResponse</code></summary>
 <dl>
 <dd>
 
@@ -190,7 +189,7 @@ client.agents.sessions.create(
 </dl>
 </details>
 
-<details><summary><code>client.agents.sessions.<a href="src/truefoundry_gateway_sdk/agents/sessions/client.py">get</a>(...) -> SessionsGetResponse</code></summary>
+<details><summary><code>client.agents.sessions.<a href="src/truefoundry_gateway_sdk/agents/sessions/client.py">get</a>(...) -> GetSessionResponse</code></summary>
 <dl>
 <dd>
 
@@ -334,7 +333,7 @@ client.agents.sessions.cancel(
 </dl>
 </details>
 
-<details><summary><code>client.agents.sessions.<a href="src/truefoundry_gateway_sdk/agents/sessions/client.py">list_turns</a>(...) -> SessionsListTurnsResponse</code></summary>
+<details><summary><code>client.agents.sessions.<a href="src/truefoundry_gateway_sdk/agents/sessions/client.py">list_turns</a>(...) -> ListTurnsResponse</code></summary>
 <dl>
 <dd>
 
@@ -513,7 +512,7 @@ client.agents.sessions.create_turn(
 </dl>
 </details>
 
-<details><summary><code>client.agents.sessions.<a href="src/truefoundry_gateway_sdk/agents/sessions/client.py">get_turn</a>(...) -> SessionsGetTurnResponse</code></summary>
+<details><summary><code>client.agents.sessions.<a href="src/truefoundry_gateway_sdk/agents/sessions/client.py">get_turn</a>(...) -> GetTurnResponse</code></summary>
 <dl>
 <dd>
 
@@ -683,7 +682,7 @@ client.agents.sessions.subscribe_to_turn(
 </dl>
 </details>
 
-<details><summary><code>client.agents.sessions.<a href="src/truefoundry_gateway_sdk/agents/sessions/client.py">list_turn_events</a>(...) -> SessionsListTurnEventsResponse</code></summary>
+<details><summary><code>client.agents.sessions.<a href="src/truefoundry_gateway_sdk/agents/sessions/client.py">list_turn_events</a>(...) -> ListEventsResponse</code></summary>
 <dl>
 <dd>
 

@@ -3,11 +3,11 @@
 import typing
 
 import pydantic
-from ....core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ....types.turn import Turn
+from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .turn import Turn
 
 
-class SessionsGetTurnResponse(UniversalBaseModel):
+class GetTurnResponse(UniversalBaseModel):
     data: Turn
 
     if IS_PYDANTIC_V2:

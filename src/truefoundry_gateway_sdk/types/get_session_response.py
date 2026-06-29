@@ -3,11 +3,11 @@
 import typing
 
 import pydantic
-from ....core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ....types.session import Session
+from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .session import Session
 
 
-class SessionsGetResponse(UniversalBaseModel):
+class GetSessionResponse(UniversalBaseModel):
     data: Session
 
     if IS_PYDANTIC_V2:

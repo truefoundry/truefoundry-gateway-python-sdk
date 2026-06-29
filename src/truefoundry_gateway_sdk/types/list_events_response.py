@@ -3,13 +3,13 @@
 import typing
 
 import pydantic
-from ....core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ....types.token_pagination import TokenPagination
-from ....types.turn import Turn
+from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .token_pagination import TokenPagination
+from .turn_event import TurnEvent
 
 
-class SessionsListTurnsResponse(UniversalBaseModel):
-    data: typing.List[Turn]
+class ListEventsResponse(UniversalBaseModel):
+    data: typing.List[TurnEvent]
     pagination: TokenPagination
 
     if IS_PYDANTIC_V2:
