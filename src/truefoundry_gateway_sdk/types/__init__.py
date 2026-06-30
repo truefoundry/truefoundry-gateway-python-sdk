@@ -76,7 +76,7 @@ if typing.TYPE_CHECKING:
     from .session import Session
     from .skill_mount import SkillMount
     from .subject import Subject
-    from .text_content_part import TextContentPart
+    from .text_content import TextContent
     from .thread_created_event import ThreadCreatedEvent
     from .thread_done_event import ThreadDoneEvent
     from .thread_state import ThreadState
@@ -182,7 +182,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "Session": ".session",
     "SkillMount": ".skill_mount",
     "Subject": ".subject",
-    "TextContentPart": ".text_content_part",
+    "TextContent": ".text_content",
     "ThreadCreatedEvent": ".thread_created_event",
     "ThreadDoneEvent": ".thread_done_event",
     "ThreadState": ".thread_state",
@@ -312,7 +312,7 @@ __all__ = [
     "Session",
     "SkillMount",
     "Subject",
-    "TextContentPart",
+    "TextContent",
     "ThreadCreatedEvent",
     "ThreadDoneEvent",
     "ThreadState",
