@@ -6,7 +6,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class TextContentPart(UniversalBaseModel):
+class TextContent(UniversalBaseModel):
     type: typing.Literal["text"] = "text"
     text: str
 
