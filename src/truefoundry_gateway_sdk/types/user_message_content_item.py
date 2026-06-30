@@ -5,4 +5,4 @@ import typing
 from .file_content import FileContent
 from .text_content import TextContent
 
-UserMessageContentOneItem = typing.Union[TextContent, FileContent]
+UserMessageContentItem = typing.Union[TextContent, FileContent]

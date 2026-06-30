@@ -108,7 +108,7 @@ if typing.TYPE_CHECKING:
     from .turn_streaming_event import TurnStreamingEvent
     from .user_message import UserMessage
     from .user_message_content import UserMessageContent
-    from .user_message_content_one_item import UserMessageContentOneItem
+    from .user_message_content_item import UserMessageContentItem
     from .user_tool_approval_event import UserToolApprovalEvent
     from .user_tool_response_event import UserToolResponseEvent
 _dynamic_imports: typing.Dict[str, str] = {
@@ -214,7 +214,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "TurnStreamingEvent": ".turn_streaming_event",
     "UserMessage": ".user_message",
     "UserMessageContent": ".user_message_content",
-    "UserMessageContentOneItem": ".user_message_content_one_item",
+    "UserMessageContentItem": ".user_message_content_item",
     "UserToolApprovalEvent": ".user_tool_approval_event",
     "UserToolResponseEvent": ".user_tool_response_event",
 }
@@ -344,7 +344,7 @@ __all__ = [
     "TurnStreamingEvent",
     "UserMessage",
     "UserMessageContent",
-    "UserMessageContentOneItem",
+    "UserMessageContentItem",
     "UserToolApprovalEvent",
     "UserToolResponseEvent",
 ]
