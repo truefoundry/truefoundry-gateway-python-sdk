@@ -17,15 +17,12 @@ from ....errors.internal_server_error import InternalServerError
 from ....errors.not_found_error import NotFoundError
 from ....errors.unauthorized_error import UnauthorizedError
 from ....errors.unprocessable_entity_error import UnprocessableEntityError
+from ....types.agent_spec import AgentSpec
 from ....types.draft_session import DraftSession
+from ....types.get_draft_session_response import GetDraftSessionResponse
 from ....types.list_draft_sessions_order import ListDraftSessionsOrder
+from ....types.list_draft_sessions_response import ListDraftSessionsResponse
 from ....types.request_error_response import RequestErrorResponse
-from .types.create_draft_session_request_agent_spec import CreateDraftSessionRequestAgentSpec
-from .types.draft_sessions_create_response import DraftSessionsCreateResponse
-from .types.draft_sessions_get_response import DraftSessionsGetResponse
-from .types.draft_sessions_list_response import DraftSessionsListResponse
-from .types.draft_sessions_update_response import DraftSessionsUpdateResponse
-from .types.update_draft_session_request_agent_spec import UpdateDraftSessionRequestAgentSpec
 from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
@@ -46,7 +43,7 @@ class RawDraftSessionsClient:
         start_timestamp: typing.Optional[str] = None,
         end_timestamp: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[DraftSession, DraftSessionsListResponse]:
+    ) -> SyncPager[DraftSession, ListDraftSessionsResponse]:
         """
         List the caller-owned draft sessions (newest first by default), keyset-paginated. Optionally filter by `agent_name`. Pass `page_token` to fetch the next page, keeping the other query params constant.
 
@@ -75,7 +72,7 @@ class RawDraftSessionsClient:
 
         Returns
         -------
-        SyncPager[DraftSession, DraftSessionsListResponse]
+        SyncPager[DraftSession, ListDraftSessionsResponse]
             Paginated draft sessions.
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -94,9 +91,9 @@ class RawDraftSessionsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _parsed_response = typing.cast(
-                    DraftSessionsListResponse,
+                    ListDraftSessionsResponse,
                     parse_obj_as(
-                        type_=DraftSessionsListResponse,  # type: ignore
+                        type_=ListDraftSessionsResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -172,17 +169,16 @@ class RawDraftSessionsClient:
     def create(
         self,
         *,
-        agent_spec: CreateDraftSessionRequestAgentSpec,
+        agent_spec: AgentSpec,
         agent_name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[DraftSessionsCreateResponse]:
+    ) -> HttpResponse[GetDraftSessionResponse]:
         """
         Create a draft session holding an inline agent spec, optionally linked to a saved agent. Owner is the token subject.
 
         Parameters
         ----------
-        agent_spec : CreateDraftSessionRequestAgentSpec
-            Inline agent definition.
+        agent_spec : AgentSpec
 
         agent_name : typing.Optional[str]
             Optionally link the draft to an existing saved agent in the tenant. Omit for a standalone draft.
@@ -192,7 +188,7 @@ class RawDraftSessionsClient:
 
         Returns
         -------
-        HttpResponse[DraftSessionsCreateResponse]
+        HttpResponse[GetDraftSessionResponse]
             Draft session created.
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -200,7 +196,7 @@ class RawDraftSessionsClient:
             method="POST",
             json={
                 "agent_spec": convert_and_respect_annotation_metadata(
-                    object_=agent_spec, annotation=CreateDraftSessionRequestAgentSpec, direction="write"
+                    object_=agent_spec, annotation=AgentSpec, direction="write"
                 ),
                 "agent_name": agent_name,
             },
@@ -213,9 +209,9 @@ class RawDraftSessionsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    DraftSessionsCreateResponse,
+                    GetDraftSessionResponse,
                     parse_obj_as(
-                        type_=DraftSessionsCreateResponse,  # type: ignore
+                        type_=GetDraftSessionResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -286,7 +282,7 @@ class RawDraftSessionsClient:
 
     def get(
         self, draft_session_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[DraftSessionsGetResponse]:
+    ) -> HttpResponse[GetDraftSessionResponse]:
         """
         Get a draft session by id. Owner-only.
 
@@ -300,7 +296,7 @@ class RawDraftSessionsClient:
 
         Returns
         -------
-        HttpResponse[DraftSessionsGetResponse]
+        HttpResponse[GetDraftSessionResponse]
             Draft session data.
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -311,9 +307,9 @@ class RawDraftSessionsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    DraftSessionsGetResponse,
+                    GetDraftSessionResponse,
                     parse_obj_as(
-                        type_=DraftSessionsGetResponse,  # type: ignore
+                        type_=GetDraftSessionResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -353,9 +349,9 @@ class RawDraftSessionsClient:
         self,
         draft_session_id: str,
         *,
-        agent_spec: typing.Optional[UpdateDraftSessionRequestAgentSpec] = OMIT,
+        agent_spec: typing.Optional[AgentSpec] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[DraftSessionsUpdateResponse]:
+    ) -> HttpResponse[GetDraftSessionResponse]:
         """
         Update a draft session's inline spec. Owner-only. An empty body is a valid no-op that refreshes `updated_at`.
 
@@ -364,15 +360,14 @@ class RawDraftSessionsClient:
         draft_session_id : str
             Draft session identifier.
 
-        agent_spec : typing.Optional[UpdateDraftSessionRequestAgentSpec]
-            Replacement inline spec; never cleared.
+        agent_spec : typing.Optional[AgentSpec]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[DraftSessionsUpdateResponse]
+        HttpResponse[GetDraftSessionResponse]
             Draft session updated.
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -380,7 +375,7 @@ class RawDraftSessionsClient:
             method="PATCH",
             json={
                 "agent_spec": convert_and_respect_annotation_metadata(
-                    object_=agent_spec, annotation=UpdateDraftSessionRequestAgentSpec, direction="write"
+                    object_=agent_spec, annotation=AgentSpec, direction="write"
                 ),
             },
             headers={
@@ -392,9 +387,9 @@ class RawDraftSessionsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    DraftSessionsUpdateResponse,
+                    GetDraftSessionResponse,
                     parse_obj_as(
-                        type_=DraftSessionsUpdateResponse,  # type: ignore
+                        type_=GetDraftSessionResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -467,7 +462,7 @@ class AsyncRawDraftSessionsClient:
         start_timestamp: typing.Optional[str] = None,
         end_timestamp: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[DraftSession, DraftSessionsListResponse]:
+    ) -> AsyncPager[DraftSession, ListDraftSessionsResponse]:
         """
         List the caller-owned draft sessions (newest first by default), keyset-paginated. Optionally filter by `agent_name`. Pass `page_token` to fetch the next page, keeping the other query params constant.
 
@@ -496,7 +491,7 @@ class AsyncRawDraftSessionsClient:
 
         Returns
         -------
-        AsyncPager[DraftSession, DraftSessionsListResponse]
+        AsyncPager[DraftSession, ListDraftSessionsResponse]
             Paginated draft sessions.
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -515,9 +510,9 @@ class AsyncRawDraftSessionsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _parsed_response = typing.cast(
-                    DraftSessionsListResponse,
+                    ListDraftSessionsResponse,
                     parse_obj_as(
-                        type_=DraftSessionsListResponse,  # type: ignore
+                        type_=ListDraftSessionsResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -596,17 +591,16 @@ class AsyncRawDraftSessionsClient:
     async def create(
         self,
         *,
-        agent_spec: CreateDraftSessionRequestAgentSpec,
+        agent_spec: AgentSpec,
         agent_name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[DraftSessionsCreateResponse]:
+    ) -> AsyncHttpResponse[GetDraftSessionResponse]:
         """
         Create a draft session holding an inline agent spec, optionally linked to a saved agent. Owner is the token subject.
 
         Parameters
         ----------
-        agent_spec : CreateDraftSessionRequestAgentSpec
-            Inline agent definition.
+        agent_spec : AgentSpec
 
         agent_name : typing.Optional[str]
             Optionally link the draft to an existing saved agent in the tenant. Omit for a standalone draft.
@@ -616,7 +610,7 @@ class AsyncRawDraftSessionsClient:
 
         Returns
         -------
-        AsyncHttpResponse[DraftSessionsCreateResponse]
+        AsyncHttpResponse[GetDraftSessionResponse]
             Draft session created.
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -624,7 +618,7 @@ class AsyncRawDraftSessionsClient:
             method="POST",
             json={
                 "agent_spec": convert_and_respect_annotation_metadata(
-                    object_=agent_spec, annotation=CreateDraftSessionRequestAgentSpec, direction="write"
+                    object_=agent_spec, annotation=AgentSpec, direction="write"
                 ),
                 "agent_name": agent_name,
             },
@@ -637,9 +631,9 @@ class AsyncRawDraftSessionsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    DraftSessionsCreateResponse,
+                    GetDraftSessionResponse,
                     parse_obj_as(
-                        type_=DraftSessionsCreateResponse,  # type: ignore
+                        type_=GetDraftSessionResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -710,7 +704,7 @@ class AsyncRawDraftSessionsClient:
 
     async def get(
         self, draft_session_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[DraftSessionsGetResponse]:
+    ) -> AsyncHttpResponse[GetDraftSessionResponse]:
         """
         Get a draft session by id. Owner-only.
 
@@ -724,7 +718,7 @@ class AsyncRawDraftSessionsClient:
 
         Returns
         -------
-        AsyncHttpResponse[DraftSessionsGetResponse]
+        AsyncHttpResponse[GetDraftSessionResponse]
             Draft session data.
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -735,9 +729,9 @@ class AsyncRawDraftSessionsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    DraftSessionsGetResponse,
+                    GetDraftSessionResponse,
                     parse_obj_as(
-                        type_=DraftSessionsGetResponse,  # type: ignore
+                        type_=GetDraftSessionResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -777,9 +771,9 @@ class AsyncRawDraftSessionsClient:
         self,
         draft_session_id: str,
         *,
-        agent_spec: typing.Optional[UpdateDraftSessionRequestAgentSpec] = OMIT,
+        agent_spec: typing.Optional[AgentSpec] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[DraftSessionsUpdateResponse]:
+    ) -> AsyncHttpResponse[GetDraftSessionResponse]:
         """
         Update a draft session's inline spec. Owner-only. An empty body is a valid no-op that refreshes `updated_at`.
 
@@ -788,15 +782,14 @@ class AsyncRawDraftSessionsClient:
         draft_session_id : str
             Draft session identifier.
 
-        agent_spec : typing.Optional[UpdateDraftSessionRequestAgentSpec]
-            Replacement inline spec; never cleared.
+        agent_spec : typing.Optional[AgentSpec]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[DraftSessionsUpdateResponse]
+        AsyncHttpResponse[GetDraftSessionResponse]
             Draft session updated.
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -804,7 +797,7 @@ class AsyncRawDraftSessionsClient:
             method="PATCH",
             json={
                 "agent_spec": convert_and_respect_annotation_metadata(
-                    object_=agent_spec, annotation=UpdateDraftSessionRequestAgentSpec, direction="write"
+                    object_=agent_spec, annotation=AgentSpec, direction="write"
                 ),
             },
             headers={
@@ -816,9 +809,9 @@ class AsyncRawDraftSessionsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    DraftSessionsUpdateResponse,
+                    GetDraftSessionResponse,
                     parse_obj_as(
-                        type_=DraftSessionsUpdateResponse,  # type: ignore
+                        type_=GetDraftSessionResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

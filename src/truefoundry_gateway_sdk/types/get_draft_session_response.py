@@ -3,11 +3,11 @@
 import typing
 
 import pydantic
-from .....core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .....types.draft_session import DraftSession
+from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .draft_session import DraftSession
 
 
-class DraftSessionsCreateResponse(UniversalBaseModel):
+class GetDraftSessionResponse(UniversalBaseModel):
     data: DraftSession
 
     if IS_PYDANTIC_V2:

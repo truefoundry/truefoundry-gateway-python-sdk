@@ -5,15 +5,12 @@ import typing
 from ....core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ....core.pagination import AsyncPager, SyncPager
 from ....core.request_options import RequestOptions
+from ....types.agent_spec import AgentSpec
 from ....types.draft_session import DraftSession
+from ....types.get_draft_session_response import GetDraftSessionResponse
 from ....types.list_draft_sessions_order import ListDraftSessionsOrder
+from ....types.list_draft_sessions_response import ListDraftSessionsResponse
 from .raw_client import AsyncRawDraftSessionsClient, RawDraftSessionsClient
-from .types.create_draft_session_request_agent_spec import CreateDraftSessionRequestAgentSpec
-from .types.draft_sessions_create_response import DraftSessionsCreateResponse
-from .types.draft_sessions_get_response import DraftSessionsGetResponse
-from .types.draft_sessions_list_response import DraftSessionsListResponse
-from .types.draft_sessions_update_response import DraftSessionsUpdateResponse
-from .types.update_draft_session_request_agent_spec import UpdateDraftSessionRequestAgentSpec
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -44,7 +41,7 @@ class DraftSessionsClient:
         start_timestamp: typing.Optional[str] = None,
         end_timestamp: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[DraftSession, DraftSessionsListResponse]:
+    ) -> SyncPager[DraftSession, ListDraftSessionsResponse]:
         """
         List the caller-owned draft sessions (newest first by default), keyset-paginated. Optionally filter by `agent_name`. Pass `page_token` to fetch the next page, keeping the other query params constant.
 
@@ -73,7 +70,7 @@ class DraftSessionsClient:
 
         Returns
         -------
-        SyncPager[DraftSession, DraftSessionsListResponse]
+        SyncPager[DraftSession, ListDraftSessionsResponse]
             Paginated draft sessions.
 
         Examples
@@ -84,7 +81,7 @@ class DraftSessionsClient:
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
-        response = client.internal.agents.draft_sessions.list(
+        response = client.private.agents.draft_sessions.list(
             agent_name="agent_name",
             limit=1,
             order=ListDraftSessionsOrder.ASC,
@@ -111,17 +108,16 @@ class DraftSessionsClient:
     def create(
         self,
         *,
-        agent_spec: CreateDraftSessionRequestAgentSpec,
+        agent_spec: AgentSpec,
         agent_name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> DraftSessionsCreateResponse:
+    ) -> GetDraftSessionResponse:
         """
         Create a draft session holding an inline agent spec, optionally linked to a saved agent. Owner is the token subject.
 
         Parameters
         ----------
-        agent_spec : CreateDraftSessionRequestAgentSpec
-            Inline agent definition.
+        agent_spec : AgentSpec
 
         agent_name : typing.Optional[str]
             Optionally link the draft to an existing saved agent in the tenant. Omit for a standalone draft.
@@ -131,22 +127,19 @@ class DraftSessionsClient:
 
         Returns
         -------
-        DraftSessionsCreateResponse
+        GetDraftSessionResponse
             Draft session created.
 
         Examples
         --------
-        from truefoundry_gateway_sdk import Model, TrueFoundryGateway
-        from truefoundry_gateway_sdk.internal.agents.draft_sessions import (
-            CreateDraftSessionRequestAgentSpec,
-        )
+        from truefoundry_gateway_sdk import AgentSpec, Model, TrueFoundryGateway
 
         client = TrueFoundryGateway(
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
-        client.internal.agents.draft_sessions.create(
-            agent_spec=CreateDraftSessionRequestAgentSpec(
+        client.private.agents.draft_sessions.create(
+            agent_spec=AgentSpec(
                 model=Model(
                     name="name",
                 ),
@@ -160,7 +153,7 @@ class DraftSessionsClient:
 
     def get(
         self, draft_session_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> DraftSessionsGetResponse:
+    ) -> GetDraftSessionResponse:
         """
         Get a draft session by id. Owner-only.
 
@@ -174,7 +167,7 @@ class DraftSessionsClient:
 
         Returns
         -------
-        DraftSessionsGetResponse
+        GetDraftSessionResponse
             Draft session data.
 
         Examples
@@ -185,7 +178,7 @@ class DraftSessionsClient:
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
-        client.internal.agents.draft_sessions.get(
+        client.private.agents.draft_sessions.get(
             draft_session_id="draftSessionId",
         )
         """
@@ -196,9 +189,9 @@ class DraftSessionsClient:
         self,
         draft_session_id: str,
         *,
-        agent_spec: typing.Optional[UpdateDraftSessionRequestAgentSpec] = OMIT,
+        agent_spec: typing.Optional[AgentSpec] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> DraftSessionsUpdateResponse:
+    ) -> GetDraftSessionResponse:
         """
         Update a draft session's inline spec. Owner-only. An empty body is a valid no-op that refreshes `updated_at`.
 
@@ -207,15 +200,14 @@ class DraftSessionsClient:
         draft_session_id : str
             Draft session identifier.
 
-        agent_spec : typing.Optional[UpdateDraftSessionRequestAgentSpec]
-            Replacement inline spec; never cleared.
+        agent_spec : typing.Optional[AgentSpec]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        DraftSessionsUpdateResponse
+        GetDraftSessionResponse
             Draft session updated.
 
         Examples
@@ -226,7 +218,7 @@ class DraftSessionsClient:
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
-        client.internal.agents.draft_sessions.update(
+        client.private.agents.draft_sessions.update(
             draft_session_id="draftSessionId",
         )
         """
@@ -259,7 +251,7 @@ class AsyncDraftSessionsClient:
         start_timestamp: typing.Optional[str] = None,
         end_timestamp: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[DraftSession, DraftSessionsListResponse]:
+    ) -> AsyncPager[DraftSession, ListDraftSessionsResponse]:
         """
         List the caller-owned draft sessions (newest first by default), keyset-paginated. Optionally filter by `agent_name`. Pass `page_token` to fetch the next page, keeping the other query params constant.
 
@@ -288,7 +280,7 @@ class AsyncDraftSessionsClient:
 
         Returns
         -------
-        AsyncPager[DraftSession, DraftSessionsListResponse]
+        AsyncPager[DraftSession, ListDraftSessionsResponse]
             Paginated draft sessions.
 
         Examples
@@ -307,7 +299,7 @@ class AsyncDraftSessionsClient:
 
 
         async def main() -> None:
-            response = await client.internal.agents.draft_sessions.list(
+            response = await client.private.agents.draft_sessions.list(
                 agent_name="agent_name",
                 limit=1,
                 order=ListDraftSessionsOrder.ASC,
@@ -338,17 +330,16 @@ class AsyncDraftSessionsClient:
     async def create(
         self,
         *,
-        agent_spec: CreateDraftSessionRequestAgentSpec,
+        agent_spec: AgentSpec,
         agent_name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> DraftSessionsCreateResponse:
+    ) -> GetDraftSessionResponse:
         """
         Create a draft session holding an inline agent spec, optionally linked to a saved agent. Owner is the token subject.
 
         Parameters
         ----------
-        agent_spec : CreateDraftSessionRequestAgentSpec
-            Inline agent definition.
+        agent_spec : AgentSpec
 
         agent_name : typing.Optional[str]
             Optionally link the draft to an existing saved agent in the tenant. Omit for a standalone draft.
@@ -358,17 +349,14 @@ class AsyncDraftSessionsClient:
 
         Returns
         -------
-        DraftSessionsCreateResponse
+        GetDraftSessionResponse
             Draft session created.
 
         Examples
         --------
         import asyncio
 
-        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway, Model
-        from truefoundry_gateway_sdk.internal.agents.draft_sessions import (
-            CreateDraftSessionRequestAgentSpec,
-        )
+        from truefoundry_gateway_sdk import AgentSpec, AsyncTrueFoundryGateway, Model
 
         client = AsyncTrueFoundryGateway(
             api_key="YOUR_API_KEY",
@@ -377,8 +365,8 @@ class AsyncDraftSessionsClient:
 
 
         async def main() -> None:
-            await client.internal.agents.draft_sessions.create(
-                agent_spec=CreateDraftSessionRequestAgentSpec(
+            await client.private.agents.draft_sessions.create(
+                agent_spec=AgentSpec(
                     model=Model(
                         name="name",
                     ),
@@ -395,7 +383,7 @@ class AsyncDraftSessionsClient:
 
     async def get(
         self, draft_session_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> DraftSessionsGetResponse:
+    ) -> GetDraftSessionResponse:
         """
         Get a draft session by id. Owner-only.
 
@@ -409,7 +397,7 @@ class AsyncDraftSessionsClient:
 
         Returns
         -------
-        DraftSessionsGetResponse
+        GetDraftSessionResponse
             Draft session data.
 
         Examples
@@ -425,7 +413,7 @@ class AsyncDraftSessionsClient:
 
 
         async def main() -> None:
-            await client.internal.agents.draft_sessions.get(
+            await client.private.agents.draft_sessions.get(
                 draft_session_id="draftSessionId",
             )
 
@@ -439,9 +427,9 @@ class AsyncDraftSessionsClient:
         self,
         draft_session_id: str,
         *,
-        agent_spec: typing.Optional[UpdateDraftSessionRequestAgentSpec] = OMIT,
+        agent_spec: typing.Optional[AgentSpec] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> DraftSessionsUpdateResponse:
+    ) -> GetDraftSessionResponse:
         """
         Update a draft session's inline spec. Owner-only. An empty body is a valid no-op that refreshes `updated_at`.
 
@@ -450,15 +438,14 @@ class AsyncDraftSessionsClient:
         draft_session_id : str
             Draft session identifier.
 
-        agent_spec : typing.Optional[UpdateDraftSessionRequestAgentSpec]
-            Replacement inline spec; never cleared.
+        agent_spec : typing.Optional[AgentSpec]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        DraftSessionsUpdateResponse
+        GetDraftSessionResponse
             Draft session updated.
 
         Examples
@@ -474,7 +461,7 @@ class AsyncDraftSessionsClient:
 
 
         async def main() -> None:
-            await client.internal.agents.draft_sessions.update(
+            await client.private.agents.draft_sessions.update(
                 draft_session_id="draftSessionId",
             )
 

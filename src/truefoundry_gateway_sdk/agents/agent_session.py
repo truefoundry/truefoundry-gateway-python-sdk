@@ -72,6 +72,9 @@ class AgentSession:
         self._updated_at: str = session.updated_at
         self._client = client
 
+    def __repr__(self) -> str:
+        return f"AgentSession(id={self._id!r}, agent_name={self._agent_name!r})"
+
     @property
     def id(self) -> str:
         return self._id
@@ -147,6 +150,9 @@ class AsyncAgentSession:
         self._created_at: str = session.created_at
         self._updated_at: str = session.updated_at
         self._client = client
+
+    def __repr__(self) -> str:
+        return f"AsyncAgentSession(id={self._id!r}, agent_name={self._agent_name!r})"
 
     @property
     def id(self) -> str:

@@ -50,6 +50,9 @@ class Turn:
         self._session: "AgentSession" = session
         self._client: TrueFoundryGateway = client
 
+    def __repr__(self) -> str:
+        return f"Turn(id={self._id!r}, session_id={self._session_id!r}, status={self._state.status!r})"
+
     @property
     def id(self) -> str:
         return self._id
@@ -170,6 +173,9 @@ class AsyncTurn:
         self._state: TurnState = turn.state
         self._session: "AsyncAgentSession" = session
         self._client: AsyncTrueFoundryGateway = client
+
+    def __repr__(self) -> str:
+        return f"AsyncTurn(id={self._id!r}, session_id={self._session_id!r}, status={self._state.status!r})"
 
     @property
     def id(self) -> str:

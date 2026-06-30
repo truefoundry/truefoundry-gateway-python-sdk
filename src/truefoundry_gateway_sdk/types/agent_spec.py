@@ -4,21 +4,25 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .agent_spec_messages_item import AgentSpecMessagesItem
+from .agent_spec_user_message import AgentSpecUserMessage
 from .mcp_server import McpServer
 from .model import Model
 from .response_format import ResponseFormat
 from .runtime_config import RuntimeConfig
-from .skill import Skill
+from .skill_mount import SkillMount
 
 
 class AgentSpec(UniversalBaseModel):
+    """
+    Agent Definition
+    """
+
     model: Model
     instructions: typing.Optional[str] = None
-    messages: typing.Optional[typing.List[AgentSpecMessagesItem]] = None
+    messages: typing.Optional[typing.List[AgentSpecUserMessage]] = None
     mcp_servers: typing.Optional[typing.List[McpServer]] = None
     response_format: typing.Optional[ResponseFormat] = None
-    skills: typing.Optional[typing.List[Skill]] = None
+    skills: typing.Optional[typing.List[SkillMount]] = None
     config: typing.Optional[RuntimeConfig] = None
     variables: typing.Optional[typing.Dict[str, str]] = None
 
