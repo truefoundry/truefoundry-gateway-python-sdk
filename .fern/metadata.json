@@ -15,14 +15,14 @@
       "exported_class_name": "TrueFoundryGateway",
       "exported_filename": "client.py"
     },
-    "pyproject_python_version": ">=3.9",
+    "pyproject_python_version": ">=3.10",
     "extra_dev_dependencies": {
       "ipython": ">=8.0.0,<10.0.0",
       "Jinja2": ">=3.1.6,<4.0.0",
       "numpydoc": ">=1.7.0,<2.0.0"
     }
   },
-  "originGitCommit": "5ecb12bf17c3ec9f95a1685d139fbda916dae81b",
+  "originGitCommit": "6e2ca855aa61ea2815618c784cf96a023abca1b1",
   "originGitCommitIsDirty": false,
   "invokedBy": "ci",
   "requestedVersion": "0.0.0",
