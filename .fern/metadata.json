@@ -25,7 +25,7 @@
   "originGitCommit": "5ecb12bf17c3ec9f95a1685d139fbda916dae81b",
   "originGitCommitIsDirty": false,
   "invokedBy": "ci",
-  "requestedVersion": "0.0.0",
+  "requestedVersion": "0.1.0-rc.1",
   "ciProvider": "github",
-  "sdkVersion": "0.0.0"
+  "sdkVersion": "0.1.0-rc.1"
 }
