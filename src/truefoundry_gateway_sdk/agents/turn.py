@@ -55,35 +55,82 @@ class Turn:
 
     @property
     def id(self) -> str:
+        """
+        Returns
+        -------
+        str
+            Unique identifier of this turn.
+        """
         return self._id
 
     @property
     def session_id(self) -> str:
+        """
+        Returns
+        -------
+        str
+            Identifier of the parent session.
+        """
         return self._session_id
 
     @property
     def previous_turn_id(self) -> typing.Optional[str]:
+        """
+        Returns
+        -------
+        typing.Optional[str]
+            Previous turn id in the chain, if any.
+        """
         return self._previous_turn_id
 
     @property
     def input(self) -> typing.Optional[typing.List[TurnInputItem]]:
+        """
+        Returns
+        -------
+        typing.Optional[typing.List[TurnInputItem]]
+            Input items sent when the turn was created.
+        """
         return self._input
 
     @property
     def created_by_subject(self) -> Subject:
+        """
+        Returns
+        -------
+        Subject
+            Subject that started this turn.
+        """
         return self._created_by_subject
 
     @property
     def created_at(self) -> str:
+        """
+        Returns
+        -------
+        str
+            ISO-8601 timestamp when the turn was created.
+        """
         return self._created_at
 
     @property
     def state(self) -> TurnState:
-        """Updated by ``refresh()``, ``stream()``, and ``wait_for_completion()``."""
+        """
+        Returns
+        -------
+        TurnState
+            Updated by ``refresh()``, ``stream()``, and ``wait_for_completion()``.
+        """
         return self._state
 
     @property
     def session(self) -> "AgentSession":
+        """
+        Returns
+        -------
+        AgentSession
+            Parent session this turn belongs to.
+        """
         return self._session
 
     def _is_terminal(self, state: TurnState) -> bool:
@@ -97,7 +144,19 @@ class Turn:
             self._state = event.state
 
     def refresh(self, *, request_options: typing.Optional[RequestOptions] = None) -> "Turn":
-        """Refetch from the server, update state in-place and return self."""
+        """
+        Refetch from the server, update state in-place and return self.
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Returns
+        -------
+        Turn
+            This turn with updated state.
+        """
         response = self._client.agents.sessions.get_turn(self._session_id, self._id, request_options=request_options)
         self._state = response.data.state
         return self
@@ -108,7 +167,21 @@ class Turn:
         poll_interval_ms: int = _DEFAULT_POLL_INTERVAL_MS,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> TurnState:
-        """Poll ``get_turn`` until the turn is done, cancelled, or errored. ``poll_interval_ms`` minimum is 3000."""
+        """
+        Poll ``get_turn`` until terminal.
+
+        Parameters
+        ----------
+        poll_interval_ms : int
+            Poll interval ms while waiting for completion. Minimum 3000.
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Returns
+        -------
+        TurnState
+            Terminal turn state.
+        """
         if poll_interval_ms < _MIN_POLL_INTERVAL_MS:
             raise ValueError(f"poll_interval_ms must be at least {_MIN_POLL_INTERVAL_MS}ms")
         while not self._is_terminal(self._state):
@@ -122,7 +195,21 @@ class Turn:
         after_sequence_number: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.Iterator[TurnStreamData]:
-        """Reconnect to the turn's SSE. Updates state in-place from lifecycle events."""
+        """
+        Reconnect to the turn's SSE. Updates state in-place from lifecycle events.
+
+        Parameters
+        ----------
+        after_sequence_number : typing.Optional[int]
+            Sequence number to resume SSE subscription after.
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Yields
+        ------
+        TurnStreamData
+            SSE stream items.
+        """
         for event in self._client.agents.sessions.subscribe_to_turn(
             self._session_id,
             self._id,
@@ -133,7 +220,18 @@ class Turn:
             yield TurnStreamData(sequence_number=None, event=event)
 
     def cancel(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
-        """Cancel the running last turn for the session."""
+        """
+        Cancel the running last turn for the session.
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Returns
+        -------
+        None
+        """
         self._client.agents.sessions.cancel(self._session_id, request_options=request_options)
 
     def list_events(
@@ -144,7 +242,25 @@ class Turn:
         order: typing.Optional[ListEventsOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[TurnEvent, ListEventsResponse]:
-        """Paginated persisted TurnEvent history (no streaming deltas). Use ``stream()`` for live TurnStreamingEvent SSE."""
+        """
+        Paginated persisted events; use ``stream()`` for live SSE.
+
+        Parameters
+        ----------
+        page_token : typing.Optional[str]
+            Token from the previous response ``next_page_token``.
+        limit : typing.Optional[int]
+            Page size. Default 25.
+        order : typing.Optional[ListEventsOrder]
+            Sort by creation time. Default ``asc``.
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Returns
+        -------
+        SyncPager[TurnEvent, ListEventsResponse]
+            Paginated turn events.
+        """
         return self._client.agents.sessions.list_turn_events(
             self._session_id,
             self._id,
@@ -183,35 +299,82 @@ class AsyncTurn:
 
     @property
     def id(self) -> str:
+        """
+        Returns
+        -------
+        str
+            Unique identifier of this turn.
+        """
         return self._id
 
     @property
     def session_id(self) -> str:
+        """
+        Returns
+        -------
+        str
+            Identifier of the parent session.
+        """
         return self._session_id
 
     @property
     def previous_turn_id(self) -> typing.Optional[str]:
+        """
+        Returns
+        -------
+        typing.Optional[str]
+            Previous turn id in the chain, if any.
+        """
         return self._previous_turn_id
 
     @property
     def input(self) -> typing.Optional[typing.List[TurnInputItem]]:
+        """
+        Returns
+        -------
+        typing.Optional[typing.List[TurnInputItem]]
+            Input items sent when the turn was created.
+        """
         return self._input
 
     @property
     def created_by_subject(self) -> Subject:
+        """
+        Returns
+        -------
+        Subject
+            Subject that started this turn.
+        """
         return self._created_by_subject
 
     @property
     def created_at(self) -> str:
+        """
+        Returns
+        -------
+        str
+            ISO-8601 timestamp when the turn was created.
+        """
         return self._created_at
 
     @property
     def state(self) -> TurnState:
-        """Updated by ``refresh()``, ``stream()``, and ``wait_for_completion()``."""
+        """
+        Returns
+        -------
+        TurnState
+            Updated by ``refresh()``, ``stream()``, and ``wait_for_completion()``.
+        """
         return self._state
 
     @property
     def session(self) -> "AsyncAgentSession":
+        """
+        Returns
+        -------
+        AsyncAgentSession
+            Parent session this turn belongs to.
+        """
         return self._session
 
     def _is_terminal(self, state: TurnState) -> bool:
@@ -225,7 +388,19 @@ class AsyncTurn:
             self._state = event.state
 
     async def refresh(self, *, request_options: typing.Optional[RequestOptions] = None) -> "AsyncTurn":
-        """Refetch from the server, update state in-place and return self."""
+        """
+        Refetch from the server, update state in-place and return self.
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Returns
+        -------
+        AsyncTurn
+            This turn with updated state.
+        """
         response = await self._client.agents.sessions.get_turn(
             self._session_id, self._id, request_options=request_options
         )
@@ -238,7 +413,21 @@ class AsyncTurn:
         poll_interval_ms: int = _DEFAULT_POLL_INTERVAL_MS,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> TurnState:
-        """Poll ``get_turn`` until the turn is done, cancelled, or errored. ``poll_interval_ms`` minimum is 3000."""
+        """
+        Poll ``get_turn`` until terminal.
+
+        Parameters
+        ----------
+        poll_interval_ms : int
+            Poll interval ms while waiting for completion. Minimum 3000.
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Returns
+        -------
+        TurnState
+            Terminal turn state.
+        """
         import asyncio
 
         if poll_interval_ms < _MIN_POLL_INTERVAL_MS:
@@ -254,7 +443,21 @@ class AsyncTurn:
         after_sequence_number: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.AsyncIterator[TurnStreamData]:
-        """Reconnect to the turn's SSE. Updates state in-place from lifecycle events."""
+        """
+        Reconnect to the turn's SSE. Updates state in-place from lifecycle events.
+
+        Parameters
+        ----------
+        after_sequence_number : typing.Optional[int]
+            Sequence number to resume SSE subscription after.
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Yields
+        ------
+        TurnStreamData
+            SSE stream items.
+        """
         async for event in self._client.agents.sessions.subscribe_to_turn(
             self._session_id,
             self._id,
@@ -265,7 +468,18 @@ class AsyncTurn:
             yield TurnStreamData(sequence_number=None, event=event)
 
     async def cancel(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
-        """Cancel the running last turn for the session."""
+        """
+        Cancel the running last turn for the session.
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Returns
+        -------
+        None
+        """
         await self._client.agents.sessions.cancel(self._session_id, request_options=request_options)
 
     async def list_events(
@@ -276,7 +490,25 @@ class AsyncTurn:
         order: typing.Optional[ListEventsOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[TurnEvent, ListEventsResponse]:
-        """Paginated persisted TurnEvent history (no streaming deltas). Use ``stream()`` for live TurnStreamingEvent SSE."""
+        """
+        Paginated persisted events; use ``stream()`` for live SSE.
+
+        Parameters
+        ----------
+        page_token : typing.Optional[str]
+            Token from the previous response ``next_page_token``.
+        limit : typing.Optional[int]
+            Page size. Default 25.
+        order : typing.Optional[ListEventsOrder]
+            Sort by creation time. Default ``asc``.
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Returns
+        -------
+        AsyncPager[TurnEvent, ListEventsResponse]
+            Paginated turn events.
+        """
         return await self._client.agents.sessions.list_turn_events(
             self._session_id,
             self._id,

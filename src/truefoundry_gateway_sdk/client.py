@@ -42,7 +42,12 @@ class TrueFoundryGateway(BaseTrueFoundryGateway):
 
     @property
     def agents(self) -> AgentsClient:
-        """Agent sessions and turns."""
+        """
+        Returns
+        -------
+        AgentsClient
+            Low-level agents client. Prefer ``AgentSessionClient`` for the high-level API.
+        """
         if self._agents is None:
             self._agents = AgentsClient(client_wrapper=self._client_wrapper)
         return self._agents
@@ -83,7 +88,12 @@ class AsyncTrueFoundryGateway(AsyncBaseTrueFoundryGateway):
 
     @property
     def agents(self) -> AsyncAgentsClient:
-        """Agent sessions and turns."""
+        """
+        Returns
+        -------
+        AsyncAgentsClient
+            Low-level agents client. Prefer ``AsyncAgentSessionClient`` for the high-level API.
+        """
         if self._agents is None:
             self._agents = AsyncAgentsClient(client_wrapper=self._client_wrapper)
         return self._agents

@@ -92,7 +92,21 @@ class AgentSessionClient:
         agent_name: str,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AgentSession:
-        """Create a new session for a named agent."""
+        """
+        Create a new session for a named agent.
+
+        Parameters
+        ----------
+        agent_name : str
+            Name of the agent to create a session for.
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Returns
+        -------
+        AgentSession
+            Session created.
+        """
         response = self._client.agents.sessions.create(agent_name=agent_name, request_options=request_options)
         return AgentSession(response.data, self._client)
 
@@ -107,7 +121,31 @@ class AgentSessionClient:
         end_timestamp: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[AgentSession, ListSessionsResponse]:
-        """List sessions for an agent."""
+        """
+        List sessions for an agent.
+
+        Parameters
+        ----------
+        agent_name : str
+            Name of the agent whose sessions to list.
+        limit : typing.Optional[int]
+            Page size. Default 10.
+        order : typing.Optional[ListSessionsOrder]
+            Sort by creation time. Default ``desc``.
+        page_token : typing.Optional[str]
+            Token from the previous response ``next_page_token``.
+        start_timestamp : typing.Optional[str]
+            Inclusive lower bound on ``created_at`` (ISO-8601).
+        end_timestamp : typing.Optional[str]
+            Inclusive upper bound on ``created_at`` (ISO-8601).
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Returns
+        -------
+        SyncPager[AgentSession, ListSessionsResponse]
+            Paginated sessions.
+        """
         raw_pager = self._client.agents.sessions.list(
             agent_name=agent_name,
             limit=limit,
@@ -125,7 +163,21 @@ class AgentSessionClient:
         *,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AgentSession:
-        """Fetch a session by ID."""
+        """
+        Fetch a session by ID.
+
+        Parameters
+        ----------
+        session_id : str
+            Unique identifier of the session to fetch.
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Returns
+        -------
+        AgentSession
+            Session data.
+        """
         response = self._client.agents.sessions.get(session_id, request_options=request_options)
         return AgentSession(response.data, self._client)
 
@@ -169,7 +221,21 @@ class AsyncAgentSessionClient:
         agent_name: str,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncAgentSession:
-        """Create a new session for a named agent."""
+        """
+        Create a new session for a named agent.
+
+        Parameters
+        ----------
+        agent_name : str
+            Name of the agent to create a session for.
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Returns
+        -------
+        AsyncAgentSession
+            Session created.
+        """
         response = await self._client.agents.sessions.create(agent_name=agent_name, request_options=request_options)
         return AsyncAgentSession(response.data, self._client)
 
@@ -184,7 +250,31 @@ class AsyncAgentSessionClient:
         end_timestamp: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[AsyncAgentSession, ListSessionsResponse]:
-        """List sessions for an agent."""
+        """
+        List sessions for an agent.
+
+        Parameters
+        ----------
+        agent_name : str
+            Name of the agent whose sessions to list.
+        limit : typing.Optional[int]
+            Page size. Default 10.
+        order : typing.Optional[ListSessionsOrder]
+            Sort by creation time. Default ``desc``.
+        page_token : typing.Optional[str]
+            Token from the previous response ``next_page_token``.
+        start_timestamp : typing.Optional[str]
+            Inclusive lower bound on ``created_at`` (ISO-8601).
+        end_timestamp : typing.Optional[str]
+            Inclusive upper bound on ``created_at`` (ISO-8601).
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Returns
+        -------
+        AsyncPager[AsyncAgentSession, ListSessionsResponse]
+            Paginated sessions.
+        """
         raw_pager = await self._client.agents.sessions.list(
             agent_name=agent_name,
             limit=limit,
@@ -202,6 +292,20 @@ class AsyncAgentSessionClient:
         *,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncAgentSession:
-        """Fetch a session by ID."""
+        """
+        Fetch a session by ID.
+
+        Parameters
+        ----------
+        session_id : str
+            Unique identifier of the session to fetch.
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Returns
+        -------
+        AsyncAgentSession
+            Session data.
+        """
         response = await self._client.agents.sessions.get(session_id, request_options=request_options)
         return AsyncAgentSession(response.data, self._client)

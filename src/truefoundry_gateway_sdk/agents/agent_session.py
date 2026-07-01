@@ -77,26 +77,62 @@ class AgentSession:
 
     @property
     def id(self) -> str:
+        """
+        Returns
+        -------
+        str
+            Unique identifier of this session.
+        """
         return self._id
 
     @property
     def agent_name(self) -> str:
+        """
+        Returns
+        -------
+        str
+            Name of the agent for this session.
+        """
         return self._agent_name
 
     @property
     def title(self) -> typing.Optional[str]:
+        """
+        Returns
+        -------
+        typing.Optional[str]
+            Optional user-visible title for the session.
+        """
         return self._title
 
     @property
     def created_by_subject(self) -> Subject:
+        """
+        Returns
+        -------
+        Subject
+            Subject that created this session.
+        """
         return self._created_by_subject
 
     @property
     def created_at(self) -> str:
+        """
+        Returns
+        -------
+        str
+            ISO-8601 timestamp when the session was created.
+        """
         return self._created_at
 
     @property
     def updated_at(self) -> str:
+        """
+        Returns
+        -------
+        str
+            ISO-8601 timestamp when the session was last updated.
+        """
         return self._updated_at
 
     def prepare_turn(
@@ -105,7 +141,21 @@ class AgentSession:
         input: typing.Optional[typing.Sequence[TurnInputItem]] = None,
         previous_turn_id: typing.Optional[PreviousTurnIdInput] = None,
     ) -> PreparedTurn:
-        """Stage a turn locally (no HTTP). Omit ``previous_turn_id`` to chain to the session's last turn (server default ``auto``). Call ``execute()`` once to start ``create_turn``."""
+        """
+        Stage a turn locally; call ``execute()`` to start ``create_turn``.
+
+        Parameters
+        ----------
+        input : typing.Optional[typing.Sequence[TurnInputItem]]
+            Turn input items passed to create turn.
+        previous_turn_id : typing.Optional[PreviousTurnIdInput]
+            Previous turn to chain from. Defaults to ``auto``.
+
+        Returns
+        -------
+        PreparedTurn
+            Staged turn.
+        """
         return PreparedTurn(
             input=input,
             previous_turn_id=previous_turn_id,
@@ -120,7 +170,23 @@ class AgentSession:
         limit: typing.Optional[int] = 10,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[Turn, ListTurnsResponse]:
-        """List turns in this session."""
+        """
+        List turns in this session.
+
+        Parameters
+        ----------
+        page_token : typing.Optional[str]
+            Token from the previous response ``next_page_token``.
+        limit : typing.Optional[int]
+            Page size. Default 10.
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Returns
+        -------
+        SyncPager[Turn, ListTurnsResponse]
+            Paginated turns.
+        """
         raw_pager = self._client.agents.sessions.list_turns(
             self._id, page_token=page_token, limit=limit, request_options=request_options
         )
@@ -132,12 +198,37 @@ class AgentSession:
         *,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Turn:
-        """Fetch a turn by ID."""
+        """
+        Fetch a turn by ID.
+
+        Parameters
+        ----------
+        turn_id : str
+            Unique identifier of the turn to fetch.
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Returns
+        -------
+        Turn
+            Turn data.
+        """
         response = self._client.agents.sessions.get_turn(self._id, turn_id, request_options=request_options)
         return Turn(response.data, self, self._client)
 
     def cancel(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
-        """Cancel the running last turn for the session."""
+        """
+        Cancel the running last turn for the session.
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Returns
+        -------
+        None
+        """
         self._client.agents.sessions.cancel(self._id, request_options=request_options)
 
 
@@ -160,26 +251,62 @@ class AsyncAgentSession:
 
     @property
     def id(self) -> str:
+        """
+        Returns
+        -------
+        str
+            Unique identifier of this session.
+        """
         return self._id
 
     @property
     def agent_name(self) -> str:
+        """
+        Returns
+        -------
+        str
+            Name of the agent for this session.
+        """
         return self._agent_name
 
     @property
     def title(self) -> typing.Optional[str]:
+        """
+        Returns
+        -------
+        typing.Optional[str]
+            Optional user-visible title for the session.
+        """
         return self._title
 
     @property
     def created_by_subject(self) -> Subject:
+        """
+        Returns
+        -------
+        Subject
+            Subject that created this session.
+        """
         return self._created_by_subject
 
     @property
     def created_at(self) -> str:
+        """
+        Returns
+        -------
+        str
+            ISO-8601 timestamp when the session was created.
+        """
         return self._created_at
 
     @property
     def updated_at(self) -> str:
+        """
+        Returns
+        -------
+        str
+            ISO-8601 timestamp when the session was last updated.
+        """
         return self._updated_at
 
     def prepare_turn(
@@ -188,7 +315,21 @@ class AsyncAgentSession:
         input: typing.Optional[typing.Sequence[TurnInputItem]] = None,
         previous_turn_id: typing.Optional[PreviousTurnIdInput] = None,
     ) -> AsyncPreparedTurn:
-        """Stage a turn locally (no HTTP). Omit ``previous_turn_id`` to chain to the session's last turn (server default ``auto``). Call ``execute()`` once to start ``create_turn``."""
+        """
+        Stage a turn locally; call ``execute()`` to start ``create_turn``.
+
+        Parameters
+        ----------
+        input : typing.Optional[typing.Sequence[TurnInputItem]]
+            Turn input items passed to create turn.
+        previous_turn_id : typing.Optional[PreviousTurnIdInput]
+            Previous turn to chain from. Defaults to ``auto``.
+
+        Returns
+        -------
+        AsyncPreparedTurn
+            Staged turn.
+        """
         return AsyncPreparedTurn(
             input=input,
             previous_turn_id=previous_turn_id,
@@ -203,7 +344,23 @@ class AsyncAgentSession:
         limit: typing.Optional[int] = 10,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[AsyncTurn, ListTurnsResponse]:
-        """List turns in this session."""
+        """
+        List turns in this session.
+
+        Parameters
+        ----------
+        page_token : typing.Optional[str]
+            Token from the previous response ``next_page_token``.
+        limit : typing.Optional[int]
+            Page size. Default 10.
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Returns
+        -------
+        AsyncPager[AsyncTurn, ListTurnsResponse]
+            Paginated turns.
+        """
         raw_pager = await self._client.agents.sessions.list_turns(
             self._id, page_token=page_token, limit=limit, request_options=request_options
         )
@@ -215,10 +372,35 @@ class AsyncAgentSession:
         *,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncTurn:
-        """Fetch a turn by ID."""
+        """
+        Fetch a turn by ID.
+
+        Parameters
+        ----------
+        turn_id : str
+            Unique identifier of the turn to fetch.
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Returns
+        -------
+        AsyncTurn
+            Turn data.
+        """
         response = await self._client.agents.sessions.get_turn(self._id, turn_id, request_options=request_options)
         return AsyncTurn(response.data, self, self._client)
 
     async def cancel(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
-        """Cancel the running last turn for the session."""
+        """
+        Cancel the running last turn for the session.
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Returns
+        -------
+        None
+        """
         await self._client.agents.sessions.cancel(self._id, request_options=request_options)
