@@ -105,6 +105,7 @@ class AgentSession:
         input: typing.Optional[typing.Sequence[TurnInputItem]] = None,
         previous_turn_id: typing.Optional[PreviousTurnIdInput] = None,
     ) -> PreparedTurn:
+        """Stage a turn locally (no HTTP). Omit ``previous_turn_id`` to chain to the session's last turn (server default ``auto``). Call ``execute()`` once to start ``create_turn``."""
         return PreparedTurn(
             input=input,
             previous_turn_id=previous_turn_id,
@@ -119,6 +120,7 @@ class AgentSession:
         limit: typing.Optional[int] = 10,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[Turn, ListTurnsResponse]:
+        """List turns in this session."""
         raw_pager = self._client.agents.sessions.list_turns(
             self._id, page_token=page_token, limit=limit, request_options=request_options
         )
@@ -130,10 +132,12 @@ class AgentSession:
         *,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Turn:
+        """Fetch a turn by ID."""
         response = self._client.agents.sessions.get_turn(self._id, turn_id, request_options=request_options)
         return Turn(response.data, self, self._client)
 
     def cancel(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """Cancel the running last turn for the session."""
         self._client.agents.sessions.cancel(self._id, request_options=request_options)
 
 
@@ -184,6 +188,7 @@ class AsyncAgentSession:
         input: typing.Optional[typing.Sequence[TurnInputItem]] = None,
         previous_turn_id: typing.Optional[PreviousTurnIdInput] = None,
     ) -> AsyncPreparedTurn:
+        """Stage a turn locally (no HTTP). Omit ``previous_turn_id`` to chain to the session's last turn (server default ``auto``). Call ``execute()`` once to start ``create_turn``."""
         return AsyncPreparedTurn(
             input=input,
             previous_turn_id=previous_turn_id,
@@ -198,6 +203,7 @@ class AsyncAgentSession:
         limit: typing.Optional[int] = 10,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[AsyncTurn, ListTurnsResponse]:
+        """List turns in this session."""
         raw_pager = await self._client.agents.sessions.list_turns(
             self._id, page_token=page_token, limit=limit, request_options=request_options
         )
@@ -209,8 +215,10 @@ class AsyncAgentSession:
         *,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncTurn:
+        """Fetch a turn by ID."""
         response = await self._client.agents.sessions.get_turn(self._id, turn_id, request_options=request_options)
         return AsyncTurn(response.data, self, self._client)
 
     async def cancel(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """Cancel the running last turn for the session."""
         await self._client.agents.sessions.cancel(self._id, request_options=request_options)

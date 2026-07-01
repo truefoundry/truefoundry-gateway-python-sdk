@@ -56,6 +56,7 @@ class PreparedTurn:
 
     @property
     def id(self) -> typing.Optional[str]:
+        """None until ``execute()`` has started the turn."""
         return self._turn.id if self._turn is not None else None
 
     @property
@@ -106,6 +107,7 @@ class PreparedTurn:
         poll_interval_ms: int = 3000,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.Union[typing.Iterator[TurnStreamData], TurnState]:
+        """Start the turn via create_turn. ``stream=True`` (default) yields SSE from that POST (not resumable; after disconnect call ``stream()`` to subscribe_to_turn). ``stream=False`` polls ``get_turn`` until done, cancelled, or error."""
         if self._started:
             raise RuntimeError("Turn already started; use stream() / wait_for_completion().")
         self._started = True
@@ -122,11 +124,13 @@ class PreparedTurn:
         after_sequence_number: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.Iterator[TurnStreamData]:
+        """Subscribe to live SSE via subscribe_to_turn after ``execute()`` has started the turn. Pass ``after_sequence_number`` to resume; updates state from turn.created and turn.done."""
         yield from self._must_get_turn().stream(
             after_sequence_number=after_sequence_number, request_options=request_options
         )
 
     def refresh(self, *, request_options: typing.Optional[RequestOptions] = None) -> "PreparedTurn":
+        """Refetch from the server, update state in-place and return self."""
         self._must_get_turn().refresh(request_options=request_options)
         return self
 
@@ -136,11 +140,13 @@ class PreparedTurn:
         poll_interval_ms: int = 3000,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> TurnState:
+        """Poll ``get_turn`` until the turn is done, cancelled, or errored. ``poll_interval_ms`` minimum is 3000."""
         return self._must_get_turn().wait_for_completion(
             poll_interval_ms=poll_interval_ms, request_options=request_options
         )
 
     def cancel(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """Cancel the running last turn for the session."""
         return self._must_get_turn().cancel(request_options=request_options)
 
     def list_events(
@@ -151,6 +157,7 @@ class PreparedTurn:
         order: typing.Optional[ListEventsOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[TurnEvent, ListEventsResponse]:
+        """Paginated persisted TurnEvent history (no streaming deltas). Use ``stream()`` for live TurnStreamingEvent SSE."""
         return self._must_get_turn().list_events(
             page_token=page_token, limit=limit, order=order, request_options=request_options
         )
@@ -264,6 +271,7 @@ class AsyncPreparedTurn:
 
     @property
     def id(self) -> typing.Optional[str]:
+        """None until ``execute()`` has started the turn."""
         return self._turn.id if self._turn is not None else None
 
     @property
@@ -314,6 +322,7 @@ class AsyncPreparedTurn:
         poll_interval_ms: int = 3000,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.Union[typing.AsyncIterator[TurnStreamData], "typing.Coroutine[typing.Any, typing.Any, TurnState]"]:
+        """Start the turn via create_turn. ``stream=True`` (default) yields SSE from that POST (not resumable; after disconnect call ``stream()`` to subscribe_to_turn). ``stream=False`` polls ``get_turn`` until done, cancelled, or error."""
         if self._started:
             raise RuntimeError("Turn already started; use stream() / wait_for_completion().")
         self._started = True
@@ -330,12 +339,14 @@ class AsyncPreparedTurn:
         after_sequence_number: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.AsyncIterator[TurnStreamData]:
+        """Subscribe to live SSE via subscribe_to_turn after ``execute()`` has started the turn. Pass ``after_sequence_number`` to resume; updates state from turn.created and turn.done."""
         async for item in self._must_get_turn().stream(
             after_sequence_number=after_sequence_number, request_options=request_options
         ):
             yield item
 
     async def refresh(self, *, request_options: typing.Optional[RequestOptions] = None) -> "AsyncPreparedTurn":
+        """Refetch from the server, update state in-place and return self."""
         await self._must_get_turn().refresh(request_options=request_options)
         return self
 
@@ -345,11 +356,13 @@ class AsyncPreparedTurn:
         poll_interval_ms: int = 3000,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> TurnState:
+        """Poll ``get_turn`` until the turn is done, cancelled, or errored. ``poll_interval_ms`` minimum is 3000."""
         return await self._must_get_turn().wait_for_completion(
             poll_interval_ms=poll_interval_ms, request_options=request_options
         )
 
     async def cancel(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """Cancel the running last turn for the session."""
         return await self._must_get_turn().cancel(request_options=request_options)
 
     async def list_events(
@@ -360,6 +373,7 @@ class AsyncPreparedTurn:
         order: typing.Optional[ListEventsOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[TurnEvent, ListEventsResponse]:
+        """Paginated persisted TurnEvent history (no streaming deltas). Use ``stream()`` for live TurnStreamingEvent SSE."""
         return await self._must_get_turn().list_events(
             page_token=page_token, limit=limit, order=order, request_options=request_options
         )

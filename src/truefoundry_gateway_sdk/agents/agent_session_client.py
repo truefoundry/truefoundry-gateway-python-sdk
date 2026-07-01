@@ -92,6 +92,7 @@ class AgentSessionClient:
         agent_name: str,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AgentSession:
+        """Create a new session for a named agent."""
         response = self._client.agents.sessions.create(agent_name=agent_name, request_options=request_options)
         return AgentSession(response.data, self._client)
 
@@ -106,6 +107,7 @@ class AgentSessionClient:
         end_timestamp: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[AgentSession, ListSessionsResponse]:
+        """List sessions for an agent."""
         raw_pager = self._client.agents.sessions.list(
             agent_name=agent_name,
             limit=limit,
@@ -123,6 +125,7 @@ class AgentSessionClient:
         *,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AgentSession:
+        """Fetch a session by ID."""
         response = self._client.agents.sessions.get(session_id, request_options=request_options)
         return AgentSession(response.data, self._client)
 
@@ -166,6 +169,7 @@ class AsyncAgentSessionClient:
         agent_name: str,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncAgentSession:
+        """Create a new session for a named agent."""
         response = await self._client.agents.sessions.create(agent_name=agent_name, request_options=request_options)
         return AsyncAgentSession(response.data, self._client)
 
@@ -180,6 +184,7 @@ class AsyncAgentSessionClient:
         end_timestamp: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[AsyncAgentSession, ListSessionsResponse]:
+        """List sessions for an agent."""
         raw_pager = await self._client.agents.sessions.list(
             agent_name=agent_name,
             limit=limit,
@@ -197,5 +202,6 @@ class AsyncAgentSessionClient:
         *,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncAgentSession:
+        """Fetch a session by ID."""
         response = await self._client.agents.sessions.get(session_id, request_options=request_options)
         return AsyncAgentSession(response.data, self._client)

@@ -79,6 +79,7 @@ class Turn:
 
     @property
     def state(self) -> TurnState:
+        """Updated by ``refresh()``, ``stream()``, and ``wait_for_completion()``."""
         return self._state
 
     @property
@@ -107,6 +108,7 @@ class Turn:
         poll_interval_ms: int = _DEFAULT_POLL_INTERVAL_MS,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> TurnState:
+        """Poll ``get_turn`` until the turn is done, cancelled, or errored. ``poll_interval_ms`` minimum is 3000."""
         if poll_interval_ms < _MIN_POLL_INTERVAL_MS:
             raise ValueError(f"poll_interval_ms must be at least {_MIN_POLL_INTERVAL_MS}ms")
         while not self._is_terminal(self._state):
@@ -131,6 +133,7 @@ class Turn:
             yield TurnStreamData(sequence_number=None, event=event)
 
     def cancel(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """Cancel the running last turn for the session."""
         self._client.agents.sessions.cancel(self._session_id, request_options=request_options)
 
     def list_events(
@@ -141,6 +144,7 @@ class Turn:
         order: typing.Optional[ListEventsOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[TurnEvent, ListEventsResponse]:
+        """Paginated persisted TurnEvent history (no streaming deltas). Use ``stream()`` for live TurnStreamingEvent SSE."""
         return self._client.agents.sessions.list_turn_events(
             self._session_id,
             self._id,
@@ -203,6 +207,7 @@ class AsyncTurn:
 
     @property
     def state(self) -> TurnState:
+        """Updated by ``refresh()``, ``stream()``, and ``wait_for_completion()``."""
         return self._state
 
     @property
@@ -233,6 +238,7 @@ class AsyncTurn:
         poll_interval_ms: int = _DEFAULT_POLL_INTERVAL_MS,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> TurnState:
+        """Poll ``get_turn`` until the turn is done, cancelled, or errored. ``poll_interval_ms`` minimum is 3000."""
         import asyncio
 
         if poll_interval_ms < _MIN_POLL_INTERVAL_MS:
@@ -259,6 +265,7 @@ class AsyncTurn:
             yield TurnStreamData(sequence_number=None, event=event)
 
     async def cancel(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """Cancel the running last turn for the session."""
         await self._client.agents.sessions.cancel(self._session_id, request_options=request_options)
 
     async def list_events(
@@ -269,6 +276,7 @@ class AsyncTurn:
         order: typing.Optional[ListEventsOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[TurnEvent, ListEventsResponse]:
+        """Paginated persisted TurnEvent history (no streaming deltas). Use ``stream()`` for live TurnStreamingEvent SSE."""
         return await self._client.agents.sessions.list_turn_events(
             self._session_id,
             self._id,

@@ -14,10 +14,12 @@ DeltaEvents = ModelMessageDeltaEvent
 
 
 def is_event_delta(event: TurnStreamingEvent) -> bool:
+    """True for incremental SSE chunks (e.g. ``model.message.delta``)."""
     return event.type.endswith(".delta")
 
 
 def merge_event_delta(base: TurnEvent, delta: DeltaEvents) -> None:
+    """Apply a delta chunk to its full event in place when streaming (same ``id`` required)."""
     if base.id != delta.id:
         raise ValueError(f'Cannot merge delta into a different event: base id "{base.id}" != delta id "{delta.id}".')
     if isinstance(delta, ModelMessageDeltaEvent) and isinstance(base, ModelMessageEvent):
