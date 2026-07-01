@@ -14,10 +14,38 @@ DeltaEvents = ModelMessageDeltaEvent
 
 
 def is_event_delta(event: TurnStreamingEvent) -> bool:
+    """
+    True for ``.delta`` streaming events.
+
+    Parameters
+    ----------
+    event : TurnStreamingEvent
+        Streaming event to check for delta type.
+
+    Returns
+    -------
+    bool
+        True if the event is a delta chunk.
+    """
     return event.type.endswith(".delta")
 
 
 def merge_event_delta(base: TurnEvent, delta: DeltaEvents) -> None:
+    """
+    Merge ``delta`` into ``base`` in place (same ``id`` required).
+
+    Parameters
+    ----------
+    base : TurnEvent
+        Base event to merge delta chunks into.
+    delta : DeltaEvents
+        Delta chunk to merge into the base event.
+
+    Returns
+    -------
+    None
+        Updates ``base`` in place.
+    """
     if base.id != delta.id:
         raise ValueError(f'Cannot merge delta into a different event: base id "{base.id}" != delta id "{delta.id}".')
     if isinstance(delta, ModelMessageDeltaEvent) and isinstance(base, ModelMessageEvent):

@@ -10,6 +10,8 @@ from .private.agents.client import AgentsClient, AsyncAgentsClient
 
 
 class TrueFoundryGateway(BaseTrueFoundryGateway):
+    """Synchronous client for the TrueFoundry Gateway API."""
+
     def __init__(
         self,
         *,
@@ -40,12 +42,20 @@ class TrueFoundryGateway(BaseTrueFoundryGateway):
 
     @property
     def agents(self) -> AgentsClient:
+        """
+        Returns
+        -------
+        AgentsClient
+            Low-level agents client. Prefer ``AgentSessionClient`` for the high-level API.
+        """
         if self._agents is None:
             self._agents = AgentsClient(client_wrapper=self._client_wrapper)
         return self._agents
 
 
 class AsyncTrueFoundryGateway(AsyncBaseTrueFoundryGateway):
+    """Asynchronous client for the TrueFoundry Gateway API."""
+
     def __init__(
         self,
         *,
@@ -78,6 +88,12 @@ class AsyncTrueFoundryGateway(AsyncBaseTrueFoundryGateway):
 
     @property
     def agents(self) -> AsyncAgentsClient:
+        """
+        Returns
+        -------
+        AsyncAgentsClient
+            Low-level agents client. Prefer ``AsyncAgentSessionClient`` for the high-level API.
+        """
         if self._agents is None:
             self._agents = AsyncAgentsClient(client_wrapper=self._client_wrapper)
         return self._agents
