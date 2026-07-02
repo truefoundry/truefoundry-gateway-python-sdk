@@ -9,7 +9,7 @@ from ...core.request_options import RequestOptions
 from .raw_client import AsyncRawAgentsClient, RawAgentsClient
 
 if typing.TYPE_CHECKING:
-    from .draft_sessions.client import AsyncDraftSessionsClient, DraftSessionsClient
+    from .private.client import AsyncPrivateClient, PrivateClient
     from .sessions.client import AsyncSessionsClient, SessionsClient
 
 
@@ -17,8 +17,8 @@ class AgentsClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._raw_client = RawAgentsClient(client_wrapper=client_wrapper)
         self._client_wrapper = client_wrapper
-        self._draft_sessions: typing.Optional[DraftSessionsClient] = None
         self._sessions: typing.Optional[SessionsClient] = None
+        self._private: typing.Optional[PrivateClient] = None
 
     @property
     def with_raw_response(self) -> RawAgentsClient:
@@ -70,14 +70,6 @@ class AgentsClient:
             yield from r.data
 
     @property
-    def draft_sessions(self):
-        if self._draft_sessions is None:
-            from .draft_sessions.client import DraftSessionsClient  # noqa: E402
-
-            self._draft_sessions = DraftSessionsClient(client_wrapper=self._client_wrapper)
-        return self._draft_sessions
-
-    @property
     def sessions(self):
         if self._sessions is None:
             from .sessions.client import SessionsClient  # noqa: E402
@@ -85,13 +77,21 @@ class AgentsClient:
             self._sessions = SessionsClient(client_wrapper=self._client_wrapper)
         return self._sessions
 
+    @property
+    def private(self):
+        if self._private is None:
+            from .private.client import PrivateClient  # noqa: E402
+
+            self._private = PrivateClient(client_wrapper=self._client_wrapper)
+        return self._private
+
 
 class AsyncAgentsClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._raw_client = AsyncRawAgentsClient(client_wrapper=client_wrapper)
         self._client_wrapper = client_wrapper
-        self._draft_sessions: typing.Optional[AsyncDraftSessionsClient] = None
         self._sessions: typing.Optional[AsyncSessionsClient] = None
+        self._private: typing.Optional[AsyncPrivateClient] = None
 
     @property
     def with_raw_response(self) -> AsyncRawAgentsClient:
@@ -152,17 +152,17 @@ class AsyncAgentsClient:
                 yield _chunk
 
     @property
-    def draft_sessions(self):
-        if self._draft_sessions is None:
-            from .draft_sessions.client import AsyncDraftSessionsClient  # noqa: E402
-
-            self._draft_sessions = AsyncDraftSessionsClient(client_wrapper=self._client_wrapper)
-        return self._draft_sessions
-
-    @property
     def sessions(self):
         if self._sessions is None:
             from .sessions.client import AsyncSessionsClient  # noqa: E402
 
             self._sessions = AsyncSessionsClient(client_wrapper=self._client_wrapper)
         return self._sessions
+
+    @property
+    def private(self):
+        if self._private is None:
+            from .private.client import AsyncPrivateClient  # noqa: E402
+
+            self._private = AsyncPrivateClient(client_wrapper=self._client_wrapper)
+        return self._private

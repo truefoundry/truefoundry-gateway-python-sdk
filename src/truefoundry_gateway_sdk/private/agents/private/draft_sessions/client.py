@@ -2,14 +2,14 @@
 
 import typing
 
-from ....core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
-from ....core.pagination import AsyncPager, SyncPager
-from ....core.request_options import RequestOptions
-from ....types.agent_spec import AgentSpec
-from ....types.draft_session import DraftSession
-from ....types.get_draft_session_response import GetDraftSessionResponse
-from ....types.list_draft_sessions_order import ListDraftSessionsOrder
-from ....types.list_draft_sessions_response import ListDraftSessionsResponse
+from .....core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
+from .....core.pagination import AsyncPager, SyncPager
+from .....core.request_options import RequestOptions
+from .....types.agent_spec import AgentSpec
+from .....types.draft_session import DraftSession
+from .....types.get_draft_session_response import GetDraftSessionResponse
+from .....types.list_draft_sessions_order import ListDraftSessionsOrder
+from .....types.list_draft_sessions_response import ListDraftSessionsResponse
 from .raw_client import AsyncRawDraftSessionsClient, RawDraftSessionsClient
 
 # this is used as the default value for optional parameters
@@ -81,7 +81,7 @@ class DraftSessionsClient:
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
-        response = client.private.agents.draft_sessions.list(
+        response = client.private.agents.private.draft_sessions.list(
             agent_name="agent_name",
             limit=1,
             order=ListDraftSessionsOrder.ASC,
@@ -138,7 +138,7 @@ class DraftSessionsClient:
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
-        client.private.agents.draft_sessions.create(
+        client.private.agents.private.draft_sessions.create(
             agent_spec=AgentSpec(
                 model=Model(
                     name="name",
@@ -178,7 +178,7 @@ class DraftSessionsClient:
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
-        client.private.agents.draft_sessions.get(
+        client.private.agents.private.draft_sessions.get(
             draft_session_id="draftSessionId",
         )
         """
@@ -218,7 +218,7 @@ class DraftSessionsClient:
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
-        client.private.agents.draft_sessions.update(
+        client.private.agents.private.draft_sessions.update(
             draft_session_id="draftSessionId",
         )
         """
@@ -299,7 +299,7 @@ class AsyncDraftSessionsClient:
 
 
         async def main() -> None:
-            response = await client.private.agents.draft_sessions.list(
+            response = await client.private.agents.private.draft_sessions.list(
                 agent_name="agent_name",
                 limit=1,
                 order=ListDraftSessionsOrder.ASC,
@@ -365,7 +365,7 @@ class AsyncDraftSessionsClient:
 
 
         async def main() -> None:
-            await client.private.agents.draft_sessions.create(
+            await client.private.agents.private.draft_sessions.create(
                 agent_spec=AgentSpec(
                     model=Model(
                         name="name",
@@ -413,7 +413,7 @@ class AsyncDraftSessionsClient:
 
 
         async def main() -> None:
-            await client.private.agents.draft_sessions.get(
+            await client.private.agents.private.draft_sessions.get(
                 draft_session_id="draftSessionId",
             )
 
@@ -461,7 +461,7 @@ class AsyncDraftSessionsClient:
 
 
         async def main() -> None:
-            await client.private.agents.draft_sessions.update(
+            await client.private.agents.private.draft_sessions.update(
                 draft_session_id="draftSessionId",
             )
 
