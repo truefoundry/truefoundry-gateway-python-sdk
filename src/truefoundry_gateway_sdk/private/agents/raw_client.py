@@ -17,6 +17,7 @@ from ...errors.content_too_large_error import ContentTooLargeError
 from ...errors.forbidden_error import ForbiddenError
 from ...errors.gone_error import GoneError
 from ...errors.not_found_error import NotFoundError
+from ...types.request_error_response import RequestErrorResponse
 from pydantic import ValidationError
 
 
@@ -68,9 +69,9 @@ class RawAgentsClient:
                         raise BadRequestError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Any,
+                                RequestErrorResponse,
                                 parse_obj_as(
-                                    type_=typing.Any,  # type: ignore
+                                    type_=RequestErrorResponse,  # type: ignore
                                     object_=_response.json(),
                                 ),
                             ),
@@ -79,9 +80,9 @@ class RawAgentsClient:
                         raise ForbiddenError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Any,
+                                RequestErrorResponse,
                                 parse_obj_as(
-                                    type_=typing.Any,  # type: ignore
+                                    type_=RequestErrorResponse,  # type: ignore
                                     object_=_response.json(),
                                 ),
                             ),
@@ -90,9 +91,9 @@ class RawAgentsClient:
                         raise NotFoundError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Any,
+                                RequestErrorResponse,
                                 parse_obj_as(
-                                    type_=typing.Any,  # type: ignore
+                                    type_=RequestErrorResponse,  # type: ignore
                                     object_=_response.json(),
                                 ),
                             ),
@@ -101,9 +102,9 @@ class RawAgentsClient:
                         raise GoneError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Any,
+                                RequestErrorResponse,
                                 parse_obj_as(
-                                    type_=typing.Any,  # type: ignore
+                                    type_=RequestErrorResponse,  # type: ignore
                                     object_=_response.json(),
                                 ),
                             ),
@@ -112,9 +113,9 @@ class RawAgentsClient:
                         raise ContentTooLargeError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Any,
+                                RequestErrorResponse,
                                 parse_obj_as(
-                                    type_=typing.Any,  # type: ignore
+                                    type_=RequestErrorResponse,  # type: ignore
                                     object_=_response.json(),
                                 ),
                             ),
@@ -123,9 +124,9 @@ class RawAgentsClient:
                         raise BadGatewayError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Any,
+                                RequestErrorResponse,
                                 parse_obj_as(
-                                    type_=typing.Any,  # type: ignore
+                                    type_=RequestErrorResponse,  # type: ignore
                                     object_=_response.json(),
                                 ),
                             ),
@@ -196,9 +197,9 @@ class AsyncRawAgentsClient:
                         raise BadRequestError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Any,
+                                RequestErrorResponse,
                                 parse_obj_as(
-                                    type_=typing.Any,  # type: ignore
+                                    type_=RequestErrorResponse,  # type: ignore
                                     object_=_response.json(),
                                 ),
                             ),
@@ -207,9 +208,9 @@ class AsyncRawAgentsClient:
                         raise ForbiddenError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Any,
+                                RequestErrorResponse,
                                 parse_obj_as(
-                                    type_=typing.Any,  # type: ignore
+                                    type_=RequestErrorResponse,  # type: ignore
                                     object_=_response.json(),
                                 ),
                             ),
@@ -218,9 +219,9 @@ class AsyncRawAgentsClient:
                         raise NotFoundError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Any,
+                                RequestErrorResponse,
                                 parse_obj_as(
-                                    type_=typing.Any,  # type: ignore
+                                    type_=RequestErrorResponse,  # type: ignore
                                     object_=_response.json(),
                                 ),
                             ),
@@ -229,9 +230,9 @@ class AsyncRawAgentsClient:
                         raise GoneError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Any,
+                                RequestErrorResponse,
                                 parse_obj_as(
-                                    type_=typing.Any,  # type: ignore
+                                    type_=RequestErrorResponse,  # type: ignore
                                     object_=_response.json(),
                                 ),
                             ),
@@ -240,9 +241,9 @@ class AsyncRawAgentsClient:
                         raise ContentTooLargeError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Any,
+                                RequestErrorResponse,
                                 parse_obj_as(
-                                    type_=typing.Any,  # type: ignore
+                                    type_=RequestErrorResponse,  # type: ignore
                                     object_=_response.json(),
                                 ),
                             ),
@@ -251,9 +252,9 @@ class AsyncRawAgentsClient:
                         raise BadGatewayError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Any,
+                                RequestErrorResponse,
                                 parse_obj_as(
-                                    type_=typing.Any,  # type: ignore
+                                    type_=RequestErrorResponse,  # type: ignore
                                     object_=_response.json(),
                                 ),
                             ),

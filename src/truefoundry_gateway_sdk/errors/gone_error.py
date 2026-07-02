@@ -3,8 +3,9 @@
 import typing
 
 from ..core.api_error import ApiError
+from ..types.request_error_response import RequestErrorResponse
 
 
 class GoneError(ApiError):
-    def __init__(self, body: typing.Any, headers: typing.Optional[typing.Dict[str, str]] = None):
+    def __init__(self, body: RequestErrorResponse, headers: typing.Optional[typing.Dict[str, str]] = None):
         super().__init__(status_code=410, headers=headers, body=body)

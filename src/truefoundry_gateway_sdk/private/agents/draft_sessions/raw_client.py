@@ -117,9 +117,9 @@ class RawDraftSessionsClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -139,9 +139,9 @@ class RawDraftSessionsClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -220,9 +220,9 @@ class RawDraftSessionsClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -242,9 +242,9 @@ class RawDraftSessionsClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -329,9 +329,9 @@ class RawDraftSessionsClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -398,9 +398,9 @@ class RawDraftSessionsClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -420,9 +420,9 @@ class RawDraftSessionsClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -539,9 +539,9 @@ class AsyncRawDraftSessionsClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -561,9 +561,9 @@ class AsyncRawDraftSessionsClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -642,9 +642,9 @@ class AsyncRawDraftSessionsClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -664,9 +664,9 @@ class AsyncRawDraftSessionsClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -751,9 +751,9 @@ class AsyncRawDraftSessionsClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -820,9 +820,9 @@ class AsyncRawDraftSessionsClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -842,9 +842,9 @@ class AsyncRawDraftSessionsClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Any,
+                        RequestErrorResponse,
                         parse_obj_as(
-                            type_=typing.Any,  # type: ignore
+                            type_=RequestErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
