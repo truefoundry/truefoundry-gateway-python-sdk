@@ -172,17 +172,17 @@ client.private.agents.sessions.create_turn(
 Paginated requests will return a `SyncPager` or `AsyncPager`, which can be used as generators for the underlying object.
 
 ```python
-from truefoundry_gateway_sdk import TrueFoundryGateway, ListDraftSessionsOrder
+from truefoundry_gateway_sdk import TrueFoundryGateway, ListSessionsOrder
 
 client = TrueFoundryGateway(
     api_key="<token>",
     base_url="https://yourhost.com/path/to/api",
 )
 
-client.private.agents.draft_sessions.list(
+client.private.agents.sessions.list(
     agent_name="agent_name",
     limit=1,
-    order=ListDraftSessionsOrder.ASC,
+    order=ListSessionsOrder.ASC,
     page_token="page_token",
     start_timestamp="start_timestamp",
     end_timestamp="end_timestamp",
@@ -191,7 +191,7 @@ client.private.agents.draft_sessions.list(
 
 ```python
 # You can also iterate through pages and access the typed response per page
-pager = client.private.agents.draft_sessions.list(...)
+pager = client.private.agents.sessions.list(...)
 for page in pager.iter_pages():
     print(page.response)  # access the typed response for each page
     for item in page:

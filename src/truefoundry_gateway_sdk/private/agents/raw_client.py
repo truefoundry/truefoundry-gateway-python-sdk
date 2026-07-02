@@ -17,6 +17,7 @@ from ...errors.content_too_large_error import ContentTooLargeError
 from ...errors.forbidden_error import ForbiddenError
 from ...errors.gone_error import GoneError
 from ...errors.not_found_error import NotFoundError
+from ...errors.precondition_failed_error import PreconditionFailedError
 from ...types.request_error_response import RequestErrorResponse
 from pydantic import ValidationError
 
@@ -100,6 +101,17 @@ class RawAgentsClient:
                         )
                     if _response.status_code == 410:
                         raise GoneError(
+                            headers=dict(_response.headers),
+                            body=typing.cast(
+                                RequestErrorResponse,
+                                parse_obj_as(
+                                    type_=RequestErrorResponse,  # type: ignore
+                                    object_=_response.json(),
+                                ),
+                            ),
+                        )
+                    if _response.status_code == 412:
+                        raise PreconditionFailedError(
                             headers=dict(_response.headers),
                             body=typing.cast(
                                 RequestErrorResponse,
@@ -228,6 +240,17 @@ class AsyncRawAgentsClient:
                         )
                     if _response.status_code == 410:
                         raise GoneError(
+                            headers=dict(_response.headers),
+                            body=typing.cast(
+                                RequestErrorResponse,
+                                parse_obj_as(
+                                    type_=RequestErrorResponse,  # type: ignore
+                                    object_=_response.json(),
+                                ),
+                            ),
+                        )
+                    if _response.status_code == 412:
+                        raise PreconditionFailedError(
                             headers=dict(_response.headers),
                             body=typing.cast(
                                 RequestErrorResponse,

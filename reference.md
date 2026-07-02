@@ -81,360 +81,6 @@ client.private.agents.download_sandbox_file(
 </dl>
 </details>
 
-## Private Agents DraftSessions
-<details><summary><code>client.private.agents.draft_sessions.<a href="src/truefoundry_gateway_sdk/private/agents/draft_sessions/client.py">list</a>(...) -> ListDraftSessionsResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-List the caller-owned draft sessions (newest first by default), keyset-paginated. Optionally filter by `agent_name`. Pass `page_token` to fetch the next page, keeping the other query params constant.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from truefoundry_gateway_sdk import TrueFoundryGateway, ListDraftSessionsOrder
-
-client = TrueFoundryGateway(
-    api_key="<token>",
-    base_url="https://yourhost.com/path/to/api",
-)
-
-client.private.agents.draft_sessions.list(
-    agent_name="agent_name",
-    limit=1,
-    order=ListDraftSessionsOrder.ASC,
-    page_token="page_token",
-    start_timestamp="start_timestamp",
-    end_timestamp="end_timestamp",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**agent_name:** `typing.Optional[str]` — Filter to drafts linked to this saved agent. Omit to list all of the caller-owned drafts.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limit:** `typing.Optional[int]` — Page size. Defaults to 10, max 100.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**order:** `typing.Optional[ListDraftSessionsOrder]` — Sort draft sessions by creation time. Defaults to "desc".
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**page_token:** `typing.Optional[str]` — Opaque token from a previous response `next_page_token`.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**start_timestamp:** `typing.Optional[str]` — Inclusive lower bound on `created_at`. Defaults upstream to 30 min before `end_timestamp`.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**end_timestamp:** `typing.Optional[str]` — Inclusive upper bound on `created_at`. Defaults upstream to now.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.private.agents.draft_sessions.<a href="src/truefoundry_gateway_sdk/private/agents/draft_sessions/client.py">create</a>(...) -> GetDraftSessionResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Create a draft session holding an inline agent spec, optionally linked to a saved agent. Owner is the token subject.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from truefoundry_gateway_sdk import TrueFoundryGateway, AgentSpec, Model
-
-client = TrueFoundryGateway(
-    api_key="<token>",
-    base_url="https://yourhost.com/path/to/api",
-)
-
-client.private.agents.draft_sessions.create(
-    agent_spec=AgentSpec(
-        model=Model(
-            name="name",
-        ),
-    ),
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**agent_spec:** `AgentSpec` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**agent_name:** `typing.Optional[str]` — Optionally link the draft to an existing saved agent in the tenant. Omit for a standalone draft.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.private.agents.draft_sessions.<a href="src/truefoundry_gateway_sdk/private/agents/draft_sessions/client.py">get</a>(...) -> GetDraftSessionResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Get a draft session by id. Owner-only.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from truefoundry_gateway_sdk import TrueFoundryGateway
-
-client = TrueFoundryGateway(
-    api_key="<token>",
-    base_url="https://yourhost.com/path/to/api",
-)
-
-client.private.agents.draft_sessions.get(
-    draft_session_id="draftSessionId",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**draft_session_id:** `str` — Draft session identifier.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.private.agents.draft_sessions.<a href="src/truefoundry_gateway_sdk/private/agents/draft_sessions/client.py">update</a>(...) -> GetDraftSessionResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Update a draft session's inline spec. Owner-only. An empty body is a valid no-op that refreshes `updated_at`.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from truefoundry_gateway_sdk import TrueFoundryGateway
-
-client = TrueFoundryGateway(
-    api_key="<token>",
-    base_url="https://yourhost.com/path/to/api",
-)
-
-client.private.agents.draft_sessions.update(
-    draft_session_id="draftSessionId",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**draft_session_id:** `str` — Draft session identifier.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**agent_spec:** `typing.Optional[AgentSpec]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 ## Private Agents Sessions
 <details><summary><code>client.private.agents.sessions.<a href="src/truefoundry_gateway_sdk/private/agents/sessions/client.py">list</a>(...) -> ListSessionsResponse</code></summary>
 <dl>
@@ -1207,6 +853,360 @@ client.private.agents.sessions.list_turn_events(
 <dd>
 
 **order:** `typing.Optional[ListEventsOrder]` — Sort events by creation time. Defaults to "asc".
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Private Agents Private DraftSessions
+<details><summary><code>client.private.agents.private.draft_sessions.<a href="src/truefoundry_gateway_sdk/private/agents/private/draft_sessions/client.py">list</a>(...) -> ListDraftSessionsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+List the caller-owned draft sessions (newest first by default), keyset-paginated. Optionally filter by `agent_name`. Pass `page_token` to fetch the next page, keeping the other query params constant.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from truefoundry_gateway_sdk import TrueFoundryGateway, ListDraftSessionsOrder
+
+client = TrueFoundryGateway(
+    api_key="<token>",
+    base_url="https://yourhost.com/path/to/api",
+)
+
+client.private.agents.private.draft_sessions.list(
+    agent_name="agent_name",
+    limit=1,
+    order=ListDraftSessionsOrder.ASC,
+    page_token="page_token",
+    start_timestamp="start_timestamp",
+    end_timestamp="end_timestamp",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**agent_name:** `typing.Optional[str]` — Filter to drafts linked to this saved agent. Omit to list all of the caller-owned drafts.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Page size. Defaults to 10, max 100.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**order:** `typing.Optional[ListDraftSessionsOrder]` — Sort draft sessions by creation time. Defaults to "desc".
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**page_token:** `typing.Optional[str]` — Opaque token from a previous response `next_page_token`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_timestamp:** `typing.Optional[str]` — Inclusive lower bound on `created_at`. Defaults upstream to 30 min before `end_timestamp`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_timestamp:** `typing.Optional[str]` — Inclusive upper bound on `created_at`. Defaults upstream to now.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.private.agents.private.draft_sessions.<a href="src/truefoundry_gateway_sdk/private/agents/private/draft_sessions/client.py">create</a>(...) -> GetDraftSessionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create a draft session holding an inline agent spec, optionally linked to a saved agent. Owner is the token subject.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from truefoundry_gateway_sdk import TrueFoundryGateway, AgentSpec, Model
+
+client = TrueFoundryGateway(
+    api_key="<token>",
+    base_url="https://yourhost.com/path/to/api",
+)
+
+client.private.agents.private.draft_sessions.create(
+    agent_spec=AgentSpec(
+        model=Model(
+            name="name",
+        ),
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**agent_spec:** `AgentSpec` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**agent_name:** `typing.Optional[str]` — Optionally link the draft to an existing saved agent in the tenant. Omit for a standalone draft.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.private.agents.private.draft_sessions.<a href="src/truefoundry_gateway_sdk/private/agents/private/draft_sessions/client.py">get</a>(...) -> GetDraftSessionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get a draft session by id. Owner-only.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from truefoundry_gateway_sdk import TrueFoundryGateway
+
+client = TrueFoundryGateway(
+    api_key="<token>",
+    base_url="https://yourhost.com/path/to/api",
+)
+
+client.private.agents.private.draft_sessions.get(
+    draft_session_id="draftSessionId",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**draft_session_id:** `str` — Draft session identifier.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.private.agents.private.draft_sessions.<a href="src/truefoundry_gateway_sdk/private/agents/private/draft_sessions/client.py">update</a>(...) -> GetDraftSessionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Update a draft session's inline spec. Owner-only. An empty body is a valid no-op that refreshes `updated_at`.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from truefoundry_gateway_sdk import TrueFoundryGateway
+
+client = TrueFoundryGateway(
+    api_key="<token>",
+    base_url="https://yourhost.com/path/to/api",
+)
+
+client.private.agents.private.draft_sessions.update(
+    draft_session_id="draftSessionId",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**draft_session_id:** `str` — Draft session identifier.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**agent_spec:** `typing.Optional[AgentSpec]` 
     
 </dd>
 </dl>
