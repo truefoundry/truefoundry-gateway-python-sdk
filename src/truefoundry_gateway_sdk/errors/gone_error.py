@@ -5,6 +5,6 @@ import typing
 from ..core.api_error import ApiError
 
 
-class ForbiddenError(ApiError):
+class GoneError(ApiError):
     def __init__(self, body: typing.Any, headers: typing.Optional[typing.Dict[str, str]] = None):
-        super().__init__(status_code=403, headers=headers, body=body)
+        super().__init__(status_code=410, headers=headers, body=body)
