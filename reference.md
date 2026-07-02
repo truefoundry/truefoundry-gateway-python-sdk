@@ -1,4 +1,86 @@
 # Reference
+## Private Agents
+<details><summary><code>client.private.agents.<a href="src/truefoundry_gateway_sdk/private/agents/client.py">download_sandbox_file</a>(...) -> typing.Iterator[bytes]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Download a file produced by an agent inside a sandbox.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from truefoundry_gateway_sdk import TrueFoundryGateway
+
+client = TrueFoundryGateway(
+    api_key="<token>",
+    base_url="https://yourhost.com/path/to/api",
+)
+
+client.private.agents.download_sandbox_file(
+    sandbox_id="sandboxId",
+    path="x",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**sandbox_id:** `str` — The sandbox containing the file.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**path:** `str` — Absolute path of the file inside the sandbox.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Private Agents DraftSessions
 <details><summary><code>client.private.agents.draft_sessions.<a href="src/truefoundry_gateway_sdk/private/agents/draft_sessions/client.py">list</a>(...) -> ListDraftSessionsResponse</code></summary>
 <dl>
