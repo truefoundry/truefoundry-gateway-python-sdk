@@ -5,6 +5,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .subject import Subject
+from .turn_input_item import TurnInputItem
 from .turn_state_running import TurnStateRunning
 
 
@@ -17,6 +18,7 @@ class TurnCreatedEvent(UniversalBaseModel):
 
     turn_id: str
     previous_turn_id: typing.Optional[str] = None
+    input: typing.Optional[typing.List[TurnInputItem]] = None
     state: TurnStateRunning
     created_by: Subject
     created_at: str
