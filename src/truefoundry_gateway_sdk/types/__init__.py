@@ -40,6 +40,7 @@ if typing.TYPE_CHECKING:
     from .list_draft_sessions_response import ListDraftSessionsResponse
     from .list_events_order import ListEventsOrder
     from .list_events_response import ListEventsResponse
+    from .list_session_events_response import ListSessionEventsResponse
     from .list_sessions_order import ListSessionsOrder
     from .list_sessions_response import ListSessionsResponse
     from .list_turns_response import ListTurnsResponse
@@ -74,6 +75,8 @@ if typing.TYPE_CHECKING:
     from .sandbox_config import SandboxConfig
     from .sandbox_created_event import SandboxCreatedEvent
     from .session import Session
+    from .session_event import SessionEvent
+    from .session_event_item import SessionEventItem
     from .skill_mount import SkillMount
     from .subject import Subject
     from .text_content import TextContent
@@ -146,6 +149,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ListDraftSessionsResponse": ".list_draft_sessions_response",
     "ListEventsOrder": ".list_events_order",
     "ListEventsResponse": ".list_events_response",
+    "ListSessionEventsResponse": ".list_session_events_response",
     "ListSessionsOrder": ".list_sessions_order",
     "ListSessionsResponse": ".list_sessions_response",
     "ListTurnsResponse": ".list_turns_response",
@@ -180,6 +184,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "SandboxConfig": ".sandbox_config",
     "SandboxCreatedEvent": ".sandbox_created_event",
     "Session": ".session",
+    "SessionEvent": ".session_event",
+    "SessionEventItem": ".session_event_item",
     "SkillMount": ".skill_mount",
     "Subject": ".subject",
     "TextContent": ".text_content",
@@ -276,6 +282,7 @@ __all__ = [
     "ListDraftSessionsResponse",
     "ListEventsOrder",
     "ListEventsResponse",
+    "ListSessionEventsResponse",
     "ListSessionsOrder",
     "ListSessionsResponse",
     "ListTurnsResponse",
@@ -310,6 +317,8 @@ __all__ = [
     "SandboxConfig",
     "SandboxCreatedEvent",
     "Session",
+    "SessionEvent",
+    "SessionEventItem",
     "SkillMount",
     "Subject",
     "TextContent",

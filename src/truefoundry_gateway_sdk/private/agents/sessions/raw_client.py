@@ -29,12 +29,14 @@ from ....types.get_session_response import GetSessionResponse
 from ....types.get_turn_response import GetTurnResponse
 from ....types.list_events_order import ListEventsOrder
 from ....types.list_events_response import ListEventsResponse
+from ....types.list_session_events_response import ListSessionEventsResponse
 from ....types.list_sessions_order import ListSessionsOrder
 from ....types.list_sessions_response import ListSessionsResponse
 from ....types.list_turns_response import ListTurnsResponse
 from ....types.previous_turn_id_input import PreviousTurnIdInput
 from ....types.request_error_response import RequestErrorResponse
 from ....types.session import Session
+from ....types.session_event_item import SessionEventItem
 from ....types.turn import Turn
 from ....types.turn_event import TurnEvent
 from ....types.turn_input_item import TurnInputItem
@@ -447,6 +449,114 @@ class RawSessionsClient:
                 )
             if _response.status_code == 424:
                 raise FailedDependencyError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        RequestErrorResponse,
+                        parse_obj_as(
+                            type_=RequestErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def list_events(
+        self,
+        session_id: str,
+        *,
+        page_token: typing.Optional[str] = None,
+        last_turn_id: typing.Optional[str] = None,
+        limit: typing.Optional[int] = 100,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> SyncPager[SessionEventItem, ListSessionEventsResponse]:
+        """
+        List session events as `{ turn_id, event }` across a turn hierarchy (newest first). Each turn contributes turn.created, content events (model.message, tool.call, …), and turn.done; streaming deltas are not included. `last_turn_id` (initial load only) sets the newest turn in the window plus its ancestors; omit to use the session last turn. If that turn is still running, it is excluded — listing anchors on its parent so persisted events are returned without overlapping the live stream; subscribe to the running turn for live events. An empty `data` array is returned when the anchor is a running first turn with no parent. Use `page_token` to paginate backward toward older events; chains longer than the stored ancestor window are walked via spill to the session root.
+
+        Parameters
+        ----------
+        session_id : str
+
+        page_token : typing.Optional[str]
+            Pagination cursor from `pagination.next_page_token`. Returns older events before the cursor (toward session start). Decoded JSON: `{ turn_id, sequence_number }`.
+
+        last_turn_id : typing.Optional[str]
+            Newest turn in the listing window (initial load only; ignored when `page_token` is set). Lists that turn and its ancestors, newest events first. Omit to use the session last turn. If the resolved turn is still running, its events are excluded and listing starts from its parent instead — subscribe to the running turn for live events. Returns empty data when the anchor is a running first turn with no parent.
+
+        limit : typing.Optional[int]
+            Max events per response. Default 100, max 100.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SyncPager[SessionEventItem, ListSessionEventsResponse]
+            Paginated session events. Empty when the listing anchor is a running first turn with no parent.
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"v1/agents/sessions/{encode_path_param(session_id)}/events",
+            method="GET",
+            params={
+                "page_token": page_token,
+                "last_turn_id": last_turn_id,
+                "limit": limit,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _parsed_response = typing.cast(
+                    ListSessionEventsResponse,
+                    parse_obj_as(
+                        type_=ListSessionEventsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                _items = _parsed_response.data
+                _has_next = False
+                _get_next = None
+                if _parsed_response.pagination is not None:
+                    _parsed_next = _parsed_response.pagination.next_page_token
+                    _has_next = _parsed_next is not None and _parsed_next != ""
+                    _get_next = lambda: self.list_events(
+                        session_id,
+                        page_token=_parsed_next,
+                        last_turn_id=last_turn_id,
+                        limit=limit,
+                        request_options=request_options,
+                    )
+                return SyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        RequestErrorResponse,
+                        parse_obj_as(
+                            type_=RequestErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        RequestErrorResponse,
+                        parse_obj_as(
+                            type_=RequestErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 412:
+                raise PreconditionFailedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         RequestErrorResponse,
@@ -928,7 +1038,7 @@ class RawSessionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[TurnEvent, ListEventsResponse]:
         """
-        Paginated list of turn events from the Redis events stream.
+        Paginated list of content turn events from the Redis events stream (model.message, tool.call, …). `turn.created` and `turn.done` are stored in the stream but excluded from this endpoint — use session list_events for lifecycle. Only available after the turn has reached a terminal state; use subscribe for running turns.
 
         Parameters
         ----------
@@ -999,6 +1109,17 @@ class RawSessionsClient:
                 )
             if _response.status_code == 404:
                 raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        RequestErrorResponse,
+                        parse_obj_as(
+                            type_=RequestErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 409:
+                raise ConflictError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         RequestErrorResponse,
@@ -1434,6 +1555,117 @@ class AsyncRawSessionsClient:
                 )
             if _response.status_code == 424:
                 raise FailedDependencyError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        RequestErrorResponse,
+                        parse_obj_as(
+                            type_=RequestErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def list_events(
+        self,
+        session_id: str,
+        *,
+        page_token: typing.Optional[str] = None,
+        last_turn_id: typing.Optional[str] = None,
+        limit: typing.Optional[int] = 100,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncPager[SessionEventItem, ListSessionEventsResponse]:
+        """
+        List session events as `{ turn_id, event }` across a turn hierarchy (newest first). Each turn contributes turn.created, content events (model.message, tool.call, …), and turn.done; streaming deltas are not included. `last_turn_id` (initial load only) sets the newest turn in the window plus its ancestors; omit to use the session last turn. If that turn is still running, it is excluded — listing anchors on its parent so persisted events are returned without overlapping the live stream; subscribe to the running turn for live events. An empty `data` array is returned when the anchor is a running first turn with no parent. Use `page_token` to paginate backward toward older events; chains longer than the stored ancestor window are walked via spill to the session root.
+
+        Parameters
+        ----------
+        session_id : str
+
+        page_token : typing.Optional[str]
+            Pagination cursor from `pagination.next_page_token`. Returns older events before the cursor (toward session start). Decoded JSON: `{ turn_id, sequence_number }`.
+
+        last_turn_id : typing.Optional[str]
+            Newest turn in the listing window (initial load only; ignored when `page_token` is set). Lists that turn and its ancestors, newest events first. Omit to use the session last turn. If the resolved turn is still running, its events are excluded and listing starts from its parent instead — subscribe to the running turn for live events. Returns empty data when the anchor is a running first turn with no parent.
+
+        limit : typing.Optional[int]
+            Max events per response. Default 100, max 100.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncPager[SessionEventItem, ListSessionEventsResponse]
+            Paginated session events. Empty when the listing anchor is a running first turn with no parent.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"v1/agents/sessions/{encode_path_param(session_id)}/events",
+            method="GET",
+            params={
+                "page_token": page_token,
+                "last_turn_id": last_turn_id,
+                "limit": limit,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _parsed_response = typing.cast(
+                    ListSessionEventsResponse,
+                    parse_obj_as(
+                        type_=ListSessionEventsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                _items = _parsed_response.data
+                _has_next = False
+                _get_next = None
+                if _parsed_response.pagination is not None:
+                    _parsed_next = _parsed_response.pagination.next_page_token
+                    _has_next = _parsed_next is not None and _parsed_next != ""
+
+                    async def _get_next():
+                        return await self.list_events(
+                            session_id,
+                            page_token=_parsed_next,
+                            last_turn_id=last_turn_id,
+                            limit=limit,
+                            request_options=request_options,
+                        )
+
+                return AsyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        RequestErrorResponse,
+                        parse_obj_as(
+                            type_=RequestErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        RequestErrorResponse,
+                        parse_obj_as(
+                            type_=RequestErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 412:
+                raise PreconditionFailedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         RequestErrorResponse,
@@ -1918,7 +2150,7 @@ class AsyncRawSessionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[TurnEvent, ListEventsResponse]:
         """
-        Paginated list of turn events from the Redis events stream.
+        Paginated list of content turn events from the Redis events stream (model.message, tool.call, …). `turn.created` and `turn.done` are stored in the stream but excluded from this endpoint — use session list_events for lifecycle. Only available after the turn has reached a terminal state; use subscribe for running turns.
 
         Parameters
         ----------
@@ -1992,6 +2224,17 @@ class AsyncRawSessionsClient:
                 )
             if _response.status_code == 404:
                 raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        RequestErrorResponse,
+                        parse_obj_as(
+                            type_=RequestErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 409:
+                raise ConflictError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         RequestErrorResponse,

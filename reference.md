@@ -415,6 +415,105 @@ client.private.agents.sessions.cancel(
 </dl>
 </details>
 
+<details><summary><code>client.private.agents.sessions.<a href="src/truefoundry_gateway_sdk/private/agents/sessions/client.py">list_events</a>(...) -> ListSessionEventsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+List session events as `{ turn_id, event }` across a turn hierarchy (newest first). Each turn contributes turn.created, content events (model.message, tool.call, …), and turn.done; streaming deltas are not included. `last_turn_id` (initial load only) sets the newest turn in the window plus its ancestors; omit to use the session last turn. If that turn is still running, it is excluded — listing anchors on its parent so persisted events are returned without overlapping the live stream; subscribe to the running turn for live events. An empty `data` array is returned when the anchor is a running first turn with no parent. Use `page_token` to paginate backward toward older events; chains longer than the stored ancestor window are walked via spill to the session root.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from truefoundry_gateway_sdk import TrueFoundryGateway
+
+client = TrueFoundryGateway(
+    api_key="<token>",
+    base_url="https://yourhost.com/path/to/api",
+)
+
+client.private.agents.sessions.list_events(
+    session_id="01arz3ndektsv4rrffq69g5fav.g",
+    page_token="page_token",
+    last_turn_id="last_turn_id",
+    limit=1,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**session_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**page_token:** `typing.Optional[str]` — Pagination cursor from `pagination.next_page_token`. Returns older events before the cursor (toward session start). Decoded JSON: `{ turn_id, sequence_number }`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**last_turn_id:** `typing.Optional[str]` — Newest turn in the listing window (initial load only; ignored when `page_token` is set). Lists that turn and its ancestors, newest events first. Omit to use the session last turn. If the resolved turn is still running, its events are excluded and listing starts from its parent instead — subscribe to the running turn for live events. Returns empty data when the anchor is a running first turn with no parent.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Max events per response. Default 100, max 100.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.private.agents.sessions.<a href="src/truefoundry_gateway_sdk/private/agents/sessions/client.py">list_turns</a>(...) -> ListTurnsResponse</code></summary>
 <dl>
 <dd>
@@ -776,7 +875,7 @@ client.private.agents.sessions.subscribe_to_turn(
 <dl>
 <dd>
 
-Paginated list of turn events from the Redis events stream.
+Paginated list of content turn events from the Redis events stream (model.message, tool.call, …). `turn.created` and `turn.done` are stored in the stream but excluded from this endpoint — use session list_events for lifecycle. Only available after the turn has reached a terminal state; use subscribe for running turns.
 </dd>
 </dl>
 </dd>
