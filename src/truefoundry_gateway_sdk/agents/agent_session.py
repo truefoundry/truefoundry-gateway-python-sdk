@@ -2,7 +2,9 @@ import typing
 
 from ..core.pagination import AsyncPager, SyncPager
 from ..core.request_options import RequestOptions
+from ..types.list_session_events_response import ListSessionEventsResponse
 from ..types.list_turns_response import ListTurnsResponse
+from ..types.session_event_item import SessionEventItem
 from ..types.previous_turn_id_input import PreviousTurnIdInput
 from ..types.session import Session as RawSession
 from ..types.subject import Subject
@@ -60,7 +62,7 @@ async def _async_wrap_turns_pager(
 
 class AgentSession:
     """
-    A session enriched with convenience methods: prepare_turn, list_turns, get_turn, cancel.
+    A session enriched with convenience methods: prepare_turn, list_turns, get_turn, list_events, cancel.
     """
 
     def __init__(self, session: RawSession, client: typing.Any) -> None:
@@ -230,6 +232,41 @@ class AgentSession:
         None
         """
         self._client.agents.sessions.cancel(self._id, request_options=request_options)
+
+    def list_events(
+        self,
+        *,
+        page_token: typing.Optional[str] = None,
+        last_turn_id: typing.Optional[str] = None,
+        limit: typing.Optional[int] = 100,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> SyncPager[SessionEventItem, ListSessionEventsResponse]:
+        """
+        Paginated session events across turns (newest first); subscribe to a running turn for live events.
+
+        Parameters
+        ----------
+        page_token : typing.Optional[str]
+            Token from the previous response ``next_page_token``.
+        last_turn_id : typing.Optional[str]
+            Newest turn in the listing window (initial load only). Omit to use the session last turn.
+        limit : typing.Optional[int]
+            Page size. Default 100.
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Returns
+        -------
+        SyncPager[SessionEventItem, ListSessionEventsResponse]
+            Paginated session events.
+        """
+        return self._client.agents.sessions.list_events(
+            self._id,
+            page_token=page_token,
+            last_turn_id=last_turn_id,
+            limit=limit,
+            request_options=request_options,
+        )
 
 
 class AsyncAgentSession:
@@ -404,3 +441,38 @@ class AsyncAgentSession:
         None
         """
         await self._client.agents.sessions.cancel(self._id, request_options=request_options)
+
+    async def list_events(
+        self,
+        *,
+        page_token: typing.Optional[str] = None,
+        last_turn_id: typing.Optional[str] = None,
+        limit: typing.Optional[int] = 100,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncPager[SessionEventItem, ListSessionEventsResponse]:
+        """
+        Paginated session events across turns (newest first); subscribe to a running turn for live events.
+
+        Parameters
+        ----------
+        page_token : typing.Optional[str]
+            Token from the previous response ``next_page_token``.
+        last_turn_id : typing.Optional[str]
+            Newest turn in the listing window (initial load only). Omit to use the session last turn.
+        limit : typing.Optional[int]
+            Page size. Default 100.
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Returns
+        -------
+        AsyncPager[SessionEventItem, ListSessionEventsResponse]
+            Paginated session events.
+        """
+        return await self._client.agents.sessions.list_events(
+            self._id,
+            page_token=page_token,
+            last_turn_id=last_turn_id,
+            limit=limit,
+            request_options=request_options,
+        )
