@@ -8,7 +8,6 @@ from .agent_session import AgentSession, AsyncAgentSession
 
 if typing.TYPE_CHECKING:
     import httpx
-
     from ..client import AsyncTrueFoundryGateway, TrueFoundryGateway
     from ..core.logging import LogConfig, Logger
     from ..core.request_options import RequestOptions
