@@ -1,24 +1,27 @@
+from __future__ import annotations
+
 import time
 import typing
 
-from ..core.pagination import AsyncPager, SyncPager
-from ..core.request_options import RequestOptions
-from ..types.list_events_order import ListEventsOrder
-from ..types.list_events_response import ListEventsResponse
-from ..types.subject import Subject
-from ..types.turn import Turn as RawTurn
 from ..types.turn_created_event import TurnCreatedEvent
 from ..types.turn_done_event import TurnDoneEvent
-from ..types.turn_event import TurnEvent
-from ..types.turn_input_item import TurnInputItem
-from ..types.turn_state import TurnState
 from ..types.turn_state_cancelled import TurnStateCancelled
 from ..types.turn_state_done import TurnStateDone
 from ..types.turn_state_error import TurnStateError
-from ..types.turn_streaming_event import TurnStreamingEvent
 from .turn_stream_data import TurnStreamData
 
 if typing.TYPE_CHECKING:
+    from ..client import AsyncTrueFoundryGateway, TrueFoundryGateway
+    from ..core.pagination import AsyncPager, SyncPager
+    from ..core.request_options import RequestOptions
+    from ..types.list_events_order import ListEventsOrder
+    from ..types.list_events_response import ListEventsResponse
+    from ..types.subject import Subject
+    from ..types.turn import Turn as RawTurn
+    from ..types.turn_event import TurnEvent
+    from ..types.turn_input_item import TurnInputItem
+    from ..types.turn_state import TurnState
+    from ..types.turn_streaming_event import TurnStreamingEvent
     from .agent_session import AgentSession, AsyncAgentSession
 
 # waitForCompletion poll interval in milliseconds: default and enforced minimum.
@@ -36,10 +39,8 @@ class Turn:
         self,
         turn: RawTurn,
         session: "AgentSession",
-        client: typing.Any,
+        client: TrueFoundryGateway,
     ) -> None:
-        from ..client import TrueFoundryGateway
-
         self._id: str = turn.id
         self._session_id: str = turn.session_id
         self._previous_turn_id: typing.Optional[str] = turn.previous_turn_id
@@ -48,7 +49,7 @@ class Turn:
         self._created_at: str = turn.created_at
         self._state: TurnState = turn.state
         self._session: "AgentSession" = session
-        self._client: TrueFoundryGateway = client
+        self._client = client
 
     def __repr__(self) -> str:
         return f"Turn(id={self._id!r}, session_id={self._session_id!r}, status={self._state.status!r})"
@@ -280,10 +281,8 @@ class AsyncTurn:
         self,
         turn: RawTurn,
         session: "AsyncAgentSession",
-        client: typing.Any,
+        client: AsyncTrueFoundryGateway,
     ) -> None:
-        from ..client import AsyncTrueFoundryGateway
-
         self._id: str = turn.id
         self._session_id: str = turn.session_id
         self._previous_turn_id: typing.Optional[str] = turn.previous_turn_id

@@ -1,7 +1,10 @@
+from __future__ import annotations
+
 import dataclasses
 import typing
 
-from ..types.turn_streaming_event import TurnStreamingEvent
+if typing.TYPE_CHECKING:
+    from ..types.turn_streaming_event import TurnStreamingEvent
 
 
 @dataclasses.dataclass

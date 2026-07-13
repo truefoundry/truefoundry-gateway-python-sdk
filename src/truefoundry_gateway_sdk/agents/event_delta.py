@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import typing
 
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
@@ -6,8 +8,10 @@ from ..types.chat_completion_message_tool_call_function import ChatCompletionMes
 from ..types.model_message_delta_event import ModelMessageDeltaEvent
 from ..types.model_message_event import ModelMessageEvent
 from ..types.tool_call import ToolCall
-from ..types.turn_event import TurnEvent
-from ..types.turn_streaming_event import TurnStreamingEvent
+
+if typing.TYPE_CHECKING:
+    from ..types.turn_event import TurnEvent
+    from ..types.turn_streaming_event import TurnStreamingEvent
 
 # Union of all streaming delta events. Expand as more `.delta` events are added.
 DeltaEvents = ModelMessageDeltaEvent

@@ -1,21 +1,24 @@
+from __future__ import annotations
+
 import typing
 
-from ..core.pagination import AsyncPager, SyncPager
-from ..core.request_options import RequestOptions
-from ..types.list_events_order import ListEventsOrder
-from ..types.list_events_response import ListEventsResponse
-from ..types.previous_turn_id_input import PreviousTurnIdInput
-from ..types.subject import Subject
 from ..types.turn import Turn as RawTurn
 from ..types.turn_created_event import TurnCreatedEvent
 from ..types.turn_done_event import TurnDoneEvent
-from ..types.turn_event import TurnEvent
-from ..types.turn_input_item import TurnInputItem
-from ..types.turn_state import TurnState
 from .turn import AsyncTurn, Turn
 from .turn_stream_data import TurnStreamData
 
 if typing.TYPE_CHECKING:
+    from ..client import AsyncTrueFoundryGateway, TrueFoundryGateway
+    from ..core.pagination import AsyncPager, SyncPager
+    from ..core.request_options import RequestOptions
+    from ..types.list_events_order import ListEventsOrder
+    from ..types.list_events_response import ListEventsResponse
+    from ..types.previous_turn_id_input import PreviousTurnIdInput
+    from ..types.subject import Subject
+    from ..types.turn_event import TurnEvent
+    from ..types.turn_input_item import TurnInputItem
+    from ..types.turn_state import TurnState
     from .agent_session import AgentSession, AsyncAgentSession
 
 
@@ -31,7 +34,7 @@ class PreparedTurn:
         input: typing.Optional[typing.Sequence[TurnInputItem]],
         previous_turn_id: typing.Optional[PreviousTurnIdInput],
         session: "AgentSession",
-        client: typing.Any,
+        client: TrueFoundryGateway,
     ) -> None:
         self._input = list(input) if input is not None else None
         self._previous_turn_id = previous_turn_id
@@ -383,7 +386,7 @@ class AsyncPreparedTurn:
         input: typing.Optional[typing.Sequence[TurnInputItem]],
         previous_turn_id: typing.Optional[PreviousTurnIdInput],
         session: "AsyncAgentSession",
-        client: typing.Any,
+        client: AsyncTrueFoundryGateway,
     ) -> None:
         self._input = list(input) if input is not None else None
         self._previous_turn_id = previous_turn_id
