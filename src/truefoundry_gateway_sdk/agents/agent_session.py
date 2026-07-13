@@ -1,23 +1,29 @@
+from __future__ import annotations
+
 import typing
 
 from ..core.pagination import AsyncPager, SyncPager
-from ..core.request_options import RequestOptions
-from ..types.list_session_events_response import ListSessionEventsResponse
-from ..types.list_turns_response import ListTurnsResponse
-from ..types.session_event_item import SessionEventItem
-from ..types.previous_turn_id_input import PreviousTurnIdInput
-from ..types.session import Session as RawSession
-from ..types.subject import Subject
-from ..types.turn import Turn as RawTurn
-from ..types.turn_input_item import TurnInputItem
 from .prepared_turn import AsyncPreparedTurn, PreparedTurn
 from .turn import AsyncTurn, Turn
+
+if typing.TYPE_CHECKING:
+    from ..client import AsyncTrueFoundryGateway, TrueFoundryGateway
+    from ..core.request_options import RequestOptions
+    from ..types.draft_session import DraftSession as RawDraftSession
+    from ..types.list_session_events_response import ListSessionEventsResponse
+    from ..types.list_turns_response import ListTurnsResponse
+    from ..types.previous_turn_id_input import PreviousTurnIdInput
+    from ..types.session import Session as RawSession
+    from ..types.session_event_item import SessionEventItem
+    from ..types.subject import Subject
+    from ..types.turn import Turn as RawTurn
+    from ..types.turn_input_item import TurnInputItem
 
 
 def _wrap_turns_pager(
     raw_pager: SyncPager[RawTurn, ListTurnsResponse],
     session: "AgentSession",
-    client: typing.Any,
+    client: TrueFoundryGateway,
 ) -> SyncPager[Turn, ListTurnsResponse]:
     wrapped_items = [Turn(t, session, client) for t in (raw_pager.items or [])]
 
@@ -40,7 +46,7 @@ def _wrap_turns_pager(
 async def _async_wrap_turns_pager(
     raw_pager: AsyncPager[RawTurn, ListTurnsResponse],
     session: "AsyncAgentSession",
-    client: typing.Any,
+    client: AsyncTrueFoundryGateway,
 ) -> AsyncPager[AsyncTurn, ListTurnsResponse]:
     wrapped_items = [AsyncTurn(t, session, client) for t in (raw_pager.items or [])]
 
@@ -65,9 +71,9 @@ class AgentSession:
     A session enriched with convenience methods: prepare_turn, list_turns, get_turn, list_events, cancel.
     """
 
-    def __init__(self, session: RawSession, client: typing.Any) -> None:
+    def __init__(self, session: typing.Union[RawSession, RawDraftSession], client: TrueFoundryGateway) -> None:
         self._id: str = session.id
-        self._agent_name: str = session.agent_name
+        self._agent_name: typing.Optional[str] = session.agent_name
         self._title: typing.Optional[str] = session.title
         self._created_by_subject: Subject = session.created_by_subject
         self._created_at: str = session.created_at
@@ -88,7 +94,7 @@ class AgentSession:
         return self._id
 
     @property
-    def agent_name(self) -> str:
+    def agent_name(self) -> typing.Optional[str]:
         """
         Returns
         -------
@@ -274,9 +280,9 @@ class AsyncAgentSession:
     Async version of AgentSession.
     """
 
-    def __init__(self, session: RawSession, client: typing.Any) -> None:
+    def __init__(self, session: typing.Union[RawSession, RawDraftSession], client: AsyncTrueFoundryGateway) -> None:
         self._id: str = session.id
-        self._agent_name: str = session.agent_name
+        self._agent_name: typing.Optional[str] = session.agent_name
         self._title: typing.Optional[str] = session.title
         self._created_by_subject: Subject = session.created_by_subject
         self._created_at: str = session.created_at
@@ -297,7 +303,7 @@ class AsyncAgentSession:
         return self._id
 
     @property
-    def agent_name(self) -> str:
+    def agent_name(self) -> typing.Optional[str]:
         """
         Returns
         -------

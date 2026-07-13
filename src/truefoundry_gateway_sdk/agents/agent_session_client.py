@@ -1,19 +1,24 @@
+from __future__ import annotations
+
 import os
 import typing
 
-import httpx
-from ..core.logging import LogConfig, Logger
 from ..core.pagination import AsyncPager, SyncPager
-from ..core.request_options import RequestOptions
-from ..types.list_sessions_order import ListSessionsOrder
-from ..types.list_sessions_response import ListSessionsResponse
-from ..types.session import Session as RawSession
 from .agent_session import AgentSession, AsyncAgentSession
+
+if typing.TYPE_CHECKING:
+    import httpx
+    from ..client import AsyncTrueFoundryGateway, TrueFoundryGateway
+    from ..core.logging import LogConfig, Logger
+    from ..core.request_options import RequestOptions
+    from ..types.list_sessions_order import ListSessionsOrder
+    from ..types.list_sessions_response import ListSessionsResponse
+    from ..types.session import Session as RawSession
 
 
 def _wrap_sessions_pager(
     raw_pager: SyncPager[RawSession, ListSessionsResponse],
-    client: typing.Any,
+    client: TrueFoundryGateway,
 ) -> SyncPager[AgentSession, ListSessionsResponse]:
     wrapped_items = [AgentSession(s, client) for s in (raw_pager.items or [])]
 
@@ -35,7 +40,7 @@ def _wrap_sessions_pager(
 
 async def _async_wrap_sessions_pager(
     raw_pager: AsyncPager[RawSession, ListSessionsResponse],
-    client: typing.Any,
+    client: AsyncTrueFoundryGateway,
 ) -> AsyncPager[AsyncAgentSession, ListSessionsResponse]:
     wrapped_items = [AsyncAgentSession(s, client) for s in (raw_pager.items or [])]
 
