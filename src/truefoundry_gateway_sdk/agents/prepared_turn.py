@@ -19,7 +19,7 @@ if typing.TYPE_CHECKING:
     from ..types.turn_event import TurnEvent
     from ..types.turn_input_item import TurnInputItem
     from ..types.turn_state import TurnState
-    from .agent_session import AgentSession, AsyncAgentSession
+    from .agent_session import AsyncBaseAgentSession, BaseAgentSession
 
 
 class PreparedTurn:
@@ -33,12 +33,12 @@ class PreparedTurn:
         *,
         input: typing.Optional[typing.Sequence[TurnInputItem]],
         previous_turn_id: typing.Optional[PreviousTurnIdInput],
-        session: "AgentSession",
+        session: "BaseAgentSession",
         client: TrueFoundryGateway,
     ) -> None:
         self._input = list(input) if input is not None else None
         self._previous_turn_id = previous_turn_id
-        self._session: "AgentSession" = session
+        self._session: "BaseAgentSession" = session
         self._session_id: str = session.id
         self._client = client
         self._started: bool = False
@@ -50,11 +50,11 @@ class PreparedTurn:
     # --- Properties that delegate to the inner Turn (None until execute is called) ---
 
     @property
-    def session(self) -> "AgentSession":
+    def session(self) -> "BaseAgentSession":
         """
         Returns
         -------
-        AgentSession
+        BaseAgentSession
             Parent session this prepared turn belongs to.
         """
         return self._session
@@ -385,12 +385,12 @@ class AsyncPreparedTurn:
         *,
         input: typing.Optional[typing.Sequence[TurnInputItem]],
         previous_turn_id: typing.Optional[PreviousTurnIdInput],
-        session: "AsyncAgentSession",
+        session: "AsyncBaseAgentSession",
         client: AsyncTrueFoundryGateway,
     ) -> None:
         self._input = list(input) if input is not None else None
         self._previous_turn_id = previous_turn_id
-        self._session: "AsyncAgentSession" = session
+        self._session: "AsyncBaseAgentSession" = session
         self._session_id: str = session.id
         self._client = client
         self._started: bool = False
@@ -402,11 +402,11 @@ class AsyncPreparedTurn:
     # --- Properties that delegate to the inner AsyncTurn (None until execute is called) ---
 
     @property
-    def session(self) -> "AsyncAgentSession":
+    def session(self) -> "AsyncBaseAgentSession":
         """
         Returns
         -------
-        AsyncAgentSession
+        AsyncBaseAgentSession
             Parent session this prepared turn belongs to.
         """
         return self._session

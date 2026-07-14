@@ -21,7 +21,7 @@ if typing.TYPE_CHECKING:
 
 def _wrap_turns_pager(
     raw_pager: SyncPager[RawTurn, ListTurnsResponse],
-    session: "AgentSession",
+    session: "BaseAgentSession",
     client: TrueFoundryGateway,
 ) -> SyncPager[Turn, ListTurnsResponse]:
     wrapped_items = [Turn(t, session, client) for t in (raw_pager.items or [])]
@@ -44,7 +44,7 @@ def _wrap_turns_pager(
 
 async def _async_wrap_turns_pager(
     raw_pager: AsyncPager[RawTurn, ListTurnsResponse],
-    session: "AsyncAgentSession",
+    session: "AsyncBaseAgentSession",
     client: AsyncTrueFoundryGateway,
 ) -> AsyncPager[AsyncTurn, ListTurnsResponse]:
     wrapped_items = [AsyncTurn(t, session, client) for t in (raw_pager.items or [])]
@@ -65,22 +65,28 @@ async def _async_wrap_turns_pager(
     )
 
 
-class AgentSession:
+class BaseAgentSession:
     """
-    A session enriched with convenience methods: prepare_turn, list_turns, get_turn, list_events, cancel.
+    Shared base for AgentSession and AgentDraftSession. Holds common identity fields
+    and provides turn/event convenience methods.
     """
 
-    def __init__(self, session: RawSession, client: TrueFoundryGateway) -> None:
-        self._id: str = session.id
-        self._agent_name: str = session.agent_name
-        self._title: typing.Optional[str] = session.title
-        self._created_by_subject: Subject = session.created_by_subject
-        self._created_at: str = session.created_at
-        self._updated_at: str = session.updated_at
+    def __init__(
+        self,
+        *,
+        id: str,
+        title: typing.Optional[str],
+        created_by_subject: Subject,
+        created_at: str,
+        updated_at: str,
+        client: TrueFoundryGateway,
+    ) -> None:
+        self._id: str = id
+        self._title: typing.Optional[str] = title
+        self._created_by_subject: Subject = created_by_subject
+        self._created_at: str = created_at
+        self._updated_at: str = updated_at
         self._client = client
-
-    def __repr__(self) -> str:
-        return f"AgentSession(id={self._id!r}, agent_name={self._agent_name!r})"
 
     @property
     def id(self) -> str:
@@ -91,16 +97,6 @@ class AgentSession:
             Unique identifier of this session.
         """
         return self._id
-
-    @property
-    def agent_name(self) -> str:
-        """
-        Returns
-        -------
-        str
-            Name of the agent for this session.
-        """
-        return self._agent_name
 
     @property
     def title(self) -> typing.Optional[str]:
@@ -274,32 +270,24 @@ class AgentSession:
         )
 
 
-class AsyncAgentSession:
+class AgentSession(BaseAgentSession):
     """
-    Async version of AgentSession.
+    A session enriched with convenience methods: prepare_turn, list_turns, get_turn, list_events, cancel.
     """
 
-    def __init__(self, session: RawSession, client: AsyncTrueFoundryGateway) -> None:
-        self._id: str = session.id
+    def __init__(self, session: RawSession, client: TrueFoundryGateway) -> None:
+        super().__init__(
+            id=session.id,
+            title=session.title,
+            created_by_subject=session.created_by_subject,
+            created_at=session.created_at,
+            updated_at=session.updated_at,
+            client=client,
+        )
         self._agent_name: str = session.agent_name
-        self._title: typing.Optional[str] = session.title
-        self._created_by_subject: Subject = session.created_by_subject
-        self._created_at: str = session.created_at
-        self._updated_at: str = session.updated_at
-        self._client = client
 
     def __repr__(self) -> str:
-        return f"AsyncAgentSession(id={self._id!r}, agent_name={self._agent_name!r})"
-
-    @property
-    def id(self) -> str:
-        """
-        Returns
-        -------
-        str
-            Unique identifier of this session.
-        """
-        return self._id
+        return f"AgentSession(id={self._id!r}, agent_name={self._agent_name!r})"
 
     @property
     def agent_name(self) -> str:
@@ -310,6 +298,40 @@ class AsyncAgentSession:
             Name of the agent for this session.
         """
         return self._agent_name
+
+
+class AsyncBaseAgentSession:
+    """
+    Async shared base for AsyncAgentSession and AsyncAgentDraftSession. Holds common identity
+    fields and provides turn/event convenience methods.
+    """
+
+    def __init__(
+        self,
+        *,
+        id: str,
+        title: typing.Optional[str],
+        created_by_subject: Subject,
+        created_at: str,
+        updated_at: str,
+        client: AsyncTrueFoundryGateway,
+    ) -> None:
+        self._id: str = id
+        self._title: typing.Optional[str] = title
+        self._created_by_subject: Subject = created_by_subject
+        self._created_at: str = created_at
+        self._updated_at: str = updated_at
+        self._client = client
+
+    @property
+    def id(self) -> str:
+        """
+        Returns
+        -------
+        str
+            Unique identifier of this session.
+        """
+        return self._id
 
     @property
     def title(self) -> typing.Optional[str]:
@@ -481,3 +503,33 @@ class AsyncAgentSession:
             limit=limit,
             request_options=request_options,
         )
+
+
+class AsyncAgentSession(AsyncBaseAgentSession):
+    """
+    Async version of AgentSession.
+    """
+
+    def __init__(self, session: RawSession, client: AsyncTrueFoundryGateway) -> None:
+        super().__init__(
+            id=session.id,
+            title=session.title,
+            created_by_subject=session.created_by_subject,
+            created_at=session.created_at,
+            updated_at=session.updated_at,
+            client=client,
+        )
+        self._agent_name: str = session.agent_name
+
+    def __repr__(self) -> str:
+        return f"AsyncAgentSession(id={self._id!r}, agent_name={self._agent_name!r})"
+
+    @property
+    def agent_name(self) -> str:
+        """
+        Returns
+        -------
+        str
+            Name of the agent for this session.
+        """
+        return self._agent_name

@@ -28,7 +28,7 @@ from ..types.turn_state_running import TurnStateRunning
 from ..types.turn_streaming_event import TurnStreamingEvent
 from ..types.user_tool_approval_event import UserToolApprovalEvent
 from ..types.user_tool_response_event import UserToolResponseEvent
-from .agent_session import AgentSession, AsyncAgentSession
+from .agent_session import AgentSession, AsyncAgentSession, AsyncBaseAgentSession, BaseAgentSession
 from .agent_session_client import AgentSessionClient, AsyncAgentSessionClient
 from .event_delta import DeltaEvents, is_event_delta, merge_event_delta
 from .prepared_turn import AsyncPreparedTurn, PreparedTurn
@@ -42,6 +42,8 @@ __all__ = [  # type: ignore[reportUnsupportedDunderAll]
     "AgentSessionClient",
     "AsyncAgentSession",
     "AsyncAgentSessionClient",
+    "AsyncBaseAgentSession",
+    "BaseAgentSession",
     "AsyncPreparedTurn",
     "AsyncTurn",
     "DeltaEvents",
