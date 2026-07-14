@@ -72,9 +72,7 @@ class BaseTrueFoundryGateway:
         httpx_client: typing.Optional[httpx.Client] = None,
         logging: typing.Optional[typing.Union[LogConfig, Logger]] = None,
     ):
-        _defaulted_timeout = (
-            timeout if timeout is not None else 60 if httpx_client is None else httpx_client.timeout.read
-        )
+        _defaulted_timeout = timeout if timeout is not None else 60 if httpx_client is None else None
         _defaulted_max_retries = max_retries if max_retries is not None else 2
         if api_key is None:
             raise ApiError(body="The client must be instantiated be either passing in api_key or setting TFY_API_KEY")
@@ -184,9 +182,7 @@ class AsyncBaseTrueFoundryGateway:
         httpx_client: typing.Optional[httpx.AsyncClient] = None,
         logging: typing.Optional[typing.Union[LogConfig, Logger]] = None,
     ):
-        _defaulted_timeout = (
-            timeout if timeout is not None else 60 if httpx_client is None else httpx_client.timeout.read
-        )
+        _defaulted_timeout = timeout if timeout is not None else 60 if httpx_client is None else None
         _defaulted_max_retries = max_retries if max_retries is not None else 2
         if api_key is None:
             raise ApiError(body="The client must be instantiated be either passing in api_key or setting TFY_API_KEY")
