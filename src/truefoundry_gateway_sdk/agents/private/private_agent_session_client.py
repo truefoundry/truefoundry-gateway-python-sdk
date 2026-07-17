@@ -4,7 +4,6 @@ import os
 import typing
 
 from ...core.pagination import AsyncPager, SyncPager
-from ...types.draft_session import DraftSession as RawDraftSession
 from ..agent_session import AgentSession, AsyncAgentSession
 from .agent_draft_session import AgentDraftSession, AsyncAgentDraftSession
 
@@ -14,6 +13,7 @@ if typing.TYPE_CHECKING:
     from ...core.logging import LogConfig, Logger
     from ...core.request_options import RequestOptions
     from ...types.agent_spec import AgentSpec
+    from ...types.draft_session import DraftSession as RawDraftSession
     from ...types.list_draft_sessions_order import ListDraftSessionsOrder
     from ...types.list_draft_sessions_response import ListDraftSessionsResponse
     from ...types.list_owned_sessions_order import ListOwnedSessionsOrder
@@ -48,9 +48,11 @@ def _wrap_owned_session(
     client: TrueFoundryGateway,
 ) -> typing.Union[AgentSession, AgentDraftSession]:
     # Dispatch a raw owned-session union member into its enriched wrapper, keyed off the `type` discriminant.
-    if isinstance(raw, RawDraftSession):
+    if raw.type == "session/draft":
         return AgentDraftSession(raw, client)
-    return AgentSession(raw, client)
+    if raw.type == "session":
+        return AgentSession(raw, client)
+    raise ValueError(f"Unknown owned session type: {raw.type!r}")
 
 
 def _wrap_owned_sessions_pager(
@@ -103,9 +105,12 @@ def _async_wrap_owned_session(
     raw: ListOwnedSessionsResponseDataItem,
     client: AsyncTrueFoundryGateway,
 ) -> typing.Union[AsyncAgentSession, AsyncAgentDraftSession]:
-    if isinstance(raw, RawDraftSession):
+    # Dispatch a raw owned-session union member into its enriched wrapper, keyed off the `type` discriminant.
+    if raw.type == "session/draft":
         return AsyncAgentDraftSession(raw, client)
-    return AsyncAgentSession(raw, client)
+    if raw.type == "session":
+        return AsyncAgentSession(raw, client)
+    raise ValueError(f"Unknown owned session type: {raw.type!r}")
 
 
 async def _async_wrap_owned_sessions_pager(
