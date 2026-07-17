@@ -256,7 +256,7 @@ client = TrueFoundryGateway(..., timeout=20.0)
 
 # Override timeout for a specific method
 client.private.agents.sessions.create_turn(..., request_options={
-    "timeout_in_seconds": 1
+    "timeout": 1
 })
 ```
 

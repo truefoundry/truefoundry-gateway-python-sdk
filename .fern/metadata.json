@@ -1,7 +1,7 @@
 {
-  "cliVersion": "5.56.0",
+  "cliVersion": "5.69.0",
   "generatorName": "fernapi/fern-python-sdk",
-  "generatorVersion": "5.15.0",
+  "generatorVersion": "5.18.2",
   "generatorConfig": {
     "package_name": "truefoundry_gateway_sdk",
     "use_request_defaults": "all",
@@ -22,7 +22,7 @@
       "numpydoc": ">=1.7.0,<2.0.0"
     }
   },
-  "originGitCommit": "37bf5c036c7f06b3bf4abc504cda3d9531ac83fa",
+  "originGitCommit": "a7b73dbe98cff2e6740ad184750f973447dc7529",
   "originGitCommitIsDirty": false,
   "invokedBy": "ci",
   "requestedVersion": "0.0.0",
