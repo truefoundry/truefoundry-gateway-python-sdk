@@ -4,17 +4,13 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .subject import Subject
+from .list_owned_sessions_response_data_item import ListOwnedSessionsResponseDataItem
+from .token_pagination import TokenPagination
 
 
-class Session(UniversalBaseModel):
-    type: typing.Literal["session"] = "session"
-    id: str
-    agent_name: str
-    title: typing.Optional[str] = None
-    created_by_subject: Subject
-    created_at: str
-    updated_at: str
+class ListOwnedSessionsResponse(UniversalBaseModel):
+    data: typing.List[ListOwnedSessionsResponseDataItem]
+    pagination: TokenPagination
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

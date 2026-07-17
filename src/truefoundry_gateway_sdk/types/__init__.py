@@ -40,6 +40,9 @@ if typing.TYPE_CHECKING:
     from .list_draft_sessions_response import ListDraftSessionsResponse
     from .list_events_order import ListEventsOrder
     from .list_events_response import ListEventsResponse
+    from .list_owned_sessions_order import ListOwnedSessionsOrder
+    from .list_owned_sessions_response import ListOwnedSessionsResponse
+    from .list_owned_sessions_response_data_item import ListOwnedSessionsResponseDataItem
     from .list_session_events_response import ListSessionEventsResponse
     from .list_sessions_order import ListSessionsOrder
     from .list_sessions_response import ListSessionsResponse
@@ -149,6 +152,9 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ListDraftSessionsResponse": ".list_draft_sessions_response",
     "ListEventsOrder": ".list_events_order",
     "ListEventsResponse": ".list_events_response",
+    "ListOwnedSessionsOrder": ".list_owned_sessions_order",
+    "ListOwnedSessionsResponse": ".list_owned_sessions_response",
+    "ListOwnedSessionsResponseDataItem": ".list_owned_sessions_response_data_item",
     "ListSessionEventsResponse": ".list_session_events_response",
     "ListSessionsOrder": ".list_sessions_order",
     "ListSessionsResponse": ".list_sessions_response",
@@ -282,6 +288,9 @@ __all__ = [
     "ListDraftSessionsResponse",
     "ListEventsOrder",
     "ListEventsResponse",
+    "ListOwnedSessionsOrder",
+    "ListOwnedSessionsResponse",
+    "ListOwnedSessionsResponseDataItem",
     "ListSessionEventsResponse",
     "ListSessionsOrder",
     "ListSessionsResponse",

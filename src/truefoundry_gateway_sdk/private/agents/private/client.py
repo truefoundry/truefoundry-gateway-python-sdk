@@ -9,6 +9,7 @@ from .raw_client import AsyncRawPrivateClient, RawPrivateClient
 
 if typing.TYPE_CHECKING:
     from .draft_sessions.client import AsyncDraftSessionsClient, DraftSessionsClient
+    from .sessions.client import AsyncSessionsClient, SessionsClient
 
 
 class PrivateClient:
@@ -16,6 +17,7 @@ class PrivateClient:
         self._raw_client = RawPrivateClient(client_wrapper=client_wrapper)
         self._client_wrapper = client_wrapper
         self._draft_sessions: typing.Optional[DraftSessionsClient] = None
+        self._sessions: typing.Optional[SessionsClient] = None
 
     @property
     def with_raw_response(self) -> RawPrivateClient:
@@ -36,12 +38,21 @@ class PrivateClient:
             self._draft_sessions = DraftSessionsClient(client_wrapper=self._client_wrapper)
         return self._draft_sessions
 
+    @property
+    def sessions(self):
+        if self._sessions is None:
+            from .sessions.client import SessionsClient  # noqa: E402
+
+            self._sessions = SessionsClient(client_wrapper=self._client_wrapper)
+        return self._sessions
+
 
 class AsyncPrivateClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._raw_client = AsyncRawPrivateClient(client_wrapper=client_wrapper)
         self._client_wrapper = client_wrapper
         self._draft_sessions: typing.Optional[AsyncDraftSessionsClient] = None
+        self._sessions: typing.Optional[AsyncSessionsClient] = None
 
     @property
     def with_raw_response(self) -> AsyncRawPrivateClient:
@@ -61,3 +72,11 @@ class AsyncPrivateClient:
 
             self._draft_sessions = AsyncDraftSessionsClient(client_wrapper=self._client_wrapper)
         return self._draft_sessions
+
+    @property
+    def sessions(self):
+        if self._sessions is None:
+            from .sessions.client import AsyncSessionsClient  # noqa: E402
+
+            self._sessions = AsyncSessionsClient(client_wrapper=self._client_wrapper)
+        return self._sessions

@@ -9,6 +9,7 @@ from .subject import Subject
 
 
 class DraftSession(UniversalBaseModel):
+    type: typing.Literal["session/draft"] = "session/draft"
     id: str
     agent_spec: AgentSpec
     agent_name: typing.Optional[str] = None

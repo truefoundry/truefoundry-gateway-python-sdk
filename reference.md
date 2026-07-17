@@ -259,6 +259,14 @@ client.private.agents.sessions.create(
 <dl>
 <dd>
 
+**tfy_metadata:** `typing.Optional[str]` — Optional customer request metadata (x-tfy-metadata) persisted as request_metadata at session creation.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -396,105 +404,6 @@ client.private.agents.sessions.cancel(
 <dd>
 
 **session_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.private.agents.sessions.<a href="src/truefoundry_gateway_sdk/private/agents/sessions/client.py">list_events</a>(...) -> ListSessionEventsResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-List session events as `{ turn_id, event }` across a turn hierarchy (newest first). Each turn contributes turn.created, content events (model.message, tool.call, …), and turn.done; streaming deltas are not included. `last_turn_id` (initial load only) sets the newest turn in the window plus its ancestors; omit to use the session last turn. If that turn is still running, it is excluded — listing anchors on its parent so persisted events are returned without overlapping the live stream; subscribe to the running turn for live events. An empty `data` array is returned when the anchor is a running first turn with no parent. Use `page_token` to paginate backward toward older events; chains longer than the stored ancestor window are walked via spill to the session root.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from truefoundry_gateway_sdk import TrueFoundryGateway
-
-client = TrueFoundryGateway(
-    api_key="<token>",
-    base_url="https://yourhost.com/path/to/api",
-)
-
-client.private.agents.sessions.list_events(
-    session_id="01arz3ndektsv4rrffq69g5fav.g",
-    page_token="page_token",
-    last_turn_id="last_turn_id",
-    limit=1,
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**session_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**page_token:** `typing.Optional[str]` — Pagination cursor from `pagination.next_page_token`. Returns older events before the cursor (toward session start). Decoded JSON: `{ turn_id, sequence_number }`.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**last_turn_id:** `typing.Optional[str]` — Newest turn in the listing window (initial load only; ignored when `page_token` is set). Lists that turn and its ancestors, newest events first. Omit to use the session last turn. If the resolved turn is still running, its events are excluded and listing starts from its parent instead — subscribe to the running turn for live events. Returns empty data when the anchor is a running first turn with no parent.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limit:** `typing.Optional[int]` — Max events per response. Default 100, max 100.
     
 </dd>
 </dl>
@@ -971,6 +880,105 @@ client.private.agents.sessions.list_turn_events(
 </dl>
 </details>
 
+<details><summary><code>client.private.agents.sessions.<a href="src/truefoundry_gateway_sdk/private/agents/sessions/client.py">list_events</a>(...) -> ListSessionEventsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+List session events as `{ turn_id, event }` across a turn hierarchy (newest first). Each turn contributes turn.created, content events (model.message, tool.call, …), and turn.done; streaming deltas are not included. `last_turn_id` (initial load only) sets the newest turn in the window plus its ancestors; omit to use the session last turn. If that turn is still running, it is excluded — listing anchors on its parent so persisted events are returned without overlapping the live stream; subscribe to the running turn for live events. An empty `data` array is returned when the anchor is a running first turn with no parent. Use `page_token` to paginate backward toward older events; chains longer than the stored ancestor window are walked via spill to the session root.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from truefoundry_gateway_sdk import TrueFoundryGateway
+
+client = TrueFoundryGateway(
+    api_key="<token>",
+    base_url="https://yourhost.com/path/to/api",
+)
+
+client.private.agents.sessions.list_events(
+    session_id="01arz3ndektsv4rrffq69g5fav.g",
+    page_token="page_token",
+    last_turn_id="last_turn_id",
+    limit=1,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**session_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**page_token:** `typing.Optional[str]` — Pagination cursor from `pagination.next_page_token`. Returns older events before the cursor (toward session start). Decoded JSON: `{ turn_id, sequence_number }`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**last_turn_id:** `typing.Optional[str]` — Newest turn in the listing window (initial load only; ignored when `page_token` is set). Lists that turn and its ancestors, newest events first. Omit to use the session last turn. If the resolved turn is still running, its events are excluded and listing starts from its parent instead — subscribe to the running turn for live events. Returns empty data when the anchor is a running first turn with no parent.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Max events per response. Default 100, max 100.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Private Agents Private DraftSessions
 <details><summary><code>client.private.agents.private.draft_sessions.<a href="src/truefoundry_gateway_sdk/private/agents/private/draft_sessions/client.py">list</a>(...) -> ListDraftSessionsResponse</code></summary>
 <dl>
@@ -1153,6 +1161,14 @@ client.private.agents.private.draft_sessions.create(
 <dl>
 <dd>
 
+**tfy_metadata:** `typing.Optional[str]` — Optional customer request metadata (x-tfy-metadata) persisted as request_metadata at draft session creation.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **agent_name:** `typing.Optional[str]` — Optionally link the draft to an existing saved agent in the tenant. Omit for a standalone draft.
     
 </dd>
@@ -1306,6 +1322,124 @@ client.private.agents.private.draft_sessions.update(
 <dd>
 
 **agent_spec:** `typing.Optional[AgentSpec]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Private Agents Private Sessions
+<details><summary><code>client.private.agents.private.sessions.<a href="src/truefoundry_gateway_sdk/private/agents/private/sessions/client.py">list_owned_sessions</a>(...) -> ListOwnedSessionsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+List all sessions owned by the caller, spanning both saved sessions and drafts (newest first by default), keyset-paginated. Optionally filter by `agent_name`. Pass `page_token` to fetch the next page, keeping the other query params constant.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from truefoundry_gateway_sdk import TrueFoundryGateway, ListOwnedSessionsOrder
+
+client = TrueFoundryGateway(
+    api_key="<token>",
+    base_url="https://yourhost.com/path/to/api",
+)
+
+client.private.agents.private.sessions.list_owned_sessions(
+    agent_name="agent_name",
+    limit=1,
+    order=ListOwnedSessionsOrder.ASC,
+    page_token="page_token",
+    start_timestamp="start_timestamp",
+    end_timestamp="end_timestamp",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**agent_name:** `typing.Optional[str]` — Filter to sessions linked to this saved agent. Omit to list all of the caller-owned sessions.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Page size. Defaults to 10, max 100.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**order:** `typing.Optional[ListOwnedSessionsOrder]` — Sort sessions by creation time. Defaults to "desc".
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**page_token:** `typing.Optional[str]` — Opaque token from a previous response `next_page_token`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_timestamp:** `typing.Optional[str]` — Inclusive lower bound on `created_at` (ISO-8601). Defaults upstream to 30 min before `end_timestamp`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_timestamp:** `typing.Optional[str]` — Inclusive upper bound on `created_at` (ISO-8601). Defaults upstream to now.
     
 </dd>
 </dl>

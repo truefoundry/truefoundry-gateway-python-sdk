@@ -116,7 +116,13 @@ class SessionsClient:
             request_options=request_options,
         )
 
-    def create(self, *, agent_name: str, request_options: typing.Optional[RequestOptions] = None) -> GetSessionResponse:
+    def create(
+        self,
+        *,
+        agent_name: str,
+        tfy_metadata: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetSessionResponse:
         """
         Create a session for an existing named agent.
 
@@ -124,6 +130,9 @@ class SessionsClient:
         ----------
         agent_name : str
             Name of an existing agent in the tenant.
+
+        tfy_metadata : typing.Optional[str]
+            Optional customer request metadata (x-tfy-metadata) persisted as request_metadata at session creation.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -145,7 +154,9 @@ class SessionsClient:
             agent_name="agent_name",
         )
         """
-        _response = self._raw_client.create(agent_name=agent_name, request_options=request_options)
+        _response = self._raw_client.create(
+            agent_name=agent_name, tfy_metadata=tfy_metadata, request_options=request_options
+        )
         return _response.data
 
     def get(self, session_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> GetSessionResponse:
@@ -212,63 +223,6 @@ class SessionsClient:
         """
         _response = self._raw_client.cancel(session_id, request_options=request_options)
         return _response.data
-
-    def list_events(
-        self,
-        session_id: str,
-        *,
-        page_token: typing.Optional[str] = None,
-        last_turn_id: typing.Optional[str] = None,
-        limit: typing.Optional[int] = 100,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[SessionEventItem, ListSessionEventsResponse]:
-        """
-        List session events as `{ turn_id, event }` across a turn hierarchy (newest first). Each turn contributes turn.created, content events (model.message, tool.call, …), and turn.done; streaming deltas are not included. `last_turn_id` (initial load only) sets the newest turn in the window plus its ancestors; omit to use the session last turn. If that turn is still running, it is excluded — listing anchors on its parent so persisted events are returned without overlapping the live stream; subscribe to the running turn for live events. An empty `data` array is returned when the anchor is a running first turn with no parent. Use `page_token` to paginate backward toward older events; chains longer than the stored ancestor window are walked via spill to the session root.
-
-        Parameters
-        ----------
-        session_id : str
-
-        page_token : typing.Optional[str]
-            Pagination cursor from `pagination.next_page_token`. Returns older events before the cursor (toward session start). Decoded JSON: `{ turn_id, sequence_number }`.
-
-        last_turn_id : typing.Optional[str]
-            Newest turn in the listing window (initial load only; ignored when `page_token` is set). Lists that turn and its ancestors, newest events first. Omit to use the session last turn. If the resolved turn is still running, its events are excluded and listing starts from its parent instead — subscribe to the running turn for live events. Returns empty data when the anchor is a running first turn with no parent.
-
-        limit : typing.Optional[int]
-            Max events per response. Default 100, max 100.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        SyncPager[SessionEventItem, ListSessionEventsResponse]
-            Paginated session events. Empty when the listing anchor is a running first turn with no parent.
-
-        Examples
-        --------
-        from truefoundry_gateway_sdk import TrueFoundryGateway
-
-        client = TrueFoundryGateway(
-            api_key="YOUR_API_KEY",
-            base_url="https://yourhost.com/path/to/api",
-        )
-        response = client.private.agents.sessions.list_events(
-            session_id="01arz3ndektsv4rrffq69g5fav.g",
-            page_token="page_token",
-            last_turn_id="last_turn_id",
-            limit=1,
-        )
-        for item in response:
-            yield item
-        # alternatively, you can paginate page-by-page
-        for page in response.iter_pages():
-            yield page
-        """
-        return self._raw_client.list_events(
-            session_id, page_token=page_token, last_turn_id=last_turn_id, limit=limit, request_options=request_options
-        )
 
     def list_turns(
         self,
@@ -511,6 +465,63 @@ class SessionsClient:
             session_id, turn_id, page_token=page_token, limit=limit, order=order, request_options=request_options
         )
 
+    def list_events(
+        self,
+        session_id: str,
+        *,
+        page_token: typing.Optional[str] = None,
+        last_turn_id: typing.Optional[str] = None,
+        limit: typing.Optional[int] = 100,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> SyncPager[SessionEventItem, ListSessionEventsResponse]:
+        """
+        List session events as `{ turn_id, event }` across a turn hierarchy (newest first). Each turn contributes turn.created, content events (model.message, tool.call, …), and turn.done; streaming deltas are not included. `last_turn_id` (initial load only) sets the newest turn in the window plus its ancestors; omit to use the session last turn. If that turn is still running, it is excluded — listing anchors on its parent so persisted events are returned without overlapping the live stream; subscribe to the running turn for live events. An empty `data` array is returned when the anchor is a running first turn with no parent. Use `page_token` to paginate backward toward older events; chains longer than the stored ancestor window are walked via spill to the session root.
+
+        Parameters
+        ----------
+        session_id : str
+
+        page_token : typing.Optional[str]
+            Pagination cursor from `pagination.next_page_token`. Returns older events before the cursor (toward session start). Decoded JSON: `{ turn_id, sequence_number }`.
+
+        last_turn_id : typing.Optional[str]
+            Newest turn in the listing window (initial load only; ignored when `page_token` is set). Lists that turn and its ancestors, newest events first. Omit to use the session last turn. If the resolved turn is still running, its events are excluded and listing starts from its parent instead — subscribe to the running turn for live events. Returns empty data when the anchor is a running first turn with no parent.
+
+        limit : typing.Optional[int]
+            Max events per response. Default 100, max 100.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SyncPager[SessionEventItem, ListSessionEventsResponse]
+            Paginated session events. Empty when the listing anchor is a running first turn with no parent.
+
+        Examples
+        --------
+        from truefoundry_gateway_sdk import TrueFoundryGateway
+
+        client = TrueFoundryGateway(
+            api_key="YOUR_API_KEY",
+            base_url="https://yourhost.com/path/to/api",
+        )
+        response = client.private.agents.sessions.list_events(
+            session_id="01arz3ndektsv4rrffq69g5fav.g",
+            page_token="page_token",
+            last_turn_id="last_turn_id",
+            limit=1,
+        )
+        for item in response:
+            yield item
+        # alternatively, you can paginate page-by-page
+        for page in response.iter_pages():
+            yield page
+        """
+        return self._raw_client.list_events(
+            session_id, page_token=page_token, last_turn_id=last_turn_id, limit=limit, request_options=request_options
+        )
+
 
 class AsyncSessionsClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
@@ -611,7 +622,11 @@ class AsyncSessionsClient:
         )
 
     async def create(
-        self, *, agent_name: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        agent_name: str,
+        tfy_metadata: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetSessionResponse:
         """
         Create a session for an existing named agent.
@@ -620,6 +635,9 @@ class AsyncSessionsClient:
         ----------
         agent_name : str
             Name of an existing agent in the tenant.
+
+        tfy_metadata : typing.Optional[str]
+            Optional customer request metadata (x-tfy-metadata) persisted as request_metadata at session creation.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -649,7 +667,9 @@ class AsyncSessionsClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.create(agent_name=agent_name, request_options=request_options)
+        _response = await self._raw_client.create(
+            agent_name=agent_name, tfy_metadata=tfy_metadata, request_options=request_options
+        )
         return _response.data
 
     async def get(
@@ -734,72 +754,6 @@ class AsyncSessionsClient:
         """
         _response = await self._raw_client.cancel(session_id, request_options=request_options)
         return _response.data
-
-    async def list_events(
-        self,
-        session_id: str,
-        *,
-        page_token: typing.Optional[str] = None,
-        last_turn_id: typing.Optional[str] = None,
-        limit: typing.Optional[int] = 100,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[SessionEventItem, ListSessionEventsResponse]:
-        """
-        List session events as `{ turn_id, event }` across a turn hierarchy (newest first). Each turn contributes turn.created, content events (model.message, tool.call, …), and turn.done; streaming deltas are not included. `last_turn_id` (initial load only) sets the newest turn in the window plus its ancestors; omit to use the session last turn. If that turn is still running, it is excluded — listing anchors on its parent so persisted events are returned without overlapping the live stream; subscribe to the running turn for live events. An empty `data` array is returned when the anchor is a running first turn with no parent. Use `page_token` to paginate backward toward older events; chains longer than the stored ancestor window are walked via spill to the session root.
-
-        Parameters
-        ----------
-        session_id : str
-
-        page_token : typing.Optional[str]
-            Pagination cursor from `pagination.next_page_token`. Returns older events before the cursor (toward session start). Decoded JSON: `{ turn_id, sequence_number }`.
-
-        last_turn_id : typing.Optional[str]
-            Newest turn in the listing window (initial load only; ignored when `page_token` is set). Lists that turn and its ancestors, newest events first. Omit to use the session last turn. If the resolved turn is still running, its events are excluded and listing starts from its parent instead — subscribe to the running turn for live events. Returns empty data when the anchor is a running first turn with no parent.
-
-        limit : typing.Optional[int]
-            Max events per response. Default 100, max 100.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncPager[SessionEventItem, ListSessionEventsResponse]
-            Paginated session events. Empty when the listing anchor is a running first turn with no parent.
-
-        Examples
-        --------
-        import asyncio
-
-        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway
-
-        client = AsyncTrueFoundryGateway(
-            api_key="YOUR_API_KEY",
-            base_url="https://yourhost.com/path/to/api",
-        )
-
-
-        async def main() -> None:
-            response = await client.private.agents.sessions.list_events(
-                session_id="01arz3ndektsv4rrffq69g5fav.g",
-                page_token="page_token",
-                last_turn_id="last_turn_id",
-                limit=1,
-            )
-            async for item in response:
-                yield item
-
-            # alternatively, you can paginate page-by-page
-            async for page in response.iter_pages():
-                yield page
-
-
-        asyncio.run(main())
-        """
-        return await self._raw_client.list_events(
-            session_id, page_token=page_token, last_turn_id=last_turn_id, limit=limit, request_options=request_options
-        )
 
     async def list_turns(
         self,
@@ -1084,4 +1038,70 @@ class AsyncSessionsClient:
         """
         return await self._raw_client.list_turn_events(
             session_id, turn_id, page_token=page_token, limit=limit, order=order, request_options=request_options
+        )
+
+    async def list_events(
+        self,
+        session_id: str,
+        *,
+        page_token: typing.Optional[str] = None,
+        last_turn_id: typing.Optional[str] = None,
+        limit: typing.Optional[int] = 100,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncPager[SessionEventItem, ListSessionEventsResponse]:
+        """
+        List session events as `{ turn_id, event }` across a turn hierarchy (newest first). Each turn contributes turn.created, content events (model.message, tool.call, …), and turn.done; streaming deltas are not included. `last_turn_id` (initial load only) sets the newest turn in the window plus its ancestors; omit to use the session last turn. If that turn is still running, it is excluded — listing anchors on its parent so persisted events are returned without overlapping the live stream; subscribe to the running turn for live events. An empty `data` array is returned when the anchor is a running first turn with no parent. Use `page_token` to paginate backward toward older events; chains longer than the stored ancestor window are walked via spill to the session root.
+
+        Parameters
+        ----------
+        session_id : str
+
+        page_token : typing.Optional[str]
+            Pagination cursor from `pagination.next_page_token`. Returns older events before the cursor (toward session start). Decoded JSON: `{ turn_id, sequence_number }`.
+
+        last_turn_id : typing.Optional[str]
+            Newest turn in the listing window (initial load only; ignored when `page_token` is set). Lists that turn and its ancestors, newest events first. Omit to use the session last turn. If the resolved turn is still running, its events are excluded and listing starts from its parent instead — subscribe to the running turn for live events. Returns empty data when the anchor is a running first turn with no parent.
+
+        limit : typing.Optional[int]
+            Max events per response. Default 100, max 100.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncPager[SessionEventItem, ListSessionEventsResponse]
+            Paginated session events. Empty when the listing anchor is a running first turn with no parent.
+
+        Examples
+        --------
+        import asyncio
+
+        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway
+
+        client = AsyncTrueFoundryGateway(
+            api_key="YOUR_API_KEY",
+            base_url="https://yourhost.com/path/to/api",
+        )
+
+
+        async def main() -> None:
+            response = await client.private.agents.sessions.list_events(
+                session_id="01arz3ndektsv4rrffq69g5fav.g",
+                page_token="page_token",
+                last_turn_id="last_turn_id",
+                limit=1,
+            )
+            async for item in response:
+                yield item
+
+            # alternatively, you can paginate page-by-page
+            async for page in response.iter_pages():
+                yield page
+
+
+        asyncio.run(main())
+        """
+        return await self._raw_client.list_events(
+            session_id, page_token=page_token, last_turn_id=last_turn_id, limit=limit, request_options=request_options
         )
