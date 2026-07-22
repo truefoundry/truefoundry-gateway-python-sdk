@@ -4,11 +4,13 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .sandbox_network_policy import SandboxNetworkPolicy
 
 
 class SandboxConfig(UniversalBaseModel):
     enabled: bool
     file_downloads: typing.Optional[bool] = True
+    network_policy: typing.Optional[SandboxNetworkPolicy] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

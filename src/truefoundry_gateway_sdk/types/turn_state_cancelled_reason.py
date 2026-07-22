@@ -15,6 +15,7 @@ class TurnStateCancelledReason(enum.StrEnum):
     SERVER_EXECUTION_TIMEOUT = "server-execution-timeout"
     CLIENT_CANCELLED = "client-cancelled"
     CANCELLED_FOR_NEXT_TURN = "cancelled-for-next-turn"
+    ABANDONED = "abandoned"
     _UNKNOWN = "__TURNSTATECANCELLEDREASON_UNKNOWN__"
     """
     This member is used for forward compatibility. If the value is not recognized by the enum, it will be stored here, and the raw value is accessible through `.value`.
@@ -31,6 +32,7 @@ class TurnStateCancelledReason(enum.StrEnum):
         server_execution_timeout: typing.Callable[[], T_Result],
         client_cancelled: typing.Callable[[], T_Result],
         cancelled_for_next_turn: typing.Callable[[], T_Result],
+        abandoned: typing.Callable[[], T_Result],
         _unknown_member: typing.Callable[[str], T_Result],
     ) -> T_Result:
         if self is TurnStateCancelledReason.SERVER_EXECUTION_TIMEOUT:
@@ -39,4 +41,6 @@ class TurnStateCancelledReason(enum.StrEnum):
             return client_cancelled()
         if self is TurnStateCancelledReason.CANCELLED_FOR_NEXT_TURN:
             return cancelled_for_next_turn()
+        if self is TurnStateCancelledReason.ABANDONED:
+            return abandoned()
         return _unknown_member(self._value_)

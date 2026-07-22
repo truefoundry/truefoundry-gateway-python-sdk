@@ -4,14 +4,14 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .mcp_server_init_info_transport_type import McpServerInitInfoTransportType
+from .sandbox_network_policy_auth_inject_item_auth_data import SandboxNetworkPolicyAuthInjectItemAuthData
+from .sandbox_network_policy_auth_inject_item_match import SandboxNetworkPolicyAuthInjectItemMatch
 
 
-class McpServerInitInfo(UniversalBaseModel):
-    id: str
-    name: str
-    session_id: typing.Optional[str] = None
-    transport_type: typing.Optional[McpServerInitInfoTransportType] = None
+class SandboxNetworkPolicyAuthInjectItem(UniversalBaseModel):
+    type: typing.Literal["git"] = "git"
+    match: SandboxNetworkPolicyAuthInjectItemMatch
+    auth_data: SandboxNetworkPolicyAuthInjectItemAuthData
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2
