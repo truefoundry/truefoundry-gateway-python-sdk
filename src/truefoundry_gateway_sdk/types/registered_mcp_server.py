@@ -3,20 +3,11 @@
 import typing
 
 import pydantic
-from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .registered_mcp_server_disable_tools_item import RegisteredMcpServerDisableToolsItem
-from .registered_mcp_server_enable_tools_item import RegisteredMcpServerEnableToolsItem
-from .registered_mcp_server_preload_tools_item import RegisteredMcpServerPreloadToolsItem
-from .registered_mcp_server_require_approval_for_tools_item import RegisteredMcpServerRequireApprovalForToolsItem
+from ..core.pydantic_utilities import IS_PYDANTIC_V2
+from .base_mcp_server import BaseMcpServer
 
 
-class RegisteredMcpServer(UniversalBaseModel):
-    name: str
-    enable_tools: typing.Optional[typing.List[RegisteredMcpServerEnableToolsItem]] = None
-    disable_tools: typing.Optional[typing.List[RegisteredMcpServerDisableToolsItem]] = None
-    preload_tools: typing.Optional[typing.List[RegisteredMcpServerPreloadToolsItem]] = None
-    require_approval_for_tools: typing.Optional[typing.List[RegisteredMcpServerRequireApprovalForToolsItem]] = None
-    preload: typing.Optional[bool] = False
+class RegisteredMcpServer(BaseMcpServer):
     type: typing.Literal["truefoundry-mcp-registry"] = "truefoundry-mcp-registry"
 
     if IS_PYDANTIC_V2:

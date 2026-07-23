@@ -16,6 +16,7 @@ if typing.TYPE_CHECKING:
     from .approval_deny import ApprovalDeny
     from .ask_user_questions_config import AskUserQuestionsConfig
     from .base_mcp_auth_required_event import BaseMcpAuthRequiredEvent
+    from .base_mcp_server import BaseMcpServer
     from .base_thread_done_event import BaseThreadDoneEvent
     from .cancel_session_response import CancelSessionResponse
     from .chat_completion_chunk_delta_tool_call import ChatCompletionChunkDeltaToolCall
@@ -36,10 +37,6 @@ if typing.TYPE_CHECKING:
     from .get_session_response import GetSessionResponse
     from .get_turn_response import GetTurnResponse
     from .inline_mcp_server import InlineMcpServer
-    from .inline_mcp_server_disable_tools_item import InlineMcpServerDisableToolsItem
-    from .inline_mcp_server_enable_tools_item import InlineMcpServerEnableToolsItem
-    from .inline_mcp_server_preload_tools_item import InlineMcpServerPreloadToolsItem
-    from .inline_mcp_server_require_approval_for_tools_item import InlineMcpServerRequireApprovalForToolsItem
     from .large_tool_response_config import LargeToolResponseConfig
     from .list_draft_sessions_order import ListDraftSessionsOrder
     from .list_draft_sessions_response import ListDraftSessionsResponse
@@ -71,12 +68,10 @@ if typing.TYPE_CHECKING:
     from .previous_turn_id_input import PreviousTurnIdInput
     from .raw_tool_call import RawToolCall
     from .registered_mcp_server import RegisteredMcpServer
-    from .registered_mcp_server_disable_tools_item import RegisteredMcpServerDisableToolsItem
-    from .registered_mcp_server_enable_tools_item import RegisteredMcpServerEnableToolsItem
-    from .registered_mcp_server_preload_tools_item import RegisteredMcpServerPreloadToolsItem
-    from .registered_mcp_server_require_approval_for_tools_item import RegisteredMcpServerRequireApprovalForToolsItem
     from .request_error_response import RequestErrorResponse
     from .request_error_response_error import RequestErrorResponseError
+    from .require_approval_tool_selector_item import RequireApprovalToolSelectorItem
+    from .require_approval_tools_selector_tag import RequireApprovalToolsSelectorTag
     from .response_format import ResponseFormat
     from .response_format_json_schema import ResponseFormatJsonSchema
     from .response_format_json_schema_json_schema import ResponseFormatJsonSchemaJsonSchema
@@ -107,6 +102,8 @@ if typing.TYPE_CHECKING:
     from .tool_info import ToolInfo
     from .tool_response_event import ToolResponseEvent
     from .tool_response_required_event import ToolResponseRequiredEvent
+    from .tools_selector_item import ToolsSelectorItem
+    from .tools_selector_tag import ToolsSelectorTag
     from .true_foundry_system_tool_info import TrueFoundrySystemToolInfo
     from .turn import Turn
     from .turn_created_event import TurnCreatedEvent
@@ -140,6 +137,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ApprovalDeny": ".approval_deny",
     "AskUserQuestionsConfig": ".ask_user_questions_config",
     "BaseMcpAuthRequiredEvent": ".base_mcp_auth_required_event",
+    "BaseMcpServer": ".base_mcp_server",
     "BaseThreadDoneEvent": ".base_thread_done_event",
     "CancelSessionResponse": ".cancel_session_response",
     "ChatCompletionChunkDeltaToolCall": ".chat_completion_chunk_delta_tool_call",
@@ -160,10 +158,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetSessionResponse": ".get_session_response",
     "GetTurnResponse": ".get_turn_response",
     "InlineMcpServer": ".inline_mcp_server",
-    "InlineMcpServerDisableToolsItem": ".inline_mcp_server_disable_tools_item",
-    "InlineMcpServerEnableToolsItem": ".inline_mcp_server_enable_tools_item",
-    "InlineMcpServerPreloadToolsItem": ".inline_mcp_server_preload_tools_item",
-    "InlineMcpServerRequireApprovalForToolsItem": ".inline_mcp_server_require_approval_for_tools_item",
     "LargeToolResponseConfig": ".large_tool_response_config",
     "ListDraftSessionsOrder": ".list_draft_sessions_order",
     "ListDraftSessionsResponse": ".list_draft_sessions_response",
@@ -195,12 +189,10 @@ _dynamic_imports: typing.Dict[str, str] = {
     "PreviousTurnIdInput": ".previous_turn_id_input",
     "RawToolCall": ".raw_tool_call",
     "RegisteredMcpServer": ".registered_mcp_server",
-    "RegisteredMcpServerDisableToolsItem": ".registered_mcp_server_disable_tools_item",
-    "RegisteredMcpServerEnableToolsItem": ".registered_mcp_server_enable_tools_item",
-    "RegisteredMcpServerPreloadToolsItem": ".registered_mcp_server_preload_tools_item",
-    "RegisteredMcpServerRequireApprovalForToolsItem": ".registered_mcp_server_require_approval_for_tools_item",
     "RequestErrorResponse": ".request_error_response",
     "RequestErrorResponseError": ".request_error_response_error",
+    "RequireApprovalToolSelectorItem": ".require_approval_tool_selector_item",
+    "RequireApprovalToolsSelectorTag": ".require_approval_tools_selector_tag",
     "ResponseFormat": ".response_format",
     "ResponseFormatJsonSchema": ".response_format_json_schema",
     "ResponseFormatJsonSchemaJsonSchema": ".response_format_json_schema_json_schema",
@@ -231,6 +223,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ToolInfo": ".tool_info",
     "ToolResponseEvent": ".tool_response_event",
     "ToolResponseRequiredEvent": ".tool_response_required_event",
+    "ToolsSelectorItem": ".tools_selector_item",
+    "ToolsSelectorTag": ".tools_selector_tag",
     "TrueFoundrySystemToolInfo": ".true_foundry_system_tool_info",
     "Turn": ".turn",
     "TurnCreatedEvent": ".turn_created_event",
@@ -288,6 +282,7 @@ __all__ = [
     "ApprovalDeny",
     "AskUserQuestionsConfig",
     "BaseMcpAuthRequiredEvent",
+    "BaseMcpServer",
     "BaseThreadDoneEvent",
     "CancelSessionResponse",
     "ChatCompletionChunkDeltaToolCall",
@@ -308,10 +303,6 @@ __all__ = [
     "GetSessionResponse",
     "GetTurnResponse",
     "InlineMcpServer",
-    "InlineMcpServerDisableToolsItem",
-    "InlineMcpServerEnableToolsItem",
-    "InlineMcpServerPreloadToolsItem",
-    "InlineMcpServerRequireApprovalForToolsItem",
     "LargeToolResponseConfig",
     "ListDraftSessionsOrder",
     "ListDraftSessionsResponse",
@@ -343,12 +334,10 @@ __all__ = [
     "PreviousTurnIdInput",
     "RawToolCall",
     "RegisteredMcpServer",
-    "RegisteredMcpServerDisableToolsItem",
-    "RegisteredMcpServerEnableToolsItem",
-    "RegisteredMcpServerPreloadToolsItem",
-    "RegisteredMcpServerRequireApprovalForToolsItem",
     "RequestErrorResponse",
     "RequestErrorResponseError",
+    "RequireApprovalToolSelectorItem",
+    "RequireApprovalToolsSelectorTag",
     "ResponseFormat",
     "ResponseFormatJsonSchema",
     "ResponseFormatJsonSchemaJsonSchema",
@@ -379,6 +368,8 @@ __all__ = [
     "ToolInfo",
     "ToolResponseEvent",
     "ToolResponseRequiredEvent",
+    "ToolsSelectorItem",
+    "ToolsSelectorTag",
     "TrueFoundrySystemToolInfo",
     "Turn",
     "TurnCreatedEvent",
