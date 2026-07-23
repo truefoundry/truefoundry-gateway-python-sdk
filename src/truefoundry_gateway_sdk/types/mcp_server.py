@@ -2,27 +2,7 @@
 
 import typing
 
-import pydantic
-from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .mcp_server_disable_tools_item import McpServerDisableToolsItem
-from .mcp_server_enable_tools_item import McpServerEnableToolsItem
-from .mcp_server_preload_tools_item import McpServerPreloadToolsItem
-from .mcp_server_require_approval_for_tools_item import McpServerRequireApprovalForToolsItem
+from .inline_mcp_server import InlineMcpServer
+from .registered_mcp_server import RegisteredMcpServer
 
-
-class McpServer(UniversalBaseModel):
-    name: str
-    headers: typing.Optional[typing.Dict[str, str]] = None
-    enable_tools: typing.Optional[typing.List[McpServerEnableToolsItem]] = None
-    disable_tools: typing.Optional[typing.List[McpServerDisableToolsItem]] = None
-    preload_tools: typing.Optional[typing.List[McpServerPreloadToolsItem]] = None
-    require_approval_for_tools: typing.Optional[typing.List[McpServerRequireApprovalForToolsItem]] = None
-    preload: typing.Optional[bool] = False
-
-    if IS_PYDANTIC_V2:
-        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2
-    else:
-
-        class Config:
-            smart_union = True
-            extra = pydantic.Extra.allow
+McpServer = typing.Union[RegisteredMcpServer, InlineMcpServer]

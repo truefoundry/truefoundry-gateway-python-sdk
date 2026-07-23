@@ -4,14 +4,11 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .mcp_server_init_info_transport_type import McpServerInitInfoTransportType
+from .sandbox_network_policy_auth_inject_item import SandboxNetworkPolicyAuthInjectItem
 
 
-class McpServerInitInfo(UniversalBaseModel):
-    id: str
-    name: str
-    session_id: typing.Optional[str] = None
-    transport_type: typing.Optional[McpServerInitInfoTransportType] = None
+class SandboxNetworkPolicy(UniversalBaseModel):
+    auth_inject: typing.Optional[typing.List[SandboxNetworkPolicyAuthInjectItem]] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

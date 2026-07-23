@@ -5,11 +5,15 @@ from __future__ import annotations
 import typing
 
 from ....core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
+from ....core.pagination import AsyncPager, SyncPager
+from ....core.request_options import RequestOptions
+from ....types.list_owned_sessions_order import ListOwnedSessionsOrder
+from ....types.list_owned_sessions_response import ListOwnedSessionsResponse
+from ....types.list_owned_sessions_response_data_item import ListOwnedSessionsResponseDataItem
 from .raw_client import AsyncRawPrivateClient, RawPrivateClient
 
 if typing.TYPE_CHECKING:
     from .draft_sessions.client import AsyncDraftSessionsClient, DraftSessionsClient
-    from .sessions.client import AsyncSessionsClient, SessionsClient
 
 
 class PrivateClient:
@@ -17,7 +21,6 @@ class PrivateClient:
         self._raw_client = RawPrivateClient(client_wrapper=client_wrapper)
         self._client_wrapper = client_wrapper
         self._draft_sessions: typing.Optional[DraftSessionsClient] = None
-        self._sessions: typing.Optional[SessionsClient] = None
 
     @property
     def with_raw_response(self) -> RawPrivateClient:
@@ -30,6 +33,118 @@ class PrivateClient:
         """
         return self._raw_client
 
+    def list_owned_sessions(
+        self,
+        *,
+        agent_name: typing.Optional[str] = None,
+        limit: typing.Optional[int] = 10,
+        order: typing.Optional[ListOwnedSessionsOrder] = None,
+        page_token: typing.Optional[str] = None,
+        start_timestamp: typing.Optional[str] = None,
+        end_timestamp: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> SyncPager[ListOwnedSessionsResponseDataItem, ListOwnedSessionsResponse]:
+        """
+        List all sessions owned by the caller, spanning both saved sessions and drafts (newest first by default), keyset-paginated. Optionally filter by `agent_name`. Pass `page_token` to fetch the next page, keeping the other query params constant.
+
+        Parameters
+        ----------
+        agent_name : typing.Optional[str]
+            Filter to sessions linked to this saved agent. Omit to list all of the caller-owned sessions.
+
+        limit : typing.Optional[int]
+            Page size. Defaults to 10, max 100.
+
+        order : typing.Optional[ListOwnedSessionsOrder]
+            Sort sessions by creation time. Defaults to "desc".
+
+        page_token : typing.Optional[str]
+            Opaque token from a previous response `next_page_token`.
+
+        start_timestamp : typing.Optional[str]
+            Inclusive lower bound on `created_at` (ISO-8601). Defaults upstream to 30 min before `end_timestamp`.
+
+        end_timestamp : typing.Optional[str]
+            Inclusive upper bound on `created_at` (ISO-8601). Defaults upstream to now.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SyncPager[ListOwnedSessionsResponseDataItem, ListOwnedSessionsResponse]
+            Paginated caller-owned sessions.
+
+        Examples
+        --------
+        from truefoundry_gateway_sdk import ListOwnedSessionsOrder, TrueFoundryGateway
+
+        client = TrueFoundryGateway(
+            api_key="YOUR_API_KEY",
+            base_url="https://yourhost.com/path/to/api",
+        )
+        response = client.private.agents.private.list_owned_sessions(
+            agent_name="agent_name",
+            limit=1,
+            order=ListOwnedSessionsOrder.ASC,
+            page_token="page_token",
+            start_timestamp="start_timestamp",
+            end_timestamp="end_timestamp",
+        )
+        for item in response:
+            yield item
+        # alternatively, you can paginate page-by-page
+        for page in response.iter_pages():
+            yield page
+        """
+        return self._raw_client.list_owned_sessions(
+            agent_name=agent_name,
+            limit=limit,
+            order=order,
+            page_token=page_token,
+            start_timestamp=start_timestamp,
+            end_timestamp=end_timestamp,
+            request_options=request_options,
+        )
+
+    def download_sandbox_file(
+        self, sandbox_id: str, *, path: str, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.Iterator[bytes]:
+        """
+        Download a file produced by an agent inside a sandbox.
+
+        Parameters
+        ----------
+        sandbox_id : str
+            The sandbox containing the file.
+
+        path : str
+            Absolute path of the file inside the sandbox.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
+
+        Returns
+        -------
+        typing.Iterator[bytes]
+            File download.
+
+        Examples
+        --------
+        from truefoundry_gateway_sdk import TrueFoundryGateway
+
+        client = TrueFoundryGateway(
+            api_key="YOUR_API_KEY",
+            base_url="https://yourhost.com/path/to/api",
+        )
+        client.private.agents.private.download_sandbox_file(
+            sandbox_id="sandboxId",
+            path="x",
+        )
+        """
+        with self._raw_client.download_sandbox_file(sandbox_id, path=path, request_options=request_options) as r:
+            yield from r.data
+
     @property
     def draft_sessions(self):
         if self._draft_sessions is None:
@@ -38,21 +153,12 @@ class PrivateClient:
             self._draft_sessions = DraftSessionsClient(client_wrapper=self._client_wrapper)
         return self._draft_sessions
 
-    @property
-    def sessions(self):
-        if self._sessions is None:
-            from .sessions.client import SessionsClient  # noqa: E402
-
-            self._sessions = SessionsClient(client_wrapper=self._client_wrapper)
-        return self._sessions
-
 
 class AsyncPrivateClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._raw_client = AsyncRawPrivateClient(client_wrapper=client_wrapper)
         self._client_wrapper = client_wrapper
         self._draft_sessions: typing.Optional[AsyncDraftSessionsClient] = None
-        self._sessions: typing.Optional[AsyncSessionsClient] = None
 
     @property
     def with_raw_response(self) -> AsyncRawPrivateClient:
@@ -65,6 +171,139 @@ class AsyncPrivateClient:
         """
         return self._raw_client
 
+    async def list_owned_sessions(
+        self,
+        *,
+        agent_name: typing.Optional[str] = None,
+        limit: typing.Optional[int] = 10,
+        order: typing.Optional[ListOwnedSessionsOrder] = None,
+        page_token: typing.Optional[str] = None,
+        start_timestamp: typing.Optional[str] = None,
+        end_timestamp: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncPager[ListOwnedSessionsResponseDataItem, ListOwnedSessionsResponse]:
+        """
+        List all sessions owned by the caller, spanning both saved sessions and drafts (newest first by default), keyset-paginated. Optionally filter by `agent_name`. Pass `page_token` to fetch the next page, keeping the other query params constant.
+
+        Parameters
+        ----------
+        agent_name : typing.Optional[str]
+            Filter to sessions linked to this saved agent. Omit to list all of the caller-owned sessions.
+
+        limit : typing.Optional[int]
+            Page size. Defaults to 10, max 100.
+
+        order : typing.Optional[ListOwnedSessionsOrder]
+            Sort sessions by creation time. Defaults to "desc".
+
+        page_token : typing.Optional[str]
+            Opaque token from a previous response `next_page_token`.
+
+        start_timestamp : typing.Optional[str]
+            Inclusive lower bound on `created_at` (ISO-8601). Defaults upstream to 30 min before `end_timestamp`.
+
+        end_timestamp : typing.Optional[str]
+            Inclusive upper bound on `created_at` (ISO-8601). Defaults upstream to now.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncPager[ListOwnedSessionsResponseDataItem, ListOwnedSessionsResponse]
+            Paginated caller-owned sessions.
+
+        Examples
+        --------
+        import asyncio
+
+        from truefoundry_gateway_sdk import (
+            AsyncTrueFoundryGateway,
+            ListOwnedSessionsOrder,
+        )
+
+        client = AsyncTrueFoundryGateway(
+            api_key="YOUR_API_KEY",
+            base_url="https://yourhost.com/path/to/api",
+        )
+
+
+        async def main() -> None:
+            response = await client.private.agents.private.list_owned_sessions(
+                agent_name="agent_name",
+                limit=1,
+                order=ListOwnedSessionsOrder.ASC,
+                page_token="page_token",
+                start_timestamp="start_timestamp",
+                end_timestamp="end_timestamp",
+            )
+            async for item in response:
+                yield item
+
+            # alternatively, you can paginate page-by-page
+            async for page in response.iter_pages():
+                yield page
+
+
+        asyncio.run(main())
+        """
+        return await self._raw_client.list_owned_sessions(
+            agent_name=agent_name,
+            limit=limit,
+            order=order,
+            page_token=page_token,
+            start_timestamp=start_timestamp,
+            end_timestamp=end_timestamp,
+            request_options=request_options,
+        )
+
+    async def download_sandbox_file(
+        self, sandbox_id: str, *, path: str, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.AsyncIterator[bytes]:
+        """
+        Download a file produced by an agent inside a sandbox.
+
+        Parameters
+        ----------
+        sandbox_id : str
+            The sandbox containing the file.
+
+        path : str
+            Absolute path of the file inside the sandbox.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
+
+        Returns
+        -------
+        typing.AsyncIterator[bytes]
+            File download.
+
+        Examples
+        --------
+        import asyncio
+
+        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway
+
+        client = AsyncTrueFoundryGateway(
+            api_key="YOUR_API_KEY",
+            base_url="https://yourhost.com/path/to/api",
+        )
+
+
+        async def main() -> None:
+            await client.private.agents.private.download_sandbox_file(
+                sandbox_id="sandboxId",
+                path="x",
+            )
+
+
+        asyncio.run(main())
+        """
+        async with self._raw_client.download_sandbox_file(sandbox_id, path=path, request_options=request_options) as r:
+            async for _chunk in r.data:
+                yield _chunk
+
     @property
     def draft_sessions(self):
         if self._draft_sessions is None:
@@ -72,11 +311,3 @@ class AsyncPrivateClient:
 
             self._draft_sessions = AsyncDraftSessionsClient(client_wrapper=self._client_wrapper)
         return self._draft_sessions
-
-    @property
-    def sessions(self):
-        if self._sessions is None:
-            from .sessions.client import AsyncSessionsClient  # noqa: E402
-
-            self._sessions = AsyncSessionsClient(client_wrapper=self._client_wrapper)
-        return self._sessions

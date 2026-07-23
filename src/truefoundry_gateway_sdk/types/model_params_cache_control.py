@@ -4,14 +4,10 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .mcp_server_init_info_transport_type import McpServerInitInfoTransportType
 
 
-class McpServerInitInfo(UniversalBaseModel):
-    id: str
-    name: str
-    session_id: typing.Optional[str] = None
-    transport_type: typing.Optional[McpServerInitInfoTransportType] = None
+class ModelParamsCacheControl(UniversalBaseModel):
+    type: str
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2
