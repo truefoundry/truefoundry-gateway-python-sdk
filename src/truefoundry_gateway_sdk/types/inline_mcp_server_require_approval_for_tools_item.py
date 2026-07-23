@@ -2,6 +2,6 @@
 
 import typing
 
-McpServerRequireApprovalForToolsItem = typing.Union[
+InlineMcpServerRequireApprovalForToolsItem = typing.Union[
     typing.Literal["@all"], typing.Literal["@write"], typing.Literal["@destructive"], str
 ]

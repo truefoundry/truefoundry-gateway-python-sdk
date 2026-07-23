@@ -35,6 +35,11 @@ if typing.TYPE_CHECKING:
     from .get_draft_session_response import GetDraftSessionResponse
     from .get_session_response import GetSessionResponse
     from .get_turn_response import GetTurnResponse
+    from .inline_mcp_server import InlineMcpServer
+    from .inline_mcp_server_disable_tools_item import InlineMcpServerDisableToolsItem
+    from .inline_mcp_server_enable_tools_item import InlineMcpServerEnableToolsItem
+    from .inline_mcp_server_preload_tools_item import InlineMcpServerPreloadToolsItem
+    from .inline_mcp_server_require_approval_for_tools_item import InlineMcpServerRequireApprovalForToolsItem
     from .large_tool_response_config import LargeToolResponseConfig
     from .list_draft_sessions_order import ListDraftSessionsOrder
     from .list_draft_sessions_response import ListDraftSessionsResponse
@@ -51,11 +56,8 @@ if typing.TYPE_CHECKING:
     from .mcp_initialize_event import McpInitializeEvent
     from .mcp_server import McpServer
     from .mcp_server_auth_info import McpServerAuthInfo
-    from .mcp_server_disable_tools_item import McpServerDisableToolsItem
-    from .mcp_server_enable_tools_item import McpServerEnableToolsItem
     from .mcp_server_init_info import McpServerInitInfo
-    from .mcp_server_preload_tools_item import McpServerPreloadToolsItem
-    from .mcp_server_require_approval_for_tools_item import McpServerRequireApprovalForToolsItem
+    from .mcp_server_init_info_transport_type import McpServerInitInfoTransportType
     from .mcp_tool_info import McpToolInfo
     from .model import Model
     from .model_message_delta_event import ModelMessageDeltaEvent
@@ -65,8 +67,14 @@ if typing.TYPE_CHECKING:
     from .model_message_usage import ModelMessageUsage
     from .model_message_usage_input_tokens_breakdown import ModelMessageUsageInputTokensBreakdown
     from .model_params import ModelParams
+    from .model_params_cache_control import ModelParamsCacheControl
     from .previous_turn_id_input import PreviousTurnIdInput
     from .raw_tool_call import RawToolCall
+    from .registered_mcp_server import RegisteredMcpServer
+    from .registered_mcp_server_disable_tools_item import RegisteredMcpServerDisableToolsItem
+    from .registered_mcp_server_enable_tools_item import RegisteredMcpServerEnableToolsItem
+    from .registered_mcp_server_preload_tools_item import RegisteredMcpServerPreloadToolsItem
+    from .registered_mcp_server_require_approval_for_tools_item import RegisteredMcpServerRequireApprovalForToolsItem
     from .request_error_response import RequestErrorResponse
     from .request_error_response_error import RequestErrorResponseError
     from .response_format import ResponseFormat
@@ -77,6 +85,10 @@ if typing.TYPE_CHECKING:
     from .runtime_config import RuntimeConfig
     from .sandbox_config import SandboxConfig
     from .sandbox_created_event import SandboxCreatedEvent
+    from .sandbox_network_policy import SandboxNetworkPolicy
+    from .sandbox_network_policy_auth_inject_item import SandboxNetworkPolicyAuthInjectItem
+    from .sandbox_network_policy_auth_inject_item_auth_data import SandboxNetworkPolicyAuthInjectItemAuthData
+    from .sandbox_network_policy_auth_inject_item_match import SandboxNetworkPolicyAuthInjectItemMatch
     from .session import Session
     from .session_event import SessionEvent
     from .session_event_item import SessionEventItem
@@ -147,6 +159,11 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetDraftSessionResponse": ".get_draft_session_response",
     "GetSessionResponse": ".get_session_response",
     "GetTurnResponse": ".get_turn_response",
+    "InlineMcpServer": ".inline_mcp_server",
+    "InlineMcpServerDisableToolsItem": ".inline_mcp_server_disable_tools_item",
+    "InlineMcpServerEnableToolsItem": ".inline_mcp_server_enable_tools_item",
+    "InlineMcpServerPreloadToolsItem": ".inline_mcp_server_preload_tools_item",
+    "InlineMcpServerRequireApprovalForToolsItem": ".inline_mcp_server_require_approval_for_tools_item",
     "LargeToolResponseConfig": ".large_tool_response_config",
     "ListDraftSessionsOrder": ".list_draft_sessions_order",
     "ListDraftSessionsResponse": ".list_draft_sessions_response",
@@ -163,11 +180,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "McpInitializeEvent": ".mcp_initialize_event",
     "McpServer": ".mcp_server",
     "McpServerAuthInfo": ".mcp_server_auth_info",
-    "McpServerDisableToolsItem": ".mcp_server_disable_tools_item",
-    "McpServerEnableToolsItem": ".mcp_server_enable_tools_item",
     "McpServerInitInfo": ".mcp_server_init_info",
-    "McpServerPreloadToolsItem": ".mcp_server_preload_tools_item",
-    "McpServerRequireApprovalForToolsItem": ".mcp_server_require_approval_for_tools_item",
+    "McpServerInitInfoTransportType": ".mcp_server_init_info_transport_type",
     "McpToolInfo": ".mcp_tool_info",
     "Model": ".model",
     "ModelMessageDeltaEvent": ".model_message_delta_event",
@@ -177,8 +191,14 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ModelMessageUsage": ".model_message_usage",
     "ModelMessageUsageInputTokensBreakdown": ".model_message_usage_input_tokens_breakdown",
     "ModelParams": ".model_params",
+    "ModelParamsCacheControl": ".model_params_cache_control",
     "PreviousTurnIdInput": ".previous_turn_id_input",
     "RawToolCall": ".raw_tool_call",
+    "RegisteredMcpServer": ".registered_mcp_server",
+    "RegisteredMcpServerDisableToolsItem": ".registered_mcp_server_disable_tools_item",
+    "RegisteredMcpServerEnableToolsItem": ".registered_mcp_server_enable_tools_item",
+    "RegisteredMcpServerPreloadToolsItem": ".registered_mcp_server_preload_tools_item",
+    "RegisteredMcpServerRequireApprovalForToolsItem": ".registered_mcp_server_require_approval_for_tools_item",
     "RequestErrorResponse": ".request_error_response",
     "RequestErrorResponseError": ".request_error_response_error",
     "ResponseFormat": ".response_format",
@@ -189,6 +209,10 @@ _dynamic_imports: typing.Dict[str, str] = {
     "RuntimeConfig": ".runtime_config",
     "SandboxConfig": ".sandbox_config",
     "SandboxCreatedEvent": ".sandbox_created_event",
+    "SandboxNetworkPolicy": ".sandbox_network_policy",
+    "SandboxNetworkPolicyAuthInjectItem": ".sandbox_network_policy_auth_inject_item",
+    "SandboxNetworkPolicyAuthInjectItemAuthData": ".sandbox_network_policy_auth_inject_item_auth_data",
+    "SandboxNetworkPolicyAuthInjectItemMatch": ".sandbox_network_policy_auth_inject_item_match",
     "Session": ".session",
     "SessionEvent": ".session_event",
     "SessionEventItem": ".session_event_item",
@@ -283,6 +307,11 @@ __all__ = [
     "GetDraftSessionResponse",
     "GetSessionResponse",
     "GetTurnResponse",
+    "InlineMcpServer",
+    "InlineMcpServerDisableToolsItem",
+    "InlineMcpServerEnableToolsItem",
+    "InlineMcpServerPreloadToolsItem",
+    "InlineMcpServerRequireApprovalForToolsItem",
     "LargeToolResponseConfig",
     "ListDraftSessionsOrder",
     "ListDraftSessionsResponse",
@@ -299,11 +328,8 @@ __all__ = [
     "McpInitializeEvent",
     "McpServer",
     "McpServerAuthInfo",
-    "McpServerDisableToolsItem",
-    "McpServerEnableToolsItem",
     "McpServerInitInfo",
-    "McpServerPreloadToolsItem",
-    "McpServerRequireApprovalForToolsItem",
+    "McpServerInitInfoTransportType",
     "McpToolInfo",
     "Model",
     "ModelMessageDeltaEvent",
@@ -313,8 +339,14 @@ __all__ = [
     "ModelMessageUsage",
     "ModelMessageUsageInputTokensBreakdown",
     "ModelParams",
+    "ModelParamsCacheControl",
     "PreviousTurnIdInput",
     "RawToolCall",
+    "RegisteredMcpServer",
+    "RegisteredMcpServerDisableToolsItem",
+    "RegisteredMcpServerEnableToolsItem",
+    "RegisteredMcpServerPreloadToolsItem",
+    "RegisteredMcpServerRequireApprovalForToolsItem",
     "RequestErrorResponse",
     "RequestErrorResponseError",
     "ResponseFormat",
@@ -325,6 +357,10 @@ __all__ = [
     "RuntimeConfig",
     "SandboxConfig",
     "SandboxCreatedEvent",
+    "SandboxNetworkPolicy",
+    "SandboxNetworkPolicyAuthInjectItem",
+    "SandboxNetworkPolicyAuthInjectItemAuthData",
+    "SandboxNetworkPolicyAuthInjectItemMatch",
     "Session",
     "SessionEvent",
     "SessionEventItem",
