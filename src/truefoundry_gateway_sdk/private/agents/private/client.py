@@ -107,6 +107,44 @@ class PrivateClient:
             request_options=request_options,
         )
 
+    def download_sandbox_file(
+        self, sandbox_id: str, *, path: str, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.Iterator[bytes]:
+        """
+        Download a file produced by an agent inside a sandbox.
+
+        Parameters
+        ----------
+        sandbox_id : str
+            The sandbox containing the file.
+
+        path : str
+            Absolute path of the file inside the sandbox.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
+
+        Returns
+        -------
+        typing.Iterator[bytes]
+            File download.
+
+        Examples
+        --------
+        from truefoundry_gateway_sdk import TrueFoundryGateway
+
+        client = TrueFoundryGateway(
+            api_key="YOUR_API_KEY",
+            base_url="https://yourhost.com/path/to/api",
+        )
+        client.private.agents.private.download_sandbox_file(
+            sandbox_id="sandboxId",
+            path="x",
+        )
+        """
+        with self._raw_client.download_sandbox_file(sandbox_id, path=path, request_options=request_options) as r:
+            yield from r.data
+
     @property
     def draft_sessions(self):
         if self._draft_sessions is None:
@@ -218,6 +256,53 @@ class AsyncPrivateClient:
             end_timestamp=end_timestamp,
             request_options=request_options,
         )
+
+    async def download_sandbox_file(
+        self, sandbox_id: str, *, path: str, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.AsyncIterator[bytes]:
+        """
+        Download a file produced by an agent inside a sandbox.
+
+        Parameters
+        ----------
+        sandbox_id : str
+            The sandbox containing the file.
+
+        path : str
+            Absolute path of the file inside the sandbox.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
+
+        Returns
+        -------
+        typing.AsyncIterator[bytes]
+            File download.
+
+        Examples
+        --------
+        import asyncio
+
+        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway
+
+        client = AsyncTrueFoundryGateway(
+            api_key="YOUR_API_KEY",
+            base_url="https://yourhost.com/path/to/api",
+        )
+
+
+        async def main() -> None:
+            await client.private.agents.private.download_sandbox_file(
+                sandbox_id="sandboxId",
+                path="x",
+            )
+
+
+        asyncio.run(main())
+        """
+        async with self._raw_client.download_sandbox_file(sandbox_id, path=path, request_options=request_options) as r:
+            async for _chunk in r.data:
+                yield _chunk
 
     @property
     def draft_sessions(self):

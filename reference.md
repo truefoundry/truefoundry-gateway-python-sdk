@@ -1,86 +1,4 @@
 # Reference
-## Private Agents
-<details><summary><code>client.private.agents.<a href="src/truefoundry_gateway_sdk/private/agents/client.py">download_sandbox_file</a>(...) -> typing.Iterator[bytes]</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Download a file produced by an agent inside a sandbox.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from truefoundry_gateway_sdk import TrueFoundryGateway
-
-client = TrueFoundryGateway(
-    api_key="<token>",
-    base_url="https://yourhost.com/path/to/api",
-)
-
-client.private.agents.download_sandbox_file(
-    sandbox_id="sandboxId",
-    path="x",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**sandbox_id:** `str` — The sandbox containing the file.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**path:** `str` — Absolute path of the file inside the sandbox.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 ## Private Agents Sessions
 <details><summary><code>client.private.agents.sessions.<a href="src/truefoundry_gateway_sdk/private/agents/sessions/client.py">list</a>(...) -> ListSessionsResponse</code></summary>
 <dl>
@@ -1078,6 +996,87 @@ client.private.agents.private.list_owned_sessions(
 <dd>
 
 **end_timestamp:** `typing.Optional[str]` — Inclusive upper bound on `created_at` (ISO-8601). Defaults upstream to now.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.private.agents.private.<a href="src/truefoundry_gateway_sdk/private/agents/private/client.py">download_sandbox_file</a>(...) -> typing.Iterator[bytes]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Download a file produced by an agent inside a sandbox.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from truefoundry_gateway_sdk import TrueFoundryGateway
+
+client = TrueFoundryGateway(
+    api_key="<token>",
+    base_url="https://yourhost.com/path/to/api",
+)
+
+client.private.agents.private.download_sandbox_file(
+    sandbox_id="sandboxId",
+    path="x",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**sandbox_id:** `str` — The sandbox containing the file.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**path:** `str` — Absolute path of the file inside the sandbox.
     
 </dd>
 </dl>
