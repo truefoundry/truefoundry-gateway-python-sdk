@@ -7,7 +7,6 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class TurnStateError(UniversalBaseModel):
-    status: typing.Literal["error"] = "error"
     message: str
     completed_at: str
 

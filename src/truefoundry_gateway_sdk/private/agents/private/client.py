@@ -77,20 +77,13 @@ class PrivateClient:
 
         Examples
         --------
-        from truefoundry_gateway_sdk import ListOwnedSessionsOrder, TrueFoundryGateway
+        from truefoundry_gateway_sdk import TrueFoundryGateway
 
         client = TrueFoundryGateway(
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
-        response = client.private.agents.private.list_owned_sessions(
-            agent_name="agent_name",
-            limit=1,
-            order=ListOwnedSessionsOrder.ASC,
-            page_token="page_token",
-            start_timestamp="start_timestamp",
-            end_timestamp="end_timestamp",
-        )
+        response = client.private.agents.private.list_owned_sessions()
         for item in response:
             yield item
         # alternatively, you can paginate page-by-page
@@ -217,10 +210,7 @@ class AsyncPrivateClient:
         --------
         import asyncio
 
-        from truefoundry_gateway_sdk import (
-            AsyncTrueFoundryGateway,
-            ListOwnedSessionsOrder,
-        )
+        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway
 
         client = AsyncTrueFoundryGateway(
             api_key="YOUR_API_KEY",
@@ -229,14 +219,7 @@ class AsyncPrivateClient:
 
 
         async def main() -> None:
-            response = await client.private.agents.private.list_owned_sessions(
-                agent_name="agent_name",
-                limit=1,
-                order=ListOwnedSessionsOrder.ASC,
-                page_token="page_token",
-                start_timestamp="start_timestamp",
-                end_timestamp="end_timestamp",
-            )
+            response = await client.private.agents.private.list_owned_sessions()
             async for item in response:
                 yield item
 

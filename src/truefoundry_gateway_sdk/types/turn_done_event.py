@@ -8,7 +8,6 @@ from .turn_done_event_state import TurnDoneEventState
 
 
 class TurnDoneEvent(UniversalBaseModel):
-    type: typing.Literal["turn.done"] = "turn.done"
     id: str = pydantic.Field()
     """
     Unique identifier for the event

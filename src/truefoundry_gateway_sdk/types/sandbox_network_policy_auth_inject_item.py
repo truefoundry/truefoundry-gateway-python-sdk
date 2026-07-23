@@ -6,10 +6,11 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .sandbox_network_policy_auth_inject_item_auth_data import SandboxNetworkPolicyAuthInjectItemAuthData
 from .sandbox_network_policy_auth_inject_item_match import SandboxNetworkPolicyAuthInjectItemMatch
+from .sandbox_network_policy_auth_inject_item_type import SandboxNetworkPolicyAuthInjectItemType
 
 
 class SandboxNetworkPolicyAuthInjectItem(UniversalBaseModel):
-    type: typing.Literal["git"] = "git"
+    type: SandboxNetworkPolicyAuthInjectItemType
     match: SandboxNetworkPolicyAuthInjectItemMatch
     auth_data: SandboxNetworkPolicyAuthInjectItemAuthData
 

@@ -8,7 +8,6 @@ from .base_mcp_server import BaseMcpServer
 
 
 class InlineMcpServer(BaseMcpServer):
-    type: typing.Literal["inline"] = "inline"
     url: str
 
     if IS_PYDANTIC_V2:

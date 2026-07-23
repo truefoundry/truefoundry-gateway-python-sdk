@@ -6,6 +6,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .finish_reason import FinishReason
 from .model_message_event_content import ModelMessageEventContent
+from .model_message_event_type import ModelMessageEventType
 from .model_message_usage import ModelMessageUsage
 from .tool_call import ToolCall
 
@@ -16,7 +17,7 @@ class ModelMessageEvent(UniversalBaseModel):
     refusal: typing.Optional[str] = None
     reasoning_content: typing.Optional[str] = None
     tool_calls: typing.Optional[typing.List[ToolCall]] = None
-    type: typing.Literal["model.message"] = "model.message"
+    type: ModelMessageEventType
     id: str = pydantic.Field()
     """
     Unique identifier for the event

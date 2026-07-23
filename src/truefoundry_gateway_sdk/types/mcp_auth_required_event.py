@@ -9,7 +9,6 @@ from .mcp_server_auth_info import McpServerAuthInfo
 
 
 class McpAuthRequiredEvent(BaseMcpAuthRequiredEvent):
-    type: typing.Literal["mcp.auth_required"] = "mcp.auth_required"
     mcp_servers: typing.List[McpServerAuthInfo]
 
     if IS_PYDANTIC_V2:

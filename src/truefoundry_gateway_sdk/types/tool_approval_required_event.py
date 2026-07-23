@@ -8,7 +8,6 @@ from .tool_call_ref import ToolCallRef
 
 
 class ToolApprovalRequiredEvent(UniversalBaseModel):
-    type: typing.Literal["tool.approval_required"] = "tool.approval_required"
     id: str = pydantic.Field()
     """
     Unique identifier for the event

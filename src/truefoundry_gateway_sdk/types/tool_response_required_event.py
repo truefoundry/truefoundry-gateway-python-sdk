@@ -8,7 +8,6 @@ from .tool_call_ref import ToolCallRef
 
 
 class ToolResponseRequiredEvent(UniversalBaseModel):
-    type: typing.Literal["tool.response_required"] = "tool.response_required"
     id: str = pydantic.Field()
     """
     Unique identifier for the event

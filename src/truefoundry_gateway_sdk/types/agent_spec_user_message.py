@@ -4,10 +4,11 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .agent_spec_user_message_type import AgentSpecUserMessageType
 
 
 class AgentSpecUserMessage(UniversalBaseModel):
-    type: typing.Literal["user.message"] = "user.message"
+    type: AgentSpecUserMessageType
     content: str
 
     if IS_PYDANTIC_V2:

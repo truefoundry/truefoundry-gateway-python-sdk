@@ -8,7 +8,6 @@ from .response_format_json_schema_json_schema import ResponseFormatJsonSchemaJso
 
 
 class ResponseFormatJsonSchema(UniversalBaseModel):
-    type: typing.Literal["json_schema"] = "json_schema"
     json_schema: ResponseFormatJsonSchemaJsonSchema
 
     if IS_PYDANTIC_V2:

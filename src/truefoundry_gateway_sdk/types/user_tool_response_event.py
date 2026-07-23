@@ -7,7 +7,6 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class UserToolResponseEvent(UniversalBaseModel):
-    type: typing.Literal["user.tool_response"] = "user.tool_response"
     thread_id: str
     tool_call_id: str
     content: str

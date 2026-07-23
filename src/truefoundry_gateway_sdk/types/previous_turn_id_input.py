@@ -2,4 +2,6 @@
 
 import typing
 
-PreviousTurnIdInput = typing.Union[typing.Literal["auto"], str]
+from .previous_turn_id_input_zero import PreviousTurnIdInputZero
+
+PreviousTurnIdInput = typing.Union[PreviousTurnIdInputZero, str]

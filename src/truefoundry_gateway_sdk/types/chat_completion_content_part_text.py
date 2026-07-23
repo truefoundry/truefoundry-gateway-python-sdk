@@ -7,7 +7,6 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class ChatCompletionContentPartText(UniversalBaseModel):
-    type: typing.Literal["text"] = "text"
     text: str
 
     if IS_PYDANTIC_V2:

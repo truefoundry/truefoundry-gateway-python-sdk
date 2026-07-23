@@ -10,7 +10,6 @@ from .turn_state_running import TurnStateRunning
 
 
 class TurnCreatedEvent(UniversalBaseModel):
-    type: typing.Literal["turn.created"] = "turn.created"
     id: str = pydantic.Field()
     """
     Unique identifier for the event

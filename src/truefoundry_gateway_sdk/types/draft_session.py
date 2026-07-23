@@ -5,11 +5,16 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .agent_spec import AgentSpec
+from .draft_session_type import DraftSessionType
 from .subject import Subject
 
 
 class DraftSession(UniversalBaseModel):
-    type: typing.Literal["session/draft"] = "session/draft"
+    type: DraftSessionType = pydantic.Field()
+    """
+    Discriminates a draft session from a saved session.
+    """
+
     id: str
     agent_spec: AgentSpec
     agent_name: typing.Optional[str] = None

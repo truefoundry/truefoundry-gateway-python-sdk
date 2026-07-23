@@ -9,7 +9,6 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 class ToolResponseEvent(UniversalBaseModel):
     tool_call_id: str
     content: str
-    type: typing.Literal["tool.response"] = "tool.response"
     id: str = pydantic.Field()
     """
     Unique identifier for the event

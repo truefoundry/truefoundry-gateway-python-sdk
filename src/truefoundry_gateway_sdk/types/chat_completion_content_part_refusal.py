@@ -7,7 +7,6 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class ChatCompletionContentPartRefusal(UniversalBaseModel):
-    type: typing.Literal["refusal"] = "refusal"
     refusal: str
 
     if IS_PYDANTIC_V2:

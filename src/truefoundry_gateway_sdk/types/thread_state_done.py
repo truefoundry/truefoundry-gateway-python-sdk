@@ -8,7 +8,6 @@ from .model_message_event import ModelMessageEvent
 
 
 class ThreadStateDone(UniversalBaseModel):
-    status: typing.Literal["done"] = "done"
     output: ModelMessageEvent
 
     if IS_PYDANTIC_V2:

@@ -8,8 +8,6 @@ from .base_mcp_server import BaseMcpServer
 
 
 class RegisteredMcpServer(BaseMcpServer):
-    type: typing.Literal["truefoundry-mcp-registry"] = "truefoundry-mcp-registry"
-
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2
     else:

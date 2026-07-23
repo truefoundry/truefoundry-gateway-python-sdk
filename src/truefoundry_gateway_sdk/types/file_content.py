@@ -7,7 +7,6 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class FileContent(UniversalBaseModel):
-    type: typing.Literal["file"] = "file"
     name: str
     data: str = pydantic.Field()
     """
