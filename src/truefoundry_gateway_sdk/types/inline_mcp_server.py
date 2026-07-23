@@ -3,20 +3,11 @@
 import typing
 
 import pydantic
-from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .inline_mcp_server_disable_tools_item import InlineMcpServerDisableToolsItem
-from .inline_mcp_server_enable_tools_item import InlineMcpServerEnableToolsItem
-from .inline_mcp_server_preload_tools_item import InlineMcpServerPreloadToolsItem
-from .inline_mcp_server_require_approval_for_tools_item import InlineMcpServerRequireApprovalForToolsItem
+from ..core.pydantic_utilities import IS_PYDANTIC_V2
+from .base_mcp_server import BaseMcpServer
 
 
-class InlineMcpServer(UniversalBaseModel):
-    name: str
-    enable_tools: typing.Optional[typing.List[InlineMcpServerEnableToolsItem]] = None
-    disable_tools: typing.Optional[typing.List[InlineMcpServerDisableToolsItem]] = None
-    preload_tools: typing.Optional[typing.List[InlineMcpServerPreloadToolsItem]] = None
-    require_approval_for_tools: typing.Optional[typing.List[InlineMcpServerRequireApprovalForToolsItem]] = None
-    preload: typing.Optional[bool] = False
+class InlineMcpServer(BaseMcpServer):
     type: typing.Literal["inline"] = "inline"
     url: str
 
