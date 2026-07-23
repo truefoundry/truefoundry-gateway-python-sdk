@@ -70,11 +70,11 @@ if typing.TYPE_CHECKING:
     from .model_params_cache_control import ModelParamsCacheControl
     from .previous_turn_id_input import PreviousTurnIdInput
     from .raw_tool_call import RawToolCall
-    from .registry_mcp_server import RegistryMcpServer
-    from .registry_mcp_server_disable_tools_item import RegistryMcpServerDisableToolsItem
-    from .registry_mcp_server_enable_tools_item import RegistryMcpServerEnableToolsItem
-    from .registry_mcp_server_preload_tools_item import RegistryMcpServerPreloadToolsItem
-    from .registry_mcp_server_require_approval_for_tools_item import RegistryMcpServerRequireApprovalForToolsItem
+    from .registered_mcp_server import RegisteredMcpServer
+    from .registered_mcp_server_disable_tools_item import RegisteredMcpServerDisableToolsItem
+    from .registered_mcp_server_enable_tools_item import RegisteredMcpServerEnableToolsItem
+    from .registered_mcp_server_preload_tools_item import RegisteredMcpServerPreloadToolsItem
+    from .registered_mcp_server_require_approval_for_tools_item import RegisteredMcpServerRequireApprovalForToolsItem
     from .request_error_response import RequestErrorResponse
     from .request_error_response_error import RequestErrorResponseError
     from .response_format import ResponseFormat
@@ -194,11 +194,11 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ModelParamsCacheControl": ".model_params_cache_control",
     "PreviousTurnIdInput": ".previous_turn_id_input",
     "RawToolCall": ".raw_tool_call",
-    "RegistryMcpServer": ".registry_mcp_server",
-    "RegistryMcpServerDisableToolsItem": ".registry_mcp_server_disable_tools_item",
-    "RegistryMcpServerEnableToolsItem": ".registry_mcp_server_enable_tools_item",
-    "RegistryMcpServerPreloadToolsItem": ".registry_mcp_server_preload_tools_item",
-    "RegistryMcpServerRequireApprovalForToolsItem": ".registry_mcp_server_require_approval_for_tools_item",
+    "RegisteredMcpServer": ".registered_mcp_server",
+    "RegisteredMcpServerDisableToolsItem": ".registered_mcp_server_disable_tools_item",
+    "RegisteredMcpServerEnableToolsItem": ".registered_mcp_server_enable_tools_item",
+    "RegisteredMcpServerPreloadToolsItem": ".registered_mcp_server_preload_tools_item",
+    "RegisteredMcpServerRequireApprovalForToolsItem": ".registered_mcp_server_require_approval_for_tools_item",
     "RequestErrorResponse": ".request_error_response",
     "RequestErrorResponseError": ".request_error_response_error",
     "ResponseFormat": ".response_format",
@@ -342,11 +342,11 @@ __all__ = [
     "ModelParamsCacheControl",
     "PreviousTurnIdInput",
     "RawToolCall",
-    "RegistryMcpServer",
-    "RegistryMcpServerDisableToolsItem",
-    "RegistryMcpServerEnableToolsItem",
-    "RegistryMcpServerPreloadToolsItem",
-    "RegistryMcpServerRequireApprovalForToolsItem",
+    "RegisteredMcpServer",
+    "RegisteredMcpServerDisableToolsItem",
+    "RegisteredMcpServerEnableToolsItem",
+    "RegisteredMcpServerPreloadToolsItem",
+    "RegisteredMcpServerRequireApprovalForToolsItem",
     "RequestErrorResponse",
     "RequestErrorResponseError",
     "ResponseFormat",

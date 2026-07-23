@@ -3,6 +3,6 @@
 import typing
 
 from .inline_mcp_server import InlineMcpServer
-from .registry_mcp_server import RegistryMcpServer
+from .registered_mcp_server import RegisteredMcpServer
 
-McpServer = typing.Union[RegistryMcpServer, InlineMcpServer]
+McpServer = typing.Union[RegisteredMcpServer, InlineMcpServer]
