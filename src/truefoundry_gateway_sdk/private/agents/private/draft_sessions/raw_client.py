@@ -170,7 +170,6 @@ class RawDraftSessionsClient:
         self,
         *,
         agent_spec: AgentSpec,
-        tfy_metadata: typing.Optional[str] = None,
         agent_name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[GetDraftSessionResponse]:
@@ -180,9 +179,6 @@ class RawDraftSessionsClient:
         Parameters
         ----------
         agent_spec : AgentSpec
-
-        tfy_metadata : typing.Optional[str]
-            Optional customer request metadata (x-tfy-metadata) persisted as request_metadata at draft session creation.
 
         agent_name : typing.Optional[str]
             Optionally link the draft to an existing saved agent in the tenant. Omit for a standalone draft.
@@ -206,7 +202,6 @@ class RawDraftSessionsClient:
             },
             headers={
                 "content-type": "application/json",
-                "x-tfy-metadata": str(tfy_metadata) if tfy_metadata is not None else None,
             },
             request_options=request_options,
             omit=OMIT,
@@ -597,7 +592,6 @@ class AsyncRawDraftSessionsClient:
         self,
         *,
         agent_spec: AgentSpec,
-        tfy_metadata: typing.Optional[str] = None,
         agent_name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[GetDraftSessionResponse]:
@@ -607,9 +601,6 @@ class AsyncRawDraftSessionsClient:
         Parameters
         ----------
         agent_spec : AgentSpec
-
-        tfy_metadata : typing.Optional[str]
-            Optional customer request metadata (x-tfy-metadata) persisted as request_metadata at draft session creation.
 
         agent_name : typing.Optional[str]
             Optionally link the draft to an existing saved agent in the tenant. Omit for a standalone draft.
@@ -633,7 +624,6 @@ class AsyncRawDraftSessionsClient:
             },
             headers={
                 "content-type": "application/json",
-                "x-tfy-metadata": str(tfy_metadata) if tfy_metadata is not None else None,
             },
             request_options=request_options,
             omit=OMIT,
