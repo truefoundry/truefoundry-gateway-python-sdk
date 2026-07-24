@@ -613,7 +613,7 @@ class RawSessionsClient:
                     object_=input, annotation=typing.Sequence[TurnInputItem], direction="write"
                 ),
                 "previous_turn_id": convert_and_respect_annotation_metadata(
-                    object_=previous_turn_id, annotation=typing.Optional[PreviousTurnIdInput], direction="write"
+                    object_=previous_turn_id, annotation=PreviousTurnIdInput, direction="write"
                 ),
             },
             headers={
@@ -1715,7 +1715,7 @@ class AsyncRawSessionsClient:
                     object_=input, annotation=typing.Sequence[TurnInputItem], direction="write"
                 ),
                 "previous_turn_id": convert_and_respect_annotation_metadata(
-                    object_=previous_turn_id, annotation=typing.Optional[PreviousTurnIdInput], direction="write"
+                    object_=previous_turn_id, annotation=PreviousTurnIdInput, direction="write"
                 ),
             },
             headers={
