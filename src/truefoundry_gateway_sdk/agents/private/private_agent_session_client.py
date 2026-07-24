@@ -4,6 +4,7 @@ import os
 import typing
 
 from ...core.pagination import AsyncPager, SyncPager
+from ...private.agents.private.draft_sessions.client import OMIT
 from ..agent_session import AgentSession, AsyncAgentSession
 from .agent_draft_session import AgentDraftSession, AsyncAgentDraftSession
 
@@ -173,7 +174,7 @@ class PrivateAgentSessionClient:
         self,
         *,
         agent_spec: AgentSpec,
-        agent_name: typing.Optional[str] = None,
+        agent_name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AgentDraftSession:
         """

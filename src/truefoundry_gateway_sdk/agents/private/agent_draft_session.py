@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import typing
 
+from ...private.agents.private.draft_sessions.client import OMIT
 from ..session_mixin import AsyncSessionMixin, SessionMixin
 
 if typing.TYPE_CHECKING:
@@ -373,7 +374,7 @@ class AsyncAgentDraftSession:
     async def update(
         self,
         *,
-        agent_spec: typing.Optional[AgentSpec] = None,
+        agent_spec: typing.Optional[AgentSpec] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
