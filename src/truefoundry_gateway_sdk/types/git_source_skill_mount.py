@@ -6,7 +6,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class SkillMountGit(UniversalBaseModel):
+class GitSourceSkillMount(UniversalBaseModel):
     type: typing.Literal["git"] = "git"
     url: str = pydantic.Field()
     """

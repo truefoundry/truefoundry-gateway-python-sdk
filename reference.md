@@ -177,14 +177,6 @@ client.private.agents.sessions.create(
 <dl>
 <dd>
 
-**tfy_metadata:** `typing.Optional[str]` — Optional customer request metadata (x-tfy-metadata) persisted as request_metadata at session creation.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -1424,14 +1416,6 @@ client.private.agents.private.draft_sessions.create(
 <dd>
 
 **agent_spec:** `AgentSpec` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**tfy_metadata:** `typing.Optional[str]` — Optional customer request metadata (x-tfy-metadata) persisted as request_metadata at draft session creation.
     
 </dd>
 </dl>

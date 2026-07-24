@@ -116,13 +116,7 @@ class SessionsClient:
             request_options=request_options,
         )
 
-    def create(
-        self,
-        *,
-        agent_name: str,
-        tfy_metadata: typing.Optional[str] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> GetSessionResponse:
+    def create(self, *, agent_name: str, request_options: typing.Optional[RequestOptions] = None) -> GetSessionResponse:
         """
         Create a session for an existing named agent.
 
@@ -130,9 +124,6 @@ class SessionsClient:
         ----------
         agent_name : str
             Name of an existing agent in the tenant.
-
-        tfy_metadata : typing.Optional[str]
-            Optional customer request metadata (x-tfy-metadata) persisted as request_metadata at session creation.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -154,9 +145,7 @@ class SessionsClient:
             agent_name="agent_name",
         )
         """
-        _response = self._raw_client.create(
-            agent_name=agent_name, tfy_metadata=tfy_metadata, request_options=request_options
-        )
+        _response = self._raw_client.create(agent_name=agent_name, request_options=request_options)
         return _response.data
 
     def get(self, session_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> GetSessionResponse:
@@ -622,11 +611,7 @@ class AsyncSessionsClient:
         )
 
     async def create(
-        self,
-        *,
-        agent_name: str,
-        tfy_metadata: typing.Optional[str] = None,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, agent_name: str, request_options: typing.Optional[RequestOptions] = None
     ) -> GetSessionResponse:
         """
         Create a session for an existing named agent.
@@ -635,9 +620,6 @@ class AsyncSessionsClient:
         ----------
         agent_name : str
             Name of an existing agent in the tenant.
-
-        tfy_metadata : typing.Optional[str]
-            Optional customer request metadata (x-tfy-metadata) persisted as request_metadata at session creation.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -667,9 +649,7 @@ class AsyncSessionsClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.create(
-            agent_name=agent_name, tfy_metadata=tfy_metadata, request_options=request_options
-        )
+        _response = await self._raw_client.create(agent_name=agent_name, request_options=request_options)
         return _response.data
 
     async def get(

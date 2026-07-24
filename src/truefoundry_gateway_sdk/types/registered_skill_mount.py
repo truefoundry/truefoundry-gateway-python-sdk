@@ -6,7 +6,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class SkillMountRegistry(UniversalBaseModel):
+class RegisteredSkillMount(UniversalBaseModel):
     type: typing.Literal["truefoundry-skills-registry"] = "truefoundry-skills-registry"
     fqn: str = pydantic.Field()
     """

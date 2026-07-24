@@ -37,6 +37,7 @@ if typing.TYPE_CHECKING:
     from .get_draft_session_response import GetDraftSessionResponse
     from .get_session_response import GetSessionResponse
     from .get_turn_response import GetTurnResponse
+    from .git_source_skill_mount import GitSourceSkillMount
     from .inline_mcp_server import InlineMcpServer
     from .large_tool_response_config import LargeToolResponseConfig
     from .list_draft_sessions_order import ListDraftSessionsOrder
@@ -69,6 +70,7 @@ if typing.TYPE_CHECKING:
     from .previous_turn_id_input import PreviousTurnIdInput
     from .raw_tool_call import RawToolCall
     from .registered_mcp_server import RegisteredMcpServer
+    from .registered_skill_mount import RegisteredSkillMount
     from .request_error_response import RequestErrorResponse
     from .request_error_response_error import RequestErrorResponseError
     from .require_approval_tool_selector_item import RequireApprovalToolSelectorItem
@@ -93,8 +95,6 @@ if typing.TYPE_CHECKING:
     from .session_event_item import SessionEventItem
     from .session_type import SessionType
     from .skill_mount import SkillMount
-    from .skill_mount_git import SkillMountGit
-    from .skill_mount_registry import SkillMountRegistry
     from .subject import Subject
     from .text_content import TextContent
     from .thread_created_event import ThreadCreatedEvent
@@ -165,6 +165,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetDraftSessionResponse": ".get_draft_session_response",
     "GetSessionResponse": ".get_session_response",
     "GetTurnResponse": ".get_turn_response",
+    "GitSourceSkillMount": ".git_source_skill_mount",
     "InlineMcpServer": ".inline_mcp_server",
     "LargeToolResponseConfig": ".large_tool_response_config",
     "ListDraftSessionsOrder": ".list_draft_sessions_order",
@@ -197,6 +198,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "PreviousTurnIdInput": ".previous_turn_id_input",
     "RawToolCall": ".raw_tool_call",
     "RegisteredMcpServer": ".registered_mcp_server",
+    "RegisteredSkillMount": ".registered_skill_mount",
     "RequestErrorResponse": ".request_error_response",
     "RequestErrorResponseError": ".request_error_response_error",
     "RequireApprovalToolSelectorItem": ".require_approval_tool_selector_item",
@@ -221,8 +223,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "SessionEventItem": ".session_event_item",
     "SessionType": ".session_type",
     "SkillMount": ".skill_mount",
-    "SkillMountGit": ".skill_mount_git",
-    "SkillMountRegistry": ".skill_mount_registry",
     "Subject": ".subject",
     "TextContent": ".text_content",
     "ThreadCreatedEvent": ".thread_created_event",
@@ -317,6 +317,7 @@ __all__ = [
     "GetDraftSessionResponse",
     "GetSessionResponse",
     "GetTurnResponse",
+    "GitSourceSkillMount",
     "InlineMcpServer",
     "LargeToolResponseConfig",
     "ListDraftSessionsOrder",
@@ -349,6 +350,7 @@ __all__ = [
     "PreviousTurnIdInput",
     "RawToolCall",
     "RegisteredMcpServer",
+    "RegisteredSkillMount",
     "RequestErrorResponse",
     "RequestErrorResponseError",
     "RequireApprovalToolSelectorItem",
@@ -373,8 +375,6 @@ __all__ = [
     "SessionEventItem",
     "SessionType",
     "SkillMount",
-    "SkillMountGit",
-    "SkillMountRegistry",
     "Subject",
     "TextContent",
     "ThreadCreatedEvent",

@@ -2,7 +2,7 @@
 
 import typing
 
-from .skill_mount_git import SkillMountGit
-from .skill_mount_registry import SkillMountRegistry
+from .git_source_skill_mount import GitSourceSkillMount
+from .registered_skill_mount import RegisteredSkillMount
 
-SkillMount = typing.Union[SkillMountGit, SkillMountRegistry]
+SkillMount = typing.Union[GitSourceSkillMount, RegisteredSkillMount]
