@@ -311,7 +311,7 @@ class PrivateAgentSessionClient:
         SyncPager[typing.Union[AgentSession, AgentDraftSession], ListOwnedSessionsResponse]
             Paginated owned sessions.
         """
-        raw_pager = self._client.agents.private.sessions.list_owned_sessions(
+        raw_pager = self._client.agents.private.list_owned_sessions(
             agent_name=agent_name,
             limit=limit,
             order=order,
@@ -321,6 +321,34 @@ class PrivateAgentSessionClient:
             request_options=request_options,
         )
         return _wrap_owned_sessions_pager(raw_pager, self._client)
+
+    def download_sandbox_file(
+        self,
+        sandbox_id: str,
+        *,
+        path: str,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> typing.Iterator[bytes]:
+        """
+        Download a sandbox file by ID.
+
+        Parameters
+        ----------
+        sandbox_id : str
+            Unique identifier of the sandbox file to download.
+        path : str
+            Absolute path of the file inside the sandbox.
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Returns
+        -------
+        typing.Iterator[bytes]
+            The downloaded sandbox file content, chunked.
+        """
+        return self._client.agents.private.download_sandbox_file(
+            sandbox_id, path=path, request_options=request_options
+        )
 
 
 class AsyncPrivateAgentSessionClient:
@@ -499,7 +527,7 @@ class AsyncPrivateAgentSessionClient:
         AsyncPager[typing.Union[AsyncAgentSession, AsyncAgentDraftSession], ListOwnedSessionsResponse]
             Paginated owned sessions.
         """
-        raw_pager = await self._client.agents.private.sessions.list_owned_sessions(
+        raw_pager = await self._client.agents.private.list_owned_sessions(
             agent_name=agent_name,
             limit=limit,
             order=order,
@@ -509,3 +537,32 @@ class AsyncPrivateAgentSessionClient:
             request_options=request_options,
         )
         return await _async_wrap_owned_sessions_pager(raw_pager, self._client)
+
+    async def download_sandbox_file(
+        self,
+        sandbox_id: str,
+        *,
+        path: str,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> typing.AsyncIterator[bytes]:
+        """
+        Download a sandbox file by ID.
+
+        Parameters
+        ----------
+        sandbox_id : str
+            Unique identifier of the sandbox file to download.
+        path : str
+            Absolute path of the file inside the sandbox.
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Yields
+        ------
+        bytes
+            The downloaded sandbox file content, chunked.
+        """
+        async for chunk in self._client.agents.private.download_sandbox_file(
+            sandbox_id, path=path, request_options=request_options
+        ):
+            yield chunk

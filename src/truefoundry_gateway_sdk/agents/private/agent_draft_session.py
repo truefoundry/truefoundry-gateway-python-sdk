@@ -35,6 +35,7 @@ class AgentDraftSession:
         self._created_by_subject: Subject = session.created_by_subject
         self._created_at: str = session.created_at
         self._updated_at: str = session.updated_at
+        self._client = client
         self._mixin = SessionMixin(session.id, client)
 
     def __repr__(self) -> str:
@@ -119,6 +120,34 @@ class AgentDraftSession:
             ISO-8601 timestamp when the draft session was last updated.
         """
         return self._updated_at
+
+    def update(
+        self,
+        *,
+        agent_spec: typing.Optional[AgentSpec] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
+        """
+        Update this draft session's inline agent spec (owner-only). An empty call is a valid
+        no-op that just refreshes ``updated_at``. Mutates ``agent_spec`` and ``updated_at`` on
+        this instance in place.
+
+        Parameters
+        ----------
+        agent_spec : typing.Optional[AgentSpec]
+            New inline agent spec for the draft. Omit to leave the spec unchanged.
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Returns
+        -------
+        None
+        """
+        response = self._client.agents.private.draft_sessions.update(
+            self.id, agent_spec=agent_spec, request_options=request_options
+        )
+        self._agent_spec = response.data.agent_spec
+        self._updated_at = response.data.updated_at
 
     def prepare_turn(
         self,
@@ -255,6 +284,7 @@ class AsyncAgentDraftSession:
         self._created_by_subject: Subject = session.created_by_subject
         self._created_at: str = session.created_at
         self._updated_at: str = session.updated_at
+        self._client = client
         self._mixin = AsyncSessionMixin(session.id, client)
 
     def __repr__(self) -> str:
@@ -339,6 +369,34 @@ class AsyncAgentDraftSession:
             ISO-8601 timestamp when the draft session was last updated.
         """
         return self._updated_at
+
+    async def update(
+        self,
+        *,
+        agent_spec: typing.Optional[AgentSpec] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
+        """
+        Update this draft session's inline agent spec (owner-only). An empty call is a valid
+        no-op that just refreshes ``updated_at``. Mutates ``agent_spec`` and ``updated_at`` on
+        this instance in place.
+
+        Parameters
+        ----------
+        agent_spec : typing.Optional[AgentSpec]
+            New inline agent spec for the draft. Omit to leave the spec unchanged.
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Returns
+        -------
+        None
+        """
+        response = await self._client.agents.private.draft_sessions.update(
+            self.id, agent_spec=agent_spec, request_options=request_options
+        )
+        self._agent_spec = response.data.agent_spec
+        self._updated_at = response.data.updated_at
 
     def prepare_turn(
         self,
