@@ -7,22 +7,22 @@ from ..core import enum
 T_Result = typing.TypeVar("T_Result")
 
 
-class ModelMessageEventType(enum.StrEnum):
-    MODEL_MESSAGE = "model.message"
-    _UNKNOWN = "__MODELMESSAGEEVENTTYPE_UNKNOWN__"
+class ResponseFormatOneType(enum.StrEnum):
+    JSON_OBJECT = "json_object"
+    _UNKNOWN = "__RESPONSEFORMATONETYPE_UNKNOWN__"
     """
     This member is used for forward compatibility. If the value is not recognized by the enum, it will be stored here, and the raw value is accessible through `.value`.
     """
 
     @classmethod
-    def _missing_(cls, value: typing.Any) -> "ModelMessageEventType":
+    def _missing_(cls, value: typing.Any) -> "ResponseFormatOneType":
         unknown = cls._UNKNOWN
         unknown._value_ = value
         return unknown
 
     def visit(
-        self, model_message: typing.Callable[[], T_Result], _unknown_member: typing.Callable[[str], T_Result]
+        self, json_object: typing.Callable[[], T_Result], _unknown_member: typing.Callable[[str], T_Result]
     ) -> T_Result:
-        if self is ModelMessageEventType.MODEL_MESSAGE:
-            return model_message()
+        if self is ResponseFormatOneType.JSON_OBJECT:
+            return json_object()
         return _unknown_member(self._value_)

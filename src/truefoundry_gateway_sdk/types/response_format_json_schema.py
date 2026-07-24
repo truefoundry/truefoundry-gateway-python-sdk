@@ -5,9 +5,11 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .response_format_json_schema_json_schema import ResponseFormatJsonSchemaJsonSchema
+from .response_format_json_schema_type import ResponseFormatJsonSchemaType
 
 
 class ResponseFormatJsonSchema(UniversalBaseModel):
+    type: ResponseFormatJsonSchemaType
     json_schema: ResponseFormatJsonSchemaJsonSchema
 
     if IS_PYDANTIC_V2:

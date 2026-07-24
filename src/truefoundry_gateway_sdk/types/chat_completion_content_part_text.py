@@ -4,9 +4,11 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .chat_completion_content_part_text_type import ChatCompletionContentPartTextType
 
 
 class ChatCompletionContentPartText(UniversalBaseModel):
+    type: ChatCompletionContentPartTextType
     text: str
 
     if IS_PYDANTIC_V2:

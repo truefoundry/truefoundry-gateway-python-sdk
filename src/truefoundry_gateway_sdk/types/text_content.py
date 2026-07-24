@@ -7,6 +7,7 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class TextContent(UniversalBaseModel):
+    type: typing.Literal["text"] = "text"
     text: str
 
     if IS_PYDANTIC_V2:

@@ -8,6 +8,7 @@ from .model_message_event import ModelMessageEvent
 
 
 class ThreadStateError(UniversalBaseModel):
+    status: typing.Literal["error"] = "error"
     error: str
     output: typing.Optional[ModelMessageEvent] = None
 

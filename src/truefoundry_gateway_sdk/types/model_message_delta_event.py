@@ -14,6 +14,7 @@ class ModelMessageDeltaEvent(UniversalBaseModel):
     refusal: typing.Optional[str] = None
     tool_calls: typing.Optional[typing.List[ExtendedChunkDeltaToolCall]] = None
     reasoning_content: typing.Optional[str] = None
+    type: typing.Literal["model.message.delta"] = "model.message.delta"
     id: str = pydantic.Field()
     """
     Unique identifier for the event

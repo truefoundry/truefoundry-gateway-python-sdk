@@ -9,6 +9,7 @@ from .thread_state import ThreadState
 
 
 class ThreadDoneEvent(BaseThreadDoneEvent):
+    type: typing.Literal["thread.done"] = "thread.done"
     id: str = pydantic.Field()
     """
     Unique identifier for the event

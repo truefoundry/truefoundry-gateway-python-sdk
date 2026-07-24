@@ -7,22 +7,22 @@ from ..core import enum
 T_Result = typing.TypeVar("T_Result")
 
 
-class TurnStateRunningStatus(enum.StrEnum):
-    RUNNING = "running"
-    _UNKNOWN = "__TURNSTATERUNNINGSTATUS_UNKNOWN__"
+class ResponseFormatJsonSchemaType(enum.StrEnum):
+    JSON_SCHEMA = "json_schema"
+    _UNKNOWN = "__RESPONSEFORMATJSONSCHEMATYPE_UNKNOWN__"
     """
     This member is used for forward compatibility. If the value is not recognized by the enum, it will be stored here, and the raw value is accessible through `.value`.
     """
 
     @classmethod
-    def _missing_(cls, value: typing.Any) -> "TurnStateRunningStatus":
+    def _missing_(cls, value: typing.Any) -> "ResponseFormatJsonSchemaType":
         unknown = cls._UNKNOWN
         unknown._value_ = value
         return unknown
 
     def visit(
-        self, running: typing.Callable[[], T_Result], _unknown_member: typing.Callable[[str], T_Result]
+        self, json_schema: typing.Callable[[], T_Result], _unknown_member: typing.Callable[[str], T_Result]
     ) -> T_Result:
-        if self is TurnStateRunningStatus.RUNNING:
-            return running()
+        if self is ResponseFormatJsonSchemaType.JSON_SCHEMA:
+            return json_schema()
         return _unknown_member(self._value_)

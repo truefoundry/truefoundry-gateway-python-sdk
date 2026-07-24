@@ -7,26 +7,22 @@ from ..core import enum
 T_Result = typing.TypeVar("T_Result")
 
 
-class DraftSessionType(enum.StrEnum):
-    """
-    Discriminates a draft session from a saved session.
-    """
-
-    SESSION_DRAFT = "session/draft"
-    _UNKNOWN = "__DRAFTSESSIONTYPE_UNKNOWN__"
+class ChatCompletionContentPartRefusalType(enum.StrEnum):
+    REFUSAL = "refusal"
+    _UNKNOWN = "__CHATCOMPLETIONCONTENTPARTREFUSALTYPE_UNKNOWN__"
     """
     This member is used for forward compatibility. If the value is not recognized by the enum, it will be stored here, and the raw value is accessible through `.value`.
     """
 
     @classmethod
-    def _missing_(cls, value: typing.Any) -> "DraftSessionType":
+    def _missing_(cls, value: typing.Any) -> "ChatCompletionContentPartRefusalType":
         unknown = cls._UNKNOWN
         unknown._value_ = value
         return unknown
 
     def visit(
-        self, session_draft: typing.Callable[[], T_Result], _unknown_member: typing.Callable[[str], T_Result]
+        self, refusal: typing.Callable[[], T_Result], _unknown_member: typing.Callable[[str], T_Result]
     ) -> T_Result:
-        if self is DraftSessionType.SESSION_DRAFT:
-            return session_draft()
+        if self is ChatCompletionContentPartRefusalType.REFUSAL:
+            return refusal()
         return _unknown_member(self._value_)

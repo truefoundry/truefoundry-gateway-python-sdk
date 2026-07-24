@@ -6,12 +6,7 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from .action_required_event import (
-        ActionRequiredEvent,
-        ActionRequiredEvent_McpAuthRequired,
-        ActionRequiredEvent_ToolApprovalRequired,
-        ActionRequiredEvent_ToolResponseRequired,
-    )
+    from .action_required_event import ActionRequiredEvent
     from .agent_info import AgentInfo
     from .agent_info_type import AgentInfoType
     from .agent_parent import AgentParent
@@ -19,7 +14,7 @@ if typing.TYPE_CHECKING:
     from .agent_spec_user_message import AgentSpecUserMessage
     from .agent_spec_user_message_type import AgentSpecUserMessageType
     from .approval_allow import ApprovalAllow
-    from .approval_decision import ApprovalDecision, ApprovalDecision_Allow, ApprovalDecision_Deny
+    from .approval_decision import ApprovalDecision
     from .approval_deny import ApprovalDeny
     from .ask_user_questions_config import AskUserQuestionsConfig
     from .base_mcp_auth_required_event import BaseMcpAuthRequiredEvent
@@ -30,14 +25,15 @@ if typing.TYPE_CHECKING:
     from .chat_completion_chunk_delta_tool_call_function import ChatCompletionChunkDeltaToolCallFunction
     from .chat_completion_chunk_delta_tool_call_type import ChatCompletionChunkDeltaToolCallType
     from .chat_completion_content_part_refusal import ChatCompletionContentPartRefusal
+    from .chat_completion_content_part_refusal_type import ChatCompletionContentPartRefusalType
     from .chat_completion_content_part_text import ChatCompletionContentPartText
+    from .chat_completion_content_part_text_type import ChatCompletionContentPartTextType
     from .chat_completion_message_tool_call import ChatCompletionMessageToolCall
     from .chat_completion_message_tool_call_function import ChatCompletionMessageToolCallFunction
     from .chat_completion_message_tool_call_type import ChatCompletionMessageToolCallType
     from .context_management_config import ContextManagementConfig
     from .context_management_config_compaction import ContextManagementConfigCompaction
     from .draft_session import DraftSession
-    from .draft_session_type import DraftSessionType
     from .dynamic_sub_agents_config import DynamicSubAgentsConfig
     from .extended_chunk_delta_tool_call import ExtendedChunkDeltaToolCall
     from .file_content import FileContent
@@ -54,18 +50,14 @@ if typing.TYPE_CHECKING:
     from .list_events_response import ListEventsResponse
     from .list_owned_sessions_order import ListOwnedSessionsOrder
     from .list_owned_sessions_response import ListOwnedSessionsResponse
-    from .list_owned_sessions_response_data_item import (
-        ListOwnedSessionsResponseDataItem,
-        ListOwnedSessionsResponseDataItem_Session,
-        ListOwnedSessionsResponseDataItem_SessionDraft,
-    )
+    from .list_owned_sessions_response_data_item import ListOwnedSessionsResponseDataItem
     from .list_session_events_response import ListSessionEventsResponse
     from .list_sessions_order import ListSessionsOrder
     from .list_sessions_response import ListSessionsResponse
     from .list_turns_response import ListTurnsResponse
     from .mcp_auth_required_event import McpAuthRequiredEvent
     from .mcp_initialize_event import McpInitializeEvent
-    from .mcp_server import McpServer, McpServer_Inline, McpServer_TruefoundryMcpRegistry
+    from .mcp_server import McpServer
     from .mcp_server_auth_info import McpServerAuthInfo
     from .mcp_server_init_info import McpServerInitInfo
     from .mcp_server_init_info_transport_type import McpServerInitInfoTransportType
@@ -74,12 +66,7 @@ if typing.TYPE_CHECKING:
     from .model_message_delta_event import ModelMessageDeltaEvent
     from .model_message_event import ModelMessageEvent
     from .model_message_event_content import ModelMessageEventContent
-    from .model_message_event_content_one_item import (
-        ModelMessageEventContentOneItem,
-        ModelMessageEventContentOneItem_Refusal,
-        ModelMessageEventContentOneItem_Text,
-    )
-    from .model_message_event_type import ModelMessageEventType
+    from .model_message_event_content_one_item import ModelMessageEventContentOneItem
     from .model_message_usage import ModelMessageUsage
     from .model_message_usage_input_tokens_breakdown import ModelMessageUsageInputTokensBreakdown
     from .model_params import ModelParams
@@ -92,16 +79,14 @@ if typing.TYPE_CHECKING:
     from .request_error_response_error import RequestErrorResponseError
     from .require_approval_tool_selector_item import RequireApprovalToolSelectorItem
     from .require_approval_tools_selector_tag import RequireApprovalToolsSelectorTag
-    from .response_format import (
-        ResponseFormat,
-        ResponseFormat_JsonObject,
-        ResponseFormat_JsonSchema,
-        ResponseFormat_Text,
-    )
-    from .response_format_json_object import ResponseFormatJsonObject
+    from .response_format import ResponseFormat
     from .response_format_json_schema import ResponseFormatJsonSchema
     from .response_format_json_schema_json_schema import ResponseFormatJsonSchemaJsonSchema
-    from .response_format_text import ResponseFormatText
+    from .response_format_json_schema_type import ResponseFormatJsonSchemaType
+    from .response_format_one import ResponseFormatOne
+    from .response_format_one_type import ResponseFormatOneType
+    from .response_format_zero import ResponseFormatZero
+    from .response_format_zero_type import ResponseFormatZeroType
     from .runtime_config import RuntimeConfig
     from .sandbox_config import SandboxConfig
     from .sandbox_created_event import SandboxCreatedEvent
@@ -112,35 +97,21 @@ if typing.TYPE_CHECKING:
     from .sandbox_network_policy_auth_inject_item_match import SandboxNetworkPolicyAuthInjectItemMatch
     from .sandbox_network_policy_auth_inject_item_type import SandboxNetworkPolicyAuthInjectItemType
     from .session import Session
-    from .session_event import (
-        SessionEvent,
-        SessionEvent_McpAuthRequired,
-        SessionEvent_McpInitialize,
-        SessionEvent_ModelMessage,
-        SessionEvent_SandboxCreated,
-        SessionEvent_ThreadCreated,
-        SessionEvent_ThreadDone,
-        SessionEvent_ToolApprovalRequired,
-        SessionEvent_ToolResponse,
-        SessionEvent_ToolResponseRequired,
-        SessionEvent_TurnCreated,
-        SessionEvent_TurnDone,
-    )
+    from .session_event import SessionEvent
     from .session_event_item import SessionEventItem
-    from .session_type import SessionType
     from .skill_mount import SkillMount
     from .subject import Subject
     from .text_content import TextContent
     from .thread_created_event import ThreadCreatedEvent
     from .thread_done_event import ThreadDoneEvent
-    from .thread_state import ThreadState, ThreadState_Done, ThreadState_Error
+    from .thread_state import ThreadState
     from .thread_state_done import ThreadStateDone
     from .thread_state_error import ThreadStateError
     from .token_pagination import TokenPagination
     from .tool_approval_required_event import ToolApprovalRequiredEvent
     from .tool_call import ToolCall
     from .tool_call_ref import ToolCallRef
-    from .tool_info import ToolInfo, ToolInfo_Mcp, ToolInfo_TruefoundrySystem
+    from .tool_info import ToolInfo
     from .tool_response_event import ToolResponseEvent
     from .tool_response_required_event import ToolResponseRequiredEvent
     from .tools_selector_item import ToolsSelectorItem
@@ -149,74 +120,27 @@ if typing.TYPE_CHECKING:
     from .turn import Turn
     from .turn_created_event import TurnCreatedEvent
     from .turn_done_event import TurnDoneEvent
-    from .turn_done_event_state import (
-        TurnDoneEventState,
-        TurnDoneEventState_Cancelled,
-        TurnDoneEventState_Done,
-        TurnDoneEventState_Error,
-    )
-    from .turn_event import (
-        TurnEvent,
-        TurnEvent_McpAuthRequired,
-        TurnEvent_McpInitialize,
-        TurnEvent_ModelMessage,
-        TurnEvent_SandboxCreated,
-        TurnEvent_ThreadCreated,
-        TurnEvent_ThreadDone,
-        TurnEvent_ToolApprovalRequired,
-        TurnEvent_ToolResponse,
-        TurnEvent_ToolResponseRequired,
-    )
-    from .turn_input_item import (
-        TurnInputItem,
-        TurnInputItem_UserMessage,
-        TurnInputItem_UserToolApproval,
-        TurnInputItem_UserToolResponse,
-    )
-    from .turn_state import TurnState, TurnState_Cancelled, TurnState_Done, TurnState_Error, TurnState_Running
+    from .turn_done_event_state import TurnDoneEventState
+    from .turn_event import TurnEvent
+    from .turn_input_item import TurnInputItem
+    from .turn_state import TurnState
     from .turn_state_cancelled import TurnStateCancelled
     from .turn_state_cancelled_reason import TurnStateCancelledReason
     from .turn_state_done import TurnStateDone
     from .turn_state_done_output import TurnStateDoneOutput
     from .turn_state_done_output_content import TurnStateDoneOutputContent
-    from .turn_state_done_output_content_one_item import (
-        TurnStateDoneOutputContentOneItem,
-        TurnStateDoneOutputContentOneItem_Refusal,
-        TurnStateDoneOutputContentOneItem_Text,
-    )
+    from .turn_state_done_output_content_one_item import TurnStateDoneOutputContentOneItem
     from .turn_state_done_output_type import TurnStateDoneOutputType
     from .turn_state_error import TurnStateError
     from .turn_state_running import TurnStateRunning
-    from .turn_state_running_status import TurnStateRunningStatus
-    from .turn_streaming_event import (
-        TurnStreamingEvent,
-        TurnStreamingEvent_McpAuthRequired,
-        TurnStreamingEvent_McpInitialize,
-        TurnStreamingEvent_ModelMessage,
-        TurnStreamingEvent_ModelMessageDelta,
-        TurnStreamingEvent_SandboxCreated,
-        TurnStreamingEvent_ThreadCreated,
-        TurnStreamingEvent_ThreadDone,
-        TurnStreamingEvent_ToolApprovalRequired,
-        TurnStreamingEvent_ToolResponse,
-        TurnStreamingEvent_ToolResponseRequired,
-        TurnStreamingEvent_TurnCreated,
-        TurnStreamingEvent_TurnDone,
-    )
+    from .turn_streaming_event import TurnStreamingEvent
     from .user_message import UserMessage
     from .user_message_content import UserMessageContent
-    from .user_message_content_item import (
-        UserMessageContentItem,
-        UserMessageContentItem_File,
-        UserMessageContentItem_Text,
-    )
+    from .user_message_content_item import UserMessageContentItem
     from .user_tool_approval_event import UserToolApprovalEvent
     from .user_tool_response_event import UserToolResponseEvent
 _dynamic_imports: typing.Dict[str, str] = {
     "ActionRequiredEvent": ".action_required_event",
-    "ActionRequiredEvent_McpAuthRequired": ".action_required_event",
-    "ActionRequiredEvent_ToolApprovalRequired": ".action_required_event",
-    "ActionRequiredEvent_ToolResponseRequired": ".action_required_event",
     "AgentInfo": ".agent_info",
     "AgentInfoType": ".agent_info_type",
     "AgentParent": ".agent_parent",
@@ -225,8 +149,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "AgentSpecUserMessageType": ".agent_spec_user_message_type",
     "ApprovalAllow": ".approval_allow",
     "ApprovalDecision": ".approval_decision",
-    "ApprovalDecision_Allow": ".approval_decision",
-    "ApprovalDecision_Deny": ".approval_decision",
     "ApprovalDeny": ".approval_deny",
     "AskUserQuestionsConfig": ".ask_user_questions_config",
     "BaseMcpAuthRequiredEvent": ".base_mcp_auth_required_event",
@@ -237,14 +159,15 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ChatCompletionChunkDeltaToolCallFunction": ".chat_completion_chunk_delta_tool_call_function",
     "ChatCompletionChunkDeltaToolCallType": ".chat_completion_chunk_delta_tool_call_type",
     "ChatCompletionContentPartRefusal": ".chat_completion_content_part_refusal",
+    "ChatCompletionContentPartRefusalType": ".chat_completion_content_part_refusal_type",
     "ChatCompletionContentPartText": ".chat_completion_content_part_text",
+    "ChatCompletionContentPartTextType": ".chat_completion_content_part_text_type",
     "ChatCompletionMessageToolCall": ".chat_completion_message_tool_call",
     "ChatCompletionMessageToolCallFunction": ".chat_completion_message_tool_call_function",
     "ChatCompletionMessageToolCallType": ".chat_completion_message_tool_call_type",
     "ContextManagementConfig": ".context_management_config",
     "ContextManagementConfigCompaction": ".context_management_config_compaction",
     "DraftSession": ".draft_session",
-    "DraftSessionType": ".draft_session_type",
     "DynamicSubAgentsConfig": ".dynamic_sub_agents_config",
     "ExtendedChunkDeltaToolCall": ".extended_chunk_delta_tool_call",
     "FileContent": ".file_content",
@@ -262,8 +185,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ListOwnedSessionsOrder": ".list_owned_sessions_order",
     "ListOwnedSessionsResponse": ".list_owned_sessions_response",
     "ListOwnedSessionsResponseDataItem": ".list_owned_sessions_response_data_item",
-    "ListOwnedSessionsResponseDataItem_Session": ".list_owned_sessions_response_data_item",
-    "ListOwnedSessionsResponseDataItem_SessionDraft": ".list_owned_sessions_response_data_item",
     "ListSessionEventsResponse": ".list_session_events_response",
     "ListSessionsOrder": ".list_sessions_order",
     "ListSessionsResponse": ".list_sessions_response",
@@ -274,17 +195,12 @@ _dynamic_imports: typing.Dict[str, str] = {
     "McpServerAuthInfo": ".mcp_server_auth_info",
     "McpServerInitInfo": ".mcp_server_init_info",
     "McpServerInitInfoTransportType": ".mcp_server_init_info_transport_type",
-    "McpServer_Inline": ".mcp_server",
-    "McpServer_TruefoundryMcpRegistry": ".mcp_server",
     "McpToolInfo": ".mcp_tool_info",
     "Model": ".model",
     "ModelMessageDeltaEvent": ".model_message_delta_event",
     "ModelMessageEvent": ".model_message_event",
     "ModelMessageEventContent": ".model_message_event_content",
     "ModelMessageEventContentOneItem": ".model_message_event_content_one_item",
-    "ModelMessageEventContentOneItem_Refusal": ".model_message_event_content_one_item",
-    "ModelMessageEventContentOneItem_Text": ".model_message_event_content_one_item",
-    "ModelMessageEventType": ".model_message_event_type",
     "ModelMessageUsage": ".model_message_usage",
     "ModelMessageUsageInputTokensBreakdown": ".model_message_usage_input_tokens_breakdown",
     "ModelParams": ".model_params",
@@ -298,13 +214,13 @@ _dynamic_imports: typing.Dict[str, str] = {
     "RequireApprovalToolSelectorItem": ".require_approval_tool_selector_item",
     "RequireApprovalToolsSelectorTag": ".require_approval_tools_selector_tag",
     "ResponseFormat": ".response_format",
-    "ResponseFormatJsonObject": ".response_format_json_object",
     "ResponseFormatJsonSchema": ".response_format_json_schema",
     "ResponseFormatJsonSchemaJsonSchema": ".response_format_json_schema_json_schema",
-    "ResponseFormatText": ".response_format_text",
-    "ResponseFormat_JsonObject": ".response_format",
-    "ResponseFormat_JsonSchema": ".response_format",
-    "ResponseFormat_Text": ".response_format",
+    "ResponseFormatJsonSchemaType": ".response_format_json_schema_type",
+    "ResponseFormatOne": ".response_format_one",
+    "ResponseFormatOneType": ".response_format_one_type",
+    "ResponseFormatZero": ".response_format_zero",
+    "ResponseFormatZeroType": ".response_format_zero_type",
     "RuntimeConfig": ".runtime_config",
     "SandboxConfig": ".sandbox_config",
     "SandboxCreatedEvent": ".sandbox_created_event",
@@ -317,18 +233,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "Session": ".session",
     "SessionEvent": ".session_event",
     "SessionEventItem": ".session_event_item",
-    "SessionEvent_McpAuthRequired": ".session_event",
-    "SessionEvent_McpInitialize": ".session_event",
-    "SessionEvent_ModelMessage": ".session_event",
-    "SessionEvent_SandboxCreated": ".session_event",
-    "SessionEvent_ThreadCreated": ".session_event",
-    "SessionEvent_ThreadDone": ".session_event",
-    "SessionEvent_ToolApprovalRequired": ".session_event",
-    "SessionEvent_ToolResponse": ".session_event",
-    "SessionEvent_ToolResponseRequired": ".session_event",
-    "SessionEvent_TurnCreated": ".session_event",
-    "SessionEvent_TurnDone": ".session_event",
-    "SessionType": ".session_type",
     "SkillMount": ".skill_mount",
     "Subject": ".subject",
     "TextContent": ".text_content",
@@ -337,15 +241,11 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ThreadState": ".thread_state",
     "ThreadStateDone": ".thread_state_done",
     "ThreadStateError": ".thread_state_error",
-    "ThreadState_Done": ".thread_state",
-    "ThreadState_Error": ".thread_state",
     "TokenPagination": ".token_pagination",
     "ToolApprovalRequiredEvent": ".tool_approval_required_event",
     "ToolCall": ".tool_call",
     "ToolCallRef": ".tool_call_ref",
     "ToolInfo": ".tool_info",
-    "ToolInfo_Mcp": ".tool_info",
-    "ToolInfo_TruefoundrySystem": ".tool_info",
     "ToolResponseEvent": ".tool_response_event",
     "ToolResponseRequiredEvent": ".tool_response_required_event",
     "ToolsSelectorItem": ".tools_selector_item",
@@ -355,23 +255,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "TurnCreatedEvent": ".turn_created_event",
     "TurnDoneEvent": ".turn_done_event",
     "TurnDoneEventState": ".turn_done_event_state",
-    "TurnDoneEventState_Cancelled": ".turn_done_event_state",
-    "TurnDoneEventState_Done": ".turn_done_event_state",
-    "TurnDoneEventState_Error": ".turn_done_event_state",
     "TurnEvent": ".turn_event",
-    "TurnEvent_McpAuthRequired": ".turn_event",
-    "TurnEvent_McpInitialize": ".turn_event",
-    "TurnEvent_ModelMessage": ".turn_event",
-    "TurnEvent_SandboxCreated": ".turn_event",
-    "TurnEvent_ThreadCreated": ".turn_event",
-    "TurnEvent_ThreadDone": ".turn_event",
-    "TurnEvent_ToolApprovalRequired": ".turn_event",
-    "TurnEvent_ToolResponse": ".turn_event",
-    "TurnEvent_ToolResponseRequired": ".turn_event",
     "TurnInputItem": ".turn_input_item",
-    "TurnInputItem_UserMessage": ".turn_input_item",
-    "TurnInputItem_UserToolApproval": ".turn_input_item",
-    "TurnInputItem_UserToolResponse": ".turn_input_item",
     "TurnState": ".turn_state",
     "TurnStateCancelled": ".turn_state_cancelled",
     "TurnStateCancelledReason": ".turn_state_cancelled_reason",
@@ -379,34 +264,13 @@ _dynamic_imports: typing.Dict[str, str] = {
     "TurnStateDoneOutput": ".turn_state_done_output",
     "TurnStateDoneOutputContent": ".turn_state_done_output_content",
     "TurnStateDoneOutputContentOneItem": ".turn_state_done_output_content_one_item",
-    "TurnStateDoneOutputContentOneItem_Refusal": ".turn_state_done_output_content_one_item",
-    "TurnStateDoneOutputContentOneItem_Text": ".turn_state_done_output_content_one_item",
     "TurnStateDoneOutputType": ".turn_state_done_output_type",
     "TurnStateError": ".turn_state_error",
     "TurnStateRunning": ".turn_state_running",
-    "TurnStateRunningStatus": ".turn_state_running_status",
-    "TurnState_Cancelled": ".turn_state",
-    "TurnState_Done": ".turn_state",
-    "TurnState_Error": ".turn_state",
-    "TurnState_Running": ".turn_state",
     "TurnStreamingEvent": ".turn_streaming_event",
-    "TurnStreamingEvent_McpAuthRequired": ".turn_streaming_event",
-    "TurnStreamingEvent_McpInitialize": ".turn_streaming_event",
-    "TurnStreamingEvent_ModelMessage": ".turn_streaming_event",
-    "TurnStreamingEvent_ModelMessageDelta": ".turn_streaming_event",
-    "TurnStreamingEvent_SandboxCreated": ".turn_streaming_event",
-    "TurnStreamingEvent_ThreadCreated": ".turn_streaming_event",
-    "TurnStreamingEvent_ThreadDone": ".turn_streaming_event",
-    "TurnStreamingEvent_ToolApprovalRequired": ".turn_streaming_event",
-    "TurnStreamingEvent_ToolResponse": ".turn_streaming_event",
-    "TurnStreamingEvent_ToolResponseRequired": ".turn_streaming_event",
-    "TurnStreamingEvent_TurnCreated": ".turn_streaming_event",
-    "TurnStreamingEvent_TurnDone": ".turn_streaming_event",
     "UserMessage": ".user_message",
     "UserMessageContent": ".user_message_content",
     "UserMessageContentItem": ".user_message_content_item",
-    "UserMessageContentItem_File": ".user_message_content_item",
-    "UserMessageContentItem_Text": ".user_message_content_item",
     "UserToolApprovalEvent": ".user_tool_approval_event",
     "UserToolResponseEvent": ".user_tool_response_event",
 }
@@ -435,9 +299,6 @@ def __dir__():
 
 __all__ = [
     "ActionRequiredEvent",
-    "ActionRequiredEvent_McpAuthRequired",
-    "ActionRequiredEvent_ToolApprovalRequired",
-    "ActionRequiredEvent_ToolResponseRequired",
     "AgentInfo",
     "AgentInfoType",
     "AgentParent",
@@ -446,8 +307,6 @@ __all__ = [
     "AgentSpecUserMessageType",
     "ApprovalAllow",
     "ApprovalDecision",
-    "ApprovalDecision_Allow",
-    "ApprovalDecision_Deny",
     "ApprovalDeny",
     "AskUserQuestionsConfig",
     "BaseMcpAuthRequiredEvent",
@@ -458,14 +317,15 @@ __all__ = [
     "ChatCompletionChunkDeltaToolCallFunction",
     "ChatCompletionChunkDeltaToolCallType",
     "ChatCompletionContentPartRefusal",
+    "ChatCompletionContentPartRefusalType",
     "ChatCompletionContentPartText",
+    "ChatCompletionContentPartTextType",
     "ChatCompletionMessageToolCall",
     "ChatCompletionMessageToolCallFunction",
     "ChatCompletionMessageToolCallType",
     "ContextManagementConfig",
     "ContextManagementConfigCompaction",
     "DraftSession",
-    "DraftSessionType",
     "DynamicSubAgentsConfig",
     "ExtendedChunkDeltaToolCall",
     "FileContent",
@@ -483,8 +343,6 @@ __all__ = [
     "ListOwnedSessionsOrder",
     "ListOwnedSessionsResponse",
     "ListOwnedSessionsResponseDataItem",
-    "ListOwnedSessionsResponseDataItem_Session",
-    "ListOwnedSessionsResponseDataItem_SessionDraft",
     "ListSessionEventsResponse",
     "ListSessionsOrder",
     "ListSessionsResponse",
@@ -495,17 +353,12 @@ __all__ = [
     "McpServerAuthInfo",
     "McpServerInitInfo",
     "McpServerInitInfoTransportType",
-    "McpServer_Inline",
-    "McpServer_TruefoundryMcpRegistry",
     "McpToolInfo",
     "Model",
     "ModelMessageDeltaEvent",
     "ModelMessageEvent",
     "ModelMessageEventContent",
     "ModelMessageEventContentOneItem",
-    "ModelMessageEventContentOneItem_Refusal",
-    "ModelMessageEventContentOneItem_Text",
-    "ModelMessageEventType",
     "ModelMessageUsage",
     "ModelMessageUsageInputTokensBreakdown",
     "ModelParams",
@@ -519,13 +372,13 @@ __all__ = [
     "RequireApprovalToolSelectorItem",
     "RequireApprovalToolsSelectorTag",
     "ResponseFormat",
-    "ResponseFormatJsonObject",
     "ResponseFormatJsonSchema",
     "ResponseFormatJsonSchemaJsonSchema",
-    "ResponseFormatText",
-    "ResponseFormat_JsonObject",
-    "ResponseFormat_JsonSchema",
-    "ResponseFormat_Text",
+    "ResponseFormatJsonSchemaType",
+    "ResponseFormatOne",
+    "ResponseFormatOneType",
+    "ResponseFormatZero",
+    "ResponseFormatZeroType",
     "RuntimeConfig",
     "SandboxConfig",
     "SandboxCreatedEvent",
@@ -538,18 +391,6 @@ __all__ = [
     "Session",
     "SessionEvent",
     "SessionEventItem",
-    "SessionEvent_McpAuthRequired",
-    "SessionEvent_McpInitialize",
-    "SessionEvent_ModelMessage",
-    "SessionEvent_SandboxCreated",
-    "SessionEvent_ThreadCreated",
-    "SessionEvent_ThreadDone",
-    "SessionEvent_ToolApprovalRequired",
-    "SessionEvent_ToolResponse",
-    "SessionEvent_ToolResponseRequired",
-    "SessionEvent_TurnCreated",
-    "SessionEvent_TurnDone",
-    "SessionType",
     "SkillMount",
     "Subject",
     "TextContent",
@@ -558,15 +399,11 @@ __all__ = [
     "ThreadState",
     "ThreadStateDone",
     "ThreadStateError",
-    "ThreadState_Done",
-    "ThreadState_Error",
     "TokenPagination",
     "ToolApprovalRequiredEvent",
     "ToolCall",
     "ToolCallRef",
     "ToolInfo",
-    "ToolInfo_Mcp",
-    "ToolInfo_TruefoundrySystem",
     "ToolResponseEvent",
     "ToolResponseRequiredEvent",
     "ToolsSelectorItem",
@@ -576,23 +413,8 @@ __all__ = [
     "TurnCreatedEvent",
     "TurnDoneEvent",
     "TurnDoneEventState",
-    "TurnDoneEventState_Cancelled",
-    "TurnDoneEventState_Done",
-    "TurnDoneEventState_Error",
     "TurnEvent",
-    "TurnEvent_McpAuthRequired",
-    "TurnEvent_McpInitialize",
-    "TurnEvent_ModelMessage",
-    "TurnEvent_SandboxCreated",
-    "TurnEvent_ThreadCreated",
-    "TurnEvent_ThreadDone",
-    "TurnEvent_ToolApprovalRequired",
-    "TurnEvent_ToolResponse",
-    "TurnEvent_ToolResponseRequired",
     "TurnInputItem",
-    "TurnInputItem_UserMessage",
-    "TurnInputItem_UserToolApproval",
-    "TurnInputItem_UserToolResponse",
     "TurnState",
     "TurnStateCancelled",
     "TurnStateCancelledReason",
@@ -600,34 +422,13 @@ __all__ = [
     "TurnStateDoneOutput",
     "TurnStateDoneOutputContent",
     "TurnStateDoneOutputContentOneItem",
-    "TurnStateDoneOutputContentOneItem_Refusal",
-    "TurnStateDoneOutputContentOneItem_Text",
     "TurnStateDoneOutputType",
     "TurnStateError",
     "TurnStateRunning",
-    "TurnStateRunningStatus",
-    "TurnState_Cancelled",
-    "TurnState_Done",
-    "TurnState_Error",
-    "TurnState_Running",
     "TurnStreamingEvent",
-    "TurnStreamingEvent_McpAuthRequired",
-    "TurnStreamingEvent_McpInitialize",
-    "TurnStreamingEvent_ModelMessage",
-    "TurnStreamingEvent_ModelMessageDelta",
-    "TurnStreamingEvent_SandboxCreated",
-    "TurnStreamingEvent_ThreadCreated",
-    "TurnStreamingEvent_ThreadDone",
-    "TurnStreamingEvent_ToolApprovalRequired",
-    "TurnStreamingEvent_ToolResponse",
-    "TurnStreamingEvent_ToolResponseRequired",
-    "TurnStreamingEvent_TurnCreated",
-    "TurnStreamingEvent_TurnDone",
     "UserMessage",
     "UserMessageContent",
     "UserMessageContentItem",
-    "UserMessageContentItem_File",
-    "UserMessageContentItem_Text",
     "UserToolApprovalEvent",
     "UserToolResponseEvent",
 ]

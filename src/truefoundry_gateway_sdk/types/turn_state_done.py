@@ -9,6 +9,7 @@ from .turn_state_done_output import TurnStateDoneOutput
 
 
 class TurnStateDone(UniversalBaseModel):
+    status: typing.Literal["done"] = "done"
     output: typing.Optional[TurnStateDoneOutput] = None
     required_actions: typing.List[ActionRequiredEvent]
     completed_at: str

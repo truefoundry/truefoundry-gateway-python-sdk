@@ -8,6 +8,7 @@ from .turn_state_cancelled_reason import TurnStateCancelledReason
 
 
 class TurnStateCancelled(UniversalBaseModel):
+    status: typing.Literal["cancelled"] = "cancelled"
     reason: TurnStateCancelledReason
     completed_at: str
 

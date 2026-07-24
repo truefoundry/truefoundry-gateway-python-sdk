@@ -8,6 +8,7 @@ from .user_message_content import UserMessageContent
 
 
 class UserMessage(UniversalBaseModel):
+    type: typing.Literal["user.message"] = "user.message"
     content: UserMessageContent
 
     if IS_PYDANTIC_V2:

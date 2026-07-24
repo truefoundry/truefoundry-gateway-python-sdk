@@ -8,6 +8,7 @@ from .approval_decision import ApprovalDecision
 
 
 class UserToolApprovalEvent(UniversalBaseModel):
+    type: typing.Literal["user.tool_approval"] = "user.tool_approval"
     thread_id: str
     tool_call_id: str
     approval: ApprovalDecision

@@ -7,6 +7,7 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class SandboxCreatedEvent(UniversalBaseModel):
+    type: typing.Literal["sandbox.created"] = "sandbox.created"
     id: str = pydantic.Field()
     """
     Unique identifier for the event

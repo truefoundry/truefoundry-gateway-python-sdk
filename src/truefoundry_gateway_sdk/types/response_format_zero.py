@@ -4,9 +4,12 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .response_format_zero_type import ResponseFormatZeroType
 
 
-class ResponseFormatJsonObject(UniversalBaseModel):
+class ResponseFormatZero(UniversalBaseModel):
+    type: ResponseFormatZeroType
+
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2
     else:

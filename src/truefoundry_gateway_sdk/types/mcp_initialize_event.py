@@ -8,6 +8,7 @@ from .mcp_server_init_info import McpServerInitInfo
 
 
 class McpInitializeEvent(UniversalBaseModel):
+    type: typing.Literal["mcp.initialize"] = "mcp.initialize"
     id: str = pydantic.Field()
     """
     Unique identifier for the event

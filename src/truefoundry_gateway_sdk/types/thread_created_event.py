@@ -9,6 +9,7 @@ from .agent_parent import AgentParent
 
 
 class ThreadCreatedEvent(UniversalBaseModel):
+    type: typing.Literal["thread.created"] = "thread.created"
     id: str = pydantic.Field()
     """
     Unique identifier for the event

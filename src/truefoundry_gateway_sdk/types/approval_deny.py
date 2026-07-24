@@ -7,6 +7,7 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class ApprovalDeny(UniversalBaseModel):
+    status: typing.Literal["deny"] = "deny"
     reason: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
