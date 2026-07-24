@@ -27,6 +27,7 @@ if typing.TYPE_CHECKING:
     from .chat_completion_message_tool_call_function import ChatCompletionMessageToolCallFunction
     from .context_management_config import ContextManagementConfig
     from .context_management_config_compaction import ContextManagementConfigCompaction
+    from .created_by_subject_type import CreatedBySubjectType
     from .draft_session import DraftSession
     from .dynamic_sub_agents_config import DynamicSubAgentsConfig
     from .extended_chunk_delta_tool_call import ExtendedChunkDeltaToolCall
@@ -84,10 +85,16 @@ if typing.TYPE_CHECKING:
     from .sandbox_network_policy_auth_inject_item import SandboxNetworkPolicyAuthInjectItem
     from .sandbox_network_policy_auth_inject_item_auth_data import SandboxNetworkPolicyAuthInjectItemAuthData
     from .sandbox_network_policy_auth_inject_item_match import SandboxNetworkPolicyAuthInjectItemMatch
+    from .search_sessions_order import SearchSessionsOrder
+    from .search_sessions_response import SearchSessionsResponse
+    from .search_sessions_response_data_item import SearchSessionsResponseDataItem
     from .session import Session
     from .session_event import SessionEvent
     from .session_event_item import SessionEventItem
+    from .session_type import SessionType
     from .skill_mount import SkillMount
+    from .skill_mount_git import SkillMountGit
+    from .skill_mount_registry import SkillMountRegistry
     from .subject import Subject
     from .text_content import TextContent
     from .thread_created_event import ThreadCreatedEvent
@@ -148,6 +155,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ChatCompletionMessageToolCallFunction": ".chat_completion_message_tool_call_function",
     "ContextManagementConfig": ".context_management_config",
     "ContextManagementConfigCompaction": ".context_management_config_compaction",
+    "CreatedBySubjectType": ".created_by_subject_type",
     "DraftSession": ".draft_session",
     "DynamicSubAgentsConfig": ".dynamic_sub_agents_config",
     "ExtendedChunkDeltaToolCall": ".extended_chunk_delta_tool_call",
@@ -205,10 +213,16 @@ _dynamic_imports: typing.Dict[str, str] = {
     "SandboxNetworkPolicyAuthInjectItem": ".sandbox_network_policy_auth_inject_item",
     "SandboxNetworkPolicyAuthInjectItemAuthData": ".sandbox_network_policy_auth_inject_item_auth_data",
     "SandboxNetworkPolicyAuthInjectItemMatch": ".sandbox_network_policy_auth_inject_item_match",
+    "SearchSessionsOrder": ".search_sessions_order",
+    "SearchSessionsResponse": ".search_sessions_response",
+    "SearchSessionsResponseDataItem": ".search_sessions_response_data_item",
     "Session": ".session",
     "SessionEvent": ".session_event",
     "SessionEventItem": ".session_event_item",
+    "SessionType": ".session_type",
     "SkillMount": ".skill_mount",
+    "SkillMountGit": ".skill_mount_git",
+    "SkillMountRegistry": ".skill_mount_registry",
     "Subject": ".subject",
     "TextContent": ".text_content",
     "ThreadCreatedEvent": ".thread_created_event",
@@ -293,6 +307,7 @@ __all__ = [
     "ChatCompletionMessageToolCallFunction",
     "ContextManagementConfig",
     "ContextManagementConfigCompaction",
+    "CreatedBySubjectType",
     "DraftSession",
     "DynamicSubAgentsConfig",
     "ExtendedChunkDeltaToolCall",
@@ -350,10 +365,16 @@ __all__ = [
     "SandboxNetworkPolicyAuthInjectItem",
     "SandboxNetworkPolicyAuthInjectItemAuthData",
     "SandboxNetworkPolicyAuthInjectItemMatch",
+    "SearchSessionsOrder",
+    "SearchSessionsResponse",
+    "SearchSessionsResponseDataItem",
     "Session",
     "SessionEvent",
     "SessionEventItem",
+    "SessionType",
     "SkillMount",
+    "SkillMountGit",
+    "SkillMountRegistry",
     "Subject",
     "TextContent",
     "ThreadCreatedEvent",

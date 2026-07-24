@@ -196,7 +196,11 @@ class RawSessionsClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def create(
-        self, *, agent_name: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        agent_name: str,
+        tfy_metadata: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[GetSessionResponse]:
         """
         Create a session for an existing named agent.
@@ -205,6 +209,9 @@ class RawSessionsClient:
         ----------
         agent_name : str
             Name of an existing agent in the tenant.
+
+        tfy_metadata : typing.Optional[str]
+            Optional customer request metadata (x-tfy-metadata) persisted as request_metadata at session creation.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -222,6 +229,7 @@ class RawSessionsClient:
             },
             headers={
                 "content-type": "application/json",
+                "x-tfy-metadata": str(tfy_metadata) if tfy_metadata is not None else None,
             },
             request_options=request_options,
             omit=OMIT,
@@ -1287,7 +1295,11 @@ class AsyncRawSessionsClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def create(
-        self, *, agent_name: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        agent_name: str,
+        tfy_metadata: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[GetSessionResponse]:
         """
         Create a session for an existing named agent.
@@ -1296,6 +1308,9 @@ class AsyncRawSessionsClient:
         ----------
         agent_name : str
             Name of an existing agent in the tenant.
+
+        tfy_metadata : typing.Optional[str]
+            Optional customer request metadata (x-tfy-metadata) persisted as request_metadata at session creation.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1313,6 +1328,7 @@ class AsyncRawSessionsClient:
             },
             headers={
                 "content-type": "application/json",
+                "x-tfy-metadata": str(tfy_metadata) if tfy_metadata is not None else None,
             },
             request_options=request_options,
             omit=OMIT,

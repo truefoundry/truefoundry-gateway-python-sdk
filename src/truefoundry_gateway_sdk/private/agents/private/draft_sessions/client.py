@@ -109,6 +109,7 @@ class DraftSessionsClient:
         self,
         *,
         agent_spec: AgentSpec,
+        tfy_metadata: typing.Optional[str] = None,
         agent_name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> GetDraftSessionResponse:
@@ -118,6 +119,9 @@ class DraftSessionsClient:
         Parameters
         ----------
         agent_spec : AgentSpec
+
+        tfy_metadata : typing.Optional[str]
+            Optional customer request metadata (x-tfy-metadata) persisted as request_metadata at draft session creation.
 
         agent_name : typing.Optional[str]
             Optionally link the draft to an existing saved agent in the tenant. Omit for a standalone draft.
@@ -147,7 +151,7 @@ class DraftSessionsClient:
         )
         """
         _response = self._raw_client.create(
-            agent_spec=agent_spec, agent_name=agent_name, request_options=request_options
+            agent_spec=agent_spec, tfy_metadata=tfy_metadata, agent_name=agent_name, request_options=request_options
         )
         return _response.data
 
@@ -331,6 +335,7 @@ class AsyncDraftSessionsClient:
         self,
         *,
         agent_spec: AgentSpec,
+        tfy_metadata: typing.Optional[str] = None,
         agent_name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> GetDraftSessionResponse:
@@ -340,6 +345,9 @@ class AsyncDraftSessionsClient:
         Parameters
         ----------
         agent_spec : AgentSpec
+
+        tfy_metadata : typing.Optional[str]
+            Optional customer request metadata (x-tfy-metadata) persisted as request_metadata at draft session creation.
 
         agent_name : typing.Optional[str]
             Optionally link the draft to an existing saved agent in the tenant. Omit for a standalone draft.
@@ -377,7 +385,7 @@ class AsyncDraftSessionsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
-            agent_spec=agent_spec, agent_name=agent_name, request_options=request_options
+            agent_spec=agent_spec, tfy_metadata=tfy_metadata, agent_name=agent_name, request_options=request_options
         )
         return _response.data
 
