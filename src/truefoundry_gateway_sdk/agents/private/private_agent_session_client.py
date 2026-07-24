@@ -14,12 +14,55 @@ if typing.TYPE_CHECKING:
     from ...core.logging import LogConfig, Logger
     from ...core.request_options import RequestOptions
     from ...types.agent_spec import AgentSpec
+    from ...types.created_by_subject_type import CreatedBySubjectType
     from ...types.draft_session import DraftSession as RawDraftSession
     from ...types.list_draft_sessions_order import ListDraftSessionsOrder
     from ...types.list_draft_sessions_response import ListDraftSessionsResponse
     from ...types.list_owned_sessions_order import ListOwnedSessionsOrder
     from ...types.list_owned_sessions_response import ListOwnedSessionsResponse
-    from ...types.list_owned_sessions_response_data_item import ListOwnedSessionsResponseDataItem
+    from ...types.search_sessions_order import SearchSessionsOrder
+    from ...types.search_sessions_response import SearchSessionsResponse
+    from ...types.session import Session as RawSession
+    from ...types.session_type import SessionType
+
+
+# The list-owned and search endpoints both return pages of typing.Union[Session, DraftSession] items,
+# differing only in the response envelope type, so a single generic pager wrapper covers both.
+_SessionsResponseT = typing.TypeVar("_SessionsResponseT")
+
+
+def _wrap_raw_session(
+    raw: typing.Union[RawSession, RawDraftSession],
+    client: TrueFoundryGateway,
+) -> typing.Union[AgentSession, AgentDraftSession]:
+    # Dispatch a raw session union member into its enriched wrapper, keyed off the `type` discriminant.
+    if raw.type == "session/draft":
+        return AgentDraftSession(raw, client)
+    if raw.type == "session":
+        return AgentSession(raw, client)
+    raise ValueError(f"Unknown session type: {raw.type!r}")
+
+
+def _wrap_sessions_pager(
+    raw_pager: SyncPager[typing.Union[RawSession, RawDraftSession], _SessionsResponseT],
+    client: TrueFoundryGateway,
+) -> SyncPager[typing.Union[AgentSession, AgentDraftSession], _SessionsResponseT]:
+    wrapped_items = [_wrap_raw_session(s, client) for s in (raw_pager.items or [])]
+
+    def get_next() -> typing.Optional[SyncPager[typing.Union[AgentSession, AgentDraftSession], _SessionsResponseT]]:
+        if raw_pager.get_next is None:
+            return None
+        next_raw = raw_pager.get_next()
+        if next_raw is None:
+            return None
+        return _wrap_sessions_pager(next_raw, client)
+
+    return SyncPager(
+        get_next=get_next if raw_pager.has_next else None,
+        has_next=raw_pager.has_next,
+        items=wrapped_items,
+        response=raw_pager.response,
+    )
 
 
 def _wrap_draft_sessions_pager(
@@ -44,35 +87,35 @@ def _wrap_draft_sessions_pager(
     )
 
 
-def _wrap_owned_session(
-    raw: ListOwnedSessionsResponseDataItem,
-    client: TrueFoundryGateway,
-) -> typing.Union[AgentSession, AgentDraftSession]:
-    # Dispatch a raw owned-session union member into its enriched wrapper, keyed off the `type` discriminant.
+def _async_wrap_raw_session(
+    raw: typing.Union[RawSession, RawDraftSession],
+    client: AsyncTrueFoundryGateway,
+) -> typing.Union[AsyncAgentSession, AsyncAgentDraftSession]:
+    # Dispatch a raw session union member into its enriched wrapper, keyed off the `type` discriminant.
     if raw.type == "session/draft":
-        return AgentDraftSession(raw, client)
+        return AsyncAgentDraftSession(raw, client)
     if raw.type == "session":
-        return AgentSession(raw, client)
-    raise ValueError(f"Unknown owned session type: {raw.type!r}")
+        return AsyncAgentSession(raw, client)
+    raise ValueError(f"Unknown session type: {raw.type!r}")
 
 
-def _wrap_owned_sessions_pager(
-    raw_pager: SyncPager[ListOwnedSessionsResponseDataItem, ListOwnedSessionsResponse],
-    client: TrueFoundryGateway,
-) -> SyncPager[typing.Union[AgentSession, AgentDraftSession], ListOwnedSessionsResponse]:
-    wrapped_items = [_wrap_owned_session(s, client) for s in (raw_pager.items or [])]
+async def _async_wrap_sessions_pager(
+    raw_pager: AsyncPager[typing.Union[RawSession, RawDraftSession], _SessionsResponseT],
+    client: AsyncTrueFoundryGateway,
+) -> AsyncPager[typing.Union[AsyncAgentSession, AsyncAgentDraftSession], _SessionsResponseT]:
+    wrapped_items = [_async_wrap_raw_session(s, client) for s in (raw_pager.items or [])]
 
-    def get_next() -> typing.Optional[
-        SyncPager[typing.Union[AgentSession, AgentDraftSession], ListOwnedSessionsResponse]
+    async def get_next() -> typing.Optional[
+        AsyncPager[typing.Union[AsyncAgentSession, AsyncAgentDraftSession], _SessionsResponseT]
     ]:
         if raw_pager.get_next is None:
             return None
-        next_raw = raw_pager.get_next()
+        next_raw = await raw_pager.get_next()
         if next_raw is None:
             return None
-        return _wrap_owned_sessions_pager(next_raw, client)
+        return await _async_wrap_sessions_pager(next_raw, client)
 
-    return SyncPager(
+    return AsyncPager(
         get_next=get_next if raw_pager.has_next else None,
         has_next=raw_pager.has_next,
         items=wrapped_items,
@@ -93,42 +136,6 @@ async def _async_wrap_draft_sessions_pager(
         if next_raw is None:
             return None
         return await _async_wrap_draft_sessions_pager(next_raw, client)
-
-    return AsyncPager(
-        get_next=get_next if raw_pager.has_next else None,
-        has_next=raw_pager.has_next,
-        items=wrapped_items,
-        response=raw_pager.response,
-    )
-
-
-def _async_wrap_owned_session(
-    raw: ListOwnedSessionsResponseDataItem,
-    client: AsyncTrueFoundryGateway,
-) -> typing.Union[AsyncAgentSession, AsyncAgentDraftSession]:
-    # Dispatch a raw owned-session union member into its enriched wrapper, keyed off the `type` discriminant.
-    if raw.type == "session/draft":
-        return AsyncAgentDraftSession(raw, client)
-    if raw.type == "session":
-        return AsyncAgentSession(raw, client)
-    raise ValueError(f"Unknown owned session type: {raw.type!r}")
-
-
-async def _async_wrap_owned_sessions_pager(
-    raw_pager: AsyncPager[ListOwnedSessionsResponseDataItem, ListOwnedSessionsResponse],
-    client: AsyncTrueFoundryGateway,
-) -> AsyncPager[typing.Union[AsyncAgentSession, AsyncAgentDraftSession], ListOwnedSessionsResponse]:
-    wrapped_items = [_async_wrap_owned_session(s, client) for s in (raw_pager.items or [])]
-
-    async def get_next() -> typing.Optional[
-        AsyncPager[typing.Union[AsyncAgentSession, AsyncAgentDraftSession], ListOwnedSessionsResponse]
-    ]:
-        if raw_pager.get_next is None:
-            return None
-        next_raw = await raw_pager.get_next()
-        if next_raw is None:
-            return None
-        return await _async_wrap_owned_sessions_pager(next_raw, client)
 
     return AsyncPager(
         get_next=get_next if raw_pager.has_next else None,
@@ -317,7 +324,72 @@ class PrivateAgentSessionClient:
             end_timestamp=end_timestamp,
             request_options=request_options,
         )
-        return _wrap_owned_sessions_pager(raw_pager, self._client)
+        return _wrap_sessions_pager(raw_pager, self._client)
+
+    def search_sessions(
+        self,
+        *,
+        agent_name: typing.Optional[str] = None,
+        created_by_subject_id: typing.Optional[str] = None,
+        created_by_subject_type: typing.Optional[CreatedBySubjectType] = None,
+        session_type: typing.Optional[SessionType] = None,
+        session_id: typing.Optional[str] = None,
+        limit: typing.Optional[int] = 10,
+        order: typing.Optional[SearchSessionsOrder] = None,
+        page_token: typing.Optional[str] = None,
+        start_timestamp: typing.Optional[str] = None,
+        end_timestamp: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> SyncPager[typing.Union[AgentSession, AgentDraftSession], SearchSessionsResponse]:
+        """
+        Search sessions visible to the caller across agents, spanning both saved sessions and drafts
+        (newest first by default). Tenant admins see all tenant sessions; agent managers see sessions
+        on agents they manage plus their own; other callers see only their own.
+
+        Parameters
+        ----------
+        agent_name : typing.Optional[str]
+            Filter to sessions linked to this saved agent.
+        created_by_subject_id : typing.Optional[str]
+            Filter to sessions created by this subject id.
+        created_by_subject_type : typing.Optional[CreatedBySubjectType]
+            Optional subject type used with created_by_subject_id.
+        session_type : typing.Optional[SessionType]
+            Filter by session type. Omit to include both saved sessions and drafts.
+        session_id : typing.Optional[str]
+            Filter to a specific session id.
+        limit : typing.Optional[int]
+            Page size. Default 10.
+        order : typing.Optional[SearchSessionsOrder]
+            Sort by creation time. Default ``desc``.
+        page_token : typing.Optional[str]
+            Token from the previous response ``next_page_token``.
+        start_timestamp : typing.Optional[str]
+            Inclusive lower bound on ``created_at`` (ISO-8601).
+        end_timestamp : typing.Optional[str]
+            Inclusive upper bound on ``created_at`` (ISO-8601).
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Returns
+        -------
+        SyncPager[typing.Union[AgentSession, AgentDraftSession], SearchSessionsResponse]
+            Paginated matching sessions.
+        """
+        raw_pager = self._client.agents.private.search_sessions(
+            agent_name=agent_name,
+            created_by_subject_id=created_by_subject_id,
+            created_by_subject_type=created_by_subject_type,
+            session_type=session_type,
+            session_id=session_id,
+            limit=limit,
+            order=order,
+            page_token=page_token,
+            start_timestamp=start_timestamp,
+            end_timestamp=end_timestamp,
+            request_options=request_options,
+        )
+        return _wrap_sessions_pager(raw_pager, self._client)
 
     def download_sandbox_file(
         self,
@@ -343,9 +415,7 @@ class PrivateAgentSessionClient:
         typing.Iterator[bytes]
             The downloaded sandbox file content, chunked.
         """
-        return self._client.agents.private.download_sandbox_file(
-            sandbox_id, path=path, request_options=request_options
-        )
+        return self._client.agents.private.download_sandbox_file(sandbox_id, path=path, request_options=request_options)
 
 
 class AsyncPrivateAgentSessionClient:
@@ -529,7 +599,72 @@ class AsyncPrivateAgentSessionClient:
             end_timestamp=end_timestamp,
             request_options=request_options,
         )
-        return await _async_wrap_owned_sessions_pager(raw_pager, self._client)
+        return await _async_wrap_sessions_pager(raw_pager, self._client)
+
+    async def search_sessions(
+        self,
+        *,
+        agent_name: typing.Optional[str] = None,
+        created_by_subject_id: typing.Optional[str] = None,
+        created_by_subject_type: typing.Optional[CreatedBySubjectType] = None,
+        session_type: typing.Optional[SessionType] = None,
+        session_id: typing.Optional[str] = None,
+        limit: typing.Optional[int] = 10,
+        order: typing.Optional[SearchSessionsOrder] = None,
+        page_token: typing.Optional[str] = None,
+        start_timestamp: typing.Optional[str] = None,
+        end_timestamp: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncPager[typing.Union[AsyncAgentSession, AsyncAgentDraftSession], SearchSessionsResponse]:
+        """
+        Search sessions visible to the caller across agents, spanning both saved sessions and drafts
+        (newest first by default). Tenant admins see all tenant sessions; agent managers see sessions
+        on agents they manage plus their own; other callers see only their own.
+
+        Parameters
+        ----------
+        agent_name : typing.Optional[str]
+            Filter to sessions linked to this saved agent.
+        created_by_subject_id : typing.Optional[str]
+            Filter to sessions created by this subject id.
+        created_by_subject_type : typing.Optional[CreatedBySubjectType]
+            Optional subject type used with created_by_subject_id.
+        session_type : typing.Optional[SessionType]
+            Filter by session type. Omit to include both saved sessions and drafts.
+        session_id : typing.Optional[str]
+            Filter to a specific session id.
+        limit : typing.Optional[int]
+            Page size. Default 10.
+        order : typing.Optional[SearchSessionsOrder]
+            Sort by creation time. Default ``desc``.
+        page_token : typing.Optional[str]
+            Token from the previous response ``next_page_token``.
+        start_timestamp : typing.Optional[str]
+            Inclusive lower bound on ``created_at`` (ISO-8601).
+        end_timestamp : typing.Optional[str]
+            Inclusive upper bound on ``created_at`` (ISO-8601).
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Returns
+        -------
+        AsyncPager[typing.Union[AsyncAgentSession, AsyncAgentDraftSession], SearchSessionsResponse]
+            Paginated matching sessions.
+        """
+        raw_pager = await self._client.agents.private.search_sessions(
+            agent_name=agent_name,
+            created_by_subject_id=created_by_subject_id,
+            created_by_subject_type=created_by_subject_type,
+            session_type=session_type,
+            session_id=session_id,
+            limit=limit,
+            order=order,
+            page_token=page_token,
+            start_timestamp=start_timestamp,
+            end_timestamp=end_timestamp,
+            request_options=request_options,
+        )
+        return await _async_wrap_sessions_pager(raw_pager, self._client)
 
     async def download_sandbox_file(
         self,
