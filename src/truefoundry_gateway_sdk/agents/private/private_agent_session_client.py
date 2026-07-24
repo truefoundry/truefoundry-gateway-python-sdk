@@ -384,7 +384,7 @@ class AsyncPrivateAgentSessionClient:
         self,
         *,
         agent_spec: AgentSpec,
-        agent_name: typing.Optional[str] = None,
+        agent_name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncAgentDraftSession:
         """
