@@ -125,7 +125,7 @@ class AgentDraftSession:
     def update(
         self,
         *,
-        agent_spec: typing.Optional[AgentSpec] = None,
+        agent_spec: typing.Optional[AgentSpec] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> None:
         """
