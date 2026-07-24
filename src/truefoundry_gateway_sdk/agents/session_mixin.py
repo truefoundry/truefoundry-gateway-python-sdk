@@ -2,113 +2,92 @@ from __future__ import annotations
 
 import typing
 
-from .session_mixin import AsyncSessionMixin, SessionMixin
+from ..core.pagination import AsyncPager, SyncPager
+from .prepared_turn import AsyncPreparedTurn, PreparedTurn
+from .turn import AsyncTurn, Turn
 
 if typing.TYPE_CHECKING:
     from ..client import AsyncTrueFoundryGateway, TrueFoundryGateway
-    from ..core.pagination import AsyncPager, SyncPager
     from ..core.request_options import RequestOptions
     from ..types.list_session_events_response import ListSessionEventsResponse
     from ..types.list_turns_response import ListTurnsResponse
     from ..types.previous_turn_id_input import PreviousTurnIdInput
-    from ..types.session import Session as RawSession
     from ..types.session_event_item import SessionEventItem
-    from ..types.subject import Subject
+    from ..types.turn import Turn as RawTurn
     from ..types.turn_input_item import TurnInputItem
-    from .prepared_turn import AsyncPreparedTurn, PreparedTurn
-    from .turn import AsyncTurn, Turn
+    from .agent_session import AgentSession, AsyncAgentSession
+    from .private.agent_draft_session import AgentDraftSession, AsyncAgentDraftSession
+
+    SyncSessionOwner = typing.Union[AgentSession, AgentDraftSession]
+    AsyncSessionOwner = typing.Union[AsyncAgentSession, AsyncAgentDraftSession]
 
 
-class AgentSession:
+def _wrap_turns_pager(
+    raw_pager: SyncPager[RawTurn, ListTurnsResponse],
+    owner: SyncSessionOwner,
+    client: TrueFoundryGateway,
+) -> SyncPager[Turn, ListTurnsResponse]:
+    wrapped_items = [Turn(t, owner, client) for t in (raw_pager.items or [])]
+
+    def get_next() -> typing.Optional[SyncPager[Turn, ListTurnsResponse]]:
+        if raw_pager.get_next is None:
+            return None
+        next_raw = raw_pager.get_next()
+        if next_raw is None:
+            return None
+        return _wrap_turns_pager(next_raw, owner, client)
+
+    return SyncPager(
+        get_next=get_next if raw_pager.has_next else None,
+        has_next=raw_pager.has_next,
+        items=wrapped_items,
+        response=raw_pager.response,
+    )
+
+
+async def _async_wrap_turns_pager(
+    raw_pager: AsyncPager[RawTurn, ListTurnsResponse],
+    owner: AsyncSessionOwner,
+    client: AsyncTrueFoundryGateway,
+) -> AsyncPager[AsyncTurn, ListTurnsResponse]:
+    wrapped_items = [AsyncTurn(t, owner, client) for t in (raw_pager.items or [])]
+
+    async def get_next() -> typing.Optional[AsyncPager[AsyncTurn, ListTurnsResponse]]:
+        if raw_pager.get_next is None:
+            return None
+        next_raw = await raw_pager.get_next()
+        if next_raw is None:
+            return None
+        return await _async_wrap_turns_pager(next_raw, owner, client)
+
+    return AsyncPager(
+        get_next=get_next if raw_pager.has_next else None,
+        has_next=raw_pager.has_next,
+        items=wrapped_items,
+        response=raw_pager.response,
+    )
+
+
+class SessionMixin:
     """
-    A session enriched with convenience methods: prepare_turn, list_turns, get_turn, list_events, cancel.
-    Turn operations are delegated to a shared :class:`SessionMixin`.
+    Shared turn behavior keyed by a session id. Both :class:`AgentSession` and
+    :class:`AgentDraftSession` hold a SessionMixin and delegate prepare_turn / list_turns /
+    get_turn / cancel / list_events to it, so the two session wrappers expose identical turn
+    operations without duplicating logic.
+
+    The owning wrapper is NOT stored on the mixin (that back-reference would form an
+    ``AgentSession`` <-> ``SessionMixin`` cycle that outlives both). Instead the wrapper passes
+    itself as the first argument to each turn-producing method, so turns still expose the
+    enriched wrapper (with ``agent_name``, ``title``, etc.) as ``turn.session``.
     """
 
-    def __init__(self, session: RawSession, client: TrueFoundryGateway) -> None:
-        self._id: str = session.id
-        self._agent_name: str = session.agent_name
-        self._title: typing.Optional[str] = session.title
-        self._created_by_subject: Subject = session.created_by_subject
-        self._created_at: str = session.created_at
-        self._updated_at: str = session.updated_at
-        self._mixin = SessionMixin(session.id, client)
-
-    def __repr__(self) -> str:
-        return f"AgentSession(id={self._id!r}, agent_name={self._agent_name!r})"
-
-    @property
-    def type(self) -> typing.Literal["session"]:
-        """
-        Returns
-        -------
-        typing.Literal["session"]
-            Discriminant distinguishing a saved session from a draft session.
-        """
-        return "session"
-
-    @property
-    def id(self) -> str:
-        """
-        Returns
-        -------
-        str
-            Unique identifier of this session.
-        """
-        return self._id
-
-    @property
-    def agent_name(self) -> str:
-        """
-        Returns
-        -------
-        str
-            Name of the agent for this session.
-        """
-        return self._agent_name
-
-    @property
-    def title(self) -> typing.Optional[str]:
-        """
-        Returns
-        -------
-        typing.Optional[str]
-            Optional user-visible title for the session.
-        """
-        return self._title
-
-    @property
-    def created_by_subject(self) -> Subject:
-        """
-        Returns
-        -------
-        Subject
-            Subject that created this session.
-        """
-        return self._created_by_subject
-
-    @property
-    def created_at(self) -> str:
-        """
-        Returns
-        -------
-        str
-            ISO-8601 timestamp when the session was created.
-        """
-        return self._created_at
-
-    @property
-    def updated_at(self) -> str:
-        """
-        Returns
-        -------
-        str
-            ISO-8601 timestamp when the session was last updated.
-        """
-        return self._updated_at
+    def __init__(self, id: str, client: TrueFoundryGateway) -> None:
+        self._id = id
+        self._client = client
 
     def prepare_turn(
         self,
+        owner: SyncSessionOwner,
         *,
         input: typing.Optional[typing.Sequence[TurnInputItem]] = None,
         previous_turn_id: typing.Optional[PreviousTurnIdInput] = None,
@@ -118,6 +97,8 @@ class AgentSession:
 
         Parameters
         ----------
+        owner : SyncSessionOwner
+            Enriched wrapper surfaced as ``turn.session`` on the resulting turn.
         input : typing.Optional[typing.Sequence[TurnInputItem]]
             Turn input items passed to create turn.
         previous_turn_id : typing.Optional[PreviousTurnIdInput]
@@ -128,10 +109,16 @@ class AgentSession:
         PreparedTurn
             Staged turn.
         """
-        return self._mixin.prepare_turn(self, input=input, previous_turn_id=previous_turn_id)
+        return PreparedTurn(
+            input=input,
+            previous_turn_id=previous_turn_id,
+            session=owner,
+            client=self._client,
+        )
 
     def list_turns(
         self,
+        owner: SyncSessionOwner,
         *,
         page_token: typing.Optional[str] = None,
         limit: typing.Optional[int] = 10,
@@ -142,6 +129,8 @@ class AgentSession:
 
         Parameters
         ----------
+        owner : SyncSessionOwner
+            Enriched wrapper surfaced as ``turn.session`` on each listed turn.
         page_token : typing.Optional[str]
             Token from the previous response ``next_page_token``.
         limit : typing.Optional[int]
@@ -154,10 +143,14 @@ class AgentSession:
         SyncPager[Turn, ListTurnsResponse]
             Paginated turns.
         """
-        return self._mixin.list_turns(self, page_token=page_token, limit=limit, request_options=request_options)
+        raw_pager = self._client.agents.sessions.list_turns(
+            self._id, page_token=page_token, limit=limit, request_options=request_options
+        )
+        return _wrap_turns_pager(raw_pager, owner, self._client)
 
     def get_turn(
         self,
+        owner: SyncSessionOwner,
         turn_id: str,
         *,
         request_options: typing.Optional[RequestOptions] = None,
@@ -167,6 +160,8 @@ class AgentSession:
 
         Parameters
         ----------
+        owner : SyncSessionOwner
+            Enriched wrapper surfaced as ``turn.session`` on the resulting turn.
         turn_id : str
             Unique identifier of the turn to fetch.
         request_options : typing.Optional[RequestOptions]
@@ -177,7 +172,8 @@ class AgentSession:
         Turn
             Turn data.
         """
-        return self._mixin.get_turn(self, turn_id, request_options=request_options)
+        response = self._client.agents.sessions.get_turn(self._id, turn_id, request_options=request_options)
+        return Turn(response.data, owner, self._client)
 
     def cancel(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
@@ -192,7 +188,7 @@ class AgentSession:
         -------
         None
         """
-        self._mixin.cancel(request_options=request_options)
+        self._client.agents.sessions.cancel(self._id, request_options=request_options)
 
     def list_events(
         self,
@@ -221,7 +217,8 @@ class AgentSession:
         SyncPager[SessionEventItem, ListSessionEventsResponse]
             Paginated session events.
         """
-        return self._mixin.list_events(
+        return self._client.agents.sessions.list_events(
+            self._id,
             page_token=page_token,
             last_turn_id=last_turn_id,
             limit=limit,
@@ -229,95 +226,20 @@ class AgentSession:
         )
 
 
-class AsyncAgentSession:
+class AsyncSessionMixin:
     """
-    Async version of AgentSession.
+    Async version of :class:`SessionMixin`. Same delegation contract; the owning wrapper passes
+    itself as the first argument to each turn-producing method so turns expose the enriched
+    wrapper as ``turn.session``.
     """
 
-    def __init__(self, session: RawSession, client: AsyncTrueFoundryGateway) -> None:
-        self._id: str = session.id
-        self._agent_name: str = session.agent_name
-        self._title: typing.Optional[str] = session.title
-        self._created_by_subject: Subject = session.created_by_subject
-        self._created_at: str = session.created_at
-        self._updated_at: str = session.updated_at
-        self._mixin = AsyncSessionMixin(session.id, client)
-
-    def __repr__(self) -> str:
-        return f"AsyncAgentSession(id={self._id!r}, agent_name={self._agent_name!r})"
-
-    @property
-    def type(self) -> typing.Literal["session"]:
-        """
-        Returns
-        -------
-        typing.Literal["session"]
-            Discriminant distinguishing a saved session from a draft session.
-        """
-        return "session"
-
-    @property
-    def id(self) -> str:
-        """
-        Returns
-        -------
-        str
-            Unique identifier of this session.
-        """
-        return self._id
-
-    @property
-    def agent_name(self) -> str:
-        """
-        Returns
-        -------
-        str
-            Name of the agent for this session.
-        """
-        return self._agent_name
-
-    @property
-    def title(self) -> typing.Optional[str]:
-        """
-        Returns
-        -------
-        typing.Optional[str]
-            Optional user-visible title for the session.
-        """
-        return self._title
-
-    @property
-    def created_by_subject(self) -> Subject:
-        """
-        Returns
-        -------
-        Subject
-            Subject that created this session.
-        """
-        return self._created_by_subject
-
-    @property
-    def created_at(self) -> str:
-        """
-        Returns
-        -------
-        str
-            ISO-8601 timestamp when the session was created.
-        """
-        return self._created_at
-
-    @property
-    def updated_at(self) -> str:
-        """
-        Returns
-        -------
-        str
-            ISO-8601 timestamp when the session was last updated.
-        """
-        return self._updated_at
+    def __init__(self, id: str, client: AsyncTrueFoundryGateway) -> None:
+        self._id = id
+        self._client = client
 
     def prepare_turn(
         self,
+        owner: AsyncSessionOwner,
         *,
         input: typing.Optional[typing.Sequence[TurnInputItem]] = None,
         previous_turn_id: typing.Optional[PreviousTurnIdInput] = None,
@@ -327,6 +249,8 @@ class AsyncAgentSession:
 
         Parameters
         ----------
+        owner : AsyncSessionOwner
+            Enriched wrapper surfaced as ``turn.session`` on the resulting turn.
         input : typing.Optional[typing.Sequence[TurnInputItem]]
             Turn input items passed to create turn.
         previous_turn_id : typing.Optional[PreviousTurnIdInput]
@@ -337,10 +261,16 @@ class AsyncAgentSession:
         AsyncPreparedTurn
             Staged turn.
         """
-        return self._mixin.prepare_turn(self, input=input, previous_turn_id=previous_turn_id)
+        return AsyncPreparedTurn(
+            input=input,
+            previous_turn_id=previous_turn_id,
+            session=owner,
+            client=self._client,
+        )
 
     async def list_turns(
         self,
+        owner: AsyncSessionOwner,
         *,
         page_token: typing.Optional[str] = None,
         limit: typing.Optional[int] = 10,
@@ -351,6 +281,8 @@ class AsyncAgentSession:
 
         Parameters
         ----------
+        owner : AsyncSessionOwner
+            Enriched wrapper surfaced as ``turn.session`` on each listed turn.
         page_token : typing.Optional[str]
             Token from the previous response ``next_page_token``.
         limit : typing.Optional[int]
@@ -363,10 +295,14 @@ class AsyncAgentSession:
         AsyncPager[AsyncTurn, ListTurnsResponse]
             Paginated turns.
         """
-        return await self._mixin.list_turns(self, page_token=page_token, limit=limit, request_options=request_options)
+        raw_pager = await self._client.agents.sessions.list_turns(
+            self._id, page_token=page_token, limit=limit, request_options=request_options
+        )
+        return await _async_wrap_turns_pager(raw_pager, owner, self._client)
 
     async def get_turn(
         self,
+        owner: AsyncSessionOwner,
         turn_id: str,
         *,
         request_options: typing.Optional[RequestOptions] = None,
@@ -376,6 +312,8 @@ class AsyncAgentSession:
 
         Parameters
         ----------
+        owner : AsyncSessionOwner
+            Enriched wrapper surfaced as ``turn.session`` on the resulting turn.
         turn_id : str
             Unique identifier of the turn to fetch.
         request_options : typing.Optional[RequestOptions]
@@ -386,7 +324,8 @@ class AsyncAgentSession:
         AsyncTurn
             Turn data.
         """
-        return await self._mixin.get_turn(self, turn_id, request_options=request_options)
+        response = await self._client.agents.sessions.get_turn(self._id, turn_id, request_options=request_options)
+        return AsyncTurn(response.data, owner, self._client)
 
     async def cancel(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
@@ -401,7 +340,7 @@ class AsyncAgentSession:
         -------
         None
         """
-        await self._mixin.cancel(request_options=request_options)
+        await self._client.agents.sessions.cancel(self._id, request_options=request_options)
 
     async def list_events(
         self,
@@ -430,7 +369,8 @@ class AsyncAgentSession:
         AsyncPager[SessionEventItem, ListSessionEventsResponse]
             Paginated session events.
         """
-        return await self._mixin.list_events(
+        return await self._client.agents.sessions.list_events(
+            self._id,
             page_token=page_token,
             last_turn_id=last_turn_id,
             limit=limit,

@@ -23,6 +23,7 @@ if typing.TYPE_CHECKING:
     from ..types.turn_state import TurnState
     from ..types.turn_streaming_event import TurnStreamingEvent
     from .agent_session import AgentSession, AsyncAgentSession
+    from .private.agent_draft_session import AgentDraftSession, AsyncAgentDraftSession
 
 # waitForCompletion poll interval in milliseconds: default and enforced minimum.
 _DEFAULT_POLL_INTERVAL_MS = 3000
@@ -38,7 +39,7 @@ class Turn:
     def __init__(
         self,
         turn: RawTurn,
-        session: "AgentSession",
+        session: typing.Union["AgentSession", "AgentDraftSession"],
         client: TrueFoundryGateway,
     ) -> None:
         self._id: str = turn.id
@@ -48,7 +49,7 @@ class Turn:
         self._created_by_subject: Subject = turn.created_by_subject
         self._created_at: str = turn.created_at
         self._state: TurnState = turn.state
-        self._session: "AgentSession" = session
+        self._session: typing.Union["AgentSession", "AgentDraftSession"] = session
         self._client = client
 
     def __repr__(self) -> str:
@@ -125,11 +126,11 @@ class Turn:
         return self._state
 
     @property
-    def session(self) -> "AgentSession":
+    def session(self) -> typing.Union["AgentSession", "AgentDraftSession"]:
         """
         Returns
         -------
-        AgentSession
+        typing.Union[AgentSession, AgentDraftSession]
             Parent session this turn belongs to.
         """
         return self._session
@@ -280,7 +281,7 @@ class AsyncTurn:
     def __init__(
         self,
         turn: RawTurn,
-        session: "AsyncAgentSession",
+        session: typing.Union["AsyncAgentSession", "AsyncAgentDraftSession"],
         client: AsyncTrueFoundryGateway,
     ) -> None:
         self._id: str = turn.id
@@ -290,7 +291,7 @@ class AsyncTurn:
         self._created_by_subject: Subject = turn.created_by_subject
         self._created_at: str = turn.created_at
         self._state: TurnState = turn.state
-        self._session: "AsyncAgentSession" = session
+        self._session: typing.Union["AsyncAgentSession", "AsyncAgentDraftSession"] = session
         self._client: AsyncTrueFoundryGateway = client
 
     def __repr__(self) -> str:
@@ -367,11 +368,11 @@ class AsyncTurn:
         return self._state
 
     @property
-    def session(self) -> "AsyncAgentSession":
+    def session(self) -> typing.Union["AsyncAgentSession", "AsyncAgentDraftSession"]:
         """
         Returns
         -------
-        AsyncAgentSession
+        typing.Union[AsyncAgentSession, AsyncAgentDraftSession]
             Parent session this turn belongs to.
         """
         return self._session

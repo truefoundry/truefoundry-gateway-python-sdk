@@ -103,7 +103,7 @@ class AgentSessionClient:
         Parameters
         ----------
         agent_name : str
-            Name of the agent to create a session for.
+            Name of an existing agent in the tenant.
         request_options : typing.Optional[RequestOptions]
             Overrides client timeout, retries, headers, and stream reconnect.
 
@@ -112,7 +112,9 @@ class AgentSessionClient:
         AgentSession
             Session created.
         """
-        response = self._client.agents.sessions.create(agent_name=agent_name, request_options=request_options)
+        response = self._client.agents.sessions.create(
+            agent_name=agent_name, request_options=request_options
+        )
         return AgentSession(response.data, self._client)
 
     def list_sessions(
@@ -232,7 +234,7 @@ class AsyncAgentSessionClient:
         Parameters
         ----------
         agent_name : str
-            Name of the agent to create a session for.
+            Name of an existing agent in the tenant.
         request_options : typing.Optional[RequestOptions]
             Overrides client timeout, retries, headers, and stream reconnect.
 
@@ -241,7 +243,9 @@ class AsyncAgentSessionClient:
         AsyncAgentSession
             Session created.
         """
-        response = await self._client.agents.sessions.create(agent_name=agent_name, request_options=request_options)
+        response = await self._client.agents.sessions.create(
+            agent_name=agent_name, request_options=request_options
+        )
         return AsyncAgentSession(response.data, self._client)
 
     async def list_sessions(

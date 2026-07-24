@@ -32,17 +32,28 @@ from .agent_session import AgentSession, AsyncAgentSession
 from .agent_session_client import AgentSessionClient, AsyncAgentSessionClient
 from .event_delta import DeltaEvents, is_event_delta, merge_event_delta
 from .prepared_turn import AsyncPreparedTurn, PreparedTurn
+from .private import (
+    AgentDraftSession,
+    AsyncAgentDraftSession,
+    AsyncPrivateAgentSessionClient,
+    PrivateAgentSessionClient,
+)
+from .session_mixin import AsyncSessionMixin, SessionMixin
 from .turn import AsyncTurn, Turn
 from .turn_stream_data import TurnStreamData
 
 __all__ = [  # type: ignore[reportUnsupportedDunderAll]
     *_private_agents.__all__,
     "ActionRequiredEvent",
+    "AgentDraftSession",
     "AgentSession",
     "AgentSessionClient",
+    "AsyncAgentDraftSession",
     "AsyncAgentSession",
     "AsyncAgentSessionClient",
     "AsyncPreparedTurn",
+    "AsyncPrivateAgentSessionClient",
+    "AsyncSessionMixin",
     "AsyncTurn",
     "DeltaEvents",
     "McpAuthRequiredEvent",
@@ -52,7 +63,9 @@ __all__ = [  # type: ignore[reportUnsupportedDunderAll]
     "ModelMessageUsage",
     "ModelMessageUsageInputTokensBreakdown",
     "PreparedTurn",
+    "PrivateAgentSessionClient",
     "SandboxCreatedEvent",
+    "SessionMixin",
     "ThreadCreatedEvent",
     "ThreadDoneEvent",
     "ToolApprovalRequiredEvent",

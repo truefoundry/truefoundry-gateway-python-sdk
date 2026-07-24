@@ -2,50 +2,55 @@ from __future__ import annotations
 
 import typing
 
-from .session_mixin import AsyncSessionMixin, SessionMixin
+from ...private.agents.private.draft_sessions.client import OMIT
+from ..session_mixin import AsyncSessionMixin, SessionMixin
 
 if typing.TYPE_CHECKING:
-    from ..client import AsyncTrueFoundryGateway, TrueFoundryGateway
-    from ..core.pagination import AsyncPager, SyncPager
-    from ..core.request_options import RequestOptions
-    from ..types.list_session_events_response import ListSessionEventsResponse
-    from ..types.list_turns_response import ListTurnsResponse
-    from ..types.previous_turn_id_input import PreviousTurnIdInput
-    from ..types.session import Session as RawSession
-    from ..types.session_event_item import SessionEventItem
-    from ..types.subject import Subject
-    from ..types.turn_input_item import TurnInputItem
-    from .prepared_turn import AsyncPreparedTurn, PreparedTurn
-    from .turn import AsyncTurn, Turn
+    from ...client import AsyncTrueFoundryGateway, TrueFoundryGateway
+    from ...core.pagination import AsyncPager, SyncPager
+    from ...core.request_options import RequestOptions
+    from ...types.agent_spec import AgentSpec
+    from ...types.draft_session import DraftSession as RawDraftSession
+    from ...types.list_session_events_response import ListSessionEventsResponse
+    from ...types.list_turns_response import ListTurnsResponse
+    from ...types.previous_turn_id_input import PreviousTurnIdInput
+    from ...types.session_event_item import SessionEventItem
+    from ...types.subject import Subject
+    from ...types.turn_input_item import TurnInputItem
+    from ..prepared_turn import AsyncPreparedTurn, PreparedTurn
+    from ..turn import AsyncTurn, Turn
 
 
-class AgentSession:
+class AgentDraftSession:
     """
-    A session enriched with convenience methods: prepare_turn, list_turns, get_turn, list_events, cancel.
-    Turn operations are delegated to a shared :class:`SessionMixin`.
+    A draft session enriched with the same convenience methods as :class:`AgentSession`:
+    prepare_turn, list_turns, get_turn, list_events, cancel. Turn operations are delegated to a
+    shared :class:`SessionMixin`, so drafts and saved sessions expose an identical turn API.
     """
 
-    def __init__(self, session: RawSession, client: TrueFoundryGateway) -> None:
+    def __init__(self, session: RawDraftSession, client: TrueFoundryGateway) -> None:
         self._id: str = session.id
-        self._agent_name: str = session.agent_name
+        self._agent_spec: AgentSpec = session.agent_spec
+        self._agent_name: typing.Optional[str] = session.agent_name
         self._title: typing.Optional[str] = session.title
         self._created_by_subject: Subject = session.created_by_subject
         self._created_at: str = session.created_at
         self._updated_at: str = session.updated_at
+        self._client = client
         self._mixin = SessionMixin(session.id, client)
 
     def __repr__(self) -> str:
-        return f"AgentSession(id={self._id!r}, agent_name={self._agent_name!r})"
+        return f"AgentDraftSession(id={self._id!r}, agent_name={self._agent_name!r})"
 
     @property
-    def type(self) -> typing.Literal["session"]:
+    def type(self) -> typing.Literal["session/draft"]:
         """
         Returns
         -------
-        typing.Literal["session"]
-            Discriminant distinguishing a saved session from a draft session.
+        typing.Literal["session/draft"]
+            Discriminant distinguishing a draft session from a saved session.
         """
-        return "session"
+        return "session/draft"
 
     @property
     def id(self) -> str:
@@ -53,17 +58,27 @@ class AgentSession:
         Returns
         -------
         str
-            Unique identifier of this session.
+            Unique identifier of this draft session.
         """
         return self._id
 
     @property
-    def agent_name(self) -> str:
+    def agent_spec(self) -> AgentSpec:
         """
         Returns
         -------
-        str
-            Name of the agent for this session.
+        AgentSpec
+            Inline agent spec held by this draft.
+        """
+        return self._agent_spec
+
+    @property
+    def agent_name(self) -> typing.Optional[str]:
+        """
+        Returns
+        -------
+        typing.Optional[str]
+            Optional saved agent this draft is linked to.
         """
         return self._agent_name
 
@@ -73,7 +88,7 @@ class AgentSession:
         Returns
         -------
         typing.Optional[str]
-            Optional user-visible title for the session.
+            Optional user-visible title for the draft session.
         """
         return self._title
 
@@ -83,7 +98,7 @@ class AgentSession:
         Returns
         -------
         Subject
-            Subject that created this session.
+            Subject that created this draft session.
         """
         return self._created_by_subject
 
@@ -93,7 +108,7 @@ class AgentSession:
         Returns
         -------
         str
-            ISO-8601 timestamp when the session was created.
+            ISO-8601 timestamp when the draft session was created.
         """
         return self._created_at
 
@@ -103,9 +118,37 @@ class AgentSession:
         Returns
         -------
         str
-            ISO-8601 timestamp when the session was last updated.
+            ISO-8601 timestamp when the draft session was last updated.
         """
         return self._updated_at
+
+    def update(
+        self,
+        *,
+        agent_spec: typing.Optional[AgentSpec] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
+        """
+        Update this draft session's inline agent spec (owner-only). An empty call is a valid
+        no-op that just refreshes ``updated_at``. Mutates ``agent_spec`` and ``updated_at`` on
+        this instance in place.
+
+        Parameters
+        ----------
+        agent_spec : typing.Optional[AgentSpec]
+            New inline agent spec for the draft. Omit to leave the spec unchanged.
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Returns
+        -------
+        None
+        """
+        response = self._client.agents.private.draft_sessions.update(
+            self.id, agent_spec=agent_spec, request_options=request_options
+        )
+        self._agent_spec = response.data.agent_spec
+        self._updated_at = response.data.updated_at
 
     def prepare_turn(
         self,
@@ -229,32 +272,34 @@ class AgentSession:
         )
 
 
-class AsyncAgentSession:
+class AsyncAgentDraftSession:
     """
-    Async version of AgentSession.
+    Async version of AgentDraftSession.
     """
 
-    def __init__(self, session: RawSession, client: AsyncTrueFoundryGateway) -> None:
+    def __init__(self, session: RawDraftSession, client: AsyncTrueFoundryGateway) -> None:
         self._id: str = session.id
-        self._agent_name: str = session.agent_name
+        self._agent_spec: AgentSpec = session.agent_spec
+        self._agent_name: typing.Optional[str] = session.agent_name
         self._title: typing.Optional[str] = session.title
         self._created_by_subject: Subject = session.created_by_subject
         self._created_at: str = session.created_at
         self._updated_at: str = session.updated_at
+        self._client = client
         self._mixin = AsyncSessionMixin(session.id, client)
 
     def __repr__(self) -> str:
-        return f"AsyncAgentSession(id={self._id!r}, agent_name={self._agent_name!r})"
+        return f"AsyncAgentDraftSession(id={self._id!r}, agent_name={self._agent_name!r})"
 
     @property
-    def type(self) -> typing.Literal["session"]:
+    def type(self) -> typing.Literal["session/draft"]:
         """
         Returns
         -------
-        typing.Literal["session"]
-            Discriminant distinguishing a saved session from a draft session.
+        typing.Literal["session/draft"]
+            Discriminant distinguishing a draft session from a saved session.
         """
-        return "session"
+        return "session/draft"
 
     @property
     def id(self) -> str:
@@ -262,17 +307,27 @@ class AsyncAgentSession:
         Returns
         -------
         str
-            Unique identifier of this session.
+            Unique identifier of this draft session.
         """
         return self._id
 
     @property
-    def agent_name(self) -> str:
+    def agent_spec(self) -> AgentSpec:
         """
         Returns
         -------
-        str
-            Name of the agent for this session.
+        AgentSpec
+            Inline agent spec held by this draft.
+        """
+        return self._agent_spec
+
+    @property
+    def agent_name(self) -> typing.Optional[str]:
+        """
+        Returns
+        -------
+        typing.Optional[str]
+            Optional saved agent this draft is linked to.
         """
         return self._agent_name
 
@@ -282,7 +337,7 @@ class AsyncAgentSession:
         Returns
         -------
         typing.Optional[str]
-            Optional user-visible title for the session.
+            Optional user-visible title for the draft session.
         """
         return self._title
 
@@ -292,7 +347,7 @@ class AsyncAgentSession:
         Returns
         -------
         Subject
-            Subject that created this session.
+            Subject that created this draft session.
         """
         return self._created_by_subject
 
@@ -302,7 +357,7 @@ class AsyncAgentSession:
         Returns
         -------
         str
-            ISO-8601 timestamp when the session was created.
+            ISO-8601 timestamp when the draft session was created.
         """
         return self._created_at
 
@@ -312,9 +367,37 @@ class AsyncAgentSession:
         Returns
         -------
         str
-            ISO-8601 timestamp when the session was last updated.
+            ISO-8601 timestamp when the draft session was last updated.
         """
         return self._updated_at
+
+    async def update(
+        self,
+        *,
+        agent_spec: typing.Optional[AgentSpec] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
+        """
+        Update this draft session's inline agent spec (owner-only). An empty call is a valid
+        no-op that just refreshes ``updated_at``. Mutates ``agent_spec`` and ``updated_at`` on
+        this instance in place.
+
+        Parameters
+        ----------
+        agent_spec : typing.Optional[AgentSpec]
+            New inline agent spec for the draft. Omit to leave the spec unchanged.
+        request_options : typing.Optional[RequestOptions]
+            Overrides client timeout, retries, headers, and stream reconnect.
+
+        Returns
+        -------
+        None
+        """
+        response = await self._client.agents.private.draft_sessions.update(
+            self.id, agent_spec=agent_spec, request_options=request_options
+        )
+        self._agent_spec = response.data.agent_spec
+        self._updated_at = response.data.updated_at
 
     def prepare_turn(
         self,

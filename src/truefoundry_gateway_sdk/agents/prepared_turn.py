@@ -20,6 +20,7 @@ if typing.TYPE_CHECKING:
     from ..types.turn_input_item import TurnInputItem
     from ..types.turn_state import TurnState
     from .agent_session import AgentSession, AsyncAgentSession
+    from .private.agent_draft_session import AgentDraftSession, AsyncAgentDraftSession
 
 
 class PreparedTurn:
@@ -33,12 +34,12 @@ class PreparedTurn:
         *,
         input: typing.Optional[typing.Sequence[TurnInputItem]],
         previous_turn_id: typing.Optional[PreviousTurnIdInput],
-        session: "AgentSession",
+        session: typing.Union["AgentSession", "AgentDraftSession"],
         client: TrueFoundryGateway,
     ) -> None:
         self._input = list(input) if input is not None else None
         self._previous_turn_id = previous_turn_id
-        self._session: "AgentSession" = session
+        self._session: typing.Union["AgentSession", "AgentDraftSession"] = session
         self._session_id: str = session.id
         self._client = client
         self._started: bool = False
@@ -50,11 +51,11 @@ class PreparedTurn:
     # --- Properties that delegate to the inner Turn (None until execute is called) ---
 
     @property
-    def session(self) -> "AgentSession":
+    def session(self) -> typing.Union["AgentSession", "AgentDraftSession"]:
         """
         Returns
         -------
-        AgentSession
+        typing.Union[AgentSession, AgentDraftSession]
             Parent session this prepared turn belongs to.
         """
         return self._session
@@ -385,12 +386,12 @@ class AsyncPreparedTurn:
         *,
         input: typing.Optional[typing.Sequence[TurnInputItem]],
         previous_turn_id: typing.Optional[PreviousTurnIdInput],
-        session: "AsyncAgentSession",
+        session: typing.Union["AsyncAgentSession", "AsyncAgentDraftSession"],
         client: AsyncTrueFoundryGateway,
     ) -> None:
         self._input = list(input) if input is not None else None
         self._previous_turn_id = previous_turn_id
-        self._session: "AsyncAgentSession" = session
+        self._session: typing.Union["AsyncAgentSession", "AsyncAgentDraftSession"] = session
         self._session_id: str = session.id
         self._client = client
         self._started: bool = False
@@ -402,11 +403,11 @@ class AsyncPreparedTurn:
     # --- Properties that delegate to the inner AsyncTurn (None until execute is called) ---
 
     @property
-    def session(self) -> "AsyncAgentSession":
+    def session(self) -> typing.Union["AsyncAgentSession", "AsyncAgentDraftSession"]:
         """
         Returns
         -------
-        AsyncAgentSession
+        typing.Union[AsyncAgentSession, AsyncAgentDraftSession]
             Parent session this prepared turn belongs to.
         """
         return self._session
