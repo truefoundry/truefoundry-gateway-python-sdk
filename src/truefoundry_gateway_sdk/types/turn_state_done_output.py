@@ -8,7 +8,6 @@ from .finish_reason import FinishReason
 from .model_message_usage import ModelMessageUsage
 from .tool_call import ToolCall
 from .turn_state_done_output_content import TurnStateDoneOutputContent
-from .turn_state_done_output_type import TurnStateDoneOutputType
 
 
 class TurnStateDoneOutput(UniversalBaseModel):
@@ -17,7 +16,7 @@ class TurnStateDoneOutput(UniversalBaseModel):
     refusal: typing.Optional[str] = None
     reasoning_content: typing.Optional[str] = None
     tool_calls: typing.Optional[typing.List[ToolCall]] = None
-    type: TurnStateDoneOutputType
+    type: typing.Literal["model.message"] = "model.message"
     id: str = pydantic.Field()
     """
     Unique identifier for the event

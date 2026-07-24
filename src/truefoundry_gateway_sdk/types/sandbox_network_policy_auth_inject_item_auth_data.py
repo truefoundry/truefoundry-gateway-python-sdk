@@ -4,11 +4,10 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .sandbox_network_policy_auth_inject_item_auth_data_type import SandboxNetworkPolicyAuthInjectItemAuthDataType
 
 
 class SandboxNetworkPolicyAuthInjectItemAuthData(UniversalBaseModel):
-    type: SandboxNetworkPolicyAuthInjectItemAuthDataType
+    type: typing.Literal["basic"] = "basic"
     username: str
     password: str
 

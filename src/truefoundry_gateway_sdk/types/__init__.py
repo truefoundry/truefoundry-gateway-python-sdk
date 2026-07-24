@@ -8,11 +8,9 @@ from importlib import import_module
 if typing.TYPE_CHECKING:
     from .action_required_event import ActionRequiredEvent
     from .agent_info import AgentInfo
-    from .agent_info_type import AgentInfoType
     from .agent_parent import AgentParent
     from .agent_spec import AgentSpec
     from .agent_spec_user_message import AgentSpecUserMessage
-    from .agent_spec_user_message_type import AgentSpecUserMessageType
     from .approval_allow import ApprovalAllow
     from .approval_decision import ApprovalDecision
     from .approval_deny import ApprovalDeny
@@ -23,14 +21,10 @@ if typing.TYPE_CHECKING:
     from .cancel_session_response import CancelSessionResponse
     from .chat_completion_chunk_delta_tool_call import ChatCompletionChunkDeltaToolCall
     from .chat_completion_chunk_delta_tool_call_function import ChatCompletionChunkDeltaToolCallFunction
-    from .chat_completion_chunk_delta_tool_call_type import ChatCompletionChunkDeltaToolCallType
     from .chat_completion_content_part_refusal import ChatCompletionContentPartRefusal
-    from .chat_completion_content_part_refusal_type import ChatCompletionContentPartRefusalType
     from .chat_completion_content_part_text import ChatCompletionContentPartText
-    from .chat_completion_content_part_text_type import ChatCompletionContentPartTextType
     from .chat_completion_message_tool_call import ChatCompletionMessageToolCall
     from .chat_completion_message_tool_call_function import ChatCompletionMessageToolCallFunction
-    from .chat_completion_message_tool_call_type import ChatCompletionMessageToolCallType
     from .context_management_config import ContextManagementConfig
     from .context_management_config_compaction import ContextManagementConfigCompaction
     from .draft_session import DraftSession
@@ -72,7 +66,6 @@ if typing.TYPE_CHECKING:
     from .model_params import ModelParams
     from .model_params_cache_control import ModelParamsCacheControl
     from .previous_turn_id_input import PreviousTurnIdInput
-    from .previous_turn_id_input_zero import PreviousTurnIdInputZero
     from .raw_tool_call import RawToolCall
     from .registered_mcp_server import RegisteredMcpServer
     from .request_error_response import RequestErrorResponse
@@ -82,20 +75,15 @@ if typing.TYPE_CHECKING:
     from .response_format import ResponseFormat
     from .response_format_json_schema import ResponseFormatJsonSchema
     from .response_format_json_schema_json_schema import ResponseFormatJsonSchemaJsonSchema
-    from .response_format_json_schema_type import ResponseFormatJsonSchemaType
     from .response_format_one import ResponseFormatOne
-    from .response_format_one_type import ResponseFormatOneType
     from .response_format_zero import ResponseFormatZero
-    from .response_format_zero_type import ResponseFormatZeroType
     from .runtime_config import RuntimeConfig
     from .sandbox_config import SandboxConfig
     from .sandbox_created_event import SandboxCreatedEvent
     from .sandbox_network_policy import SandboxNetworkPolicy
     from .sandbox_network_policy_auth_inject_item import SandboxNetworkPolicyAuthInjectItem
     from .sandbox_network_policy_auth_inject_item_auth_data import SandboxNetworkPolicyAuthInjectItemAuthData
-    from .sandbox_network_policy_auth_inject_item_auth_data_type import SandboxNetworkPolicyAuthInjectItemAuthDataType
     from .sandbox_network_policy_auth_inject_item_match import SandboxNetworkPolicyAuthInjectItemMatch
-    from .sandbox_network_policy_auth_inject_item_type import SandboxNetworkPolicyAuthInjectItemType
     from .session import Session
     from .session_event import SessionEvent
     from .session_event_item import SessionEventItem
@@ -130,7 +118,6 @@ if typing.TYPE_CHECKING:
     from .turn_state_done_output import TurnStateDoneOutput
     from .turn_state_done_output_content import TurnStateDoneOutputContent
     from .turn_state_done_output_content_one_item import TurnStateDoneOutputContentOneItem
-    from .turn_state_done_output_type import TurnStateDoneOutputType
     from .turn_state_error import TurnStateError
     from .turn_state_running import TurnStateRunning
     from .turn_streaming_event import TurnStreamingEvent
@@ -142,11 +129,9 @@ if typing.TYPE_CHECKING:
 _dynamic_imports: typing.Dict[str, str] = {
     "ActionRequiredEvent": ".action_required_event",
     "AgentInfo": ".agent_info",
-    "AgentInfoType": ".agent_info_type",
     "AgentParent": ".agent_parent",
     "AgentSpec": ".agent_spec",
     "AgentSpecUserMessage": ".agent_spec_user_message",
-    "AgentSpecUserMessageType": ".agent_spec_user_message_type",
     "ApprovalAllow": ".approval_allow",
     "ApprovalDecision": ".approval_decision",
     "ApprovalDeny": ".approval_deny",
@@ -157,14 +142,10 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CancelSessionResponse": ".cancel_session_response",
     "ChatCompletionChunkDeltaToolCall": ".chat_completion_chunk_delta_tool_call",
     "ChatCompletionChunkDeltaToolCallFunction": ".chat_completion_chunk_delta_tool_call_function",
-    "ChatCompletionChunkDeltaToolCallType": ".chat_completion_chunk_delta_tool_call_type",
     "ChatCompletionContentPartRefusal": ".chat_completion_content_part_refusal",
-    "ChatCompletionContentPartRefusalType": ".chat_completion_content_part_refusal_type",
     "ChatCompletionContentPartText": ".chat_completion_content_part_text",
-    "ChatCompletionContentPartTextType": ".chat_completion_content_part_text_type",
     "ChatCompletionMessageToolCall": ".chat_completion_message_tool_call",
     "ChatCompletionMessageToolCallFunction": ".chat_completion_message_tool_call_function",
-    "ChatCompletionMessageToolCallType": ".chat_completion_message_tool_call_type",
     "ContextManagementConfig": ".context_management_config",
     "ContextManagementConfigCompaction": ".context_management_config_compaction",
     "DraftSession": ".draft_session",
@@ -206,7 +187,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ModelParams": ".model_params",
     "ModelParamsCacheControl": ".model_params_cache_control",
     "PreviousTurnIdInput": ".previous_turn_id_input",
-    "PreviousTurnIdInputZero": ".previous_turn_id_input_zero",
     "RawToolCall": ".raw_tool_call",
     "RegisteredMcpServer": ".registered_mcp_server",
     "RequestErrorResponse": ".request_error_response",
@@ -216,20 +196,15 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ResponseFormat": ".response_format",
     "ResponseFormatJsonSchema": ".response_format_json_schema",
     "ResponseFormatJsonSchemaJsonSchema": ".response_format_json_schema_json_schema",
-    "ResponseFormatJsonSchemaType": ".response_format_json_schema_type",
     "ResponseFormatOne": ".response_format_one",
-    "ResponseFormatOneType": ".response_format_one_type",
     "ResponseFormatZero": ".response_format_zero",
-    "ResponseFormatZeroType": ".response_format_zero_type",
     "RuntimeConfig": ".runtime_config",
     "SandboxConfig": ".sandbox_config",
     "SandboxCreatedEvent": ".sandbox_created_event",
     "SandboxNetworkPolicy": ".sandbox_network_policy",
     "SandboxNetworkPolicyAuthInjectItem": ".sandbox_network_policy_auth_inject_item",
     "SandboxNetworkPolicyAuthInjectItemAuthData": ".sandbox_network_policy_auth_inject_item_auth_data",
-    "SandboxNetworkPolicyAuthInjectItemAuthDataType": ".sandbox_network_policy_auth_inject_item_auth_data_type",
     "SandboxNetworkPolicyAuthInjectItemMatch": ".sandbox_network_policy_auth_inject_item_match",
-    "SandboxNetworkPolicyAuthInjectItemType": ".sandbox_network_policy_auth_inject_item_type",
     "Session": ".session",
     "SessionEvent": ".session_event",
     "SessionEventItem": ".session_event_item",
@@ -264,7 +239,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "TurnStateDoneOutput": ".turn_state_done_output",
     "TurnStateDoneOutputContent": ".turn_state_done_output_content",
     "TurnStateDoneOutputContentOneItem": ".turn_state_done_output_content_one_item",
-    "TurnStateDoneOutputType": ".turn_state_done_output_type",
     "TurnStateError": ".turn_state_error",
     "TurnStateRunning": ".turn_state_running",
     "TurnStreamingEvent": ".turn_streaming_event",
@@ -300,11 +274,9 @@ def __dir__():
 __all__ = [
     "ActionRequiredEvent",
     "AgentInfo",
-    "AgentInfoType",
     "AgentParent",
     "AgentSpec",
     "AgentSpecUserMessage",
-    "AgentSpecUserMessageType",
     "ApprovalAllow",
     "ApprovalDecision",
     "ApprovalDeny",
@@ -315,14 +287,10 @@ __all__ = [
     "CancelSessionResponse",
     "ChatCompletionChunkDeltaToolCall",
     "ChatCompletionChunkDeltaToolCallFunction",
-    "ChatCompletionChunkDeltaToolCallType",
     "ChatCompletionContentPartRefusal",
-    "ChatCompletionContentPartRefusalType",
     "ChatCompletionContentPartText",
-    "ChatCompletionContentPartTextType",
     "ChatCompletionMessageToolCall",
     "ChatCompletionMessageToolCallFunction",
-    "ChatCompletionMessageToolCallType",
     "ContextManagementConfig",
     "ContextManagementConfigCompaction",
     "DraftSession",
@@ -364,7 +332,6 @@ __all__ = [
     "ModelParams",
     "ModelParamsCacheControl",
     "PreviousTurnIdInput",
-    "PreviousTurnIdInputZero",
     "RawToolCall",
     "RegisteredMcpServer",
     "RequestErrorResponse",
@@ -374,20 +341,15 @@ __all__ = [
     "ResponseFormat",
     "ResponseFormatJsonSchema",
     "ResponseFormatJsonSchemaJsonSchema",
-    "ResponseFormatJsonSchemaType",
     "ResponseFormatOne",
-    "ResponseFormatOneType",
     "ResponseFormatZero",
-    "ResponseFormatZeroType",
     "RuntimeConfig",
     "SandboxConfig",
     "SandboxCreatedEvent",
     "SandboxNetworkPolicy",
     "SandboxNetworkPolicyAuthInjectItem",
     "SandboxNetworkPolicyAuthInjectItemAuthData",
-    "SandboxNetworkPolicyAuthInjectItemAuthDataType",
     "SandboxNetworkPolicyAuthInjectItemMatch",
-    "SandboxNetworkPolicyAuthInjectItemType",
     "Session",
     "SessionEvent",
     "SessionEventItem",
@@ -422,7 +384,6 @@ __all__ = [
     "TurnStateDoneOutput",
     "TurnStateDoneOutputContent",
     "TurnStateDoneOutputContentOneItem",
-    "TurnStateDoneOutputType",
     "TurnStateError",
     "TurnStateRunning",
     "TurnStreamingEvent",

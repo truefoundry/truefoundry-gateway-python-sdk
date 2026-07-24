@@ -5,13 +5,12 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .chat_completion_chunk_delta_tool_call_function import ChatCompletionChunkDeltaToolCallFunction
-from .chat_completion_chunk_delta_tool_call_type import ChatCompletionChunkDeltaToolCallType
 
 
 class ChatCompletionChunkDeltaToolCall(UniversalBaseModel):
     index: int
     id: typing.Optional[str] = None
-    type: typing.Optional[ChatCompletionChunkDeltaToolCallType] = None
+    type: typing.Optional[typing.Literal["function"]] = None
     function: typing.Optional[ChatCompletionChunkDeltaToolCallFunction] = None
 
     if IS_PYDANTIC_V2:

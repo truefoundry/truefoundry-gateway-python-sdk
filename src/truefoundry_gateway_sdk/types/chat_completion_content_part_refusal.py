@@ -4,11 +4,10 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .chat_completion_content_part_refusal_type import ChatCompletionContentPartRefusalType
 
 
 class ChatCompletionContentPartRefusal(UniversalBaseModel):
-    type: ChatCompletionContentPartRefusalType
+    type: typing.Literal["refusal"] = "refusal"
     refusal: str
 
     if IS_PYDANTIC_V2:

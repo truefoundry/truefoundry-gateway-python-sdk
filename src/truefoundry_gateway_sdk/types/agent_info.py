@@ -4,11 +4,10 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .agent_info_type import AgentInfoType
 
 
 class AgentInfo(UniversalBaseModel):
-    type: AgentInfoType
+    type: typing.Literal["dynamic"] = "dynamic"
     name: str
     input: str
     model: typing.Optional[str] = None

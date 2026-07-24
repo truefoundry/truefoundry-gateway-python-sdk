@@ -5,12 +5,11 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .chat_completion_message_tool_call_function import ChatCompletionMessageToolCallFunction
-from .chat_completion_message_tool_call_type import ChatCompletionMessageToolCallType
 
 
 class ChatCompletionMessageToolCall(UniversalBaseModel):
     id: str
-    type: ChatCompletionMessageToolCallType
+    type: typing.Literal["function"] = "function"
     function: ChatCompletionMessageToolCallFunction
 
     if IS_PYDANTIC_V2:
