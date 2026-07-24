@@ -21,10 +21,15 @@ from ....errors.not_found_error import NotFoundError
 from ....errors.precondition_failed_error import PreconditionFailedError
 from ....errors.unauthorized_error import UnauthorizedError
 from ....errors.unprocessable_entity_error import UnprocessableEntityError
+from ....types.created_by_subject_type import CreatedBySubjectType
 from ....types.list_owned_sessions_order import ListOwnedSessionsOrder
 from ....types.list_owned_sessions_response import ListOwnedSessionsResponse
 from ....types.list_owned_sessions_response_data_item import ListOwnedSessionsResponseDataItem
 from ....types.request_error_response import RequestErrorResponse
+from ....types.search_sessions_order import SearchSessionsOrder
+from ....types.search_sessions_response import SearchSessionsResponse
+from ....types.search_sessions_response_data_item import SearchSessionsResponseDataItem
+from ....types.session_type import SessionType
 from pydantic import ValidationError
 
 
@@ -136,6 +141,152 @@ class RawPrivateClient:
                 )
             if _response.status_code == 404:
                 raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        RequestErrorResponse,
+                        parse_obj_as(
+                            type_=RequestErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        RequestErrorResponse,
+                        parse_obj_as(
+                            type_=RequestErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def search_sessions(
+        self,
+        *,
+        agent_name: typing.Optional[str] = None,
+        created_by_subject_id: typing.Optional[str] = None,
+        created_by_subject_type: typing.Optional[CreatedBySubjectType] = None,
+        session_type: typing.Optional[SessionType] = None,
+        session_id: typing.Optional[str] = None,
+        limit: typing.Optional[int] = 10,
+        order: typing.Optional[SearchSessionsOrder] = None,
+        page_token: typing.Optional[str] = None,
+        start_timestamp: typing.Optional[str] = None,
+        end_timestamp: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> SyncPager[SearchSessionsResponseDataItem, SearchSessionsResponse]:
+        """
+        Search sessions visible to the caller across agents (newest first by default), keyset-paginated. Tenant admins see all tenant sessions; agent managers see sessions on agents they manage plus their own; other callers see only their own. Includes saved sessions and drafts (filter with `session_type`). Pass `page_token` to fetch the next page, keeping the other query params constant.
+
+        Parameters
+        ----------
+        agent_name : typing.Optional[str]
+            Filter to sessions linked to this saved agent.
+
+        created_by_subject_id : typing.Optional[str]
+            Filter to sessions created by this subject id.
+
+        created_by_subject_type : typing.Optional[CreatedBySubjectType]
+            Optional subject type used with created_by_subject_id.
+
+        session_type : typing.Optional[SessionType]
+            Filter by session type. Omit to include both saved sessions and drafts.
+
+        session_id : typing.Optional[str]
+            Filter to a specific session id.
+
+        limit : typing.Optional[int]
+            Page size. Defaults to 10, max 100.
+
+        order : typing.Optional[SearchSessionsOrder]
+            Sort sessions by creation time. Defaults to "desc".
+
+        page_token : typing.Optional[str]
+            Opaque token from a previous response `next_page_token`.
+
+        start_timestamp : typing.Optional[str]
+            Inclusive lower bound on `created_at` (ISO-8601). If omitted, no lower bound is applied.
+
+        end_timestamp : typing.Optional[str]
+            Inclusive upper bound on `created_at` (ISO-8601). Defaults upstream to now.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SyncPager[SearchSessionsResponseDataItem, SearchSessionsResponse]
+            Paginated sessions visible to the caller.
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "v1/x/agents/search-sessions",
+            method="GET",
+            params={
+                "agent_name": agent_name,
+                "created_by_subject_id": created_by_subject_id,
+                "created_by_subject_type": created_by_subject_type,
+                "session_type": session_type,
+                "session_id": session_id,
+                "limit": limit,
+                "order": order,
+                "page_token": page_token,
+                "start_timestamp": start_timestamp,
+                "end_timestamp": end_timestamp,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _parsed_response = typing.cast(
+                    SearchSessionsResponse,
+                    parse_obj_as(
+                        type_=SearchSessionsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                _items = _parsed_response.data
+                _has_next = False
+                _get_next = None
+                if _parsed_response.pagination is not None:
+                    _parsed_next = _parsed_response.pagination.next_page_token
+                    _has_next = _parsed_next is not None and _parsed_next != ""
+                    _get_next = lambda: self.search_sessions(
+                        agent_name=agent_name,
+                        created_by_subject_id=created_by_subject_id,
+                        created_by_subject_type=created_by_subject_type,
+                        session_type=session_type,
+                        session_id=session_id,
+                        limit=limit,
+                        order=order,
+                        page_token=_parsed_next,
+                        start_timestamp=start_timestamp,
+                        end_timestamp=end_timestamp,
+                        request_options=request_options,
+                    )
+                return SyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        RequestErrorResponse,
+                        parse_obj_as(
+                            type_=RequestErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         RequestErrorResponse,
@@ -410,6 +561,155 @@ class AsyncRawPrivateClient:
                 )
             if _response.status_code == 404:
                 raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        RequestErrorResponse,
+                        parse_obj_as(
+                            type_=RequestErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        RequestErrorResponse,
+                        parse_obj_as(
+                            type_=RequestErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def search_sessions(
+        self,
+        *,
+        agent_name: typing.Optional[str] = None,
+        created_by_subject_id: typing.Optional[str] = None,
+        created_by_subject_type: typing.Optional[CreatedBySubjectType] = None,
+        session_type: typing.Optional[SessionType] = None,
+        session_id: typing.Optional[str] = None,
+        limit: typing.Optional[int] = 10,
+        order: typing.Optional[SearchSessionsOrder] = None,
+        page_token: typing.Optional[str] = None,
+        start_timestamp: typing.Optional[str] = None,
+        end_timestamp: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncPager[SearchSessionsResponseDataItem, SearchSessionsResponse]:
+        """
+        Search sessions visible to the caller across agents (newest first by default), keyset-paginated. Tenant admins see all tenant sessions; agent managers see sessions on agents they manage plus their own; other callers see only their own. Includes saved sessions and drafts (filter with `session_type`). Pass `page_token` to fetch the next page, keeping the other query params constant.
+
+        Parameters
+        ----------
+        agent_name : typing.Optional[str]
+            Filter to sessions linked to this saved agent.
+
+        created_by_subject_id : typing.Optional[str]
+            Filter to sessions created by this subject id.
+
+        created_by_subject_type : typing.Optional[CreatedBySubjectType]
+            Optional subject type used with created_by_subject_id.
+
+        session_type : typing.Optional[SessionType]
+            Filter by session type. Omit to include both saved sessions and drafts.
+
+        session_id : typing.Optional[str]
+            Filter to a specific session id.
+
+        limit : typing.Optional[int]
+            Page size. Defaults to 10, max 100.
+
+        order : typing.Optional[SearchSessionsOrder]
+            Sort sessions by creation time. Defaults to "desc".
+
+        page_token : typing.Optional[str]
+            Opaque token from a previous response `next_page_token`.
+
+        start_timestamp : typing.Optional[str]
+            Inclusive lower bound on `created_at` (ISO-8601). If omitted, no lower bound is applied.
+
+        end_timestamp : typing.Optional[str]
+            Inclusive upper bound on `created_at` (ISO-8601). Defaults upstream to now.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncPager[SearchSessionsResponseDataItem, SearchSessionsResponse]
+            Paginated sessions visible to the caller.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "v1/x/agents/search-sessions",
+            method="GET",
+            params={
+                "agent_name": agent_name,
+                "created_by_subject_id": created_by_subject_id,
+                "created_by_subject_type": created_by_subject_type,
+                "session_type": session_type,
+                "session_id": session_id,
+                "limit": limit,
+                "order": order,
+                "page_token": page_token,
+                "start_timestamp": start_timestamp,
+                "end_timestamp": end_timestamp,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _parsed_response = typing.cast(
+                    SearchSessionsResponse,
+                    parse_obj_as(
+                        type_=SearchSessionsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                _items = _parsed_response.data
+                _has_next = False
+                _get_next = None
+                if _parsed_response.pagination is not None:
+                    _parsed_next = _parsed_response.pagination.next_page_token
+                    _has_next = _parsed_next is not None and _parsed_next != ""
+
+                    async def _get_next():
+                        return await self.search_sessions(
+                            agent_name=agent_name,
+                            created_by_subject_id=created_by_subject_id,
+                            created_by_subject_type=created_by_subject_type,
+                            session_type=session_type,
+                            session_id=session_id,
+                            limit=limit,
+                            order=order,
+                            page_token=_parsed_next,
+                            start_timestamp=start_timestamp,
+                            end_timestamp=end_timestamp,
+                            request_options=request_options,
+                        )
+
+                return AsyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        RequestErrorResponse,
+                        parse_obj_as(
+                            type_=RequestErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         RequestErrorResponse,

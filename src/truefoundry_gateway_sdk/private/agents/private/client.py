@@ -7,9 +7,14 @@ import typing
 from ....core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ....core.pagination import AsyncPager, SyncPager
 from ....core.request_options import RequestOptions
+from ....types.created_by_subject_type import CreatedBySubjectType
 from ....types.list_owned_sessions_order import ListOwnedSessionsOrder
 from ....types.list_owned_sessions_response import ListOwnedSessionsResponse
 from ....types.list_owned_sessions_response_data_item import ListOwnedSessionsResponseDataItem
+from ....types.search_sessions_order import SearchSessionsOrder
+from ....types.search_sessions_response import SearchSessionsResponse
+from ....types.search_sessions_response_data_item import SearchSessionsResponseDataItem
+from ....types.session_type import SessionType
 from .raw_client import AsyncRawPrivateClient, RawPrivateClient
 
 if typing.TYPE_CHECKING:
@@ -99,6 +104,109 @@ class PrivateClient:
         """
         return self._raw_client.list_owned_sessions(
             agent_name=agent_name,
+            limit=limit,
+            order=order,
+            page_token=page_token,
+            start_timestamp=start_timestamp,
+            end_timestamp=end_timestamp,
+            request_options=request_options,
+        )
+
+    def search_sessions(
+        self,
+        *,
+        agent_name: typing.Optional[str] = None,
+        created_by_subject_id: typing.Optional[str] = None,
+        created_by_subject_type: typing.Optional[CreatedBySubjectType] = None,
+        session_type: typing.Optional[SessionType] = None,
+        session_id: typing.Optional[str] = None,
+        limit: typing.Optional[int] = 10,
+        order: typing.Optional[SearchSessionsOrder] = None,
+        page_token: typing.Optional[str] = None,
+        start_timestamp: typing.Optional[str] = None,
+        end_timestamp: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> SyncPager[SearchSessionsResponseDataItem, SearchSessionsResponse]:
+        """
+        Search sessions visible to the caller across agents (newest first by default), keyset-paginated. Tenant admins see all tenant sessions; agent managers see sessions on agents they manage plus their own; other callers see only their own. Includes saved sessions and drafts (filter with `session_type`). Pass `page_token` to fetch the next page, keeping the other query params constant.
+
+        Parameters
+        ----------
+        agent_name : typing.Optional[str]
+            Filter to sessions linked to this saved agent.
+
+        created_by_subject_id : typing.Optional[str]
+            Filter to sessions created by this subject id.
+
+        created_by_subject_type : typing.Optional[CreatedBySubjectType]
+            Optional subject type used with created_by_subject_id.
+
+        session_type : typing.Optional[SessionType]
+            Filter by session type. Omit to include both saved sessions and drafts.
+
+        session_id : typing.Optional[str]
+            Filter to a specific session id.
+
+        limit : typing.Optional[int]
+            Page size. Defaults to 10, max 100.
+
+        order : typing.Optional[SearchSessionsOrder]
+            Sort sessions by creation time. Defaults to "desc".
+
+        page_token : typing.Optional[str]
+            Opaque token from a previous response `next_page_token`.
+
+        start_timestamp : typing.Optional[str]
+            Inclusive lower bound on `created_at` (ISO-8601). If omitted, no lower bound is applied.
+
+        end_timestamp : typing.Optional[str]
+            Inclusive upper bound on `created_at` (ISO-8601). Defaults upstream to now.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SyncPager[SearchSessionsResponseDataItem, SearchSessionsResponse]
+            Paginated sessions visible to the caller.
+
+        Examples
+        --------
+        from truefoundry_gateway_sdk import (
+            CreatedBySubjectType,
+            SearchSessionsOrder,
+            SessionType,
+            TrueFoundryGateway,
+        )
+
+        client = TrueFoundryGateway(
+            api_key="YOUR_API_KEY",
+            base_url="https://yourhost.com/path/to/api",
+        )
+        response = client.private.agents.private.search_sessions(
+            agent_name="agent_name",
+            created_by_subject_id="created_by_subject_id",
+            created_by_subject_type=CreatedBySubjectType.USER,
+            session_type=SessionType.SESSION,
+            session_id="session_id",
+            limit=1,
+            order=SearchSessionsOrder.ASC,
+            page_token="page_token",
+            start_timestamp="start_timestamp",
+            end_timestamp="end_timestamp",
+        )
+        for item in response:
+            yield item
+        # alternatively, you can paginate page-by-page
+        for page in response.iter_pages():
+            yield page
+        """
+        return self._raw_client.search_sessions(
+            agent_name=agent_name,
+            created_by_subject_id=created_by_subject_id,
+            created_by_subject_type=created_by_subject_type,
+            session_type=session_type,
+            session_id=session_id,
             limit=limit,
             order=order,
             page_token=page_token,
@@ -249,6 +357,118 @@ class AsyncPrivateClient:
         """
         return await self._raw_client.list_owned_sessions(
             agent_name=agent_name,
+            limit=limit,
+            order=order,
+            page_token=page_token,
+            start_timestamp=start_timestamp,
+            end_timestamp=end_timestamp,
+            request_options=request_options,
+        )
+
+    async def search_sessions(
+        self,
+        *,
+        agent_name: typing.Optional[str] = None,
+        created_by_subject_id: typing.Optional[str] = None,
+        created_by_subject_type: typing.Optional[CreatedBySubjectType] = None,
+        session_type: typing.Optional[SessionType] = None,
+        session_id: typing.Optional[str] = None,
+        limit: typing.Optional[int] = 10,
+        order: typing.Optional[SearchSessionsOrder] = None,
+        page_token: typing.Optional[str] = None,
+        start_timestamp: typing.Optional[str] = None,
+        end_timestamp: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncPager[SearchSessionsResponseDataItem, SearchSessionsResponse]:
+        """
+        Search sessions visible to the caller across agents (newest first by default), keyset-paginated. Tenant admins see all tenant sessions; agent managers see sessions on agents they manage plus their own; other callers see only their own. Includes saved sessions and drafts (filter with `session_type`). Pass `page_token` to fetch the next page, keeping the other query params constant.
+
+        Parameters
+        ----------
+        agent_name : typing.Optional[str]
+            Filter to sessions linked to this saved agent.
+
+        created_by_subject_id : typing.Optional[str]
+            Filter to sessions created by this subject id.
+
+        created_by_subject_type : typing.Optional[CreatedBySubjectType]
+            Optional subject type used with created_by_subject_id.
+
+        session_type : typing.Optional[SessionType]
+            Filter by session type. Omit to include both saved sessions and drafts.
+
+        session_id : typing.Optional[str]
+            Filter to a specific session id.
+
+        limit : typing.Optional[int]
+            Page size. Defaults to 10, max 100.
+
+        order : typing.Optional[SearchSessionsOrder]
+            Sort sessions by creation time. Defaults to "desc".
+
+        page_token : typing.Optional[str]
+            Opaque token from a previous response `next_page_token`.
+
+        start_timestamp : typing.Optional[str]
+            Inclusive lower bound on `created_at` (ISO-8601). If omitted, no lower bound is applied.
+
+        end_timestamp : typing.Optional[str]
+            Inclusive upper bound on `created_at` (ISO-8601). Defaults upstream to now.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncPager[SearchSessionsResponseDataItem, SearchSessionsResponse]
+            Paginated sessions visible to the caller.
+
+        Examples
+        --------
+        import asyncio
+
+        from truefoundry_gateway_sdk import (
+            AsyncTrueFoundryGateway,
+            CreatedBySubjectType,
+            SearchSessionsOrder,
+            SessionType,
+        )
+
+        client = AsyncTrueFoundryGateway(
+            api_key="YOUR_API_KEY",
+            base_url="https://yourhost.com/path/to/api",
+        )
+
+
+        async def main() -> None:
+            response = await client.private.agents.private.search_sessions(
+                agent_name="agent_name",
+                created_by_subject_id="created_by_subject_id",
+                created_by_subject_type=CreatedBySubjectType.USER,
+                session_type=SessionType.SESSION,
+                session_id="session_id",
+                limit=1,
+                order=SearchSessionsOrder.ASC,
+                page_token="page_token",
+                start_timestamp="start_timestamp",
+                end_timestamp="end_timestamp",
+            )
+            async for item in response:
+                yield item
+
+            # alternatively, you can paginate page-by-page
+            async for page in response.iter_pages():
+                yield page
+
+
+        asyncio.run(main())
+        """
+        return await self._raw_client.search_sessions(
+            agent_name=agent_name,
+            created_by_subject_id=created_by_subject_id,
+            created_by_subject_type=created_by_subject_type,
+            session_type=session_type,
+            session_id=session_id,
             limit=limit,
             order=order,
             page_token=page_token,

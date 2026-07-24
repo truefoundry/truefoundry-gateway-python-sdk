@@ -1007,6 +1007,159 @@ client.private.agents.private.list_owned_sessions(
 </dl>
 </details>
 
+<details><summary><code>client.private.agents.private.<a href="src/truefoundry_gateway_sdk/private/agents/private/client.py">search_sessions</a>(...) -> SearchSessionsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Search sessions visible to the caller across agents (newest first by default), keyset-paginated. Tenant admins see all tenant sessions; agent managers see sessions on agents they manage plus their own; other callers see only their own. Includes saved sessions and drafts (filter with `session_type`). Pass `page_token` to fetch the next page, keeping the other query params constant.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from truefoundry_gateway_sdk import TrueFoundryGateway, CreatedBySubjectType, SessionType, SearchSessionsOrder
+
+client = TrueFoundryGateway(
+    api_key="<token>",
+    base_url="https://yourhost.com/path/to/api",
+)
+
+client.private.agents.private.search_sessions(
+    agent_name="agent_name",
+    created_by_subject_id="created_by_subject_id",
+    created_by_subject_type=CreatedBySubjectType.USER,
+    session_type=SessionType.SESSION,
+    session_id="session_id",
+    limit=1,
+    order=SearchSessionsOrder.ASC,
+    page_token="page_token",
+    start_timestamp="start_timestamp",
+    end_timestamp="end_timestamp",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**agent_name:** `typing.Optional[str]` — Filter to sessions linked to this saved agent.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_by_subject_id:** `typing.Optional[str]` — Filter to sessions created by this subject id.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**created_by_subject_type:** `typing.Optional[CreatedBySubjectType]` — Optional subject type used with created_by_subject_id.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**session_type:** `typing.Optional[SessionType]` — Filter by session type. Omit to include both saved sessions and drafts.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**session_id:** `typing.Optional[str]` — Filter to a specific session id.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Page size. Defaults to 10, max 100.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**order:** `typing.Optional[SearchSessionsOrder]` — Sort sessions by creation time. Defaults to "desc".
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**page_token:** `typing.Optional[str]` — Opaque token from a previous response `next_page_token`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_timestamp:** `typing.Optional[str]` — Inclusive lower bound on `created_at` (ISO-8601). If omitted, no lower bound is applied.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_timestamp:** `typing.Optional[str]` — Inclusive upper bound on `created_at` (ISO-8601). Defaults upstream to now.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.private.agents.private.<a href="src/truefoundry_gateway_sdk/private/agents/private/client.py">download_sandbox_file</a>(...) -> typing.Iterator[bytes]</code></summary>
 <dl>
 <dd>
