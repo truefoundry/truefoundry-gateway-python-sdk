@@ -95,7 +95,6 @@ class AgentSessionClient:
         self,
         *,
         agent_name: str,
-        tfy_metadata: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AgentSession:
         """
@@ -105,8 +104,6 @@ class AgentSessionClient:
         ----------
         agent_name : str
             Name of an existing agent in the tenant.
-        tfy_metadata : typing.Optional[str]
-            Optional request metadata (x-tfy-metadata) persisted at creation.
         request_options : typing.Optional[RequestOptions]
             Overrides client timeout, retries, headers, and stream reconnect.
 
@@ -116,7 +113,7 @@ class AgentSessionClient:
             Session created.
         """
         response = self._client.agents.sessions.create(
-            agent_name=agent_name, tfy_metadata=tfy_metadata, request_options=request_options
+            agent_name=agent_name, request_options=request_options
         )
         return AgentSession(response.data, self._client)
 
@@ -229,7 +226,6 @@ class AsyncAgentSessionClient:
         self,
         *,
         agent_name: str,
-        tfy_metadata: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncAgentSession:
         """
@@ -239,8 +235,6 @@ class AsyncAgentSessionClient:
         ----------
         agent_name : str
             Name of an existing agent in the tenant.
-        tfy_metadata : typing.Optional[str]
-            Optional request metadata (x-tfy-metadata) persisted at creation.
         request_options : typing.Optional[RequestOptions]
             Overrides client timeout, retries, headers, and stream reconnect.
 
@@ -250,7 +244,7 @@ class AsyncAgentSessionClient:
             Session created.
         """
         response = await self._client.agents.sessions.create(
-            agent_name=agent_name, tfy_metadata=tfy_metadata, request_options=request_options
+            agent_name=agent_name, request_options=request_options
         )
         return AsyncAgentSession(response.data, self._client)
 

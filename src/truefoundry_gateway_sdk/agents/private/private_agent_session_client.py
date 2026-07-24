@@ -174,7 +174,6 @@ class PrivateAgentSessionClient:
         *,
         agent_spec: AgentSpec,
         agent_name: typing.Optional[str] = None,
-        tfy_metadata: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AgentDraftSession:
         """
@@ -186,8 +185,6 @@ class PrivateAgentSessionClient:
             Inline agent spec held by the draft.
         agent_name : typing.Optional[str]
             Optionally link the draft to an existing saved agent. Omit for a standalone draft.
-        tfy_metadata : typing.Optional[str]
-            Optional request metadata (x-tfy-metadata) persisted at creation.
         request_options : typing.Optional[RequestOptions]
             Overrides client timeout, retries, headers, and stream reconnect.
 
@@ -199,7 +196,6 @@ class PrivateAgentSessionClient:
         response = self._client.agents.private.draft_sessions.create(
             agent_spec=agent_spec,
             agent_name=agent_name,
-            tfy_metadata=tfy_metadata,
             request_options=request_options,
         )
         return AgentDraftSession(response.data, self._client)
@@ -388,7 +384,6 @@ class AsyncPrivateAgentSessionClient:
         *,
         agent_spec: AgentSpec,
         agent_name: typing.Optional[str] = None,
-        tfy_metadata: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncAgentDraftSession:
         """
@@ -400,8 +395,6 @@ class AsyncPrivateAgentSessionClient:
             Inline agent spec held by the draft.
         agent_name : typing.Optional[str]
             Optionally link the draft to an existing saved agent. Omit for a standalone draft.
-        tfy_metadata : typing.Optional[str]
-            Optional request metadata (x-tfy-metadata) persisted at creation.
         request_options : typing.Optional[RequestOptions]
             Overrides client timeout, retries, headers, and stream reconnect.
 
@@ -413,7 +406,6 @@ class AsyncPrivateAgentSessionClient:
         response = await self._client.agents.private.draft_sessions.create(
             agent_spec=agent_spec,
             agent_name=agent_name,
-            tfy_metadata=tfy_metadata,
             request_options=request_options,
         )
         return AsyncAgentDraftSession(response.data, self._client)
