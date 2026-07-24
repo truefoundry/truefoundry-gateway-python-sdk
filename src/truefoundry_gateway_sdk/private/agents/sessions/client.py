@@ -86,7 +86,7 @@ class SessionsClient:
 
         Examples
         --------
-        from truefoundry_gateway_sdk import TrueFoundryGateway
+        from truefoundry_gateway_sdk import ListSessionsOrder, TrueFoundryGateway
 
         client = TrueFoundryGateway(
             api_key="YOUR_API_KEY",
@@ -94,6 +94,11 @@ class SessionsClient:
         )
         response = client.private.agents.sessions.list(
             agent_name="agent_name",
+            limit=1,
+            order=ListSessionsOrder.ASC,
+            page_token="page_token",
+            start_timestamp="start_timestamp",
+            end_timestamp="end_timestamp",
         )
         for item in response:
             yield item
@@ -257,6 +262,8 @@ class SessionsClient:
         )
         response = client.private.agents.sessions.list_turns(
             session_id="01arz3ndektsv4rrffq69g5fav.g",
+            page_token="page_token",
+            limit=1,
         )
         for item in response:
             yield item
@@ -435,7 +442,7 @@ class SessionsClient:
 
         Examples
         --------
-        from truefoundry_gateway_sdk import TrueFoundryGateway
+        from truefoundry_gateway_sdk import ListEventsOrder, TrueFoundryGateway
 
         client = TrueFoundryGateway(
             api_key="YOUR_API_KEY",
@@ -444,6 +451,9 @@ class SessionsClient:
         response = client.private.agents.sessions.list_turn_events(
             session_id="01arz3ndektsv4rrffq69g5fav.g",
             turn_id="01arz3ndektsv4rrffq69g5fav.g.ab12cd",
+            page_token="page_token",
+            limit=1,
+            order=ListEventsOrder.ASC,
         )
         for item in response:
             yield item
@@ -498,6 +508,9 @@ class SessionsClient:
         )
         response = client.private.agents.sessions.list_events(
             session_id="01arz3ndektsv4rrffq69g5fav.g",
+            page_token="page_token",
+            last_turn_id="last_turn_id",
+            limit=1,
         )
         for item in response:
             yield item
@@ -571,7 +584,7 @@ class AsyncSessionsClient:
         --------
         import asyncio
 
-        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway
+        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway, ListSessionsOrder
 
         client = AsyncTrueFoundryGateway(
             api_key="YOUR_API_KEY",
@@ -582,6 +595,11 @@ class AsyncSessionsClient:
         async def main() -> None:
             response = await client.private.agents.sessions.list(
                 agent_name="agent_name",
+                limit=1,
+                order=ListSessionsOrder.ASC,
+                page_token="page_token",
+                start_timestamp="start_timestamp",
+                end_timestamp="end_timestamp",
             )
             async for item in response:
                 yield item
@@ -780,6 +798,8 @@ class AsyncSessionsClient:
         async def main() -> None:
             response = await client.private.agents.sessions.list_turns(
                 session_id="01arz3ndektsv4rrffq69g5fav.g",
+                page_token="page_token",
+                limit=1,
             )
             async for item in response:
                 yield item
@@ -990,7 +1010,7 @@ class AsyncSessionsClient:
         --------
         import asyncio
 
-        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway
+        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway, ListEventsOrder
 
         client = AsyncTrueFoundryGateway(
             api_key="YOUR_API_KEY",
@@ -1002,6 +1022,9 @@ class AsyncSessionsClient:
             response = await client.private.agents.sessions.list_turn_events(
                 session_id="01arz3ndektsv4rrffq69g5fav.g",
                 turn_id="01arz3ndektsv4rrffq69g5fav.g.ab12cd",
+                page_token="page_token",
+                limit=1,
+                order=ListEventsOrder.ASC,
             )
             async for item in response:
                 yield item
@@ -1065,6 +1088,9 @@ class AsyncSessionsClient:
         async def main() -> None:
             response = await client.private.agents.sessions.list_events(
                 session_id="01arz3ndektsv4rrffq69g5fav.g",
+                page_token="page_token",
+                last_turn_id="last_turn_id",
+                limit=1,
             )
             async for item in response:
                 yield item

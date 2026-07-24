@@ -172,7 +172,7 @@ client.private.agents.sessions.create_turn(
 Paginated requests will return a `SyncPager` or `AsyncPager`, which can be used as generators for the underlying object.
 
 ```python
-from truefoundry_gateway_sdk import TrueFoundryGateway
+from truefoundry_gateway_sdk import TrueFoundryGateway, ListSessionsOrder
 
 client = TrueFoundryGateway(
     api_key="<token>",
@@ -181,6 +181,11 @@ client = TrueFoundryGateway(
 
 client.private.agents.sessions.list(
     agent_name="agent_name",
+    limit=1,
+    order=ListSessionsOrder.ASC,
+    page_token="page_token",
+    start_timestamp="start_timestamp",
+    end_timestamp="end_timestamp",
 )
 ```
 
