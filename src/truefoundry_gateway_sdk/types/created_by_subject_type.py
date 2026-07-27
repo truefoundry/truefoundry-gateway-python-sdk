@@ -16,7 +16,6 @@ class CreatedBySubjectType(enum.StrEnum):
     TEAM = "team"
     SERVICEACCOUNT = "serviceaccount"
     VIRTUALACCOUNT = "virtualaccount"
-    EXTERNAL_IDENTITY = "external-identity"
     AGENT_IDENTITY = "agent-identity"
     ROLE = "role"
     _UNKNOWN = "__CREATEDBYSUBJECTTYPE_UNKNOWN__"
@@ -36,7 +35,6 @@ class CreatedBySubjectType(enum.StrEnum):
         team: typing.Callable[[], T_Result],
         serviceaccount: typing.Callable[[], T_Result],
         virtualaccount: typing.Callable[[], T_Result],
-        external_identity: typing.Callable[[], T_Result],
         agent_identity: typing.Callable[[], T_Result],
         role: typing.Callable[[], T_Result],
         _unknown_member: typing.Callable[[str], T_Result],
@@ -49,8 +47,6 @@ class CreatedBySubjectType(enum.StrEnum):
             return serviceaccount()
         if self is CreatedBySubjectType.VIRTUALACCOUNT:
             return virtualaccount()
-        if self is CreatedBySubjectType.EXTERNAL_IDENTITY:
-            return external_identity()
         if self is CreatedBySubjectType.AGENT_IDENTITY:
             return agent_identity()
         if self is CreatedBySubjectType.ROLE:
