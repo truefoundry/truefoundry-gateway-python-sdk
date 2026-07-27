@@ -82,20 +82,13 @@ class PrivateClient:
 
         Examples
         --------
-        from truefoundry_gateway_sdk import ListOwnedSessionsOrder, TrueFoundryGateway
+        from truefoundry_gateway_sdk import TrueFoundryGateway
 
         client = TrueFoundryGateway(
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
-        response = client.private.agents.private.list_owned_sessions(
-            agent_name="agent_name",
-            limit=1,
-            order=ListOwnedSessionsOrder.ASC,
-            page_token="page_token",
-            start_timestamp="start_timestamp",
-            end_timestamp="end_timestamp",
-        )
+        response = client.private.agents.private.list_owned_sessions()
         for item in response:
             yield item
         # alternatively, you can paginate page-by-page
@@ -172,29 +165,13 @@ class PrivateClient:
 
         Examples
         --------
-        from truefoundry_gateway_sdk import (
-            CreatedBySubjectType,
-            SearchSessionsOrder,
-            SessionType,
-            TrueFoundryGateway,
-        )
+        from truefoundry_gateway_sdk import TrueFoundryGateway
 
         client = TrueFoundryGateway(
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
-        response = client.private.agents.private.search_sessions(
-            agent_name="agent_name",
-            created_by_subject_id="created_by_subject_id",
-            created_by_subject_type=CreatedBySubjectType.USER,
-            session_type=SessionType.SESSION,
-            session_id="session_id",
-            limit=1,
-            order=SearchSessionsOrder.ASC,
-            page_token="page_token",
-            start_timestamp="start_timestamp",
-            end_timestamp="end_timestamp",
-        )
+        response = client.private.agents.private.search_sessions()
         for item in response:
             yield item
         # alternatively, you can paginate page-by-page
@@ -325,10 +302,7 @@ class AsyncPrivateClient:
         --------
         import asyncio
 
-        from truefoundry_gateway_sdk import (
-            AsyncTrueFoundryGateway,
-            ListOwnedSessionsOrder,
-        )
+        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway
 
         client = AsyncTrueFoundryGateway(
             api_key="YOUR_API_KEY",
@@ -337,14 +311,7 @@ class AsyncPrivateClient:
 
 
         async def main() -> None:
-            response = await client.private.agents.private.list_owned_sessions(
-                agent_name="agent_name",
-                limit=1,
-                order=ListOwnedSessionsOrder.ASC,
-                page_token="page_token",
-                start_timestamp="start_timestamp",
-                end_timestamp="end_timestamp",
-            )
+            response = await client.private.agents.private.list_owned_sessions()
             async for item in response:
                 yield item
 
@@ -427,12 +394,7 @@ class AsyncPrivateClient:
         --------
         import asyncio
 
-        from truefoundry_gateway_sdk import (
-            AsyncTrueFoundryGateway,
-            CreatedBySubjectType,
-            SearchSessionsOrder,
-            SessionType,
-        )
+        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway
 
         client = AsyncTrueFoundryGateway(
             api_key="YOUR_API_KEY",
@@ -441,18 +403,7 @@ class AsyncPrivateClient:
 
 
         async def main() -> None:
-            response = await client.private.agents.private.search_sessions(
-                agent_name="agent_name",
-                created_by_subject_id="created_by_subject_id",
-                created_by_subject_type=CreatedBySubjectType.USER,
-                session_type=SessionType.SESSION,
-                session_id="session_id",
-                limit=1,
-                order=SearchSessionsOrder.ASC,
-                page_token="page_token",
-                start_timestamp="start_timestamp",
-                end_timestamp="end_timestamp",
-            )
+            response = await client.private.agents.private.search_sessions()
             async for item in response:
                 yield item
 

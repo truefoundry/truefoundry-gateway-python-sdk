@@ -27,7 +27,7 @@ List sessions for an agent (newest first by default), keyset-paginated. Pass `pa
 <dd>
 
 ```python
-from truefoundry_gateway_sdk import TrueFoundryGateway, ListSessionsOrder
+from truefoundry_gateway_sdk import TrueFoundryGateway
 
 client = TrueFoundryGateway(
     api_key="<token>",
@@ -36,11 +36,6 @@ client = TrueFoundryGateway(
 
 client.private.agents.sessions.list(
     agent_name="agent_name",
-    limit=1,
-    order=ListSessionsOrder.ASC,
-    page_token="page_token",
-    start_timestamp="start_timestamp",
-    end_timestamp="end_timestamp",
 )
 
 ```
@@ -369,8 +364,6 @@ client = TrueFoundryGateway(
 
 client.private.agents.sessions.list_turns(
     session_id="01arz3ndektsv4rrffq69g5fav.g",
-    page_token="page_token",
-    limit=1,
 )
 
 ```
@@ -709,7 +702,7 @@ Paginated list of content turn events from the Redis events stream (model.messag
 <dd>
 
 ```python
-from truefoundry_gateway_sdk import TrueFoundryGateway, ListEventsOrder
+from truefoundry_gateway_sdk import TrueFoundryGateway
 
 client = TrueFoundryGateway(
     api_key="<token>",
@@ -719,9 +712,6 @@ client = TrueFoundryGateway(
 client.private.agents.sessions.list_turn_events(
     session_id="01arz3ndektsv4rrffq69g5fav.g",
     turn_id="01arz3ndektsv4rrffq69g5fav.g.ab12cd",
-    page_token="page_token",
-    limit=1,
-    order=ListEventsOrder.ASC,
 )
 
 ```
@@ -826,9 +816,6 @@ client = TrueFoundryGateway(
 
 client.private.agents.sessions.list_events(
     session_id="01arz3ndektsv4rrffq69g5fav.g",
-    page_token="page_token",
-    last_turn_id="last_turn_id",
-    limit=1,
 )
 
 ```
@@ -917,21 +904,14 @@ List all sessions owned by the caller, spanning both saved sessions and drafts (
 <dd>
 
 ```python
-from truefoundry_gateway_sdk import TrueFoundryGateway, ListOwnedSessionsOrder
+from truefoundry_gateway_sdk import TrueFoundryGateway
 
 client = TrueFoundryGateway(
     api_key="<token>",
     base_url="https://yourhost.com/path/to/api",
 )
 
-client.private.agents.private.list_owned_sessions(
-    agent_name="agent_name",
-    limit=1,
-    order=ListOwnedSessionsOrder.ASC,
-    page_token="page_token",
-    start_timestamp="start_timestamp",
-    end_timestamp="end_timestamp",
-)
+client.private.agents.private.list_owned_sessions()
 
 ```
 </dd>
@@ -1034,25 +1014,14 @@ Search sessions visible to the caller across agents (newest first by default), k
 <dd>
 
 ```python
-from truefoundry_gateway_sdk import TrueFoundryGateway, CreatedBySubjectType, SessionType, SearchSessionsOrder
+from truefoundry_gateway_sdk import TrueFoundryGateway
 
 client = TrueFoundryGateway(
     api_key="<token>",
     base_url="https://yourhost.com/path/to/api",
 )
 
-client.private.agents.private.search_sessions(
-    agent_name="agent_name",
-    created_by_subject_id="created_by_subject_id",
-    created_by_subject_type=CreatedBySubjectType.USER,
-    session_type=SessionType.SESSION,
-    session_id="session_id",
-    limit=1,
-    order=SearchSessionsOrder.ASC,
-    page_token="page_token",
-    start_timestamp="start_timestamp",
-    end_timestamp="end_timestamp",
-)
+client.private.agents.private.search_sessions()
 
 ```
 </dd>
@@ -1269,21 +1238,14 @@ List the caller-owned draft sessions (newest first by default), keyset-paginated
 <dd>
 
 ```python
-from truefoundry_gateway_sdk import TrueFoundryGateway, ListDraftSessionsOrder
+from truefoundry_gateway_sdk import TrueFoundryGateway
 
 client = TrueFoundryGateway(
     api_key="<token>",
     base_url="https://yourhost.com/path/to/api",
 )
 
-client.private.agents.private.draft_sessions.list(
-    agent_name="agent_name",
-    limit=1,
-    order=ListDraftSessionsOrder.ASC,
-    page_token="page_token",
-    start_timestamp="start_timestamp",
-    end_timestamp="end_timestamp",
-)
+client.private.agents.private.draft_sessions.list()
 
 ```
 </dd>
