@@ -8,6 +8,9 @@ from ..types.turn_done_event import TurnDoneEvent
 from .turn import AsyncTurn, Turn
 from .turn_stream_data import TurnStreamData
 
+# this is used as the default value for optional parameters
+OMIT = typing.cast(typing.Any, ...)
+
 if typing.TYPE_CHECKING:
     from ..client import AsyncTrueFoundryGateway, TrueFoundryGateway
     from ..core.pagination import AsyncPager, SyncPager
@@ -37,7 +40,10 @@ class PreparedTurn:
         session: typing.Union["AgentSession", "AgentDraftSession"],
         client: TrueFoundryGateway,
     ) -> None:
-        self._input = list(input) if input is not None else None
+        # Keep the raw value (which may be the OMIT sentinel) to forward to create_turn
+        # unchanged; self._input is the list-or-None form used for local state/exposure.
+        self._input_param = input
+        self._input = list(input) if input is not None and input is not OMIT else None
         self._previous_turn_id = previous_turn_id
         self._session: typing.Union["AgentSession", "AgentDraftSession"] = session
         self._session_id: str = session.id
@@ -193,7 +199,7 @@ class PreparedTurn:
     def stream(
         self,
         *,
-        after_sequence_number: typing.Optional[int] = None,
+        after_sequence_number: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.Iterator[TurnStreamData]:
         """
@@ -202,7 +208,8 @@ class PreparedTurn:
         Parameters
         ----------
         after_sequence_number : typing.Optional[int]
-            Sequence number to resume SSE subscription after.
+            Sequence number to resume SSE subscription after. Omit to resume via the
+            Last-Event-Id header instead.
         request_options : typing.Optional[RequestOptions]
             Overrides client timeout, retries, headers, and stream reconnect.
 
@@ -320,7 +327,7 @@ class PreparedTurn:
         """Consume the create_turn SSE, adopting the inner Turn from the first turn.created."""
         for event in self._client.agents.sessions.create_turn(
             self._session_id,
-            input=self._input,
+            input=self._input_param,
             previous_turn_id=self._previous_turn_id,
             request_options=request_options,
         ):
@@ -389,7 +396,10 @@ class AsyncPreparedTurn:
         session: typing.Union["AsyncAgentSession", "AsyncAgentDraftSession"],
         client: AsyncTrueFoundryGateway,
     ) -> None:
-        self._input = list(input) if input is not None else None
+        # Keep the raw value (which may be the OMIT sentinel) to forward to create_turn
+        # unchanged; self._input is the list-or-None form used for local state/exposure.
+        self._input_param = input
+        self._input = list(input) if input is not None and input is not OMIT else None
         self._previous_turn_id = previous_turn_id
         self._session: typing.Union["AsyncAgentSession", "AsyncAgentDraftSession"] = session
         self._session_id: str = session.id
@@ -545,7 +555,7 @@ class AsyncPreparedTurn:
     async def stream(
         self,
         *,
-        after_sequence_number: typing.Optional[int] = None,
+        after_sequence_number: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.AsyncIterator[TurnStreamData]:
         """
@@ -554,7 +564,8 @@ class AsyncPreparedTurn:
         Parameters
         ----------
         after_sequence_number : typing.Optional[int]
-            Sequence number to resume SSE subscription after.
+            Sequence number to resume SSE subscription after. Omit to resume via the
+            Last-Event-Id header instead.
         request_options : typing.Optional[RequestOptions]
             Overrides client timeout, retries, headers, and stream reconnect.
 
@@ -677,7 +688,7 @@ class AsyncPreparedTurn:
     ) -> typing.AsyncIterator[TurnStreamData]:
         async for event in self._client.agents.sessions.create_turn(
             self._session_id,
-            input=self._input,
+            input=self._input_param,
             previous_turn_id=self._previous_turn_id,
             request_options=request_options,
         ):

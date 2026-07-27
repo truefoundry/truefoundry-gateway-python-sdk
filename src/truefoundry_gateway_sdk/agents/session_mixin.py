@@ -6,6 +6,9 @@ from ..core.pagination import AsyncPager, SyncPager
 from .prepared_turn import AsyncPreparedTurn, PreparedTurn
 from .turn import AsyncTurn, Turn
 
+# this is used as the default value for optional parameters
+OMIT = typing.cast(typing.Any, ...)
+
 if typing.TYPE_CHECKING:
     from ..client import AsyncTrueFoundryGateway, TrueFoundryGateway
     from ..core.request_options import RequestOptions
@@ -89,8 +92,8 @@ class SessionMixin:
         self,
         owner: SyncSessionOwner,
         *,
-        input: typing.Optional[typing.Sequence[TurnInputItem]] = None,
-        previous_turn_id: typing.Optional[PreviousTurnIdInput] = None,
+        input: typing.Optional[typing.Sequence[TurnInputItem]] = OMIT,
+        previous_turn_id: typing.Optional[PreviousTurnIdInput] = OMIT,
     ) -> PreparedTurn:
         """
         Stage a turn locally; call ``execute()`` to start ``create_turn``.
@@ -241,8 +244,8 @@ class AsyncSessionMixin:
         self,
         owner: AsyncSessionOwner,
         *,
-        input: typing.Optional[typing.Sequence[TurnInputItem]] = None,
-        previous_turn_id: typing.Optional[PreviousTurnIdInput] = None,
+        input: typing.Optional[typing.Sequence[TurnInputItem]] = OMIT,
+        previous_turn_id: typing.Optional[PreviousTurnIdInput] = OMIT,
     ) -> AsyncPreparedTurn:
         """
         Stage a turn locally; call ``execute()`` to start ``create_turn``.
