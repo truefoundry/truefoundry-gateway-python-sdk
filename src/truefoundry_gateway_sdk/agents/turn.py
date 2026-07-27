@@ -10,6 +10,9 @@ from ..types.turn_state_done import TurnStateDone
 from ..types.turn_state_error import TurnStateError
 from .turn_stream_data import TurnStreamData
 
+# this is used as the default value for optional parameters
+OMIT = typing.cast(typing.Any, ...)
+
 if typing.TYPE_CHECKING:
     from ..client import AsyncTrueFoundryGateway, TrueFoundryGateway
     from ..core.pagination import AsyncPager, SyncPager
@@ -194,7 +197,7 @@ class Turn:
     def stream(
         self,
         *,
-        after_sequence_number: typing.Optional[int] = None,
+        after_sequence_number: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.Iterator[TurnStreamData]:
         """
@@ -203,7 +206,8 @@ class Turn:
         Parameters
         ----------
         after_sequence_number : typing.Optional[int]
-            Sequence number to resume SSE subscription after.
+            Sequence number to resume SSE subscription after. Omit to resume via the
+            Last-Event-Id header instead.
         request_options : typing.Optional[RequestOptions]
             Overrides client timeout, retries, headers, and stream reconnect.
 
@@ -440,7 +444,7 @@ class AsyncTurn:
     async def stream(
         self,
         *,
-        after_sequence_number: typing.Optional[int] = None,
+        after_sequence_number: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.AsyncIterator[TurnStreamData]:
         """
@@ -449,7 +453,8 @@ class AsyncTurn:
         Parameters
         ----------
         after_sequence_number : typing.Optional[int]
-            Sequence number to resume SSE subscription after.
+            Sequence number to resume SSE subscription after. Omit to resume via the
+            Last-Event-Id header instead.
         request_options : typing.Optional[RequestOptions]
             Overrides client timeout, retries, headers, and stream reconnect.
 

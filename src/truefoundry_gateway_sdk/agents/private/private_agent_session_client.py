@@ -4,9 +4,11 @@ import os
 import typing
 
 from ...core.pagination import AsyncPager, SyncPager
-from ...private.agents.private.draft_sessions.client import OMIT
 from ..agent_session import AgentSession, AsyncAgentSession
 from .agent_draft_session import AgentDraftSession, AsyncAgentDraftSession
+
+# this is used as the default value for optional parameters
+OMIT = typing.cast(typing.Any, ...)
 
 if typing.TYPE_CHECKING:
     import httpx

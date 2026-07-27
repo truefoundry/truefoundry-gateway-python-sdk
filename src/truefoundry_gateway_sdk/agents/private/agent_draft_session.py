@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import typing
 
-from ...private.agents.private.draft_sessions.client import OMIT
 from ..session_mixin import AsyncSessionMixin, SessionMixin
+
+# this is used as the default value for optional parameters
+OMIT = typing.cast(typing.Any, ...)
 
 if typing.TYPE_CHECKING:
     from ...client import AsyncTrueFoundryGateway, TrueFoundryGateway
@@ -153,8 +155,8 @@ class AgentDraftSession:
     def prepare_turn(
         self,
         *,
-        input: typing.Optional[typing.Sequence[TurnInputItem]] = None,
-        previous_turn_id: typing.Optional[PreviousTurnIdInput] = None,
+        input: typing.Optional[typing.Sequence[TurnInputItem]] = OMIT,
+        previous_turn_id: typing.Optional[PreviousTurnIdInput] = OMIT,
     ) -> PreparedTurn:
         """
         Stage a turn locally; call ``execute()`` to start ``create_turn``.
@@ -402,8 +404,8 @@ class AsyncAgentDraftSession:
     def prepare_turn(
         self,
         *,
-        input: typing.Optional[typing.Sequence[TurnInputItem]] = None,
-        previous_turn_id: typing.Optional[PreviousTurnIdInput] = None,
+        input: typing.Optional[typing.Sequence[TurnInputItem]] = OMIT,
+        previous_turn_id: typing.Optional[PreviousTurnIdInput] = OMIT,
     ) -> AsyncPreparedTurn:
         """
         Stage a turn locally; call ``execute()`` to start ``create_turn``.
