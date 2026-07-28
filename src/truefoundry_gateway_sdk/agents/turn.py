@@ -8,6 +8,7 @@ from ..types.turn_done_event import TurnDoneEvent
 from ..types.turn_state_cancelled import TurnStateCancelled
 from ..types.turn_state_done import TurnStateDone
 from ..types.turn_state_error import TurnStateError
+from ._sse_helpers import aiter_sse_stream, iter_sse_stream
 from .turn_stream_data import TurnStreamData
 
 # this is used as the default value for optional parameters
@@ -216,14 +217,15 @@ class Turn:
         TurnStreamData
             SSE stream items.
         """
-        for event in self._client.agents.sessions.subscribe_to_turn(
+        with self._client.agents.sessions.with_raw_response.subscribe_to_turn(
             self._session_id,
             self._id,
             after_sequence_number=after_sequence_number,
             request_options=request_options,
-        ):
-            self._apply_event(event)
-            yield TurnStreamData(sequence_number=None, event=event)
+        ) as r:
+            for item in iter_sse_stream(r._response):
+                self._apply_event(item.event)
+                yield item
 
     def cancel(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
@@ -463,14 +465,15 @@ class AsyncTurn:
         TurnStreamData
             SSE stream items.
         """
-        async for event in self._client.agents.sessions.subscribe_to_turn(
+        async with self._client.agents.sessions.with_raw_response.subscribe_to_turn(
             self._session_id,
             self._id,
             after_sequence_number=after_sequence_number,
             request_options=request_options,
-        ):
-            self._apply_event(event)
-            yield TurnStreamData(sequence_number=None, event=event)
+        ) as r:
+            async for item in aiter_sse_stream(r._response):
+                self._apply_event(item.event)
+                yield item
 
     async def cancel(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """

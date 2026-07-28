@@ -12,12 +12,11 @@ class TurnStreamData:
     """
     Attributes
     ----------
-    sequence_number : typing.Optional[int]
-        SSE event id for resume; None if unavailable from the stream.
+    sequence_number : int
+        SSE event id used for resume via ``subscribe_to_turn``.
     event : TurnStreamingEvent
         Streaming event payload.
     """
 
-    # Sequence number from the SSE event id. None when not available from the underlying stream.
-    sequence_number: typing.Optional[int]
+    sequence_number: int
     event: TurnStreamingEvent
