@@ -75,13 +75,20 @@ class DraftSessionsClient:
 
         Examples
         --------
-        from truefoundry_gateway_sdk import TrueFoundryGateway
+        from truefoundry_gateway_sdk import ListDraftSessionsOrder, TrueFoundryGateway
 
         client = TrueFoundryGateway(
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
-        response = client.private.agents.private.draft_sessions.list()
+        response = client.private.agents.private.draft_sessions.list(
+            agent_name="agent_name",
+            limit=1,
+            order=ListDraftSessionsOrder.ASC,
+            page_token="page_token",
+            start_timestamp="start_timestamp",
+            end_timestamp="end_timestamp",
+        )
         for item in response:
             yield item
         # alternatively, you can paginate page-by-page
@@ -102,6 +109,7 @@ class DraftSessionsClient:
         self,
         *,
         agent_spec: AgentSpec,
+        tfy_metadata: typing.Optional[str] = None,
         agent_name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> GetDraftSessionResponse:
@@ -111,6 +119,9 @@ class DraftSessionsClient:
         Parameters
         ----------
         agent_spec : AgentSpec
+
+        tfy_metadata : typing.Optional[str]
+            Optional customer request metadata (x-tfy-metadata) persisted as request_metadata at draft session creation.
 
         agent_name : typing.Optional[str]
             Optionally link the draft to an existing saved agent in the tenant. Omit for a standalone draft.
@@ -140,7 +151,7 @@ class DraftSessionsClient:
         )
         """
         _response = self._raw_client.create(
-            agent_spec=agent_spec, agent_name=agent_name, request_options=request_options
+            agent_spec=agent_spec, tfy_metadata=tfy_metadata, agent_name=agent_name, request_options=request_options
         )
         return _response.data
 
@@ -280,7 +291,10 @@ class AsyncDraftSessionsClient:
         --------
         import asyncio
 
-        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway
+        from truefoundry_gateway_sdk import (
+            AsyncTrueFoundryGateway,
+            ListDraftSessionsOrder,
+        )
 
         client = AsyncTrueFoundryGateway(
             api_key="YOUR_API_KEY",
@@ -289,7 +303,14 @@ class AsyncDraftSessionsClient:
 
 
         async def main() -> None:
-            response = await client.private.agents.private.draft_sessions.list()
+            response = await client.private.agents.private.draft_sessions.list(
+                agent_name="agent_name",
+                limit=1,
+                order=ListDraftSessionsOrder.ASC,
+                page_token="page_token",
+                start_timestamp="start_timestamp",
+                end_timestamp="end_timestamp",
+            )
             async for item in response:
                 yield item
 
@@ -314,6 +335,7 @@ class AsyncDraftSessionsClient:
         self,
         *,
         agent_spec: AgentSpec,
+        tfy_metadata: typing.Optional[str] = None,
         agent_name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> GetDraftSessionResponse:
@@ -323,6 +345,9 @@ class AsyncDraftSessionsClient:
         Parameters
         ----------
         agent_spec : AgentSpec
+
+        tfy_metadata : typing.Optional[str]
+            Optional customer request metadata (x-tfy-metadata) persisted as request_metadata at draft session creation.
 
         agent_name : typing.Optional[str]
             Optionally link the draft to an existing saved agent in the tenant. Omit for a standalone draft.
@@ -360,7 +385,7 @@ class AsyncDraftSessionsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
-            agent_spec=agent_spec, agent_name=agent_name, request_options=request_options
+            agent_spec=agent_spec, tfy_metadata=tfy_metadata, agent_name=agent_name, request_options=request_options
         )
         return _response.data
 

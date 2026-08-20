@@ -5,6 +5,7 @@ import typing
 from ....core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ....core.pagination import AsyncPager, SyncPager
 from ....core.request_options import RequestOptions
+from ....core.stream import AsyncStream, SyncStream
 from ....types.cancel_session_response import CancelSessionResponse
 from ....types.get_session_response import GetSessionResponse
 from ....types.get_turn_response import GetTurnResponse
@@ -86,7 +87,7 @@ class SessionsClient:
 
         Examples
         --------
-        from truefoundry_gateway_sdk import TrueFoundryGateway
+        from truefoundry_gateway_sdk import ListSessionsOrder, TrueFoundryGateway
 
         client = TrueFoundryGateway(
             api_key="YOUR_API_KEY",
@@ -94,6 +95,11 @@ class SessionsClient:
         )
         response = client.private.agents.sessions.list(
             agent_name="agent_name",
+            limit=1,
+            order=ListSessionsOrder.ASC,
+            page_token="page_token",
+            start_timestamp="start_timestamp",
+            end_timestamp="end_timestamp",
         )
         for item in response:
             yield item
@@ -111,7 +117,13 @@ class SessionsClient:
             request_options=request_options,
         )
 
-    def create(self, *, agent_name: str, request_options: typing.Optional[RequestOptions] = None) -> GetSessionResponse:
+    def create(
+        self,
+        *,
+        agent_name: str,
+        tfy_metadata: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetSessionResponse:
         """
         Create a session for an existing named agent.
 
@@ -119,6 +131,9 @@ class SessionsClient:
         ----------
         agent_name : str
             Name of an existing agent in the tenant.
+
+        tfy_metadata : typing.Optional[str]
+            Optional customer request metadata (x-tfy-metadata) persisted as request_metadata at session creation.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -140,7 +155,9 @@ class SessionsClient:
             agent_name="agent_name",
         )
         """
-        _response = self._raw_client.create(agent_name=agent_name, request_options=request_options)
+        _response = self._raw_client.create(
+            agent_name=agent_name, tfy_metadata=tfy_metadata, request_options=request_options
+        )
         return _response.data
 
     def get(self, session_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> GetSessionResponse:
@@ -246,6 +263,8 @@ class SessionsClient:
         )
         response = client.private.agents.sessions.list_turns(
             session_id="01arz3ndektsv4rrffq69g5fav.g",
+            page_token="page_token",
+            limit=1,
         )
         for item in response:
             yield item
@@ -264,7 +283,7 @@ class SessionsClient:
         input: typing.Optional[typing.Sequence[TurnInputItem]] = OMIT,
         previous_turn_id: typing.Optional[PreviousTurnIdInput] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Iterator[TurnStreamingEvent]:
+    ) -> SyncStream[TurnStreamingEvent]:
         """
         Start or continue a turn within a session. Responds with a Server-Sent Events stream.
         Use `previous_turn_id` to chain to the session's last turn (defaults to `auto`).
@@ -280,9 +299,9 @@ class SessionsClient:
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
-        Yields
-        ------
-        typing.Iterator[TurnStreamingEvent]
+        Returns
+        -------
+        SyncStream[TurnStreamingEvent]
             Server-Sent Events stream of turn events.
 
         Examples
@@ -299,10 +318,12 @@ class SessionsClient:
         for chunk in response:
             yield chunk
         """
-        with self._raw_client.create_turn(
+        cm = self._raw_client.create_turn(
             session_id, input=input, previous_turn_id=previous_turn_id, request_options=request_options
-        ) as r:
-            yield from r.data
+        )
+        r = cm.__enter__()
+        stream = r.data
+        return stream.attach_close(lambda: cm.__exit__(None, None, None))
 
     def get_turn(
         self, session_id: str, turn_id: str, *, request_options: typing.Optional[RequestOptions] = None
@@ -347,7 +368,7 @@ class SessionsClient:
         *,
         after_sequence_number: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Iterator[TurnStreamingEvent]:
+    ) -> SyncStream[TurnStreamingEvent]:
         """
         Subscribe to the live SSE stream for a turn. Pass after_sequence_number to resume after disconnect or server timeout, or send Last-Event-Id when after_sequence_number is omitted.
 
@@ -362,9 +383,9 @@ class SessionsClient:
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
-        Yields
-        ------
-        typing.Iterator[TurnStreamingEvent]
+        Returns
+        -------
+        SyncStream[TurnStreamingEvent]
             Server-Sent Events stream of turn events (deltas and lifecycle).
 
         Examples
@@ -382,10 +403,12 @@ class SessionsClient:
         for chunk in response:
             yield chunk
         """
-        with self._raw_client.subscribe_to_turn(
+        cm = self._raw_client.subscribe_to_turn(
             session_id, turn_id, after_sequence_number=after_sequence_number, request_options=request_options
-        ) as r:
-            yield from r.data
+        )
+        r = cm.__enter__()
+        stream = r.data
+        return stream.attach_close(lambda: cm.__exit__(None, None, None))
 
     def list_turn_events(
         self,
@@ -424,7 +447,7 @@ class SessionsClient:
 
         Examples
         --------
-        from truefoundry_gateway_sdk import TrueFoundryGateway
+        from truefoundry_gateway_sdk import ListEventsOrder, TrueFoundryGateway
 
         client = TrueFoundryGateway(
             api_key="YOUR_API_KEY",
@@ -433,6 +456,9 @@ class SessionsClient:
         response = client.private.agents.sessions.list_turn_events(
             session_id="01arz3ndektsv4rrffq69g5fav.g",
             turn_id="01arz3ndektsv4rrffq69g5fav.g.ab12cd",
+            page_token="page_token",
+            limit=1,
+            order=ListEventsOrder.ASC,
         )
         for item in response:
             yield item
@@ -487,6 +513,9 @@ class SessionsClient:
         )
         response = client.private.agents.sessions.list_events(
             session_id="01arz3ndektsv4rrffq69g5fav.g",
+            page_token="page_token",
+            last_turn_id="last_turn_id",
+            limit=1,
         )
         for item in response:
             yield item
@@ -560,7 +589,7 @@ class AsyncSessionsClient:
         --------
         import asyncio
 
-        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway
+        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway, ListSessionsOrder
 
         client = AsyncTrueFoundryGateway(
             api_key="YOUR_API_KEY",
@@ -571,6 +600,11 @@ class AsyncSessionsClient:
         async def main() -> None:
             response = await client.private.agents.sessions.list(
                 agent_name="agent_name",
+                limit=1,
+                order=ListSessionsOrder.ASC,
+                page_token="page_token",
+                start_timestamp="start_timestamp",
+                end_timestamp="end_timestamp",
             )
             async for item in response:
                 yield item
@@ -593,7 +627,11 @@ class AsyncSessionsClient:
         )
 
     async def create(
-        self, *, agent_name: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        agent_name: str,
+        tfy_metadata: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> GetSessionResponse:
         """
         Create a session for an existing named agent.
@@ -602,6 +640,9 @@ class AsyncSessionsClient:
         ----------
         agent_name : str
             Name of an existing agent in the tenant.
+
+        tfy_metadata : typing.Optional[str]
+            Optional customer request metadata (x-tfy-metadata) persisted as request_metadata at session creation.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -631,7 +672,9 @@ class AsyncSessionsClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.create(agent_name=agent_name, request_options=request_options)
+        _response = await self._raw_client.create(
+            agent_name=agent_name, tfy_metadata=tfy_metadata, request_options=request_options
+        )
         return _response.data
 
     async def get(
@@ -760,6 +803,8 @@ class AsyncSessionsClient:
         async def main() -> None:
             response = await client.private.agents.sessions.list_turns(
                 session_id="01arz3ndektsv4rrffq69g5fav.g",
+                page_token="page_token",
+                limit=1,
             )
             async for item in response:
                 yield item
@@ -782,7 +827,7 @@ class AsyncSessionsClient:
         input: typing.Optional[typing.Sequence[TurnInputItem]] = OMIT,
         previous_turn_id: typing.Optional[PreviousTurnIdInput] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.AsyncIterator[TurnStreamingEvent]:
+    ) -> AsyncStream[TurnStreamingEvent]:
         """
         Start or continue a turn within a session. Responds with a Server-Sent Events stream.
         Use `previous_turn_id` to chain to the session's last turn (defaults to `auto`).
@@ -798,9 +843,9 @@ class AsyncSessionsClient:
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
-        Yields
-        ------
-        typing.AsyncIterator[TurnStreamingEvent]
+        Returns
+        -------
+        AsyncStream[TurnStreamingEvent]
             Server-Sent Events stream of turn events.
 
         Examples
@@ -825,11 +870,16 @@ class AsyncSessionsClient:
 
         asyncio.run(main())
         """
-        async with self._raw_client.create_turn(
+        cm = self._raw_client.create_turn(
             session_id, input=input, previous_turn_id=previous_turn_id, request_options=request_options
-        ) as r:
-            async for _chunk in r.data:
-                yield _chunk
+        )
+        r = await cm.__aenter__()
+        stream = r.data
+
+        async def _close() -> None:
+            await cm.__aexit__(None, None, None)
+
+        return stream.attach_close(_close)
 
     async def get_turn(
         self, session_id: str, turn_id: str, *, request_options: typing.Optional[RequestOptions] = None
@@ -882,7 +932,7 @@ class AsyncSessionsClient:
         *,
         after_sequence_number: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.AsyncIterator[TurnStreamingEvent]:
+    ) -> AsyncStream[TurnStreamingEvent]:
         """
         Subscribe to the live SSE stream for a turn. Pass after_sequence_number to resume after disconnect or server timeout, or send Last-Event-Id when after_sequence_number is omitted.
 
@@ -897,9 +947,9 @@ class AsyncSessionsClient:
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
-        Yields
-        ------
-        typing.AsyncIterator[TurnStreamingEvent]
+        Returns
+        -------
+        AsyncStream[TurnStreamingEvent]
             Server-Sent Events stream of turn events (deltas and lifecycle).
 
         Examples
@@ -925,11 +975,16 @@ class AsyncSessionsClient:
 
         asyncio.run(main())
         """
-        async with self._raw_client.subscribe_to_turn(
+        cm = self._raw_client.subscribe_to_turn(
             session_id, turn_id, after_sequence_number=after_sequence_number, request_options=request_options
-        ) as r:
-            async for _chunk in r.data:
-                yield _chunk
+        )
+        r = await cm.__aenter__()
+        stream = r.data
+
+        async def _close() -> None:
+            await cm.__aexit__(None, None, None)
+
+        return stream.attach_close(_close)
 
     async def list_turn_events(
         self,
@@ -970,7 +1025,7 @@ class AsyncSessionsClient:
         --------
         import asyncio
 
-        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway
+        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway, ListEventsOrder
 
         client = AsyncTrueFoundryGateway(
             api_key="YOUR_API_KEY",
@@ -982,6 +1037,9 @@ class AsyncSessionsClient:
             response = await client.private.agents.sessions.list_turn_events(
                 session_id="01arz3ndektsv4rrffq69g5fav.g",
                 turn_id="01arz3ndektsv4rrffq69g5fav.g.ab12cd",
+                page_token="page_token",
+                limit=1,
+                order=ListEventsOrder.ASC,
             )
             async for item in response:
                 yield item
@@ -1045,6 +1103,9 @@ class AsyncSessionsClient:
         async def main() -> None:
             response = await client.private.agents.sessions.list_events(
                 session_id="01arz3ndektsv4rrffq69g5fav.g",
+                page_token="page_token",
+                last_turn_id="last_turn_id",
+                limit=1,
             )
             async for item in response:
                 yield item

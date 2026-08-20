@@ -2,7 +2,25 @@
 
 import typing
 
-from .git_source_skill_mount import GitSourceSkillMount
-from .registered_skill_mount import RegisteredSkillMount
+import pydantic
+from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
-SkillMount = typing.Union[GitSourceSkillMount, RegisteredSkillMount]
+
+class SkillMount(UniversalBaseModel):
+    fqn: str = pydantic.Field()
+    """
+    Fully qualified name of the agent skill version.
+    """
+
+    preload: typing.Optional[bool] = pydantic.Field(default=False)
+    """
+    If true, the SKILL.md content is injected into the agent context.
+    """
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            smart_union = True
+            extra = pydantic.Extra.allow

@@ -29,12 +29,14 @@ if typing.TYPE_CHECKING:
     from .remove_none_from_dict import remove_none_from_dict
     from .request_options import RequestOptions
     from .serialization import FieldMetadata, convert_and_respect_annotation_metadata
+    from .stream import AsyncStream, StreamEvent, SyncStream
 _dynamic_imports: typing.Dict[str, str] = {
     "ApiError": ".api_error",
     "AsyncClientWrapper": ".client_wrapper",
     "AsyncHttpClient": ".http_client",
     "AsyncHttpResponse": ".http_response",
     "AsyncPager": ".pagination",
+    "AsyncStream": ".stream",
     "BaseClientWrapper": ".client_wrapper",
     "ConsoleLogger": ".logging",
     "FieldMetadata": ".serialization",
@@ -49,8 +51,10 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ParsingError": ".parse_error",
     "RequestOptions": ".request_options",
     "Rfc2822DateTime": ".datetime_utils",
+    "StreamEvent": ".stream",
     "SyncClientWrapper": ".client_wrapper",
     "SyncPager": ".pagination",
+    "SyncStream": ".stream",
     "UniversalBaseModel": ".pydantic_utilities",
     "UniversalRootModel": ".pydantic_utilities",
     "convert_and_respect_annotation_metadata": ".serialization",
@@ -97,6 +101,7 @@ __all__ = [
     "AsyncHttpClient",
     "AsyncHttpResponse",
     "AsyncPager",
+    "AsyncStream",
     "BaseClientWrapper",
     "ConsoleLogger",
     "FieldMetadata",
@@ -111,8 +116,10 @@ __all__ = [
     "ParsingError",
     "RequestOptions",
     "Rfc2822DateTime",
+    "StreamEvent",
     "SyncClientWrapper",
     "SyncPager",
+    "SyncStream",
     "UniversalBaseModel",
     "UniversalRootModel",
     "convert_and_respect_annotation_metadata",

@@ -16,7 +16,6 @@ if typing.TYPE_CHECKING:
     from .approval_deny import ApprovalDeny
     from .ask_user_questions_config import AskUserQuestionsConfig
     from .base_mcp_auth_required_event import BaseMcpAuthRequiredEvent
-    from .base_mcp_server import BaseMcpServer
     from .base_thread_done_event import BaseThreadDoneEvent
     from .cancel_session_response import CancelSessionResponse
     from .chat_completion_chunk_delta_tool_call import ChatCompletionChunkDeltaToolCall
@@ -27,7 +26,6 @@ if typing.TYPE_CHECKING:
     from .chat_completion_message_tool_call_function import ChatCompletionMessageToolCallFunction
     from .context_management_config import ContextManagementConfig
     from .context_management_config_compaction import ContextManagementConfigCompaction
-    from .created_by_subject_type import CreatedBySubjectType
     from .draft_session import DraftSession
     from .dynamic_sub_agents_config import DynamicSubAgentsConfig
     from .extended_chunk_delta_tool_call import ExtendedChunkDeltaToolCall
@@ -37,8 +35,11 @@ if typing.TYPE_CHECKING:
     from .get_draft_session_response import GetDraftSessionResponse
     from .get_session_response import GetSessionResponse
     from .get_turn_response import GetTurnResponse
-    from .git_source_skill_mount import GitSourceSkillMount
     from .inline_mcp_server import InlineMcpServer
+    from .inline_mcp_server_disable_tools_item import InlineMcpServerDisableToolsItem
+    from .inline_mcp_server_enable_tools_item import InlineMcpServerEnableToolsItem
+    from .inline_mcp_server_preload_tools_item import InlineMcpServerPreloadToolsItem
+    from .inline_mcp_server_require_approval_for_tools_item import InlineMcpServerRequireApprovalForToolsItem
     from .large_tool_response_config import LargeToolResponseConfig
     from .list_draft_sessions_order import ListDraftSessionsOrder
     from .list_draft_sessions_response import ListDraftSessionsResponse
@@ -70,11 +71,12 @@ if typing.TYPE_CHECKING:
     from .previous_turn_id_input import PreviousTurnIdInput
     from .raw_tool_call import RawToolCall
     from .registered_mcp_server import RegisteredMcpServer
-    from .registered_skill_mount import RegisteredSkillMount
+    from .registered_mcp_server_disable_tools_item import RegisteredMcpServerDisableToolsItem
+    from .registered_mcp_server_enable_tools_item import RegisteredMcpServerEnableToolsItem
+    from .registered_mcp_server_preload_tools_item import RegisteredMcpServerPreloadToolsItem
+    from .registered_mcp_server_require_approval_for_tools_item import RegisteredMcpServerRequireApprovalForToolsItem
     from .request_error_response import RequestErrorResponse
     from .request_error_response_error import RequestErrorResponseError
-    from .require_approval_tool_selector_item import RequireApprovalToolSelectorItem
-    from .require_approval_tools_selector_tag import RequireApprovalToolsSelectorTag
     from .response_format import ResponseFormat
     from .response_format_json_schema import ResponseFormatJsonSchema
     from .response_format_json_schema_json_schema import ResponseFormatJsonSchemaJsonSchema
@@ -87,13 +89,9 @@ if typing.TYPE_CHECKING:
     from .sandbox_network_policy_auth_inject_item import SandboxNetworkPolicyAuthInjectItem
     from .sandbox_network_policy_auth_inject_item_auth_data import SandboxNetworkPolicyAuthInjectItemAuthData
     from .sandbox_network_policy_auth_inject_item_match import SandboxNetworkPolicyAuthInjectItemMatch
-    from .search_sessions_order import SearchSessionsOrder
-    from .search_sessions_response import SearchSessionsResponse
-    from .search_sessions_response_data_item import SearchSessionsResponseDataItem
     from .session import Session
     from .session_event import SessionEvent
     from .session_event_item import SessionEventItem
-    from .session_type import SessionType
     from .skill_mount import SkillMount
     from .subject import Subject
     from .text_content import TextContent
@@ -109,8 +107,6 @@ if typing.TYPE_CHECKING:
     from .tool_info import ToolInfo
     from .tool_response_event import ToolResponseEvent
     from .tool_response_required_event import ToolResponseRequiredEvent
-    from .tools_selector_item import ToolsSelectorItem
-    from .tools_selector_tag import ToolsSelectorTag
     from .true_foundry_system_tool_info import TrueFoundrySystemToolInfo
     from .turn import Turn
     from .turn_created_event import TurnCreatedEvent
@@ -144,7 +140,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ApprovalDeny": ".approval_deny",
     "AskUserQuestionsConfig": ".ask_user_questions_config",
     "BaseMcpAuthRequiredEvent": ".base_mcp_auth_required_event",
-    "BaseMcpServer": ".base_mcp_server",
     "BaseThreadDoneEvent": ".base_thread_done_event",
     "CancelSessionResponse": ".cancel_session_response",
     "ChatCompletionChunkDeltaToolCall": ".chat_completion_chunk_delta_tool_call",
@@ -155,7 +150,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ChatCompletionMessageToolCallFunction": ".chat_completion_message_tool_call_function",
     "ContextManagementConfig": ".context_management_config",
     "ContextManagementConfigCompaction": ".context_management_config_compaction",
-    "CreatedBySubjectType": ".created_by_subject_type",
     "DraftSession": ".draft_session",
     "DynamicSubAgentsConfig": ".dynamic_sub_agents_config",
     "ExtendedChunkDeltaToolCall": ".extended_chunk_delta_tool_call",
@@ -165,8 +159,11 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetDraftSessionResponse": ".get_draft_session_response",
     "GetSessionResponse": ".get_session_response",
     "GetTurnResponse": ".get_turn_response",
-    "GitSourceSkillMount": ".git_source_skill_mount",
     "InlineMcpServer": ".inline_mcp_server",
+    "InlineMcpServerDisableToolsItem": ".inline_mcp_server_disable_tools_item",
+    "InlineMcpServerEnableToolsItem": ".inline_mcp_server_enable_tools_item",
+    "InlineMcpServerPreloadToolsItem": ".inline_mcp_server_preload_tools_item",
+    "InlineMcpServerRequireApprovalForToolsItem": ".inline_mcp_server_require_approval_for_tools_item",
     "LargeToolResponseConfig": ".large_tool_response_config",
     "ListDraftSessionsOrder": ".list_draft_sessions_order",
     "ListDraftSessionsResponse": ".list_draft_sessions_response",
@@ -198,11 +195,12 @@ _dynamic_imports: typing.Dict[str, str] = {
     "PreviousTurnIdInput": ".previous_turn_id_input",
     "RawToolCall": ".raw_tool_call",
     "RegisteredMcpServer": ".registered_mcp_server",
-    "RegisteredSkillMount": ".registered_skill_mount",
+    "RegisteredMcpServerDisableToolsItem": ".registered_mcp_server_disable_tools_item",
+    "RegisteredMcpServerEnableToolsItem": ".registered_mcp_server_enable_tools_item",
+    "RegisteredMcpServerPreloadToolsItem": ".registered_mcp_server_preload_tools_item",
+    "RegisteredMcpServerRequireApprovalForToolsItem": ".registered_mcp_server_require_approval_for_tools_item",
     "RequestErrorResponse": ".request_error_response",
     "RequestErrorResponseError": ".request_error_response_error",
-    "RequireApprovalToolSelectorItem": ".require_approval_tool_selector_item",
-    "RequireApprovalToolsSelectorTag": ".require_approval_tools_selector_tag",
     "ResponseFormat": ".response_format",
     "ResponseFormatJsonSchema": ".response_format_json_schema",
     "ResponseFormatJsonSchemaJsonSchema": ".response_format_json_schema_json_schema",
@@ -215,13 +213,9 @@ _dynamic_imports: typing.Dict[str, str] = {
     "SandboxNetworkPolicyAuthInjectItem": ".sandbox_network_policy_auth_inject_item",
     "SandboxNetworkPolicyAuthInjectItemAuthData": ".sandbox_network_policy_auth_inject_item_auth_data",
     "SandboxNetworkPolicyAuthInjectItemMatch": ".sandbox_network_policy_auth_inject_item_match",
-    "SearchSessionsOrder": ".search_sessions_order",
-    "SearchSessionsResponse": ".search_sessions_response",
-    "SearchSessionsResponseDataItem": ".search_sessions_response_data_item",
     "Session": ".session",
     "SessionEvent": ".session_event",
     "SessionEventItem": ".session_event_item",
-    "SessionType": ".session_type",
     "SkillMount": ".skill_mount",
     "Subject": ".subject",
     "TextContent": ".text_content",
@@ -237,8 +231,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ToolInfo": ".tool_info",
     "ToolResponseEvent": ".tool_response_event",
     "ToolResponseRequiredEvent": ".tool_response_required_event",
-    "ToolsSelectorItem": ".tools_selector_item",
-    "ToolsSelectorTag": ".tools_selector_tag",
     "TrueFoundrySystemToolInfo": ".true_foundry_system_tool_info",
     "Turn": ".turn",
     "TurnCreatedEvent": ".turn_created_event",
@@ -296,7 +288,6 @@ __all__ = [
     "ApprovalDeny",
     "AskUserQuestionsConfig",
     "BaseMcpAuthRequiredEvent",
-    "BaseMcpServer",
     "BaseThreadDoneEvent",
     "CancelSessionResponse",
     "ChatCompletionChunkDeltaToolCall",
@@ -307,7 +298,6 @@ __all__ = [
     "ChatCompletionMessageToolCallFunction",
     "ContextManagementConfig",
     "ContextManagementConfigCompaction",
-    "CreatedBySubjectType",
     "DraftSession",
     "DynamicSubAgentsConfig",
     "ExtendedChunkDeltaToolCall",
@@ -317,8 +307,11 @@ __all__ = [
     "GetDraftSessionResponse",
     "GetSessionResponse",
     "GetTurnResponse",
-    "GitSourceSkillMount",
     "InlineMcpServer",
+    "InlineMcpServerDisableToolsItem",
+    "InlineMcpServerEnableToolsItem",
+    "InlineMcpServerPreloadToolsItem",
+    "InlineMcpServerRequireApprovalForToolsItem",
     "LargeToolResponseConfig",
     "ListDraftSessionsOrder",
     "ListDraftSessionsResponse",
@@ -350,11 +343,12 @@ __all__ = [
     "PreviousTurnIdInput",
     "RawToolCall",
     "RegisteredMcpServer",
-    "RegisteredSkillMount",
+    "RegisteredMcpServerDisableToolsItem",
+    "RegisteredMcpServerEnableToolsItem",
+    "RegisteredMcpServerPreloadToolsItem",
+    "RegisteredMcpServerRequireApprovalForToolsItem",
     "RequestErrorResponse",
     "RequestErrorResponseError",
-    "RequireApprovalToolSelectorItem",
-    "RequireApprovalToolsSelectorTag",
     "ResponseFormat",
     "ResponseFormatJsonSchema",
     "ResponseFormatJsonSchemaJsonSchema",
@@ -367,13 +361,9 @@ __all__ = [
     "SandboxNetworkPolicyAuthInjectItem",
     "SandboxNetworkPolicyAuthInjectItemAuthData",
     "SandboxNetworkPolicyAuthInjectItemMatch",
-    "SearchSessionsOrder",
-    "SearchSessionsResponse",
-    "SearchSessionsResponseDataItem",
     "Session",
     "SessionEvent",
     "SessionEventItem",
-    "SessionType",
     "SkillMount",
     "Subject",
     "TextContent",
@@ -389,8 +379,6 @@ __all__ = [
     "ToolInfo",
     "ToolResponseEvent",
     "ToolResponseRequiredEvent",
-    "ToolsSelectorItem",
-    "ToolsSelectorTag",
     "TrueFoundrySystemToolInfo",
     "Turn",
     "TurnCreatedEvent",
