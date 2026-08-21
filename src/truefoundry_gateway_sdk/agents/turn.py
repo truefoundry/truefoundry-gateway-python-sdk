@@ -223,8 +223,9 @@ class Turn:
             request_options=request_options,
         ) as sse:
             for event in sse.with_metadata():
+                sequence_number = parse_sequence_number(event.id)
                 self._apply_event(event.data)
-                yield TurnStreamData(sequence_number=parse_sequence_number(event.id), event=event.data)
+                yield TurnStreamData(sequence_number=sequence_number, event=event.data)
 
     def cancel(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
@@ -471,8 +472,9 @@ class AsyncTurn:
             request_options=request_options,
         ) as sse:
             async for event in sse.with_metadata():
+                sequence_number = parse_sequence_number(event.id)
                 self._apply_event(event.data)
-                yield TurnStreamData(sequence_number=parse_sequence_number(event.id), event=event.data)
+                yield TurnStreamData(sequence_number=sequence_number, event=event.data)
 
     async def cancel(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """

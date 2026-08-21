@@ -332,11 +332,12 @@ class PreparedTurn:
             request_options=request_options,
         ) as sse:
             for event in sse.with_metadata():
+                sequence_number = parse_sequence_number(event.id)
                 if isinstance(event.data, TurnCreatedEvent) and self._turn is None:
                     self._adopt_turn(event.data)
                 elif self._turn is not None and isinstance(event.data, TurnDoneEvent):
                     self._replace_turn_state(event.data.state)
-                yield TurnStreamData(sequence_number=parse_sequence_number(event.id), event=event.data)
+                yield TurnStreamData(sequence_number=sequence_number, event=event.data)
 
     def _must_get_turn(self) -> Turn:
         if self._turn is None:
@@ -694,11 +695,12 @@ class AsyncPreparedTurn:
             request_options=request_options,
         ) as sse:
             async for event in sse.with_metadata():
+                sequence_number = parse_sequence_number(event.id)
                 if isinstance(event.data, TurnCreatedEvent) and self._turn is None:
                     self._adopt_turn(event.data)
                 elif self._turn is not None and isinstance(event.data, TurnDoneEvent):
                     self._replace_turn_state(event.data.state)
-                yield TurnStreamData(sequence_number=parse_sequence_number(event.id), event=event.data)
+                yield TurnStreamData(sequence_number=sequence_number, event=event.data)
 
     def _must_get_turn(self) -> AsyncTurn:
         if self._turn is None:

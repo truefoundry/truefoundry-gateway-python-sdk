@@ -32,5 +32,5 @@ def parse_sequence_number(sse_id: typing.Optional[str]) -> int:
         raise ValueError("Missing SSE sequence number id.")
     try:
         return int(sse_id)
-    except (ValueError, TypeError):
-        raise ValueError(f"Invalid SSE sequence number id: {sse_id!r}.")
+    except (ValueError, TypeError) as exc:
+        raise ValueError(f"Invalid SSE sequence number id: {sse_id!r}.") from exc
