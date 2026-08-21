@@ -8,8 +8,7 @@ from ..types.turn_done_event import TurnDoneEvent
 from ..types.turn_state_cancelled import TurnStateCancelled
 from ..types.turn_state_done import TurnStateDone
 from ..types.turn_state_error import TurnStateError
-from ._sse_helpers import aiter_sse_stream, iter_sse_stream
-from .turn_stream_data import TurnStreamData
+from .turn_stream_data import TurnStreamData, parse_sequence_number
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -217,15 +216,16 @@ class Turn:
         TurnStreamData
             SSE stream items.
         """
-        with self._client.agents.sessions.with_raw_response.subscribe_to_turn(
+        with self._client.agents.sessions.subscribe_to_turn(
             self._session_id,
             self._id,
             after_sequence_number=after_sequence_number,
             request_options=request_options,
-        ) as r:
-            for item in iter_sse_stream(r._response):
-                self._apply_event(item.event)
-                yield item
+        ) as sse:
+            for event in sse.with_metadata():
+                sequence_number = parse_sequence_number(event.id)
+                self._apply_event(event.data)
+                yield TurnStreamData(sequence_number=sequence_number, event=event.data)
 
     def cancel(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
@@ -465,15 +465,16 @@ class AsyncTurn:
         TurnStreamData
             SSE stream items.
         """
-        async with self._client.agents.sessions.with_raw_response.subscribe_to_turn(
+        async with self._client.agents.sessions.subscribe_to_turn(
             self._session_id,
             self._id,
             after_sequence_number=after_sequence_number,
             request_options=request_options,
-        ) as r:
-            async for item in aiter_sse_stream(r._response):
-                self._apply_event(item.event)
-                yield item
+        ) as sse:
+            async for event in sse.with_metadata():
+                sequence_number = parse_sequence_number(event.id)
+                self._apply_event(event.data)
+                yield TurnStreamData(sequence_number=sequence_number, event=event.data)
 
     async def cancel(self, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
