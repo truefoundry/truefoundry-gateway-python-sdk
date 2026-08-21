@@ -5,9 +5,8 @@ import typing
 from ..types.turn import Turn as RawTurn
 from ..types.turn_created_event import TurnCreatedEvent
 from ..types.turn_done_event import TurnDoneEvent
-from ._sse_helpers import aiter_sse_stream, iter_sse_stream
 from .turn import AsyncTurn, Turn
-from .turn_stream_data import TurnStreamData
+from .turn_stream_data import TurnStreamData, parse_sequence_number
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -326,18 +325,18 @@ class PreparedTurn:
 
     def _consume_stream(self, request_options: typing.Optional[RequestOptions]) -> typing.Iterator[TurnStreamData]:
         """Consume the create_turn SSE, adopting the inner Turn from the first turn.created."""
-        with self._client.agents.sessions.with_raw_response.create_turn(
+        with self._client.agents.sessions.create_turn(
             self._session_id,
             input=self._input_param,
             previous_turn_id=self._previous_turn_id,
             request_options=request_options,
-        ) as r:
-            for item in iter_sse_stream(r._response):
-                if isinstance(item.event, TurnCreatedEvent) and self._turn is None:
-                    self._adopt_turn(item.event)
-                elif self._turn is not None and isinstance(item.event, TurnDoneEvent):
-                    self._replace_turn_state(item.event.state)
-                yield item
+        ) as sse:
+            for event in sse.with_metadata():
+                if isinstance(event.data, TurnCreatedEvent) and self._turn is None:
+                    self._adopt_turn(event.data)
+                elif self._turn is not None and isinstance(event.data, TurnDoneEvent):
+                    self._replace_turn_state(event.data.state)
+                yield TurnStreamData(sequence_number=parse_sequence_number(event.id), event=event.data)
 
     def _must_get_turn(self) -> Turn:
         if self._turn is None:
@@ -688,18 +687,18 @@ class AsyncPreparedTurn:
     async def _consume_stream(
         self, request_options: typing.Optional[RequestOptions]
     ) -> typing.AsyncIterator[TurnStreamData]:
-        async with self._client.agents.sessions.with_raw_response.create_turn(
+        async with self._client.agents.sessions.create_turn(
             self._session_id,
             input=self._input_param,
             previous_turn_id=self._previous_turn_id,
             request_options=request_options,
-        ) as r:
-            async for item in aiter_sse_stream(r._response):
-                if isinstance(item.event, TurnCreatedEvent) and self._turn is None:
-                    self._adopt_turn(item.event)
-                elif self._turn is not None and isinstance(item.event, TurnDoneEvent):
-                    self._replace_turn_state(item.event.state)
-                yield item
+        ) as sse:
+            async for event in sse.with_metadata():
+                if isinstance(event.data, TurnCreatedEvent) and self._turn is None:
+                    self._adopt_turn(event.data)
+                elif self._turn is not None and isinstance(event.data, TurnDoneEvent):
+                    self._replace_turn_state(event.data.state)
+                yield TurnStreamData(sequence_number=parse_sequence_number(event.id), event=event.data)
 
     def _must_get_turn(self) -> AsyncTurn:
         if self._turn is None:
