@@ -5,6 +5,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .action_required_event import ActionRequiredEvent
+from .turn_metrics import TurnMetrics
 from .turn_state_done_output import TurnStateDoneOutput
 
 
@@ -13,6 +14,7 @@ class TurnStateDone(UniversalBaseModel):
     output: typing.Optional[TurnStateDoneOutput] = None
     required_actions: typing.List[ActionRequiredEvent]
     completed_at: str
+    metrics: typing.Optional[TurnMetrics] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

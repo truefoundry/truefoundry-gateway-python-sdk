@@ -15,6 +15,7 @@ from ....core.parse_error import ParsingError
 from ....core.pydantic_utilities import parse_obj_as, parse_sse_obj
 from ....core.request_options import RequestOptions
 from ....core.serialization import convert_and_respect_annotation_metadata
+from ....core.stream import AsyncStream, Stream, StreamEvent
 from ....errors.bad_request_error import BadRequestError
 from ....errors.conflict_error import ConflictError
 from ....errors.failed_dependency_error import FailedDependencyError
@@ -576,7 +577,7 @@ class RawSessionsClient:
         input: typing.Optional[typing.Sequence[TurnInputItem]] = OMIT,
         previous_turn_id: typing.Optional[PreviousTurnIdInput] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Iterator[HttpResponse[typing.Iterator[TurnStreamingEvent]]]:
+    ) -> typing.Iterator[HttpResponse[Stream[TurnStreamingEvent]]]:
         """
         Start or continue a turn within a session. Responds with a Server-Sent Events stream.
         Use `previous_turn_id` to chain to the session's last turn (defaults to `auto`).
@@ -594,7 +595,7 @@ class RawSessionsClient:
 
         Yields
         ------
-        typing.Iterator[HttpResponse[typing.Iterator[TurnStreamingEvent]]]
+        typing.Iterator[HttpResponse[Stream[TurnStreamingEvent]]]
             Server-Sent Events stream of turn events.
         """
         with self._client_wrapper.httpx_client.stream(
@@ -615,22 +616,29 @@ class RawSessionsClient:
             omit=OMIT,
         ) as _response:
 
-            def _stream() -> HttpResponse[typing.Iterator[TurnStreamingEvent]]:
+            def _stream() -> HttpResponse[Stream[TurnStreamingEvent]]:
                 try:
                     if 200 <= _response.status_code < 300:
 
-                        def _iter():
+                        def _iter() -> typing.Generator[StreamEvent[TurnStreamingEvent], None, None]:
                             _event_source = EventSource(_response)
                             for _sse in _event_source.iter_sse():
                                 if _sse.data == None:
                                     return
+                                if len(_sse.data) == 0:
+                                    continue
                                 try:
-                                    yield typing.cast(
-                                        TurnStreamingEvent,
-                                        parse_sse_obj(
-                                            sse=_sse,
-                                            type_=TurnStreamingEvent,  # type: ignore
+                                    yield StreamEvent(
+                                        data=typing.cast(
+                                            TurnStreamingEvent,
+                                            parse_sse_obj(
+                                                sse=_sse,
+                                                type_=TurnStreamingEvent,  # type: ignore
+                                            ),
                                         ),
+                                        id=_sse.id or None,
+                                        event=_sse.event,
+                                        retry=_sse.retry,
                                     )
                                 except JSONDecodeError as e:
                                     warning(f"Skipping SSE event with invalid JSON: {e}, sse: {_sse!r}")
@@ -644,7 +652,7 @@ class RawSessionsClient:
                                     )
                             return
 
-                        return HttpResponse(response=_response, data=_iter())
+                        return HttpResponse(response=_response, data=Stream(events=_iter))
                     _response.read()
                     if _response.status_code == 400:
                         raise BadRequestError(
@@ -780,7 +788,7 @@ class RawSessionsClient:
         *,
         after_sequence_number: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Iterator[HttpResponse[typing.Iterator[TurnStreamingEvent]]]:
+    ) -> typing.Iterator[HttpResponse[Stream[TurnStreamingEvent]]]:
         """
         Subscribe to the live SSE stream for a turn. Pass after_sequence_number to resume after disconnect or server timeout, or send Last-Event-Id when after_sequence_number is omitted.
 
@@ -797,7 +805,7 @@ class RawSessionsClient:
 
         Yields
         ------
-        typing.Iterator[HttpResponse[typing.Iterator[TurnStreamingEvent]]]
+        typing.Iterator[HttpResponse[Stream[TurnStreamingEvent]]]
             Server-Sent Events stream of turn events (deltas and lifecycle).
         """
         with self._client_wrapper.httpx_client.stream(
@@ -813,22 +821,29 @@ class RawSessionsClient:
             omit=OMIT,
         ) as _response:
 
-            def _stream() -> HttpResponse[typing.Iterator[TurnStreamingEvent]]:
+            def _stream() -> HttpResponse[Stream[TurnStreamingEvent]]:
                 try:
                     if 200 <= _response.status_code < 300:
 
-                        def _iter():
+                        def _iter() -> typing.Generator[StreamEvent[TurnStreamingEvent], None, None]:
                             _event_source = EventSource(_response)
                             for _sse in _event_source.iter_sse():
                                 if _sse.data == None:
                                     return
+                                if len(_sse.data) == 0:
+                                    continue
                                 try:
-                                    yield typing.cast(
-                                        TurnStreamingEvent,
-                                        parse_sse_obj(
-                                            sse=_sse,
-                                            type_=TurnStreamingEvent,  # type: ignore
+                                    yield StreamEvent(
+                                        data=typing.cast(
+                                            TurnStreamingEvent,
+                                            parse_sse_obj(
+                                                sse=_sse,
+                                                type_=TurnStreamingEvent,  # type: ignore
+                                            ),
                                         ),
+                                        id=_sse.id or None,
+                                        event=_sse.event,
+                                        retry=_sse.retry,
                                     )
                                 except JSONDecodeError as e:
                                     warning(f"Skipping SSE event with invalid JSON: {e}, sse: {_sse!r}")
@@ -842,7 +857,7 @@ class RawSessionsClient:
                                     )
                             return
 
-                        return HttpResponse(response=_response, data=_iter())
+                        return HttpResponse(response=_response, data=Stream(events=_iter))
                     _response.read()
                     if _response.status_code == 400:
                         raise BadRequestError(
@@ -1670,7 +1685,7 @@ class AsyncRawSessionsClient:
         input: typing.Optional[typing.Sequence[TurnInputItem]] = OMIT,
         previous_turn_id: typing.Optional[PreviousTurnIdInput] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[TurnStreamingEvent]]]:
+    ) -> typing.AsyncIterator[AsyncHttpResponse[AsyncStream[TurnStreamingEvent]]]:
         """
         Start or continue a turn within a session. Responds with a Server-Sent Events stream.
         Use `previous_turn_id` to chain to the session's last turn (defaults to `auto`).
@@ -1688,7 +1703,7 @@ class AsyncRawSessionsClient:
 
         Yields
         ------
-        typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[TurnStreamingEvent]]]
+        typing.AsyncIterator[AsyncHttpResponse[AsyncStream[TurnStreamingEvent]]]
             Server-Sent Events stream of turn events.
         """
         async with self._client_wrapper.httpx_client.stream(
@@ -1709,22 +1724,29 @@ class AsyncRawSessionsClient:
             omit=OMIT,
         ) as _response:
 
-            async def _stream() -> AsyncHttpResponse[typing.AsyncIterator[TurnStreamingEvent]]:
+            async def _stream() -> AsyncHttpResponse[AsyncStream[TurnStreamingEvent]]:
                 try:
                     if 200 <= _response.status_code < 300:
 
-                        async def _iter():
+                        async def _iter() -> typing.AsyncGenerator[StreamEvent[TurnStreamingEvent], None]:
                             _event_source = EventSource(_response)
                             async for _sse in _event_source.aiter_sse():
                                 if _sse.data == None:
                                     return
+                                if len(_sse.data) == 0:
+                                    continue
                                 try:
-                                    yield typing.cast(
-                                        TurnStreamingEvent,
-                                        parse_sse_obj(
-                                            sse=_sse,
-                                            type_=TurnStreamingEvent,  # type: ignore
+                                    yield StreamEvent(
+                                        data=typing.cast(
+                                            TurnStreamingEvent,
+                                            parse_sse_obj(
+                                                sse=_sse,
+                                                type_=TurnStreamingEvent,  # type: ignore
+                                            ),
                                         ),
+                                        id=_sse.id or None,
+                                        event=_sse.event,
+                                        retry=_sse.retry,
                                     )
                                 except JSONDecodeError as e:
                                     warning(f"Skipping SSE event with invalid JSON: {e}, sse: {_sse!r}")
@@ -1738,7 +1760,7 @@ class AsyncRawSessionsClient:
                                     )
                             return
 
-                        return AsyncHttpResponse(response=_response, data=_iter())
+                        return AsyncHttpResponse(response=_response, data=AsyncStream(events=_iter))
                     await _response.aread()
                     if _response.status_code == 400:
                         raise BadRequestError(
@@ -1874,7 +1896,7 @@ class AsyncRawSessionsClient:
         *,
         after_sequence_number: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[TurnStreamingEvent]]]:
+    ) -> typing.AsyncIterator[AsyncHttpResponse[AsyncStream[TurnStreamingEvent]]]:
         """
         Subscribe to the live SSE stream for a turn. Pass after_sequence_number to resume after disconnect or server timeout, or send Last-Event-Id when after_sequence_number is omitted.
 
@@ -1891,7 +1913,7 @@ class AsyncRawSessionsClient:
 
         Yields
         ------
-        typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[TurnStreamingEvent]]]
+        typing.AsyncIterator[AsyncHttpResponse[AsyncStream[TurnStreamingEvent]]]
             Server-Sent Events stream of turn events (deltas and lifecycle).
         """
         async with self._client_wrapper.httpx_client.stream(
@@ -1907,22 +1929,29 @@ class AsyncRawSessionsClient:
             omit=OMIT,
         ) as _response:
 
-            async def _stream() -> AsyncHttpResponse[typing.AsyncIterator[TurnStreamingEvent]]:
+            async def _stream() -> AsyncHttpResponse[AsyncStream[TurnStreamingEvent]]:
                 try:
                     if 200 <= _response.status_code < 300:
 
-                        async def _iter():
+                        async def _iter() -> typing.AsyncGenerator[StreamEvent[TurnStreamingEvent], None]:
                             _event_source = EventSource(_response)
                             async for _sse in _event_source.aiter_sse():
                                 if _sse.data == None:
                                     return
+                                if len(_sse.data) == 0:
+                                    continue
                                 try:
-                                    yield typing.cast(
-                                        TurnStreamingEvent,
-                                        parse_sse_obj(
-                                            sse=_sse,
-                                            type_=TurnStreamingEvent,  # type: ignore
+                                    yield StreamEvent(
+                                        data=typing.cast(
+                                            TurnStreamingEvent,
+                                            parse_sse_obj(
+                                                sse=_sse,
+                                                type_=TurnStreamingEvent,  # type: ignore
+                                            ),
                                         ),
+                                        id=_sse.id or None,
+                                        event=_sse.event,
+                                        retry=_sse.retry,
                                     )
                                 except JSONDecodeError as e:
                                     warning(f"Skipping SSE event with invalid JSON: {e}, sse: {_sse!r}")
@@ -1936,7 +1965,7 @@ class AsyncRawSessionsClient:
                                     )
                             return
 
-                        return AsyncHttpResponse(response=_response, data=_iter())
+                        return AsyncHttpResponse(response=_response, data=AsyncStream(events=_iter))
                     await _response.aread()
                     if _response.status_code == 400:
                         raise BadRequestError(

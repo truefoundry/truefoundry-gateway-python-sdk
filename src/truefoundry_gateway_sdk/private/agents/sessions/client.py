@@ -5,6 +5,7 @@ import typing
 from ....core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ....core.pagination import AsyncPager, SyncPager
 from ....core.request_options import RequestOptions
+from ....core.stream import AsyncStream, Stream, StreamEvent
 from ....types.cancel_session_response import CancelSessionResponse
 from ....types.get_session_response import GetSessionResponse
 from ....types.get_turn_response import GetTurnResponse
@@ -264,7 +265,7 @@ class SessionsClient:
         input: typing.Optional[typing.Sequence[TurnInputItem]] = OMIT,
         previous_turn_id: typing.Optional[PreviousTurnIdInput] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Iterator[TurnStreamingEvent]:
+    ) -> Stream[TurnStreamingEvent]:
         """
         Start or continue a turn within a session. Responds with a Server-Sent Events stream.
         Use `previous_turn_id` to chain to the session's last turn (defaults to `auto`).
@@ -280,9 +281,9 @@ class SessionsClient:
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
-        Yields
-        ------
-        typing.Iterator[TurnStreamingEvent]
+        Returns
+        -------
+        Stream[TurnStreamingEvent]
             Server-Sent Events stream of turn events.
 
         Examples
@@ -299,10 +300,14 @@ class SessionsClient:
         for chunk in response:
             yield chunk
         """
-        with self._raw_client.create_turn(
-            session_id, input=input, previous_turn_id=previous_turn_id, request_options=request_options
-        ) as r:
-            yield from r.data
+
+        def _events() -> typing.Generator[StreamEvent[TurnStreamingEvent], None, None]:
+            with self._raw_client.create_turn(
+                session_id, input=input, previous_turn_id=previous_turn_id, request_options=request_options
+            ) as r:
+                yield from r.data.with_metadata()
+
+        return Stream(events=_events)
 
     def get_turn(
         self, session_id: str, turn_id: str, *, request_options: typing.Optional[RequestOptions] = None
@@ -347,7 +352,7 @@ class SessionsClient:
         *,
         after_sequence_number: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Iterator[TurnStreamingEvent]:
+    ) -> Stream[TurnStreamingEvent]:
         """
         Subscribe to the live SSE stream for a turn. Pass after_sequence_number to resume after disconnect or server timeout, or send Last-Event-Id when after_sequence_number is omitted.
 
@@ -362,9 +367,9 @@ class SessionsClient:
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
-        Yields
-        ------
-        typing.Iterator[TurnStreamingEvent]
+        Returns
+        -------
+        Stream[TurnStreamingEvent]
             Server-Sent Events stream of turn events (deltas and lifecycle).
 
         Examples
@@ -382,10 +387,14 @@ class SessionsClient:
         for chunk in response:
             yield chunk
         """
-        with self._raw_client.subscribe_to_turn(
-            session_id, turn_id, after_sequence_number=after_sequence_number, request_options=request_options
-        ) as r:
-            yield from r.data
+
+        def _events() -> typing.Generator[StreamEvent[TurnStreamingEvent], None, None]:
+            with self._raw_client.subscribe_to_turn(
+                session_id, turn_id, after_sequence_number=after_sequence_number, request_options=request_options
+            ) as r:
+                yield from r.data.with_metadata()
+
+        return Stream(events=_events)
 
     def list_turn_events(
         self,
@@ -775,14 +784,14 @@ class AsyncSessionsClient:
             session_id, page_token=page_token, limit=limit, request_options=request_options
         )
 
-    async def create_turn(
+    def create_turn(
         self,
         session_id: str,
         *,
         input: typing.Optional[typing.Sequence[TurnInputItem]] = OMIT,
         previous_turn_id: typing.Optional[PreviousTurnIdInput] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.AsyncIterator[TurnStreamingEvent]:
+    ) -> AsyncStream[TurnStreamingEvent]:
         """
         Start or continue a turn within a session. Responds with a Server-Sent Events stream.
         Use `previous_turn_id` to chain to the session's last turn (defaults to `auto`).
@@ -798,9 +807,9 @@ class AsyncSessionsClient:
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
-        Yields
-        ------
-        typing.AsyncIterator[TurnStreamingEvent]
+        Returns
+        -------
+        AsyncStream[TurnStreamingEvent]
             Server-Sent Events stream of turn events.
 
         Examples
@@ -825,11 +834,15 @@ class AsyncSessionsClient:
 
         asyncio.run(main())
         """
-        async with self._raw_client.create_turn(
-            session_id, input=input, previous_turn_id=previous_turn_id, request_options=request_options
-        ) as r:
-            async for _chunk in r.data:
-                yield _chunk
+
+        async def _events() -> typing.AsyncGenerator[StreamEvent[TurnStreamingEvent], None]:
+            async with self._raw_client.create_turn(
+                session_id, input=input, previous_turn_id=previous_turn_id, request_options=request_options
+            ) as r:
+                async for _event in r.data.with_metadata():
+                    yield _event
+
+        return AsyncStream(events=_events)
 
     async def get_turn(
         self, session_id: str, turn_id: str, *, request_options: typing.Optional[RequestOptions] = None
@@ -875,14 +888,14 @@ class AsyncSessionsClient:
         _response = await self._raw_client.get_turn(session_id, turn_id, request_options=request_options)
         return _response.data
 
-    async def subscribe_to_turn(
+    def subscribe_to_turn(
         self,
         session_id: str,
         turn_id: str,
         *,
         after_sequence_number: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.AsyncIterator[TurnStreamingEvent]:
+    ) -> AsyncStream[TurnStreamingEvent]:
         """
         Subscribe to the live SSE stream for a turn. Pass after_sequence_number to resume after disconnect or server timeout, or send Last-Event-Id when after_sequence_number is omitted.
 
@@ -897,9 +910,9 @@ class AsyncSessionsClient:
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
-        Yields
-        ------
-        typing.AsyncIterator[TurnStreamingEvent]
+        Returns
+        -------
+        AsyncStream[TurnStreamingEvent]
             Server-Sent Events stream of turn events (deltas and lifecycle).
 
         Examples
@@ -925,11 +938,15 @@ class AsyncSessionsClient:
 
         asyncio.run(main())
         """
-        async with self._raw_client.subscribe_to_turn(
-            session_id, turn_id, after_sequence_number=after_sequence_number, request_options=request_options
-        ) as r:
-            async for _chunk in r.data:
-                yield _chunk
+
+        async def _events() -> typing.AsyncGenerator[StreamEvent[TurnStreamingEvent], None]:
+            async with self._raw_client.subscribe_to_turn(
+                session_id, turn_id, after_sequence_number=after_sequence_number, request_options=request_options
+            ) as r:
+                async for _event in r.data.with_metadata():
+                    yield _event
+
+        return AsyncStream(events=_events)
 
     async def list_turn_events(
         self,
