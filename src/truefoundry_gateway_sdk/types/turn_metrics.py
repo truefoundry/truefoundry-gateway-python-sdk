@@ -4,15 +4,16 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .turn_metrics import TurnMetrics
-from .turn_state_cancelled_reason import TurnStateCancelledReason
 
 
-class TurnStateCancelled(UniversalBaseModel):
-    status: typing.Literal["cancelled"] = "cancelled"
-    reason: TurnStateCancelledReason
-    completed_at: str
-    metrics: typing.Optional[TurnMetrics] = None
+class TurnMetrics(UniversalBaseModel):
+    total_input_tokens: int
+    total_output_tokens: int
+    total_tokens: int
+    total_cache_read_tokens: typing.Optional[int] = None
+    total_cache_write_tokens: typing.Optional[int] = None
+    total_reasoning_tokens: typing.Optional[int] = None
+    total_cost_in_usd: typing.Optional[float] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

@@ -4,12 +4,14 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .turn_metrics import TurnMetrics
 
 
 class TurnStateError(UniversalBaseModel):
     status: typing.Literal["error"] = "error"
     message: str
     completed_at: str
+    metrics: typing.Optional[TurnMetrics] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow")  # type: ignore # Pydantic v2

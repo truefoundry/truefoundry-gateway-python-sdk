@@ -127,9 +127,8 @@ client = AsyncTrueFoundryGateway(
 
 
 async def main() -> None:
-    await client.private.agents.sessions.create_turn(
-        session_id="01arz3ndektsv4rrffq69g5fav.g",
-    )
+    async for chunk in client.private.agents.sessions.create_turn(...):
+        print(chunk)
 
 
 asyncio.run(main())

@@ -118,6 +118,7 @@ if typing.TYPE_CHECKING:
     from .turn_done_event_state import TurnDoneEventState
     from .turn_event import TurnEvent
     from .turn_input_item import TurnInputItem
+    from .turn_metrics import TurnMetrics
     from .turn_state import TurnState
     from .turn_state_cancelled import TurnStateCancelled
     from .turn_state_cancelled_reason import TurnStateCancelledReason
@@ -246,6 +247,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "TurnDoneEventState": ".turn_done_event_state",
     "TurnEvent": ".turn_event",
     "TurnInputItem": ".turn_input_item",
+    "TurnMetrics": ".turn_metrics",
     "TurnState": ".turn_state",
     "TurnStateCancelled": ".turn_state_cancelled",
     "TurnStateCancelledReason": ".turn_state_cancelled_reason",
@@ -398,6 +400,7 @@ __all__ = [
     "TurnDoneEventState",
     "TurnEvent",
     "TurnInputItem",
+    "TurnMetrics",
     "TurnState",
     "TurnStateCancelled",
     "TurnStateCancelledReason",
