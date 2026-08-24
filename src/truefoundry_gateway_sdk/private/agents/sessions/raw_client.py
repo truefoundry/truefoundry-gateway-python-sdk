@@ -570,7 +570,7 @@ class RawSessionsClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     @contextlib.contextmanager
-    def create_turn(
+    def create_turn_stream(
         self,
         session_id: str,
         *,
@@ -579,7 +579,7 @@ class RawSessionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.Iterator[HttpResponse[Stream[TurnStreamingEvent]]]:
         """
-        Start or continue a turn within a session. Responds with a Server-Sent Events stream.
+        Start or continue a turn within a session.
         Use `previous_turn_id` to chain to the session's last turn (defaults to `auto`).
 
         Parameters
@@ -596,7 +596,7 @@ class RawSessionsClient:
         Yields
         ------
         typing.Iterator[HttpResponse[Stream[TurnStreamingEvent]]]
-            Server-Sent Events stream of turn events.
+
         """
         with self._client_wrapper.httpx_client.stream(
             f"v1/agents/sessions/{encode_path_param(session_id)}/turns",
@@ -608,6 +608,7 @@ class RawSessionsClient:
                 "previous_turn_id": convert_and_respect_annotation_metadata(
                     object_=previous_turn_id, annotation=PreviousTurnIdInput, direction="write"
                 ),
+                "stream": True,
             },
             headers={
                 "content-type": "application/json",
@@ -713,6 +714,115 @@ class RawSessionsClient:
                 raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
             yield _stream()
+
+    def create_turn(
+        self,
+        session_id: str,
+        *,
+        input: typing.Optional[typing.Sequence[TurnInputItem]] = OMIT,
+        previous_turn_id: typing.Optional[PreviousTurnIdInput] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[GetTurnResponse]:
+        """
+        Start or continue a turn within a session.
+        Use `previous_turn_id` to chain to the session's last turn (defaults to `auto`).
+
+        Parameters
+        ----------
+        session_id : str
+
+        input : typing.Optional[typing.Sequence[TurnInputItem]]
+
+        previous_turn_id : typing.Optional[PreviousTurnIdInput]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[GetTurnResponse]
+
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"v1/agents/sessions/{encode_path_param(session_id)}/turns",
+            method="POST",
+            json={
+                "input": convert_and_respect_annotation_metadata(
+                    object_=input, annotation=typing.Sequence[TurnInputItem], direction="write"
+                ),
+                "previous_turn_id": convert_and_respect_annotation_metadata(
+                    object_=previous_turn_id, annotation=PreviousTurnIdInput, direction="write"
+                ),
+                "stream": False,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetTurnResponse,
+                    parse_obj_as(
+                        type_=GetTurnResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        RequestErrorResponse,
+                        parse_obj_as(
+                            type_=RequestErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        RequestErrorResponse,
+                        parse_obj_as(
+                            type_=RequestErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        RequestErrorResponse,
+                        parse_obj_as(
+                            type_=RequestErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 412:
+                raise PreconditionFailedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        RequestErrorResponse,
+                        parse_obj_as(
+                            type_=RequestErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def get_turn(
         self, session_id: str, turn_id: str, *, request_options: typing.Optional[RequestOptions] = None
@@ -1678,7 +1788,7 @@ class AsyncRawSessionsClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     @contextlib.asynccontextmanager
-    async def create_turn(
+    async def create_turn_stream(
         self,
         session_id: str,
         *,
@@ -1687,7 +1797,7 @@ class AsyncRawSessionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.AsyncIterator[AsyncHttpResponse[AsyncStream[TurnStreamingEvent]]]:
         """
-        Start or continue a turn within a session. Responds with a Server-Sent Events stream.
+        Start or continue a turn within a session.
         Use `previous_turn_id` to chain to the session's last turn (defaults to `auto`).
 
         Parameters
@@ -1704,7 +1814,7 @@ class AsyncRawSessionsClient:
         Yields
         ------
         typing.AsyncIterator[AsyncHttpResponse[AsyncStream[TurnStreamingEvent]]]
-            Server-Sent Events stream of turn events.
+
         """
         async with self._client_wrapper.httpx_client.stream(
             f"v1/agents/sessions/{encode_path_param(session_id)}/turns",
@@ -1716,6 +1826,7 @@ class AsyncRawSessionsClient:
                 "previous_turn_id": convert_and_respect_annotation_metadata(
                     object_=previous_turn_id, annotation=PreviousTurnIdInput, direction="write"
                 ),
+                "stream": True,
             },
             headers={
                 "content-type": "application/json",
@@ -1821,6 +1932,115 @@ class AsyncRawSessionsClient:
                 raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
             yield await _stream()
+
+    async def create_turn(
+        self,
+        session_id: str,
+        *,
+        input: typing.Optional[typing.Sequence[TurnInputItem]] = OMIT,
+        previous_turn_id: typing.Optional[PreviousTurnIdInput] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[GetTurnResponse]:
+        """
+        Start or continue a turn within a session.
+        Use `previous_turn_id` to chain to the session's last turn (defaults to `auto`).
+
+        Parameters
+        ----------
+        session_id : str
+
+        input : typing.Optional[typing.Sequence[TurnInputItem]]
+
+        previous_turn_id : typing.Optional[PreviousTurnIdInput]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[GetTurnResponse]
+
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"v1/agents/sessions/{encode_path_param(session_id)}/turns",
+            method="POST",
+            json={
+                "input": convert_and_respect_annotation_metadata(
+                    object_=input, annotation=typing.Sequence[TurnInputItem], direction="write"
+                ),
+                "previous_turn_id": convert_and_respect_annotation_metadata(
+                    object_=previous_turn_id, annotation=PreviousTurnIdInput, direction="write"
+                ),
+                "stream": False,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetTurnResponse,
+                    parse_obj_as(
+                        type_=GetTurnResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        RequestErrorResponse,
+                        parse_obj_as(
+                            type_=RequestErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        RequestErrorResponse,
+                        parse_obj_as(
+                            type_=RequestErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        RequestErrorResponse,
+                        parse_obj_as(
+                            type_=RequestErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 412:
+                raise PreconditionFailedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        RequestErrorResponse,
+                        parse_obj_as(
+                            type_=RequestErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def get_turn(
         self, session_id: str, turn_id: str, *, request_options: typing.Optional[RequestOptions] = None

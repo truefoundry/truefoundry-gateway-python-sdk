@@ -93,7 +93,7 @@ client = TrueFoundryGateway(
     base_url="https://yourhost.com/path/to/api",
 )
 
-client.private.agents.sessions.create_turn(
+client.private.agents.sessions.create_turn_stream(
     session_id="01arz3ndektsv4rrffq69g5fav.g",
 )
 ```
@@ -127,7 +127,7 @@ client = AsyncTrueFoundryGateway(
 
 
 async def main() -> None:
-    async for chunk in client.private.agents.sessions.create_turn(...):
+    async for chunk in client.private.agents.sessions.create_turn_stream(...):
         print(chunk)
 
 
@@ -143,7 +143,7 @@ will be thrown.
 from truefoundry_gateway_sdk.core.api_error import ApiError
 
 try:
-    client.private.agents.sessions.create_turn(...)
+    client.private.agents.sessions.create_turn_stream(...)
 except ApiError as e:
     print(e.status_code)
     print(e.body)
@@ -161,7 +161,7 @@ client = TrueFoundryGateway(
     base_url="https://yourhost.com/path/to/api",
 )
 
-client.private.agents.sessions.create_turn(
+client.private.agents.sessions.create_turn_stream(
     session_id="01arz3ndektsv4rrffq69g5fav.g",
 )
 ```
@@ -203,7 +203,7 @@ The `.with_raw_response` property returns a "raw" client that can be used to acc
 from truefoundry_gateway_sdk import TrueFoundryGateway
 
 client = TrueFoundryGateway(...)
-response = client.private.agents.sessions.with_raw_response.create_turn(...)
+response = client.private.agents.sessions.with_raw_response.create_turn_stream(...)
 print(response.headers)  # access the response headers
 print(response.status_code)  # access the response status code
 print(response.data)  # access the underlying object
@@ -234,7 +234,7 @@ Which status codes are retried depends on the `retryStatusCodes` generator confi
 Use the `max_retries` request option to configure this behavior.
 
 ```python
-client.private.agents.sessions.create_turn(..., request_options={
+client.private.agents.sessions.create_turn_stream(..., request_options={
     "max_retries": 1
 })
 ```
@@ -249,7 +249,7 @@ from truefoundry_gateway_sdk import TrueFoundryGateway
 client = TrueFoundryGateway(..., timeout=20.0)
 
 # Override timeout for a specific method
-client.private.agents.sessions.create_turn(..., request_options={
+client.private.agents.sessions.create_turn_stream(..., request_options={
     "timeout": 1
 })
 ```

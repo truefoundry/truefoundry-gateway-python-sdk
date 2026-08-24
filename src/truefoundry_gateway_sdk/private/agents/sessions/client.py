@@ -258,7 +258,7 @@ class SessionsClient:
             session_id, page_token=page_token, limit=limit, request_options=request_options
         )
 
-    def create_turn(
+    def create_turn_stream(
         self,
         session_id: str,
         *,
@@ -267,7 +267,7 @@ class SessionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Stream[TurnStreamingEvent]:
         """
-        Start or continue a turn within a session. Responds with a Server-Sent Events stream.
+        Start or continue a turn within a session.
         Use `previous_turn_id` to chain to the session's last turn (defaults to `auto`).
 
         Parameters
@@ -284,7 +284,7 @@ class SessionsClient:
         Returns
         -------
         Stream[TurnStreamingEvent]
-            Server-Sent Events stream of turn events.
+
 
         Examples
         --------
@@ -294,7 +294,7 @@ class SessionsClient:
             api_key="YOUR_API_KEY",
             base_url="https://yourhost.com/path/to/api",
         )
-        response = client.private.agents.sessions.create_turn(
+        response = client.private.agents.sessions.create_turn_stream(
             session_id="01arz3ndektsv4rrffq69g5fav.g",
         )
         for chunk in response:
@@ -302,12 +302,57 @@ class SessionsClient:
         """
 
         def _events() -> typing.Generator[StreamEvent[TurnStreamingEvent], None, None]:
-            with self._raw_client.create_turn(
+            with self._raw_client.create_turn_stream(
                 session_id, input=input, previous_turn_id=previous_turn_id, request_options=request_options
             ) as r:
                 yield from r.data.with_metadata()
 
         return Stream(events=_events)
+
+    def create_turn(
+        self,
+        session_id: str,
+        *,
+        input: typing.Optional[typing.Sequence[TurnInputItem]] = OMIT,
+        previous_turn_id: typing.Optional[PreviousTurnIdInput] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetTurnResponse:
+        """
+        Start or continue a turn within a session.
+        Use `previous_turn_id` to chain to the session's last turn (defaults to `auto`).
+
+        Parameters
+        ----------
+        session_id : str
+
+        input : typing.Optional[typing.Sequence[TurnInputItem]]
+
+        previous_turn_id : typing.Optional[PreviousTurnIdInput]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetTurnResponse
+
+
+        Examples
+        --------
+        from truefoundry_gateway_sdk import TrueFoundryGateway
+
+        client = TrueFoundryGateway(
+            api_key="YOUR_API_KEY",
+            base_url="https://yourhost.com/path/to/api",
+        )
+        client.private.agents.sessions.create_turn(
+            session_id="01arz3ndektsv4rrffq69g5fav.g",
+        )
+        """
+        _response = self._raw_client.create_turn(
+            session_id, input=input, previous_turn_id=previous_turn_id, request_options=request_options
+        )
+        return _response.data
 
     def get_turn(
         self, session_id: str, turn_id: str, *, request_options: typing.Optional[RequestOptions] = None
@@ -784,7 +829,7 @@ class AsyncSessionsClient:
             session_id, page_token=page_token, limit=limit, request_options=request_options
         )
 
-    def create_turn(
+    def create_turn_stream(
         self,
         session_id: str,
         *,
@@ -793,7 +838,7 @@ class AsyncSessionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncStream[TurnStreamingEvent]:
         """
-        Start or continue a turn within a session. Responds with a Server-Sent Events stream.
+        Start or continue a turn within a session.
         Use `previous_turn_id` to chain to the session's last turn (defaults to `auto`).
 
         Parameters
@@ -810,7 +855,7 @@ class AsyncSessionsClient:
         Returns
         -------
         AsyncStream[TurnStreamingEvent]
-            Server-Sent Events stream of turn events.
+
 
         Examples
         --------
@@ -825,7 +870,7 @@ class AsyncSessionsClient:
 
 
         async def main() -> None:
-            response = await client.private.agents.sessions.create_turn(
+            response = await client.private.agents.sessions.create_turn_stream(
                 session_id="01arz3ndektsv4rrffq69g5fav.g",
             )
             async for chunk in response:
@@ -836,13 +881,66 @@ class AsyncSessionsClient:
         """
 
         async def _events() -> typing.AsyncGenerator[StreamEvent[TurnStreamingEvent], None]:
-            async with self._raw_client.create_turn(
+            async with self._raw_client.create_turn_stream(
                 session_id, input=input, previous_turn_id=previous_turn_id, request_options=request_options
             ) as r:
                 async for _event in r.data.with_metadata():
                     yield _event
 
         return AsyncStream(events=_events)
+
+    async def create_turn(
+        self,
+        session_id: str,
+        *,
+        input: typing.Optional[typing.Sequence[TurnInputItem]] = OMIT,
+        previous_turn_id: typing.Optional[PreviousTurnIdInput] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetTurnResponse:
+        """
+        Start or continue a turn within a session.
+        Use `previous_turn_id` to chain to the session's last turn (defaults to `auto`).
+
+        Parameters
+        ----------
+        session_id : str
+
+        input : typing.Optional[typing.Sequence[TurnInputItem]]
+
+        previous_turn_id : typing.Optional[PreviousTurnIdInput]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetTurnResponse
+
+
+        Examples
+        --------
+        import asyncio
+
+        from truefoundry_gateway_sdk import AsyncTrueFoundryGateway
+
+        client = AsyncTrueFoundryGateway(
+            api_key="YOUR_API_KEY",
+            base_url="https://yourhost.com/path/to/api",
+        )
+
+
+        async def main() -> None:
+            await client.private.agents.sessions.create_turn(
+                session_id="01arz3ndektsv4rrffq69g5fav.g",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.create_turn(
+            session_id, input=input, previous_turn_id=previous_turn_id, request_options=request_options
+        )
+        return _response.data
 
     async def get_turn(
         self, session_id: str, turn_id: str, *, request_options: typing.Optional[RequestOptions] = None

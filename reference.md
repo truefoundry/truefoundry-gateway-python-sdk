@@ -416,7 +416,7 @@ client.private.agents.sessions.list_turns(
 </dl>
 </details>
 
-<details><summary><code>client.private.agents.sessions.<a href="src/truefoundry_gateway_sdk/private/agents/sessions/client.py">create_turn</a>(...) -> typing.Iterator[bytes]</code></summary>
+<details><summary><code>client.private.agents.sessions.<a href="src/truefoundry_gateway_sdk/private/agents/sessions/client.py">create_turn_stream</a>(...) -> typing.Iterator[bytes]</code></summary>
 <dl>
 <dd>
 
@@ -428,7 +428,7 @@ client.private.agents.sessions.list_turns(
 <dl>
 <dd>
 
-Start or continue a turn within a session. Responds with a Server-Sent Events stream.
+Start or continue a turn within a session.
 Use `previous_turn_id` to chain to the session's last turn (defaults to `auto`).
 </dd>
 </dl>
@@ -451,7 +451,7 @@ client = TrueFoundryGateway(
     base_url="https://yourhost.com/path/to/api",
 )
 
-client.private.agents.sessions.create_turn(
+client.private.agents.sessions.create_turn_stream(
     session_id="01arz3ndektsv4rrffq69g5fav.g",
 )
 
@@ -470,6 +470,111 @@ client.private.agents.sessions.create_turn(
 <dd>
 
 **session_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**stream:** `typing.Literal` — When true (default), stream turn events as SSE. When false, return the running turn immediately.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**input:** `typing.Optional[typing.List[TurnInputItem]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**previous_turn_id:** `typing.Optional[PreviousTurnIdInput]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.private.agents.sessions.<a href="src/truefoundry_gateway_sdk/private/agents/sessions/client.py">create_turn</a>(...) -> GetTurnResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Start or continue a turn within a session.
+Use `previous_turn_id` to chain to the session's last turn (defaults to `auto`).
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from truefoundry_gateway_sdk import TrueFoundryGateway
+
+client = TrueFoundryGateway(
+    api_key="<token>",
+    base_url="https://yourhost.com/path/to/api",
+)
+
+client.private.agents.sessions.create_turn_stream(
+    session_id="01arz3ndektsv4rrffq69g5fav.g",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**session_id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**stream:** `typing.Literal` — When true (default), stream turn events as SSE. When false, return the running turn immediately.
     
 </dd>
 </dl>
