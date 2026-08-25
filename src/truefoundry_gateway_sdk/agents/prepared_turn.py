@@ -353,19 +353,7 @@ class PreparedTurn:
 
     def _adopt_turn_from_api(self, turn: RawTurn) -> None:
         """Build the inner Turn from create_turn / get_turn response data."""
-        self._turn = Turn(
-            RawTurn(
-                id=turn.id,
-                session_id=turn.session_id,
-                previous_turn_id=turn.previous_turn_id,
-                input=turn.input if turn.input is not None else self._input,  # type: ignore[arg-type]
-                state=turn.state,
-                created_by_subject=turn.created_by_subject,
-                created_at=turn.created_at,
-            ),
-            self._session,
-            self._client,
-        )
+        self._turn = Turn(turn, self._session, self._client)
 
     def _adopt_turn_from_created_event(self, event: TurnCreatedEvent) -> None:
         """Build the inner Turn directly from the turn.created event."""
@@ -733,19 +721,7 @@ class AsyncPreparedTurn:
         return self._turn
 
     def _adopt_turn_from_api(self, turn: RawTurn) -> None:
-        self._turn = AsyncTurn(
-            RawTurn(
-                id=turn.id,
-                session_id=turn.session_id,
-                previous_turn_id=turn.previous_turn_id,
-                input=turn.input if turn.input is not None else self._input,  # type: ignore[arg-type]
-                state=turn.state,
-                created_by_subject=turn.created_by_subject,
-                created_at=turn.created_at,
-            ),
-            self._session,
-            self._client,
-        )
+        self._turn = AsyncTurn(turn, self._session, self._client)
 
     def _adopt_turn_from_created_event(self, event: TurnCreatedEvent) -> None:
         self._turn = AsyncTurn(
