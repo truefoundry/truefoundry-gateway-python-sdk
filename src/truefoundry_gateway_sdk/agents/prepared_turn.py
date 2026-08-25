@@ -28,8 +28,8 @@ if typing.TYPE_CHECKING:
 
 class PreparedTurn:
     """
-    Output of prepare_turn: not yet started (no HTTP). execute() fires the create_turn POST
-    and drives the SSE stream. The inner Turn is adopted once turn.created is received.
+    Output of prepare_turn: not yet started (no HTTP). execute() starts the turn via
+    create_turn_stream (SSE) or create_turn (JSON), then drives the inner Turn.
     """
 
     def __init__(
@@ -165,12 +165,13 @@ class PreparedTurn:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.Union[typing.Iterator[TurnStreamData], TurnState]:
         """
-        Start the turn via ``create_turn``.
+        Start the turn via ``create_turn_stream`` / ``create_turn``.
 
         Parameters
         ----------
         stream : bool
-            Stream ``create_turn`` SSE when true. Default true.
+            Stream ``create_turn_stream`` SSE when true. Default true.
+            When false, uses ``create_turn`` JSON then polls to terminal.
         poll_interval_ms : int
             Poll interval ms when ``stream=False``. Minimum 3000.
         request_options : typing.Optional[RequestOptions]
@@ -184,7 +185,7 @@ class PreparedTurn:
         Yields
         ------
         TurnStreamData
-            SSE stream from create_turn.
+            SSE stream from create_turn_stream.
         """
         if self._started:
             raise RuntimeError("Turn already started; use stream() / wait_for_completion().")
@@ -313,19 +314,25 @@ class PreparedTurn:
     # --- Private helpers ---
 
     def _run_streaming(self, request_options: typing.Optional[RequestOptions]) -> typing.Iterator[TurnStreamData]:
-        """execute(stream=True) path: open create_turn SSE, adopt inner Turn on turn.created."""
+        """execute(stream=True) path: open create_turn_stream SSE, adopt inner Turn on turn.created."""
         yield from self._consume_stream(request_options)
 
     def _start_and_wait(self, poll_interval_ms: int, request_options: typing.Optional[RequestOptions]) -> TurnState:
-        """execute(stream=False) path: drive SSE until turn.created mints the inner Turn, then poll."""
-        self._create_turn_if_not_exist(request_options)
+        """execute(stream=False) path: create_turn JSON returns the running turn; then poll."""
+        response = self._client.agents.sessions.create_turn(
+            self._session_id,
+            input=self._input_param,
+            previous_turn_id=self._previous_turn_id,
+            request_options=request_options,
+        )
+        self._adopt_turn_from_api(response.data)
         return self._must_get_turn().wait_for_completion(
             poll_interval_ms=poll_interval_ms, request_options=request_options
         )
 
     def _consume_stream(self, request_options: typing.Optional[RequestOptions]) -> typing.Iterator[TurnStreamData]:
-        """Consume the create_turn SSE, adopting the inner Turn from the first turn.created."""
-        with self._client.agents.sessions.create_turn(
+        """Consume create_turn_stream SSE, adopting the inner Turn from the first turn.created."""
+        with self._client.agents.sessions.create_turn_stream(
             self._session_id,
             input=self._input_param,
             previous_turn_id=self._previous_turn_id,
@@ -334,7 +341,7 @@ class PreparedTurn:
             for event in sse.with_metadata():
                 sequence_number = parse_sequence_number(event.id)
                 if isinstance(event.data, TurnCreatedEvent) and self._turn is None:
-                    self._adopt_turn(event.data)
+                    self._adopt_turn_from_created_event(event.data)
                 elif self._turn is not None and isinstance(event.data, TurnDoneEvent):
                     self._replace_turn_state(event.data.state)
                 yield TurnStreamData(sequence_number=sequence_number, event=event.data)
@@ -344,14 +351,23 @@ class PreparedTurn:
             raise RuntimeError("Turn not started yet; call execute() first.")
         return self._turn
 
-    def _create_turn_if_not_exist(self, request_options: typing.Optional[RequestOptions]) -> None:
-        """Drive the create_turn SSE only until the first turn.created builds the inner Turn, then stop."""
-        if self._turn is None:
-            for _ in self._consume_stream(request_options):
-                if self._turn is not None:
-                    break
+    def _adopt_turn_from_api(self, turn: RawTurn) -> None:
+        """Build the inner Turn from create_turn / get_turn response data."""
+        self._turn = Turn(
+            RawTurn(
+                id=turn.id,
+                session_id=turn.session_id,
+                previous_turn_id=turn.previous_turn_id,
+                input=turn.input if turn.input is not None else self._input,  # type: ignore[arg-type]
+                state=turn.state,
+                created_by_subject=turn.created_by_subject,
+                created_at=turn.created_at,
+            ),
+            self._session,
+            self._client,
+        )
 
-    def _adopt_turn(self, event: TurnCreatedEvent) -> None:
+    def _adopt_turn_from_created_event(self, event: TurnCreatedEvent) -> None:
         """Build the inner Turn directly from the turn.created event."""
         self._turn = Turn(
             RawTurn(
@@ -523,12 +539,13 @@ class AsyncPreparedTurn:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.Union[typing.AsyncIterator[TurnStreamData], "typing.Coroutine[typing.Any, typing.Any, TurnState]"]:
         """
-        Start the turn via ``create_turn``.
+        Start the turn via ``create_turn_stream`` / ``create_turn``.
 
         Parameters
         ----------
         stream : bool
-            Stream ``create_turn`` SSE when true. Default true.
+            Stream ``create_turn_stream`` SSE when true. Default true.
+            When false, uses ``create_turn`` JSON then polls to terminal.
         poll_interval_ms : int
             Poll interval ms when ``stream=False``. Minimum 3000.
         request_options : typing.Optional[RequestOptions]
@@ -542,7 +559,7 @@ class AsyncPreparedTurn:
         Yields
         ------
         TurnStreamData
-            SSE stream from create_turn.
+            SSE stream from create_turn_stream.
         """
         if self._started:
             raise RuntimeError("Turn already started; use stream() / wait_for_completion().")
@@ -680,7 +697,14 @@ class AsyncPreparedTurn:
     async def _start_and_wait(
         self, poll_interval_ms: int, request_options: typing.Optional[RequestOptions]
     ) -> TurnState:
-        await self._create_turn_if_not_exist(request_options)
+        """execute(stream=False) path: create_turn JSON returns the running turn; then poll."""
+        response = await self._client.agents.sessions.create_turn(
+            self._session_id,
+            input=self._input_param,
+            previous_turn_id=self._previous_turn_id,
+            request_options=request_options,
+        )
+        self._adopt_turn_from_api(response.data)
         return await self._must_get_turn().wait_for_completion(
             poll_interval_ms=poll_interval_ms, request_options=request_options
         )
@@ -688,7 +712,8 @@ class AsyncPreparedTurn:
     async def _consume_stream(
         self, request_options: typing.Optional[RequestOptions]
     ) -> typing.AsyncIterator[TurnStreamData]:
-        async with self._client.agents.sessions.create_turn(
+        """Consume create_turn_stream SSE, adopting the inner Turn from the first turn.created."""
+        async with self._client.agents.sessions.create_turn_stream(
             self._session_id,
             input=self._input_param,
             previous_turn_id=self._previous_turn_id,
@@ -697,7 +722,7 @@ class AsyncPreparedTurn:
             async for event in sse.with_metadata():
                 sequence_number = parse_sequence_number(event.id)
                 if isinstance(event.data, TurnCreatedEvent) and self._turn is None:
-                    self._adopt_turn(event.data)
+                    self._adopt_turn_from_created_event(event.data)
                 elif self._turn is not None and isinstance(event.data, TurnDoneEvent):
                     self._replace_turn_state(event.data.state)
                 yield TurnStreamData(sequence_number=sequence_number, event=event.data)
@@ -707,13 +732,22 @@ class AsyncPreparedTurn:
             raise RuntimeError("Turn not started yet; call execute() first.")
         return self._turn
 
-    async def _create_turn_if_not_exist(self, request_options: typing.Optional[RequestOptions]) -> None:
-        if self._turn is None:
-            async for _ in self._consume_stream(request_options):
-                if self._turn is not None:
-                    break
+    def _adopt_turn_from_api(self, turn: RawTurn) -> None:
+        self._turn = AsyncTurn(
+            RawTurn(
+                id=turn.id,
+                session_id=turn.session_id,
+                previous_turn_id=turn.previous_turn_id,
+                input=turn.input if turn.input is not None else self._input,  # type: ignore[arg-type]
+                state=turn.state,
+                created_by_subject=turn.created_by_subject,
+                created_at=turn.created_at,
+            ),
+            self._session,
+            self._client,
+        )
 
-    def _adopt_turn(self, event: TurnCreatedEvent) -> None:
+    def _adopt_turn_from_created_event(self, event: TurnCreatedEvent) -> None:
         self._turn = AsyncTurn(
             RawTurn(
                 id=event.turn_id,
